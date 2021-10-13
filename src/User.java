@@ -1,28 +1,34 @@
-import java.awt.*;
 import java.util.ArrayList;
 
 public abstract class User{
     private String name;
-    private String address;
-    private String biography;
-    private ContactInfo contactInfo;
+    private String homeAddress;
     private ArrayList<Pet> petList;
+    private String password;
     private int reports;
+    private ContactInfo contact;
+    private String biography;
 
-    public User(String name, String address, String biography, ContactInfo contact){
+    public User(String name, String home, String pass, String email){
         this.name = name;
-        this.address = address;
-        this.biography = biography;
-        this.contactInfo = contact;
+        this.homeAddress = home;
+        this.password = pass;
         this.reports = 0;
         petList = new ArrayList<Pet>();
+        this.contact = new ContactInfo();
+        contact.setEmail(email);
+        this.biography = "";
     }
     public String getUserName(){
         return this.name;
     }
 
     public String getUserAddress(){
-        return this.address;
+        return this.homeAddress;
+    }
+
+    public String getUserPassword(){
+        return this.password;
     }
 
     public String getUserBiography(){
@@ -30,7 +36,7 @@ public abstract class User{
     }
 
     public ContactInfo getUserContact(){
-        return this.contactInfo;
+        return this.contact;
     }
 
     public ArrayList<Pet> getPetList(){
@@ -39,6 +45,11 @@ public abstract class User{
 
     public int getReports(){
         return this.reports;
+    }
+
+    public boolean setUserBiography(String biography){
+        this.biography = biography;
+        return true;
     }
 
     abstract boolean add_pet(Pet pet);
