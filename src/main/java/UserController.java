@@ -14,16 +14,17 @@ public class UserController implements IUserController{
     @Override
     public String createUser(String firstName, String lastName, String homeAddress, String password, String email) {
 
-        // Creating a UserCreatorRequestModel called newModel with input
-        UserCreatorRequestModel newModel = new UserCreatorRequestModel(firstName, lastName, email,
+        // Creating a UserCreatorRequestModel called newRequestModel with input
+        UserCreatorRequestModel newRequestModel = new UserCreatorRequestModel(firstName, lastName, email,
                 homeAddress, password);
 
-        // Call UserCreator class and use method CreateUser using newModel to create a new user called newUser
+        // Call UserCreator class and use method createUser using neRequestModel to create a UserCreatorResponseModel
+        // named newResponseModel
         UserCreator newUser = new UserCreator();
-        newUser.createUser(newModel);
+        UserCreatorResponseModel newResponseModel = newUser.createUser(newRequestModel);
 
         // Call JSONPresenter class and use toJSON method to return the newUser in JSON String form
         JSONPresenter string = new JSONPresenter();
-        return string.toJSON(newUser);
+        return string.toJSON(newResponseModel);
     }
 }
