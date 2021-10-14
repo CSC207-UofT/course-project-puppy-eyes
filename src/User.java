@@ -22,11 +22,11 @@ public abstract class User{
         contact.setEmail(email);
         this.biography = "";
     }
-    public String getUserName(){
+    public String getName(){
         return this.name;
     }
 
-    public String getUserAddress(){
+    public String getHomeAddress(){
         return this.homeAddress;
     }
 
@@ -34,11 +34,11 @@ public abstract class User{
         return this.passwordHash;
     }
 
-    public String getUserBiography(){
+    public String getBiography(){
         return this.biography;
     }
 
-    public ContactInfo getUserContact(){
+    public ContactInfo getContact(){
         return this.contact;
     }
 
