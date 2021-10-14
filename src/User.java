@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 
 public abstract class User{
-    private String name;
+    private String firstName;
+    private String lastName;
     private String homeAddress;
     private ArrayList<Pet> petList;
     /* A hash of the user's password. */
@@ -11,8 +12,9 @@ public abstract class User{
     private ContactInfo contact;
     private String biography;
 
-    public User(String name, String home, String password, String email){
-        this.name = name;
+    public User(String firstName, String lastName, String homeAddress, String password, String email){
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.homeAddress = home;
         // TODO: Convert the password into a hash.
         // For now, store the passwordHash as the password in a raw format
@@ -38,7 +40,7 @@ public abstract class User{
         return this.biography;
     }
 
-    public ContactInfo getContact(){
+    public ContactInfo getContactInfo(){
         return this.contact;
     }
 
