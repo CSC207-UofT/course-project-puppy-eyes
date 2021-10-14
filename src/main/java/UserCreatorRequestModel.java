@@ -1,17 +1,24 @@
 public class UserCreatorRequestModel {
-    private String name;
+    private String firstName;
+    private String lastName;
     private String emailAddress;
     private String homeAddress;
     private String password;
 
-    public UserCreatorRequestModel(String name, String email, String home, String pass){
-        this.name = name;
+    public UserCreatorRequestModel(String firstName, String lastName, String email, String home, String pass){
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.emailAddress = email;
         this.homeAddress = home;
         this.password = pass;
     }
-    public String getName(){
-        return this.name;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public String getAddress(){

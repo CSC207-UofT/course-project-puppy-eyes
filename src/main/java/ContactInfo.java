@@ -29,4 +29,20 @@ public class ContactInfo {
         return true;
     }
 
+    // Getter functions
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getInstagram() {
+        return instagram;
+    }
+
+    public String getFacebook() {
+        return facebook;
+    }
 }
