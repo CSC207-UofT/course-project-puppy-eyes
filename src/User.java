@@ -3,12 +3,11 @@ import java.util.ArrayList;
 public abstract class User{
     private String name;
     private String homeAddress;
-    private ArrayList<Pet> petList
+    private ArrayList<Pet> petList;
     /* A hash of the user's password. */
     // In a security perspective, it is unwise to store the user's password
     // as raw plaintext.
     private String passwordHash;
-    private int reports;
     private ContactInfo contact;
     private String biography;
 
@@ -18,7 +17,6 @@ public abstract class User{
         // TODO: Convert the password into a hash.
         // For now, store the passwordHash as the password in a raw format
         this.passwordHash = password;
-        this.reports = 0;
         petList = new ArrayList<Pet>();
         this.contact = new ContactInfo();
         contact.setEmail(email);
@@ -46,10 +44,6 @@ public abstract class User{
 
     public ArrayList<Pet> getPetList(){
         return this.petList;
-    }
-
-    public int getReports(){
-        return this.reports;
     }
 
     public boolean setUserBiography(String biography){
