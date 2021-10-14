@@ -1,6 +1,9 @@
-import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.Map;
 
 public interface IJSONPresenter {
-    /* Transform a Java Object into a JSON string */
-    String toJSON(Object obj) throws JsonProcessingException;
+    /**
+     * Given a basic Java object, return a JSON representation of the object
+     * containing the object's public instance attributes.
+     */
+    String toJSON(Object obj);
 }
