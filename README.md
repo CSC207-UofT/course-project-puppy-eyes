@@ -9,3 +9,4 @@ This repository contains the back end for the Cupet app. The process of data flo
 6. The use case, which has an implementation of UserRepositoryInterface injected in its constructor, executes the action and pushes to the repository, then returns a UserCreaterResponseModel object back to UserController
 7. UserController takes the UserCreaterResponseModel and formats it into a JSON String and returns it back to HTTPSGateway
 8. HTTPSGateway returns this JSON string as a response to the initial HTTP request
+9. Front end application receives this JSON string response and performs any necessary actions (i.e. update UI)
