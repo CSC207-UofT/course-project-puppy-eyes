@@ -24,6 +24,7 @@ public abstract class User{
         contact.setEmail(email);
         this.biography = "";
     }
+
     public String getName(){
         return this.name;
     }
@@ -48,7 +49,7 @@ public abstract class User{
         return this.petList;
     }
 
-    public boolean setUserBiography(String biography){
+    public boolean setBiography(String biography){
         this.biography = biography;
         return true;
     }
