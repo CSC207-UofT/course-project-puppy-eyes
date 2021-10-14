@@ -1,34 +1,35 @@
 import java.util.ArrayList;
 
 public abstract class User{
-    private String name;
+    private String firstName;
+    private String lastName;
     private String homeAddress;
-    private ArrayList<Pet> petList
+    private ArrayList<Pet> petList;
     /* A hash of the user's password. */
     // In a security perspective, it is unwise to store the user's password
     // as raw plaintext.
     private String passwordHash;
-    private int reports;
-    private ContactInfo contact;
+    private ContactInfo contactInfo;
     private String biography;
 
-    public User(String name, String home, String password, String email){
-        this.name = name;
-        this.homeAddress = home;
+    public User(String firstName, String lastName, String homeAddress, String password, String email){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.homeAddress = homeAddress;
         // TODO: Convert the password into a hash.
         // For now, store the passwordHash as the password in a raw format
         this.passwordHash = password;
-        this.reports = 0;
-        petList = new ArrayList<Pet>();
-        this.contact = new ContactInfo();
-        contact.setEmail(email);
+        this.petList = new ArrayList<>();
+        this.contactInfo = new ContactInfo();
+        this.contactInfo.setEmail(email);
         this.biography = "";
     }
-    public String getUserName(){
-        return this.name;
-    }
 
-    public String getUserAddress(){
+    public String getFirstName() {return this.firstName;}
+
+    public String getLastName() {return this.lastName;}
+
+    public String getHomeAddress(){
         return this.homeAddress;
     }
 
@@ -36,23 +37,19 @@ public abstract class User{
         return this.passwordHash;
     }
 
-    public String getUserBiography(){
+    public String getBiography(){
         return this.biography;
     }
 
-    public ContactInfo getUserContact(){
-        return this.contact;
+    public ContactInfo getContactInfo(){
+        return this.contactInfo;
     }
 
     public ArrayList<Pet> getPetList(){
         return this.petList;
     }
 
-    public int getReports(){
-        return this.reports;
-    }
-
-    public boolean setUserBiography(String biography){
+    public boolean setBiography(String biography){
         this.biography = biography;
         return true;
     }
