@@ -11,11 +11,11 @@ public class UserCreator implements UserCreatorInputBoundary{
      */
     public UserCreatorResponseModel createUser(UserCreatorRequestModel request) {
         // Creating a User
-        User newUser = new User(request.firstName,
-                request.lastName,
-                request.homeAddress,
-                request.password,
-                request.email) {
+        User newUser = new User(request.getFirstName(),
+                request.getLastName(),
+                request.getHomeAddress(),
+                request.getPassword(),
+                request.getEmail()) {
             // TODO: Remove override add_pet after implementing the method
             @Override
             boolean add_pet(Pet pet) {

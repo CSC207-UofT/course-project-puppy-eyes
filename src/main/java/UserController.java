@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 /**
  * An interface adapter class that calls UserCreator class, and implements a method createUser.
 */
@@ -38,7 +40,15 @@ public class UserController implements IUserController{
                 homeAddress, password);
 
         UserCreatorResponseModel response = userCreator.createUser(newRequestModel);
+        // Un-pack response into a map and prepare to convert to JSON
+        HashMap<String, String> responseMap = new HashMap<String, String>(){{
+            put("isSuccess", response.isSuccess() ? "true": "false");
+            put("firstName", response.getFirstName());
+            put("lastName", response.getLastName());
+            put("homeAddress", response.getHomeAddress());
+            put("email", response.getEmail());
+        }};
 
-        return jsonPresenter.toJSON(response);
+        return jsonPresenter.toJSON(responseMap);
     }
 }

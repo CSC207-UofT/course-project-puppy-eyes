@@ -1,10 +1,10 @@
 public class UserCreatorResponseModel {
-    public boolean isSuccess;
-    public String firstName;
-    public String lastName;
-    public String homeAddress;
-    public String password;
-    public String email;
+    private boolean isSuccess;
+    private String firstName;
+    private String lastName;
+    private String homeAddress;
+    private String password;
+    private String email;
 
     public UserCreatorResponseModel(boolean isSuccess, String firstName, String lastName,
                                     String homeAddress, String password, String email) {
@@ -14,5 +14,29 @@ public class UserCreatorResponseModel {
         this.homeAddress = homeAddress;
         this.password = password;
         this.email = email;
+    }
+
+    public boolean isSuccess() {
+        return isSuccess;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getHomeAddress() {
+        return homeAddress;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
