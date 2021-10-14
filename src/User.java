@@ -9,25 +9,25 @@ public abstract class User{
     // In a security perspective, it is unwise to store the user's password
     // as raw plaintext.
     private String passwordHash;
-    private ContactInfo contact;
+    private ContactInfo contactInfo;
     private String biography;
 
     public User(String firstName, String lastName, String homeAddress, String password, String email){
         this.firstName = firstName;
         this.lastName = lastName;
-        this.homeAddress = home;
+        this.homeAddress = homeAddress;
         // TODO: Convert the password into a hash.
         // For now, store the passwordHash as the password in a raw format
         this.passwordHash = password;
-        petList = new ArrayList<Pet>();
-        this.contact = new ContactInfo();
-        contact.setEmail(email);
+        this.petList = new ArrayList<>();
+        this.contactInfo = new ContactInfo();
+        this.contactInfo.setEmail(email);
         this.biography = "";
     }
 
-    public String getName(){
-        return this.name;
-    }
+    public String getFirstName() {return this.firstName;}
+
+    public String getLastName() {return this.lastName;}
 
     public String getHomeAddress(){
         return this.homeAddress;
@@ -42,7 +42,7 @@ public abstract class User{
     }
 
     public ContactInfo getContactInfo(){
-        return this.contact;
+        return this.contactInfo;
     }
 
     public ArrayList<Pet> getPetList(){
