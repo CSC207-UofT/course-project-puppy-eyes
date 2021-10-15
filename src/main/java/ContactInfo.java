@@ -24,9 +24,8 @@ public class ContactInfo {
         this.instagram = instagram;
     }
 
-    public boolean setFacebook(String facebook){
+    public void setFacebook(String facebook){
         this.facebook = facebook;
-        return true;
     }
 
     // Getter functions
