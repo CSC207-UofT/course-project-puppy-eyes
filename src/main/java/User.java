@@ -36,6 +36,8 @@ public abstract class User{
         this.contactInfo = new ContactInfo();
         this.contactInfo.setEmail(email);
         this.biography = "";
+
+        // TODO: Generate an ID from the database
         Random id = new Random();
         this.id = Math.abs(id.nextInt());
     }
