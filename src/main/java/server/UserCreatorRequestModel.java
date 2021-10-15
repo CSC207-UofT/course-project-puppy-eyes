@@ -1,30 +1,30 @@
 package server;
 
 public class UserCreatorRequestModel {
-
     private String firstName;
     private String lastName;
-    private String emailAddress;
+    private String email;
     private String homeAddress;
     private String password;
 
-    public UserCreatorRequestModel(String firstName, String lastName, String email, String home, String pass) {
+    public UserCreatorRequestModel(String firstName, String lastName, String email, String home, String pass){
         this.firstName = firstName;
         this.lastName = lastName;
-        this.emailAddress = email;
+        this.email = email;
         this.homeAddress = home;
         this.password = pass;
     }
+
     public String getFirstName() {
-        return this.firstName;
+        return firstName;
     }
 
     public String getLastName() {
-        return this.lastName;
+        return lastName;
     }
 
-    public String getEmailAddress(){
-        return this.emailAddress;
+    public String getEmail(){
+        return this.email;
     }
 
     public String getHomeAddress(){

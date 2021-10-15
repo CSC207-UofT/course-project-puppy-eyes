@@ -1,13 +1,8 @@
 package server;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 public interface IJSONPresenter {
     /**
-     * Transform a Java Object into a JSON string
-     * @param obj
-     * @return
-     * @throws JsonProcessingException
+     * Given a basic Java object, return a JSON representation of the object
+     * containing the object's public instance attributes.
      */
-    String toJSON(Object obj) throws JsonProcessingException;
+    String toJSON(Object obj);
 }
