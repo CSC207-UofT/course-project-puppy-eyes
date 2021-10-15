@@ -11,11 +11,11 @@ public class UserCreatorRequestModel {
     private final String homeAddress;
     private final String password;
 
-    public UserCreatorRequestModel(String firstName, String lastName, String email, String home, String pass){
+    public UserCreatorRequestModel(String firstName, String lastName, String homeAddress, String pass, String email){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.homeAddress = home;
+        this.homeAddress = homeAddress;
         this.password = pass;
     }
 
