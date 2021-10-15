@@ -1,3 +1,5 @@
+package cupet;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface IJSONPresenter {

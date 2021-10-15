@@ -1,3 +1,5 @@
+package cupet;
+
 import java.util.ArrayList;
 import java.util.Random;
 
