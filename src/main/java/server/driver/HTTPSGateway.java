@@ -1,25 +1,28 @@
 package server.driver;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.web.bind.annotation.*;
-import server.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import server.APIGateway;
+import server.IUserController;
+import server.IUserRepository;
 import server.driver.dbEntities.UserDatabaseEntity;
-import server.driver.repository.UserRepository;
 
 import java.util.List;
 
 @RestController
 public class HTTPSGateway implements APIGateway {
-
-    private final UserRepository userRepository;
-
-    private UserController userController;
+    private final IUserRepository userRepository;
+    private final IUserController userController;
 
     // Inject all the repositories into the constructor
-    public HTTPSGateway(UserRepository userRepository) {
+    public HTTPSGateway(IUserRepository userRepository, IUserController userController) {
         this.userRepository = userRepository;
-        // Create a new instance of UserController
-        this.userController = new UserController(userRepository);
+
+        // Inject user repository into UserController
+        this.userController = userController;
     }
 
     @GetMapping("/")
@@ -32,7 +35,8 @@ public class HTTPSGateway implements APIGateway {
     // TODO make this route adhere to clean architecture
     @GetMapping("/users/all")
     public List<UserDatabaseEntity> getAllUsers() {
-        return userRepository.findAll();
+//        return userRepository.findAll();
+        return null;
     }
 
     @PostMapping("/users/create")

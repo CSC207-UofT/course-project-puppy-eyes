@@ -2,11 +2,10 @@ package server.driver.cmd;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import server.driver.CmdLineGateway;
 import server.ServerApplication;
+import server.driver.CmdLineGateway;
 
 import java.util.Scanner;
 
@@ -14,9 +13,11 @@ import java.util.Scanner;
 public class CmdRunner implements CommandLineRunner {
 
     private static Logger logger = LoggerFactory.getLogger(ServerApplication.class);
+    private final CmdLineGateway gateway;
 
-    @Autowired
-    private CmdLineGateway gateway;
+    public CmdRunner(CmdLineGateway gateway) {
+        this.gateway = gateway;
+    }
 
     @Override
     public void run(String... args) throws Exception {

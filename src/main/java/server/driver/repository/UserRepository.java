@@ -1,7 +1,7 @@
 package server.driver.repository;
 
 import org.springframework.stereotype.Repository;
-import server.UserRepositoryInterface;
+import server.IUserRepository;
 import server.driver.dbEntities.ContactInfoDatabaseEntity;
 import server.driver.dbEntities.UserDatabaseEntity;
 
@@ -9,7 +9,7 @@ import java.util.List;
 
 // Defines how we interact with the database
 @Repository
-public class UserRepository implements UserRepositoryInterface {
+public class UserRepository implements IUserRepository {
 
     private final JpaUserRepository repository;
 

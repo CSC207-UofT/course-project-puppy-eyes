@@ -3,10 +3,8 @@ package server.driver;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Component;
 import server.APIGateway;
-import server.JSONPresenter;
-import server.UserController;
-import server.driver.dbEntities.UserDatabaseEntity;
-import server.driver.repository.UserRepository;
+import server.IUserController;
+import server.IUserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,32 +12,32 @@ import java.util.List;
 @Component
 public class CmdLineGateway implements APIGateway {
 
-    private final UserRepository userRepository;
+    private final IUserRepository userRepository;
+    private final IUserController userController;
 
-    private UserController userController;
-
-    public CmdLineGateway(UserRepository userRepository) {
+    // Inject all the repositories into the constructor
+    public CmdLineGateway(IUserRepository userRepository, IUserController userController) {
         this.userRepository = userRepository;
-
-        this.userController = new UserController(userRepository);
+        this.userController = userController;
     }
 
     // Note: This method is not defined by APIGateway (yet)
     // This method is only for testing purposes
     // TODO make this route adhere to clean architecture
-    public List<String> getAllUsers() throws JsonProcessingException {
-        JSONPresenter string = new JSONPresenter();
-
-        // Fetch raw Db Entities from Repository
-        List<UserDatabaseEntity> dbUsers = userRepository.findAll();
-        List<String> users = new ArrayList<>();
-
-        // Convert each Db Entity into a JSON string
-        for (UserDatabaseEntity dbUser : dbUsers) {
-            users.add(string.toJSON(dbUser));
-        }
-
-        return users;
+    public List<String> getAllUsers() {
+//        JSONPresenter string = new JSONPresenter();
+//
+//        // Fetch raw Db Entities from Repository
+//        List<UserDatabaseEntity> dbUsers = userRepository.findAll();
+//        List<String> users = new ArrayList<>();
+//
+//        // Convert each Db Entity into a JSON string
+//        for (UserDatabaseEntity dbUser : dbUsers) {
+//            users.add(string.toJSON(dbUser));
+//        }
+//
+//        return users;
+        return null;
     }
 
     @Override
