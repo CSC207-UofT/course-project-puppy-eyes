@@ -19,7 +19,9 @@ import server.use_cases.UserCreatorInputBoundary;
 
 /**
  * Class that holds all the dependencies used in the application at the moment.
- * (i.e., which controllers, use case classes are used specifically)
+ * (i.e., which controllers, use case classes are used specifically).
+ *
+ * This is where we inject the implementations of most of our interfaces.
  */
 
 @Configuration

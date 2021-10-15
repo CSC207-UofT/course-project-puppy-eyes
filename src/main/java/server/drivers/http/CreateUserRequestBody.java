@@ -5,11 +5,11 @@ package server.drivers.http;
  */
 public class CreateUserRequestBody {
 
-    private String firstName;
-    private String lastName;
-    private String emailAddress;
-    private String homeAddress;
-    private String password;
+    private final String firstName;
+    private final String lastName;
+    private final String emailAddress;
+    private final String homeAddress;
+    private final String password;
 
     public CreateUserRequestBody(String firstName, String lastName, String email, String home, String pass) {
         this.firstName = firstName;

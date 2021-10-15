@@ -1,11 +1,15 @@
 package server.use_cases;
 
+/**
+ * An object defining the request type for
+ * UserCreatorInputBoundary.createUser
+ */
 public class UserCreatorRequestModel {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String homeAddress;
-    private String password;
+    private final String firstName;
+    private final String lastName;
+    private final String email;
+    private final String homeAddress;
+    private final String password;
 
     public UserCreatorRequestModel(String firstName, String lastName, String email, String home, String pass){
         this.firstName = firstName;

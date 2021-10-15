@@ -10,7 +10,9 @@ import server.drivers.dbEntities.UserDatabaseEntity;
 import java.util.List;
 import java.util.Optional;
 
-// Defines how we interact with the database
+/**
+ * An access point from the program to the "User" table in our database.
+ */
 @Repository
 public class UserRepository implements IUserRepository {
 
@@ -20,6 +22,16 @@ public class UserRepository implements IUserRepository {
         this.repository = repository;
     }
 
+    /**
+     * Create and save a new user to the database.
+     * @param firstName The user's first name.
+     * @param lastName The user's last name.
+     * @param homeAddress The user's home address.
+     * @param password The user's password.
+     * @param email The user's email.
+     *
+     * @return The id of the new user.
+     */
     @Override
     public int createUser(String firstName, String lastName, String homeAddress, String password, String email) {
         ContactInfoDatabaseEntity contactInfoDbEntity = new ContactInfoDatabaseEntity("", email, "", "");
@@ -29,6 +41,13 @@ public class UserRepository implements IUserRepository {
         return userDbEntity.getId();
     }
 
+    /**
+     * Retrieve a user's account information given their user id.
+     *
+     * @param userId The user's id.
+     * @return An object containing the user's first name, last name, home address, and email.
+     * @throws UserNotFoundException if no user with such an id was found
+     */
     @Override
     public UserRepositoryUserAccountFetcherResponse fetchUserAccount(int userId) throws UserNotFoundException {
         Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
@@ -41,9 +60,5 @@ public class UserRepository implements IUserRepository {
         }else{
             throw new UserNotFoundException("User of ID: " + userId + " not found");
         }
-    }
-
-    public List<UserDatabaseEntity> findAll() {
-        return repository.findAll();
     }
 }

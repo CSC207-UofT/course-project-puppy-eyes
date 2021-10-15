@@ -3,6 +3,10 @@ package server.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * A presenter that converts application data (in the form of Java objects)
+ * to JSON strings.
+ */
 public class JSONPresenter implements IJSONPresenter{
     private final ObjectMapper mapper;
 
@@ -11,8 +15,7 @@ public class JSONPresenter implements IJSONPresenter{
     }
 
     /**
-     * Given a basic Java object, return a JSON representation of the object
-     * containing the object's public instance attributes. If this conversion fails,
+     * Return a JSON representation of obj. If this conversion fails,
      * return a generic JSON string in the format:
      *
      * {

@@ -1,7 +1,13 @@
 package server.controllers;
+
+/**
+ * An interface representing a controller that handles all
+ * functions relating to user data.
+ */
 public interface IUserController {
     /**
      * Create a new user and return a response in the form of a JSON string
+     *
      * @param firstName The user's first name
      * @param lastName The user's last name
      * @param homeAddress The user's home address

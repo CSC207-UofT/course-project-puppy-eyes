@@ -1,7 +1,10 @@
 package server.drivers.http;
 
+/**
+ * Represents an HTTP request body for the "/users/account" GET route.
+ */
 public class FetchUserAccountRequestBody {
-    private String userId;
+    private final String userId;
 
     public FetchUserAccountRequestBody(String userId) {
         this.userId = userId;

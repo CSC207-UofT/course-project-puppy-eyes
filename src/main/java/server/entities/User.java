@@ -3,21 +3,21 @@ package server.entities;
 import java.util.ArrayList;
 
 public abstract class User {
-    private String firstName;
-    private String lastName;
-    private String homeAddress;
-    private ArrayList<Pet> petList;
+    private final String firstName;
+    private final String lastName;
+    private final String homeAddress;
+    private final ArrayList<Pet> petList;
     /* A hash of the user's password. */
     // In a security perspective, it is unwise to store the user's password
     // as raw plaintext.
-    private String passwordHash;
-    private ContactInfo contactInfo;
+    private final String passwordHash;
+    private final ContactInfo contactInfo;
     private String biography;
     private int id;
 
     /**
-     * Creates a User, storing their first and last name, home address, password, email, list of owned pets,
-     * biography, ContactInfo, and a randomly generated ID.
+     * Creates a new User given their first name, last name, home address, password, and email.
+     * Return
      *
      * @param firstName The first name of the user
      * @param lastName The last name of the user

@@ -5,8 +5,8 @@ import server.use_cases.*;
 import java.util.HashMap;
 
 /**
- * An interface adapter class that calls UserCreator class, and implements a method createUser.
-*/
+ * A controller that handles all functions relating to user data.
+ */
 public class UserController implements IUserController {
     UserCreatorInputBoundary userCreator;
     UserAccountFetcherInputBoundary accountFetcher;
@@ -60,6 +60,19 @@ public class UserController implements IUserController {
         return jsonPresenter.toJSON(responseMap);
     }
 
+    /**
+     * Given a user id, fetch a user's account information.
+     *
+     * Return a JSON structure containing:
+     *      * {
+     *      *  isSuccess: "true"/"false"
+     *      *  // If successful, then include the following
+     *      *  firstName: the first name of user
+     *      *  lastName: the last name of the user
+     *      *  homeAddress: the home address of the user
+     *      *  email: the email of the user
+     *      * }
+     */
     @Override
     public String fetchUserAccount(String userId) {
         UserAccountFetcherRequestModel request = new UserAccountFetcherRequestModel(userId);

@@ -4,13 +4,21 @@ import server.use_cases.repo_abstracts.IUserRepository;
 import server.use_cases.repo_abstracts.UserNotFoundException;
 import server.use_cases.repo_abstracts.UserRepositoryUserAccountFetcherResponse;
 
+/**
+ * A use case responsible for fetching a user's account based on a user id.
+ */
 public class UserAccountFetcher implements UserAccountFetcherInputBoundary {
-    private IUserRepository userRepository;
+    private final IUserRepository userRepository;
 
     public UserAccountFetcher(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Fetch a user's account.
+     * @param request An object containing the user's id.
+     * @return An object containing the user's account information.
+     */
     @Override
     public UserAccountFetcherResponseModel fetchUserAccount(UserAccountFetcherRequestModel request) {
         int id;

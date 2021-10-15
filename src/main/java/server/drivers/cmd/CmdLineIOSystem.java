@@ -2,6 +2,9 @@ package server.drivers.cmd;
 
 import java.util.Scanner;
 
+/**
+ * A class that handles user input and output via System.in and System.out.
+ */
 public class CmdLineIOSystem implements IOSystem {
     Scanner scanner;
 

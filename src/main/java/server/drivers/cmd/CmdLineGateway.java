@@ -7,13 +7,16 @@ import server.use_cases.repo_abstracts.IUserRepository;
 
 import java.util.List;
 
+/**
+ * A gateway that makes a connection between the command line (as input)
+ * and the controllers in our program. This class is complementary to the CmdLineRunner class.
+ */
 @Component
 public class CmdLineGateway implements APIGateway {
 
     private final IUserRepository userRepository;
     private final IUserController userController;
 
-    // Inject all the repositories into the constructor
     public CmdLineGateway(IUserRepository userRepository, IUserController userController) {
         this.userRepository = userRepository;
         this.userController = userController;

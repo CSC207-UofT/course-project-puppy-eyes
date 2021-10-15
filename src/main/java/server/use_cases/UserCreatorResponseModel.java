@@ -1,13 +1,17 @@
 package server.use_cases;
 
+/**
+ * An object defining the response type for
+ * UserCreatorInputBoundary.createUser
+ */
 public class UserCreatorResponseModel {
 
-    private boolean isSuccess;
-    private String firstName;
-    private String lastName;
-    private String homeAddress;
-    private String email;
-    private String userId;
+    private final boolean isSuccess;
+    private final String firstName;
+    private final String lastName;
+    private final String homeAddress;
+    private final String email;
+    private final String userId;
 
     public UserCreatorResponseModel(boolean isSuccess, String firstName, String lastName,
                                     String homeAddress, String email, String userId) {

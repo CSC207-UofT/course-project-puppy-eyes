@@ -8,15 +8,16 @@ import server.controllers.APIGateway;
 import server.controllers.IUserController;
 import server.use_cases.repo_abstracts.IUserRepository;
 
+/**
+ * A gateway that makes a connection between an HTTP API back-end (as input)
+ * and the controllers in our program.
+ */
 @RestController
 public class HTTPSGateway implements APIGateway {
-    private final IUserRepository userRepository;
     private final IUserController userController;
 
     // Inject all the repositories into the constructor
-    public HTTPSGateway(IUserRepository userRepository, IUserController userController) {
-        this.userRepository = userRepository;
-
+    public HTTPSGateway(IUserController userController) {
         // Inject user repository into UserController
         this.userController = userController;
     }
@@ -47,7 +48,6 @@ public class HTTPSGateway implements APIGateway {
 
     @Override
     public String fetchUserAccount(String userId) {
-        String responseJson = userController.fetchUserAccount(userId);
-        return responseJson;
+        return userController.fetchUserAccount(userId);
     }
 }

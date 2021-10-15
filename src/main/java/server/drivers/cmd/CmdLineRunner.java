@@ -9,7 +9,10 @@ import server.ServerApplication;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * A class that represents a tuple, storing an input's prompt
+ * and the name of the input.
+ */
 class PromptAndInputNameTuple {
     private final String prompt;
     private final String inputName;
@@ -28,7 +31,10 @@ class PromptAndInputNameTuple {
     }
 }
 
-
+/**
+ * A Spring runner which is responsible for running, processing IO,
+ * and handling the command line interface to the back-end.
+ */
 @Component
 public class CmdLineRunner implements CommandLineRunner {
 
@@ -117,6 +123,9 @@ public class CmdLineRunner implements CommandLineRunner {
         }
     }
 
+    /**
+     * Run the command line application
+     */
     @Override
     public void run(String... args) {
         logger.info("Starting command executor");

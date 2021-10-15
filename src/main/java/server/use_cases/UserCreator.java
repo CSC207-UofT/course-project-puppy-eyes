@@ -4,7 +4,7 @@ import server.entities.User;
 import server.use_cases.repo_abstracts.IUserRepository;
 
 /**
- * A use case class that is called by UserController class, and calls User class.
+ * A use case responsible for creating a new user.
  */
 public class UserCreator implements UserCreatorInputBoundary{
 
@@ -21,7 +21,6 @@ public class UserCreator implements UserCreatorInputBoundary{
      * @param request Object containing registration data of the new user.
      */
     public UserCreatorResponseModel createUser(UserCreatorRequestModel request) {
-        // Creating a User
         User newUser = new User(request.getFirstName(),
                 request.getLastName(),
                 request.getHomeAddress(),
@@ -36,7 +35,8 @@ public class UserCreator implements UserCreatorInputBoundary{
 
 
         // Return a UserCreatorResponseModel
-        // TODO: Replace isSuccess after implementing the isSuccess method
+        // TODO: Introduce cases where isSuccess is false
+        // TODO: Replace isSuccess (everywhere) with an enum
         return new UserCreatorResponseModel(true,
                 newUser.getFirstName(),
                 newUser.getLastName(),

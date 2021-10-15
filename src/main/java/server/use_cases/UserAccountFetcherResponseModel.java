@@ -1,11 +1,15 @@
 package server.use_cases;
 
+/**
+ * An object defining the response type for
+ * UserAccountFetcherInputBoundary.fetchUserAccount
+ */
 public class UserAccountFetcherResponseModel {
-    private boolean isSuccess;
-    private String firstName;
-    private String lastName;
-    private String homeAddress;
-    private String email;
+    private final boolean isSuccess;
+    private final String firstName;
+    private final String lastName;
+    private final String homeAddress;
+    private final String email;
 
     public UserAccountFetcherResponseModel(boolean isSuccess, String firstName, String lastName, String homeAddress, String email) {
         this.isSuccess = isSuccess;
