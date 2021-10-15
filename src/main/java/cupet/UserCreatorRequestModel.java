@@ -1,3 +1,5 @@
+package cupet;
+
 public class UserCreatorRequestModel {
     private String firstName;
     private String lastName;
