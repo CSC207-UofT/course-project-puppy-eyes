@@ -1,3 +1,5 @@
+package cupet;
+
 public class UserCreatorResponseModel {
     private boolean isSuccess;
     private String firstName;

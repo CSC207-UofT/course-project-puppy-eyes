@@ -1,7 +1,18 @@
+package cupet;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 /**
  * An interface adapter class that calls UserCreator class, and implements a method createUser.
 */
-public class UserController implements IUserController{
+public class UserController implements IUserController {
+
+    private UserRepositoryInterface userRepository;
+
+    public UserController(UserRepositoryInterface userRepository) {
+        this.userRepository = userRepository;
+    }
+
     /**
      * Return an instance of UserCreator in JSON string format using the toString method in JSONPresenter
      * @param firstName is the first name
@@ -12,7 +23,7 @@ public class UserController implements IUserController{
      * @return the newUser in String
      */
     @Override
-    public String createUser(String firstName, String lastName, String homeAddress, String password, String email) {
+    public String createUser(String firstName, String lastName, String homeAddress, String password, String email) throws JsonProcessingException {
 
         // Creating a UserCreatorRequestModel called newRequestModel with input
         UserCreatorRequestModel newRequestModel = new UserCreatorRequestModel(firstName, lastName, email,
