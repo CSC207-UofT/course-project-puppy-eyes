@@ -3,13 +3,17 @@ package server;
 public interface IUserRepository {
 
     /**
-     * Create a new user and save it in the database
+     * Create a new user and save it in the database.
+     * Return the new user's id.
+     *
      * @param firstName
      * @param lastName
      * @param homeAddress
      * @param password
      * @param email
      */
-    public void createUser(String firstName, String lastName, String homeAddress, String password, String email);
+    public int createUser(String firstName, String lastName, String homeAddress, String password, String email);
 
+    public UserRepositoryUserAccountFetcherResponse fetchUserAccount(int userId) throws UserNotFoundException;
 }
+

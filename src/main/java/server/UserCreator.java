@@ -4,6 +4,12 @@ package server;
  */
 public class UserCreator implements UserCreatorInputBoundary{
 
+    IUserRepository userRepository;
+
+    public UserCreator(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     /**
      * Return a UserCreatorResponseModel that contains
      * the created user's basic information.
@@ -17,12 +23,13 @@ public class UserCreator implements UserCreatorInputBoundary{
                 request.getHomeAddress(),
                 request.getPassword(),
                 request.getEmail()) {
-            // TODO: Remove override add_pet after implementing the method
-            @Override
-            public boolean addPet(Pet pet) {
-                return false;
-            }
         };
+
+        int id = userRepository.createUser(newUser.getFirstName(), newUser.getLastName(), newUser.getHomeAddress(),
+                newUser.getPasswordHash(), newUser.getContactInfo().getEmail());
+
+        newUser.setId(id);
+
 
         // Return a UserCreatorResponseModel
         // TODO: Replace isSuccess after implementing the isSuccess method
@@ -30,7 +37,8 @@ public class UserCreator implements UserCreatorInputBoundary{
                 newUser.getFirstName(),
                 newUser.getLastName(),
                 newUser.getHomeAddress(),
-                newUser.getPasswordHash(),
-                newUser.getContactInfo().getEmail());
+                newUser.getContactInfo().getEmail(),
+                ((Integer) newUser.getId()).toString()
+        );
     }
 }

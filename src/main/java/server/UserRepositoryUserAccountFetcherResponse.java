@@ -1,26 +1,16 @@
 package server;
 
-public class UserCreatorResponseModel {
-
-    private boolean isSuccess;
+public class UserRepositoryUserAccountFetcherResponse {
     private String firstName;
     private String lastName;
     private String homeAddress;
     private String email;
-    private String userId;
 
-    public UserCreatorResponseModel(boolean isSuccess, String firstName, String lastName,
-                                    String homeAddress, String email, String userId) {
-        this.isSuccess = isSuccess;
+    public UserRepositoryUserAccountFetcherResponse(String firstName, String lastName, String homeAddress, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.homeAddress = homeAddress;
         this.email = email;
-        this.userId = userId;
-    }
-
-    public boolean isSuccess() {
-        return isSuccess;
     }
 
     public String getFirstName() {
@@ -37,9 +27,5 @@ public class UserCreatorResponseModel {
 
     public String getEmail() {
         return email;
-    }
-
-    public String getUserId() {
-        return userId;
     }
 }

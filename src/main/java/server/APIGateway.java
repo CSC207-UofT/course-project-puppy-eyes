@@ -15,11 +15,7 @@ public interface APIGateway {
      * @throws JsonProcessingException
      */
     public String createUser(String firstName, String lastName,
-                      String homeAddress, String password, String email) throws JsonProcessingException;
+                      String homeAddress, String password, String email);
 
-//    /**
-//     * Return a List of JSON strings each representing a user
-//     * @return a List of JSON strings
-//     */
-//    public List<String> getAllUsers() throws JsonProcessingException;
+    public String getUserAccount(String userId);
 }

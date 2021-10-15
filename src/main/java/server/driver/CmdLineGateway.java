@@ -41,8 +41,13 @@ public class CmdLineGateway implements APIGateway {
     }
 
     @Override
-    public String createUser(String firstName, String lastName, String homeAddress, String password, String email) throws JsonProcessingException {
+    public String createUser(String firstName, String lastName, String homeAddress, String password, String email) {
         String userJson = userController.createUser(firstName, lastName, homeAddress, password, email);
         return userJson;
+    }
+
+    @Override
+    public String getUserAccount(String userId) {
+        return userController.fetchUserAccount(userId);
     }
 }

@@ -1,6 +1,7 @@
 package server.driver;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.hibernate.annotations.Fetch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,29 +31,28 @@ public class HTTPSGateway implements APIGateway {
         return "Welcome to Cupet";
     }
 
-    // Note: This method is not defined by APIGateway (yet)
-    // This method is only for testing purposes
-    // TODO make this route adhere to clean architecture
-    @GetMapping("/users/all")
-    public List<UserDatabaseEntity> getAllUsers() {
-//        return userRepository.findAll();
-        return null;
-    }
-
     @PostMapping("/users/create")
-    public String createUser(@RequestBody CreateUserRequestBody requestBody) throws JsonProcessingException {
+    public String createUser(@RequestBody CreateUserRequestBody requestBody) {
         return createUser(requestBody.getFirstName(), requestBody.getLastName(), requestBody.getHomeAddress(),
                 requestBody.getPassword(), requestBody.getEmailAddress());
     }
 
     @Override
-    public String createUser(String firstName, String lastName, String homeAddress, String password, String email)
-            throws JsonProcessingException {
+    public String createUser(String firstName, String lastName, String homeAddress, String password, String email) {
         String userJson = userController.createUser(firstName, lastName, homeAddress, password, email);
         // TODO remove print statement later
         System.out.println(userJson);
         return userJson;
     }
 
+    @GetMapping("/users/account")
+    public String getUserAccount(@RequestBody FetchUserAccountRequestBody requestBody) {
+        return getUserAccount(requestBody.getUserId());
+    }
 
+    @Override
+    public String getUserAccount(String userId) {
+        String responseJson = userController.fetchUserAccount(userId);
+        return responseJson;
+    }
 }

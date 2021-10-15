@@ -48,6 +48,14 @@ public class CmdRunner implements CommandLineRunner {
                     // Let gateway create the user and then print out the JSON response
                     System.out.println(gateway.createUser(firstName, lastName, homeAddress, password, email));
                 }
+            }else if(command.equalsIgnoreCase("fetchuseraccount")){
+                if (cmdArgs.length < 2) {
+                    System.out.println("fetchuseraccount requires 1 argument: fetchuseraccount <userid>");
+                }else{
+                    String userId = cmdArgs[1];
+
+                    System.out.println(gateway.getUserAccount(userId));
+                }
             }
         }
     }

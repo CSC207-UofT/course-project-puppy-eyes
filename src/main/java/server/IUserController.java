@@ -10,4 +10,12 @@ public interface IUserController {
      */
     String createUser(String firstName, String lastName,
                                         String homeAddress, String password, String email);
+
+    /**
+     * Fetch a user's account details (first name, last name, home address, email)
+     * given their user id. The returned response is in the form of a JSON object.
+     *
+     * @param userId The user's id
+     */
+    String fetchUserAccount(String userId);
 }

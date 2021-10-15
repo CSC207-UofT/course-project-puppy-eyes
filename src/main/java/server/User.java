@@ -13,6 +13,7 @@ public abstract class User {
     private String passwordHash;
     private ContactInfo contactInfo;
     private String biography;
+    private int id;
 
     /**
      * Creates a User, storing their first and last name, home address, password, email, list of owned pets,
@@ -61,14 +62,17 @@ public abstract class User {
         return this.petList;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setBiography(String biography){
         this.biography = biography;
     }
 
-    /**
-     * An abstract method to add a pet to the user's list of pets.
-     * @param pet The pet which is to be added to the user's list of pets.
-     */
-    public abstract boolean addPet(Pet pet);
-
+    // TODO: Complete remaining getters and setters
 }

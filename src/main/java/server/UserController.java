@@ -7,11 +7,14 @@ import java.util.HashMap;
 */
 public class UserController implements IUserController {
     UserCreatorInputBoundary userCreator;
+    UserAccountFetcherInputBoundary accountFetcher;
     IJSONPresenter jsonPresenter;
 
     public UserController(UserCreatorInputBoundary userCreator,
+                          UserAccountFetcherInputBoundary accountFetcher,
                           IJSONPresenter jsonPresenter) {
         this.userCreator = userCreator;
+        this.accountFetcher = accountFetcher;
         this.jsonPresenter = jsonPresenter;
     }
 
@@ -42,6 +45,25 @@ public class UserController implements IUserController {
                 homeAddress, password);
 
         UserCreatorResponseModel response = userCreator.createUser(newRequestModel);
+        // Un-pack response into a map and prepare to convert to JSON
+        HashMap<String, String> responseMap = new HashMap<String, String>(){{
+            put("isSuccess", response.isSuccess() ? "true": "false");
+            put("firstName", response.getFirstName());
+            put("lastName", response.getLastName());
+            put("homeAddress", response.getHomeAddress());
+            put("email", response.getEmail());
+            put("userId", response.getUserId());
+        }};
+
+        return jsonPresenter.toJSON(responseMap);
+    }
+
+    @Override
+    public String fetchUserAccount(String userId) {
+        UserAccountFetcherRequestModel request = new UserAccountFetcherRequestModel(userId);
+
+        UserAccountFetcherResponseModel response = accountFetcher.fetchUserAccount(request);
+
         // Un-pack response into a map and prepare to convert to JSON
         HashMap<String, String> responseMap = new HashMap<String, String>(){{
             put("isSuccess", response.isSuccess() ? "true": "false");
