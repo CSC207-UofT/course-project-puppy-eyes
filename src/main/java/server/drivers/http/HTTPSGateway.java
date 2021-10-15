@@ -42,11 +42,11 @@ public class HTTPSGateway implements APIGateway {
 
     @GetMapping("/users/account")
     public String getUserAccount(@RequestBody FetchUserAccountRequestBody requestBody) {
-        return getUserAccount(requestBody.getUserId());
+        return fetchUserAccount(requestBody.getUserId());
     }
 
     @Override
-    public String getUserAccount(String userId) {
+    public String fetchUserAccount(String userId) {
         String responseJson = userController.fetchUserAccount(userId);
         return responseJson;
     }

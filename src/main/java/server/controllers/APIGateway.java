@@ -17,5 +17,5 @@ public interface APIGateway {
     public String createUser(String firstName, String lastName,
                       String homeAddress, String password, String email);
 
-    public String getUserAccount(String userId);
+    public String fetchUserAccount(String userId);
 }

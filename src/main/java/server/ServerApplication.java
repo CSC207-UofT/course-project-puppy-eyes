@@ -9,6 +9,8 @@ import server.controllers.IJSONPresenter;
 import server.controllers.IUserController;
 import server.controllers.JSONPresenter;
 import server.controllers.UserController;
+import server.drivers.cmd.CmdLineIOSystem;
+import server.drivers.cmd.IOSystem;
 import server.drivers.repository.UserRepository;
 import server.use_cases.UserAccountFetcher;
 import server.use_cases.UserAccountFetcherInputBoundary;
@@ -16,8 +18,8 @@ import server.use_cases.UserCreator;
 import server.use_cases.UserCreatorInputBoundary;
 
 /**
- * Class that holds all the dependencies (driver classes, controllers, use cases, etc.)
- * that are used in the Spring application as beans.
+ * Class that holds all the dependencies used in the application at the moment.
+ * (i.e., which controllers, use case classes are used specifically)
  */
 
 @Configuration
@@ -43,6 +45,11 @@ class BeanHolder {
     IUserController userControllerBean(UserRepository userRepository) {
         return new UserController(userCreatorBean(userRepository),
                 userAccountFetcherBean(userRepository), jsonPresenterBean());
+    }
+
+    @Bean
+    IOSystem ioSystemBean() {
+        return new CmdLineIOSystem();
     }
 }
 
