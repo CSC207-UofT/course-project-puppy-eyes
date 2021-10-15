@@ -1,12 +1,12 @@
-package cupet.driver;
+package server.driver;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import cupet.APIGateway;
-import cupet.JSONPresenter;
-import cupet.UserController;
-import cupet.driver.dbEntities.UserDatabaseEntity;
-import cupet.driver.repository.UserRepository;
 import org.springframework.stereotype.Component;
+import server.APIGateway;
+import server.JSONPresenter;
+import server.UserController;
+import server.driver.dbEntities.UserDatabaseEntity;
+import server.driver.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +18,9 @@ public class CmdLineGateway implements APIGateway {
 
     private UserController userController;
 
-    // Inject all the repositories into the constructor
     public CmdLineGateway(UserRepository userRepository) {
         this.userRepository = userRepository;
 
-        // Inject user repository into UserController
         this.userController = new UserController(userRepository);
     }
 

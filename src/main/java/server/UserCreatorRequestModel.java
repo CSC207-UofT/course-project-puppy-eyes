@@ -1,9 +1,6 @@
-package cupet.driver;
+package server;
 
-/**
- * Represents an HTTP request body for the "/users/create" POST route.
- */
-public class CreateUserRequestBody {
+public class UserCreatorRequestModel {
 
     private String firstName;
     private String lastName;
@@ -11,7 +8,7 @@ public class CreateUserRequestBody {
     private String homeAddress;
     private String password;
 
-    public CreateUserRequestBody(String firstName, String lastName, String email, String home, String pass) {
+    public UserCreatorRequestModel(String firstName, String lastName, String email, String home, String pass) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = email;

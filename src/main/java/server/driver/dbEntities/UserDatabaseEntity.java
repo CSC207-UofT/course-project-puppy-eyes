@@ -1,4 +1,4 @@
-package cupet.driver.dbEntities;
+package server.driver.dbEntities;
 
 import javax.persistence.*;
 

@@ -1,6 +1,7 @@
-package cupet;
+package server;
 
 public class UserCreatorResponseModel {
+
     private boolean isSuccess;
     private String firstName;
     private String lastName;
@@ -41,4 +42,5 @@ public class UserCreatorResponseModel {
     public String getEmail() {
         return email;
     }
+
 }

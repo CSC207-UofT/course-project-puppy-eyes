@@ -1,4 +1,4 @@
-package cupet;
+package server;
 
 // Defines the methods that let us interact with the database
 public interface UserRepositoryInterface {

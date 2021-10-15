@@ -1,9 +1,16 @@
-package cupet;
+package server;
 
 /**
  * A use case class that is called by UserController class, and calls User class.
  */
 public class UserCreator {
+
+    private UserRepositoryInterface userRepository;
+
+    // Inject repository interface as a dependency
+    public UserCreator(UserRepositoryInterface userRepository) {
+        this.userRepository = userRepository;
+    }
 
     /**
      * Return a UserCreatorResponseModel that contains User's basic information.
@@ -18,13 +25,17 @@ public class UserCreator {
                 user.getLastName(),
                 user.getHomeAddress(),
                 user.getPassword(),
-                user.getAddress()) {
-            // TODO: Remove override add_pet after implementing the method
+                user.getEmailAddress()) {
+            // TODO: Remove override addPet after implementing the method
             @Override
-            boolean add_pet(Pet pet) {
+            public boolean addPet(Pet pet) {
                 return false;
             }
         };
+
+        // Push the new User into the repository
+        userRepository.createUser(newUser.getFirstName(), newUser.getLastName(), newUser.getHomeAddress(),
+                newUser.getPasswordHash(), newUser.getContactInfo().getEmail());
 
         // Return a UserCreatorResponseModel
         // TODO: Replace isSuccess after implementing the isSuccess method

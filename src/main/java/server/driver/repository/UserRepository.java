@@ -1,9 +1,9 @@
-package cupet.driver.repository;
+package server.driver.repository;
 
-import cupet.UserRepositoryInterface;
-import cupet.driver.dbEntities.ContactInfoDatabaseEntity;
-import cupet.driver.dbEntities.UserDatabaseEntity;
 import org.springframework.stereotype.Repository;
+import server.UserRepositoryInterface;
+import server.driver.dbEntities.ContactInfoDatabaseEntity;
+import server.driver.dbEntities.UserDatabaseEntity;
 
 import java.util.List;
 

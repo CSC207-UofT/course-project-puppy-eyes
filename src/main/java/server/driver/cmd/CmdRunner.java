@@ -1,12 +1,12 @@
-package cupet.driver.cmd;
+package server.driver.cmd;
 
-import cupet.ServerApplication;
-import cupet.driver.CmdLineGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import server.driver.CmdLineGateway;
+import server.ServerApplication;
 
 import java.util.Scanner;
 

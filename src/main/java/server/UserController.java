@@ -1,10 +1,9 @@
-package cupet;
-
+package server;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * An interface adapter class that calls UserCreator class, and implements a method createUser.
-*/
+ */
 public class UserController implements IUserController {
 
     private UserRepositoryInterface userRepository;
@@ -29,9 +28,9 @@ public class UserController implements IUserController {
         UserCreatorRequestModel newRequestModel = new UserCreatorRequestModel(firstName, lastName, email,
                 homeAddress, password);
 
-        // Call UserCreator class and use method createUser using neRequestModel to create a UserCreatorResponseModel
+        // Call UserCreator class and use method createUser using neRequestModel to create a main.UserCreatorResponseModel
         // named newResponseModel
-        UserCreator newUser = new UserCreator();
+        UserCreator newUser = new UserCreator(userRepository);
         UserCreatorResponseModel newResponseModel = newUser.createUser(newRequestModel);
 
         // Call JSONPresenter class and use toJSON method to return the newUser in JSON String form

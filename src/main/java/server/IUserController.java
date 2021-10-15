@@ -1,8 +1,8 @@
-package cupet;
+package server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public interface IUserController {
+public interface IUserController<T> {
     /**
      * Create a new user and return a response in the form of a JSON string
      * @param firstName
@@ -14,5 +14,5 @@ public interface IUserController {
      * @throws JsonProcessingException
      */
     String createUser(String firstName, String lastName,
-                                        String homeAddress, String password, String email) throws JsonProcessingException;
+                      String homeAddress, String password, String email) throws JsonProcessingException;
 }
