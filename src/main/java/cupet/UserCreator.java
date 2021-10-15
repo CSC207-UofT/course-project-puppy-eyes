@@ -1,3 +1,5 @@
+package cupet;
+
 /**
  * A use case class that is called by UserController class, and calls User class.
  */

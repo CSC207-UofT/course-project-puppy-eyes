@@ -1,3 +1,5 @@
+package cupet;
+
 /**
  * An input boundary for the "create user" use case.
  */

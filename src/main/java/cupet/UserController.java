@@ -1,9 +1,14 @@
+package cupet;
+
+import cupet.IUserController;
+import cupet.UserCreatorInputBoundary;
+
 import java.util.HashMap;
 
 /**
  * An interface adapter class that calls UserCreator class, and implements a method createUser.
 */
-public class UserController implements IUserController{
+public class UserController implements IUserController {
     UserCreatorInputBoundary userCreator;
     IJSONPresenter jsonPresenter;
 

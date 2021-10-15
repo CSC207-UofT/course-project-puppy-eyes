@@ -1,4 +1,4 @@
-import java.util.Map;
+package cupet;
 
 public interface IJSONPresenter {
     /**

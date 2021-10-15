@@ -1,7 +1,7 @@
+package cupet;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.Map;
 
 public class JSONPresenter implements IJSONPresenter{
     private final ObjectMapper mapper;
@@ -24,7 +24,6 @@ public class JSONPresenter implements IJSONPresenter{
         try {
             return mapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
             return "{\"isSuccess\":\"false\"}";
         }
     }

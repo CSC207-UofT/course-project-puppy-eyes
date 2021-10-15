@@ -1,3 +1,5 @@
+package cupet;
+
 public class ContactInfo {
     private String phoneNumber;
     private String email;
