@@ -1,5 +1,4 @@
-package cupet;
-
+package server;
 /**
  * A use case class that is called by UserController class, and calls User class.
  */
@@ -20,7 +19,7 @@ public class UserCreator implements UserCreatorInputBoundary{
                 request.getEmail()) {
             // TODO: Remove override add_pet after implementing the method
             @Override
-            boolean add_pet(Pet pet) {
+            public boolean addPet(Pet pet) {
                 return false;
             }
         };

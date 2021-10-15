@@ -1,4 +1,4 @@
-package cupet;
+package server;
 
 /**
  * An input boundary for the "create user" use case.

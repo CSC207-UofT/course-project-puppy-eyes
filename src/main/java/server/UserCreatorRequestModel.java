@@ -1,4 +1,4 @@
-package cupet;
+package server;
 
 public class UserCreatorRequestModel {
     private String firstName;

@@ -1,4 +1,4 @@
-package cupet.driver;
+package server.driver;
 
 /**
  * Represents an HTTP request body for the "/users/create" POST route.

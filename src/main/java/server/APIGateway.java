@@ -1,4 +1,4 @@
-package cupet;
+package server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -15,7 +15,7 @@ public interface APIGateway {
      * @throws JsonProcessingException
      */
     public String createUser(String firstName, String lastName,
-                             String homeAddress, String password, String email) throws JsonProcessingException;
+                      String homeAddress, String password, String email) throws JsonProcessingException;
 
 //    /**
 //     * Return a List of JSON strings each representing a user

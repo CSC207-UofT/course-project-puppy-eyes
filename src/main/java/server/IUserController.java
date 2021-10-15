@@ -1,5 +1,4 @@
-package cupet;
-
+package server;
 public interface IUserController {
     /**
      * Create a new user and return a response in the form of a JSON string

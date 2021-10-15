@@ -1,10 +1,10 @@
-package cupet.driver;
+package server.driver;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import cupet.*;
-import cupet.driver.dbEntities.UserDatabaseEntity;
-import cupet.driver.repository.UserRepository;
 import org.springframework.stereotype.Component;
+import server.APIGateway;
+import server.IUserController;
+import server.IUserRepository;
 
 import java.util.ArrayList;
 import java.util.List;

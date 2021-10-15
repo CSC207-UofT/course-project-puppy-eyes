@@ -1,16 +1,14 @@
-package cupet.driver;
+package server.driver;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import cupet.APIGateway;
-import cupet.IUserController;
-import cupet.IUserRepository;
-import cupet.UserController;
-import cupet.driver.dbEntities.UserDatabaseEntity;
-import cupet.driver.repository.UserRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import server.APIGateway;
+import server.IUserController;
+import server.IUserRepository;
+import server.driver.dbEntities.UserDatabaseEntity;
 
 import java.util.List;
 

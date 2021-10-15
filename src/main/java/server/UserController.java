@@ -1,7 +1,4 @@
-package cupet;
-
-import cupet.IUserController;
-import cupet.UserCreatorInputBoundary;
+package server;
 
 import java.util.HashMap;
 
