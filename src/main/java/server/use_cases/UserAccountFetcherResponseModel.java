@@ -1,5 +1,7 @@
 package server.use_cases;
 
+import java.util.Objects;
+
 /**
  * An object defining the response type for
  * UserAccountFetcherInputBoundary.fetchUserAccount
@@ -37,5 +39,15 @@ public class UserAccountFetcherResponseModel {
 
     public String getEmail() {
         return email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserAccountFetcherResponseModel that = (UserAccountFetcherResponseModel) o;
+        return isSuccess == that.isSuccess && Objects.equals(firstName, that.firstName) &&
+                Objects.equals(lastName, that.lastName) && Objects.equals(homeAddress, that.homeAddress) &&
+                Objects.equals(email, that.email);
     }
 }

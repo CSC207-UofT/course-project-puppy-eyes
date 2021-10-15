@@ -4,6 +4,7 @@ import server.use_cases.repo_abstracts.IUserRepository;
 import server.use_cases.repo_abstracts.UserNotFoundException;
 import server.use_cases.repo_abstracts.UserRepositoryUserAccountFetcherResponse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,22 +51,26 @@ class DummyUserRepositoryEntity{
  * A dummy user repository that stores users in memory.
  */
 public class DummyUserRepository implements IUserRepository {
-    private Map<Integer, DummyUserRepositoryEntity> users;
+    private final ArrayList<DummyUserRepositoryEntity> users;
     private int currentMaxId;
 
     public DummyUserRepository() {
-        users = new HashMap<>();
-        currentMaxId = 0;
+        users = new ArrayList<>();
+        currentMaxId = -1;
     }
 
     @Override
-    public int createUser(String firstName, String lastName, String homeAddress, String password, String email) {
-        return currentMaxId++;
+    public int createUser(String firstName, String lastName, String homeAddress, String passwordHash, String email) {
+        currentMaxId++;
+        int id = currentMaxId;
+        users.add(new DummyUserRepositoryEntity(firstName, lastName, homeAddress, passwordHash, email));
+
+        return id;
     }
 
     @Override
     public UserRepositoryUserAccountFetcherResponse fetchUserAccount(int userId) throws UserNotFoundException {
-        if (users.containsKey(userId)){
+        if (userId >= 0 && userId <= currentMaxId){
             DummyUserRepositoryEntity user = users.get(userId);
             return new UserRepositoryUserAccountFetcherResponse(user.getFirstName(), user.getLastName(),
                     user.getHomeAddress(), user.getEmail());
