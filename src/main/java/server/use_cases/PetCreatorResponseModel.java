@@ -33,6 +33,9 @@ public class PetCreatorResponseModel {
                     && Objects.equals(petId, that.petId);
         }
     }
+    public boolean isSuccess() {
+        return isSuccess;
+    }
 
     public String getName() {
         return name;
