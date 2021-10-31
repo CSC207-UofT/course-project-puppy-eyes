@@ -18,4 +18,17 @@ public class PetRepository implements IPetRepository {
 
         return petDbEntity.getId();
     }
+
+
+    // TODO: Implementing following methods
+
+    @Override
+    public void fetchPetProfile() {}
+
+    @Override
+    public void matchPet() {}
+
+    @Override
+    public void editPet() {}
+
 }

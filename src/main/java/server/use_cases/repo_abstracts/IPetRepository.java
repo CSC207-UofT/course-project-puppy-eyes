@@ -11,8 +11,10 @@ public interface IPetRepository {
      */
     public int createPet(String name, int age);
 
-    /**
-     * Fetch a pet's account information given a pet id.
-     */
-    // TODO: implement fetchPetAccount()
+
+    // TODO: Complete following methods (return, args,...)
+    public void fetchPetProfile();
+    public void matchPet();
+    public void editPet();
+
 }

@@ -22,18 +22,20 @@ public class PetController implements IPetController {
         PetCreatorRequestModel request = new PetCreatorRequestModel(name, age);
         PetCreatorResponseModel response = petCreator.createPet(request);
 
-        HashMap<String, String> responseMap = new HashMap<>() {{
+        HashMap<String, String> responseMap = new HashMap<String, String>() {{
             put("isSuccess", response.isSuccess() ? "true": "false");
             put("name", response.getName());
-            put("age", String.valueOf(response.getAge()));
+            put("age", String.valueOf(response.getAge())); // TODO: Are you sure you want this in String?
             put("petId", response.getPetId());
         }};
 
         return jsonPresenter.toJSON(responseMap);
     }
 
+    // TODO: implements following methods
+
     @Override
-    public String fetchPetProfile(String petId) {
+    public String fetchPetProfile() {
         return null;
     }
 
@@ -43,7 +45,7 @@ public class PetController implements IPetController {
     }
 
     @Override
-    public String editPet(String petId) {
+    public String editPet() {
         return null;
     }
 }

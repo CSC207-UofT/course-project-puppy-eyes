@@ -15,15 +15,12 @@ public interface IPetController {
      */
     String createPet(String name, int age);
 
-    /**
-     * Fetch a pet's profile given its pet id.
-     * @param petId
-     * @return A response in the form of a JSON string
-     */
-    String fetchPetProfile(String petId);
+    // TODO: following methods is not completed yet
+
+    String fetchPetProfile();
 
     String matchPet();
 
-    String editPet(String petId);
+    String editPet();
 
 }
