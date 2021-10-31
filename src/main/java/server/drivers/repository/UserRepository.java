@@ -7,7 +7,6 @@ import server.use_cases.repo_abstracts.UserRepositoryUserAccountFetcherResponse;
 import server.drivers.dbEntities.ContactInfoDatabaseEntity;
 import server.drivers.dbEntities.UserDatabaseEntity;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -21,7 +20,7 @@ public class UserRepository implements IUserRepository {
     public UserRepository(JpaUserRepository repository) {
         this.repository = repository;
     }
-
+    
     /**
      * Create and save a new user to the database.
      * @param firstName The user's first name.
@@ -52,7 +51,7 @@ public class UserRepository implements IUserRepository {
     public UserRepositoryUserAccountFetcherResponse fetchUserAccount(int userId) throws UserNotFoundException {
         Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
 
-        if (searchResult.isPresent()){
+        if (searchResult.isPresent()) {
             UserDatabaseEntity user = searchResult.get();
 
             return new UserRepositoryUserAccountFetcherResponse(user.getFirstName(), user.getLastName(),
@@ -60,5 +59,25 @@ public class UserRepository implements IUserRepository {
         }else{
             throw new UserNotFoundException("User of ID: " + userId + " not found");
         }
+    }
+
+    /**
+     * Return whether an email-password pair exist as credentials in the database.
+     * @param email
+     * @param password
+     * @return true if credentials exist, false otherwise
+     */
+    @Override
+    public boolean validateCredentials(String email, String password) {
+        Optional<UserDatabaseEntity> searchResult = Optional.ofNullable(repository.findByContactInfo_email(email));
+
+        if (searchResult.isPresent()) {
+            UserDatabaseEntity user = searchResult.get();
+
+            // TODO password encryption & decryption
+            return user.getContactInfo().getEmail().equals(email) && user.getPassword().equals(password);
+        }
+
+        return false;
     }
 }
