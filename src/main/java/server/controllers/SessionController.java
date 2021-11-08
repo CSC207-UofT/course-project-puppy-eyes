@@ -16,6 +16,11 @@ public class SessionController implements ISessionController {
     public String generateJwt(String email, String password) {
         SessionTokenGeneratorRequestModel request = new SessionTokenGeneratorRequestModel(email, password);
         SessionTokenGeneratorResponseModel response = sessionTokenGenerator.generateSessionToken(request);
+
+        if (!response.isSuccess()) {
+            return "null";
+        }
+
         return response.getJwt();
     }
 
