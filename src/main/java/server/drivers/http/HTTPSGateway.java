@@ -1,12 +1,11 @@
 package server.drivers.http;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import server.controllers.APIGateway;
+import server.controllers.ISessionController;
 import server.controllers.IUserController;
-import server.use_cases.repo_abstracts.IUserRepository;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * A gateway that makes a connection between an HTTP API back-end (as input)
@@ -14,17 +13,25 @@ import server.use_cases.repo_abstracts.IUserRepository;
  */
 @RestController
 public class HTTPSGateway implements APIGateway {
+
     private final IUserController userController;
+    private final ISessionController sessionController;
 
     // Inject all the repositories into the constructor
-    public HTTPSGateway(IUserController userController) {
+    public HTTPSGateway(IUserController userController, ISessionController sessionController) {
         // Inject user repository into UserController
         this.userController = userController;
+        this.sessionController = sessionController;
     }
 
     @GetMapping("/")
     public String landingMessage() {
         return "Welcome to Cupet";
+    }
+
+    @GetMapping("/authtest")
+    public String authTest(HttpServletRequest request) {
+        return "You are authenticated! Welcome " + request.getHeader("userId");
     }
 
     @PostMapping("/users/create")
@@ -50,4 +57,10 @@ public class HTTPSGateway implements APIGateway {
     public String fetchUserAccount(String userId) {
         return userController.fetchUserAccount(userId);
     }
+
+    @PostMapping("/auth/login")
+    public String generateJwt(@RequestBody LoginRequestBody loginRequest) {
+        return sessionController.generateJwt(loginRequest.getEmail(), loginRequest.getPassword());
+    }
+    
 }

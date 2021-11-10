@@ -27,5 +27,13 @@ public interface IUserRepository {
      * @param userId The user's id.
      */
     public UserRepositoryUserAccountFetcherResponse fetchUserAccount(int userId) throws UserNotFoundException;
+
+    /**
+     * Return whether an email-password pair exist as credentials in the database.
+     * @param email
+     * @param password
+     * @return true if credentials exist, false otherwise
+     */
+    public boolean validateCredentials(String email, String password);
 }
 
