@@ -1,14 +1,17 @@
 package server.entities;
 
 public abstract class Pet {
-    private String name;
+    private final String name;
+    private final int age;
     private String biography;
-    private int age;
+    private String breed;
+    private int id;
 
-    public Pet(String name, String biography, int age){
+    public Pet(String name, int age){
         this.name = name;
-        this.biography = biography;
         this.age = age;
+        this.biography = "";
+        this.breed = "";
     }
     public String getName(){
         return this.name;
@@ -22,7 +25,24 @@ public abstract class Pet {
         return this.biography;
     }
 
-    abstract String getBreed();
+    public String getBreed() {
+        return this.breed;
+    };
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
 
 }
