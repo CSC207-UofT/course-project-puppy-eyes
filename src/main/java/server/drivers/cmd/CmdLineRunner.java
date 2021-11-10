@@ -101,6 +101,22 @@ public class CmdLineRunner implements CommandLineRunner {
     }
 
     /**
+     * Return a mapping containing the necessary inputs for the
+     * createPet command. The mapping is of the form:
+     *
+     *  name -> user's entered pet's name
+     *  age -> user's entered pet's age
+     */
+    public Map<String, String> getCreatePetInputs() {
+        PromptAndInputNameTuple[] inputPrompts = {
+                new PromptAndInputNameTuple("Enter your pet's name: ", "name"),
+                new PromptAndInputNameTuple("Enter your pet's age: ", "age"),
+        };
+
+        return getCommandInputs(inputPrompts);
+    }
+
+    /**
      * Given a string representation of a command name, if a corresponding
      * command exists, gather user inputs and run the command.
      *
@@ -118,6 +134,10 @@ public class CmdLineRunner implements CommandLineRunner {
                 inputs = getFetchUserAccountInputs();
                 return gateway.fetchUserAccount(inputs.get("userId"));
 
+            case "createPet":
+                inputs = getCreatePetInputs();
+                return gateway.createPet(inputs.get("name"), Integer.parseInt(inputs.get("age")));
+
             default:
                 return "Command not found. Choose from fetchUsers, createUsers, and exit.";
         }
@@ -132,7 +152,7 @@ public class CmdLineRunner implements CommandLineRunner {
         boolean isRunning = true;
 
         while (isRunning) {
-            ioSystem.showOutput("Enter either createUser, fetchUserAccount, or exit.");
+            ioSystem.showOutput("Enter either createUser, fetchUserAccount, createPet. or exit.");
             String command = ioSystem.getInput();
 
             if (command.equals("exit")){

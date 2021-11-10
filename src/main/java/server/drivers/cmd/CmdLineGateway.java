@@ -2,10 +2,10 @@ package server.drivers.cmd;
 
 import org.springframework.stereotype.Component;
 import server.controllers.APIGateway;
+import server.controllers.IPetController;
 import server.controllers.IUserController;
 import server.use_cases.repo_abstracts.IUserRepository;
-
-import java.util.List;
+import server.use_cases.repo_abstracts.IPetRepository;
 
 /**
  * A gateway that makes a connection between the command line (as input)
@@ -16,10 +16,14 @@ public class CmdLineGateway implements APIGateway {
 
     private final IUserRepository userRepository;
     private final IUserController userController;
+    private final IPetRepository petRepository;
+    private final IPetController petController;
 
-    public CmdLineGateway(IUserRepository userRepository, IUserController userController) {
+    public CmdLineGateway(IUserRepository userRepository, IUserController userController, IPetRepository petRepository, IPetController petController) {
         this.userRepository = userRepository;
         this.userController = userController;
+        this.petRepository = petRepository;
+        this.petController = petController;
     }
 
     @Override
@@ -31,5 +35,10 @@ public class CmdLineGateway implements APIGateway {
     @Override
     public String fetchUserAccount(String userId) {
         return userController.fetchUserAccount(userId);
+    }
+
+    @Override
+    public String createPet(String name, int age) {
+        return petController.createPet(name, age);
     }
 }

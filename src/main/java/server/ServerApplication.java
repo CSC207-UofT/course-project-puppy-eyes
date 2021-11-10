@@ -7,15 +7,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import server.controllers.IJSONPresenter;
 import server.controllers.IUserController;
+import server.controllers.IPetController;
 import server.controllers.JSONPresenter;
 import server.controllers.UserController;
+import server.controllers.PetController;
 import server.drivers.cmd.CmdLineIOSystem;
 import server.drivers.cmd.IOSystem;
 import server.drivers.repository.UserRepository;
-import server.use_cases.UserAccountFetcher;
-import server.use_cases.UserAccountFetcherInputBoundary;
-import server.use_cases.UserCreator;
-import server.use_cases.UserCreatorInputBoundary;
+import server.drivers.repository.PetRepository;
+import server.use_cases.*;
 
 /**
  * Class that holds all the dependencies used in the application at the moment.
@@ -26,6 +26,7 @@ import server.use_cases.UserCreatorInputBoundary;
 
 @Configuration
 class BeanHolder {
+
     @Autowired
     @Bean()
     UserCreatorInputBoundary userCreatorBean(UserRepository userRepository) {
@@ -37,6 +38,13 @@ class BeanHolder {
     UserAccountFetcherInputBoundary userAccountFetcherBean(UserRepository userRepository) {
         return new UserAccountFetcher(userRepository);
     }
+
+    @Autowired
+    @Bean
+    PetCreatorInputBoundary petCreatorBean(PetRepository petRepository) {
+        return new PetCreator(petRepository);
+    }
+
     @Bean
     IJSONPresenter jsonPresenterBean() {
         return new JSONPresenter();
@@ -47,6 +55,12 @@ class BeanHolder {
     IUserController userControllerBean(UserRepository userRepository) {
         return new UserController(userCreatorBean(userRepository),
                 userAccountFetcherBean(userRepository), jsonPresenterBean());
+    }
+
+    @Autowired
+    @Bean
+    IPetController petControllerBean(PetRepository petRepository) {
+        return new PetController(petCreatorBean(petRepository), jsonPresenterBean());
     }
 
     @Bean

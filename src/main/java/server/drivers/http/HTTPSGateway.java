@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import server.controllers.APIGateway;
+import server.controllers.IPetController;
 import server.controllers.IUserController;
-import server.use_cases.repo_abstracts.IUserRepository;
 
 /**
  * A gateway that makes a connection between an HTTP API back-end (as input)
@@ -15,11 +15,13 @@ import server.use_cases.repo_abstracts.IUserRepository;
 @RestController
 public class HTTPSGateway implements APIGateway {
     private final IUserController userController;
+    private final IPetController petController;
 
     // Inject all the repositories into the constructor
-    public HTTPSGateway(IUserController userController) {
-        // Inject user repository into UserController
+    public HTTPSGateway(IUserController userController, IPetController petController) {
+        // Inject user/pet repository into UserController/PetController
         this.userController = userController;
+        this.petController = petController;
     }
 
     @GetMapping("/")
@@ -49,5 +51,15 @@ public class HTTPSGateway implements APIGateway {
     @Override
     public String fetchUserAccount(String userId) {
         return userController.fetchUserAccount(userId);
+    }
+
+    @PostMapping("/pets/create")
+    public String createPet(@RequestBody CreatePetRequestBody requestBody) {
+        return createPet(requestBody.getName(), requestBody.getAge());
+    }
+
+    @Override
+    public String createPet(String name, int age) {
+        return petController.createPet(name, age);
     }
 }
