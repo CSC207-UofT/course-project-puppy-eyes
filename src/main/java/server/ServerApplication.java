@@ -6,7 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 import server.controllers.*;
+import server.drivers.GeocoderService;
 import server.drivers.http.AuthFilter;
 import server.drivers.JwtService;
 import server.drivers.cmd.CmdLineIOSystem;
@@ -62,6 +64,8 @@ class BeanHolder {
         return new PetController(petCreatorBean(petRepository), jsonPresenterBean());
     }
 
+    @Autowired
+    @Bean
     ISessionController sessionControllerBean(UserRepository userRepository) {
         return new SessionController(sessionTokenGeneratorBean(userRepository));
     }
