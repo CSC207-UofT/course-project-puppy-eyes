@@ -1,7 +1,5 @@
 package server.controllers;
 
-import server.use_cases.repo_abstracts.PetNotFoundException;
-
 /**
  * An interface representing a controller that handles all
  * functions relating to pet data.

@@ -13,7 +13,8 @@ public class PetEditorResponseModel {
     private String biography;
     private final String petId;
 
-    public PetEditorResponseModel(boolean isSuccess, String name, int age, String breed, String biography, String petId) {
+    public PetEditorResponseModel(boolean isSuccess, String name, int age, String breed,
+                                  String biography, String petId) {
         this.isSuccess = isSuccess;
         this.name = name;
         this.age = age;

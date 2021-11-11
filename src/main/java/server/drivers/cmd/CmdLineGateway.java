@@ -6,7 +6,6 @@ import server.controllers.IPetController;
 import server.controllers.IUserController;
 import server.use_cases.repo_abstracts.IUserRepository;
 import server.use_cases.repo_abstracts.IPetRepository;
-import server.use_cases.repo_abstracts.PetNotFoundException;
 
 /**
  * A gateway that makes a connection between the command line (as input)
@@ -20,7 +19,8 @@ public class CmdLineGateway implements APIGateway {
     private final IPetRepository petRepository;
     private final IPetController petController;
 
-    public CmdLineGateway(IUserRepository userRepository, IUserController userController, IPetRepository petRepository, IPetController petController) {
+    public CmdLineGateway(IUserRepository userRepository, IUserController userController, IPetRepository petRepository,
+                          IPetController petController) {
         this.userRepository = userRepository;
         this.userController = userController;
         this.petRepository = petRepository;

@@ -15,9 +15,11 @@ public class TestPetCreator {
 
     @Test
     public void TestSuccessCreatePet() {
-        PetCreatorResponseModel expected = new PetCreatorResponseModel(true, "Koko", 3, "Dog", "Nice", "0");
+        PetCreatorResponseModel expected = new PetCreatorResponseModel(true, "Koko", 3,
+                "Dog", "Nice", "0");
 
-        PetCreatorResponseModel actual = petCreator.createPet(new PetCreatorRequestModel("Koko", 3, "Dog", "Nice"));
+        PetCreatorResponseModel actual = petCreator.createPet(new PetCreatorRequestModel("Koko", 3,
+                "Dog", "Nice"));
 
         assertEquals(expected, actual);
     }

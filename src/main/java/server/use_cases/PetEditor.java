@@ -20,7 +20,8 @@ public class PetEditor implements PetEditorInputBoundary {
      */
     @Override
     public PetEditorResponseModel editPet(PetEditorRequestModel request) {
-        boolean isSuccess = petRepository.editPet(Integer.parseInt(request.getPetId()), request.getNewName(), request.getNewAge(),
+        boolean isSuccess = petRepository.editPet(Integer.parseInt(request.getPetId()),
+                request.getNewName(), request.getNewAge(),
                 request.getNewBreed(), request.getNewBiography());
 
         return new PetEditorResponseModel(isSuccess,

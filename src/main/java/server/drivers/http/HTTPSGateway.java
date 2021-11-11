@@ -19,7 +19,8 @@ public class HTTPSGateway implements APIGateway {
     private final ISessionController sessionController;
 
     // Inject all the repositories into the constructor
-    public HTTPSGateway(IUserController userController, IPetController petController, ISessionController sessionController) {
+    public HTTPSGateway(IUserController userController, IPetController petController,
+                        ISessionController sessionController) {
         // Inject repositories into related controllers
         this.userController = userController;
         this.petController = petController;;

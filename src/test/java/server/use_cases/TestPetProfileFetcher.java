@@ -21,8 +21,11 @@ public class TestPetProfileFetcher {
         dummyPetRepository.createPet("Bob", 2, "Dog", "Bobobobobo");
         dummyPetRepository.createPet("Cindy", 7, "Cat", "Meow");
 
-        PetProfileFetcherResponseModel expected = new PetProfileFetcherResponseModel(true, "Cindy", 7, "Cat", "Meow");
-        PetProfileFetcherResponseModel actual = petProfileFetcher.fetchPetProfile(new PetProfileFetcherRequestModel("2"));
+        PetProfileFetcherResponseModel expected = new PetProfileFetcherResponseModel(true, "Cindy",
+                7, "Cat", "Meow");
+        PetProfileFetcherResponseModel actual = petProfileFetcher.fetchPetProfile(
+                new PetProfileFetcherRequestModel("2"));
+
         assertEquals(expected, actual);
     }
 
@@ -32,8 +35,11 @@ public class TestPetProfileFetcher {
         dummyPetRepository.createPet("Bob", 2, "Dog", "Bobobobobo");
         dummyPetRepository.createPet("Cindy", 7, "Cat", "Meow");
 
-        PetProfileFetcherResponseModel expected = new PetProfileFetcherResponseModel(false, "", -1, "", "");
-        PetProfileFetcherResponseModel actual = petProfileFetcher.fetchPetProfile(new PetProfileFetcherRequestModel("3"));
+        PetProfileFetcherResponseModel expected = new PetProfileFetcherResponseModel(false, "",
+                -1, "", "");
+        PetProfileFetcherResponseModel actual = petProfileFetcher.fetchPetProfile(
+                new PetProfileFetcherRequestModel("3"));
+
         assertEquals(expected, actual);
     }
 }

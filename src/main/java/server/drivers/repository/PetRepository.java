@@ -51,7 +51,8 @@ public class PetRepository implements IPetRepository {
 
         if (searchResult.isPresent()) {
             PetDatabaseEntity pet = searchResult.get();
-            return new PetRepositoryPetProfileFetcherResponse(pet.getName(), pet.getAge(), pet.getBreed(), pet.getBiography());
+            return new PetRepositoryPetProfileFetcherResponse(pet.getName(), pet.getAge(), pet.getBreed(),
+                    pet.getBiography());
         } else {
             throw new PetNotFoundException("Pet of ID: " + petId + " not found");
         }

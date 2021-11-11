@@ -94,7 +94,8 @@ public class DummyPetRepository implements IPetRepository {
     public PetRepositoryPetProfileFetcherResponse fetchPetProfile(int petId) throws PetNotFoundException {
         if (petId >= 0 && petId <= currentMaxId) {
             DummyPetRepositoryEntity pet = pets.get(petId);
-            return new PetRepositoryPetProfileFetcherResponse(pet.getName(), pet.getAge(), pet.getBreed(), pet.getBiography());
+            return new PetRepositoryPetProfileFetcherResponse(pet.getName(), pet.getAge(),
+                    pet.getBreed(), pet.getBiography());
         } else {
             throw new PetNotFoundException("Pet with ID: " + petId + " not found.");
         }

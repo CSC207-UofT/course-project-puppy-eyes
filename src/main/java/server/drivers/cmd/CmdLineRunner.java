@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import server.ServerApplication;
-import server.use_cases.repo_abstracts.PetNotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -178,7 +177,8 @@ public class CmdLineRunner implements CommandLineRunner {
 
             case "createPet":
                 inputs = getCreatePetInputs();
-                return gateway.createPet(inputs.get("name"), Integer.parseInt(inputs.get("age")), inputs.get("breed"), inputs.get("biography"));
+                return gateway.createPet(inputs.get("name"), Integer.parseInt(inputs.get("age")), inputs.get("breed"),
+                        inputs.get("biography"));
 
             case "fetchPetProfile":
                 inputs = getFetchPetProfileInputs();
@@ -186,10 +186,12 @@ public class CmdLineRunner implements CommandLineRunner {
 
             case "editPet":
                 inputs = getEditPetInputs();
-                return gateway.editPet(inputs.get("petId"), inputs.get("newName"), Integer.parseInt(inputs.get("newAge")), inputs.get("newBreed"), inputs.get("newBiography"));
+                return gateway.editPet(inputs.get("petId"), inputs.get("newName"),
+                        Integer.parseInt(inputs.get("newAge")), inputs.get("newBreed"), inputs.get("newBiography"));
 
             default:
-                return "Command not found. Choose from createUsers, fetchUsers, createPets, fetchPets, editPets and exit.";
+                return "Command not found. Choose from createUsers, fetchUsers, " +
+                        "createPets, fetchPets, editPets and exit.";
         }
     }
 
@@ -202,7 +204,8 @@ public class CmdLineRunner implements CommandLineRunner {
         boolean isRunning = true;
 
         while (isRunning) {
-            ioSystem.showOutput("Enter either createUser, fetchUserAccount, createPet, fetchPetProfile, editPet or exit.");
+            ioSystem.showOutput("Enter either createUser, fetchUserAccount, " +
+                    "createPet, fetchPetProfile, editPet or exit.");
             String command = ioSystem.getInput();
 
             if (command.equals("exit")){

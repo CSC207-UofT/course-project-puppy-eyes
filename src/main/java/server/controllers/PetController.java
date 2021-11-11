@@ -1,7 +1,6 @@
 package server.controllers;
 
 import server.use_cases.*;
-import server.use_cases.repo_abstracts.PetNotFoundException;
 
 import java.util.HashMap;
 
@@ -14,7 +13,8 @@ public class PetController implements IPetController {
     PetEditorInputBoundary petEditor;
     IJSONPresenter jsonPresenter;
 
-    public PetController(PetCreatorInputBoundary petCreator, PetProfileFetcherInputBoundary profileFetcher, PetEditorInputBoundary petEditor, IJSONPresenter jsonPresenter) {
+    public PetController(PetCreatorInputBoundary petCreator, PetProfileFetcherInputBoundary profileFetcher,
+                         PetEditorInputBoundary petEditor, IJSONPresenter jsonPresenter) {
         this.petCreator = petCreator;
         this.profileFetcher = profileFetcher;
         this.petEditor = petEditor;

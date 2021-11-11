@@ -14,7 +14,8 @@ public class PetCreatorResponseModel {
     private final String biography;
     private final String petId;
 
-    public PetCreatorResponseModel(boolean isSuccess, String name, int age, String breed, String biography, String petId) {
+    public PetCreatorResponseModel(boolean isSuccess, String name, int age, String breed,
+                                   String biography, String petId) {
         this.isSuccess = isSuccess;
         this.name = name;
         this.age = age;

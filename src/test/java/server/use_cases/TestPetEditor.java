@@ -21,8 +21,10 @@ public class TestPetEditor {
         dummyPetRepository.createPet("Bob", 2, "Dog", "Bobobobobo");
         dummyPetRepository.createPet("Cindy", 7, "Cat", "Meow");
 
-        PetEditorResponseModel expected = new PetEditorResponseModel(true, "Koko", 5, "Bird", "Hello", "2");
-        PetEditorResponseModel actual = petEditor.editPet(new PetEditorRequestModel("2", "Koko", 5, "Bird", "Hello"));
+        PetEditorResponseModel expected = new PetEditorResponseModel(true, "Koko", 5,
+                "Bird", "Hello", "2");
+        PetEditorResponseModel actual = petEditor.editPet(new PetEditorRequestModel("2", "Koko",
+                5, "Bird", "Hello"));
 
         assertEquals(expected, actual);
     }
@@ -32,8 +34,10 @@ public class TestPetEditor {
         dummyPetRepository.createPet("Bob", 2, "Dog", "Bobobobobo");
         dummyPetRepository.createPet("Cindy", 7, "Cat", "Meow");
 
-        PetEditorResponseModel expected = new PetEditorResponseModel(false, "Koko", 5, "Bird", "Hello", "3");
-        PetEditorResponseModel actual = petEditor.editPet(new PetEditorRequestModel("3", "Koko", 5, "Bird", "Hello"));
+        PetEditorResponseModel expected = new PetEditorResponseModel(false, "Koko", 5,
+                "Bird", "Hello", "3");
+        PetEditorResponseModel actual = petEditor.editPet(new PetEditorRequestModel("3", "Koko",
+                5, "Bird", "Hello"));
 
         assertEquals(expected, actual);
     }

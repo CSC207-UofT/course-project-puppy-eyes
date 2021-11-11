@@ -31,7 +31,8 @@ public class PetProfileFetcher implements PetProfileFetcherInputBoundary {
         try {
             pet = petRepository.fetchPetProfile(id);
 
-            return new PetProfileFetcherResponseModel(true, pet.getName(), pet.getAge(), pet.getBreed(), pet.getBiography());
+            return new PetProfileFetcherResponseModel(true, pet.getName(), pet.getAge(),
+                    pet.getBreed(), pet.getBiography());
         } catch (PetNotFoundException e) {
             // Pet not found
             return new PetProfileFetcherResponseModel(false, "", -1, "", "");
