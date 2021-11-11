@@ -15,10 +15,9 @@ public interface IPetController {
      */
     String createPet(String name, int age);
 
+    String fetchPetProfile(String petId);
+
     // TODO: following methods is not completed yet
-
-    String fetchPetProfile();
-
     String matchPet();
 
     String editPet();

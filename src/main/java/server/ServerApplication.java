@@ -46,6 +46,12 @@ class BeanHolder {
 
     @Autowired
     @Bean
+    PetProfileFetcherInputBoundary petProfileFetcherBean(PetRepository petRepository) {
+        return new PetProfileFetcher(petRepository);
+    }
+
+    @Autowired
+    @Bean
     SessionTokenGeneratorInputBoundary sessionTokenGeneratorBean(UserRepository userRepository) {
         return new SessionTokenGenerator(userRepository, jwtServiceBean());
     }
@@ -61,7 +67,7 @@ class BeanHolder {
     @Autowired
     @Bean
     IPetController petControllerBean(PetRepository petRepository) {
-        return new PetController(petCreatorBean(petRepository), jsonPresenterBean());
+        return new PetController(petCreatorBean(petRepository), petProfileFetcherBean(petRepository), jsonPresenterBean());
     }
 
     @Autowired

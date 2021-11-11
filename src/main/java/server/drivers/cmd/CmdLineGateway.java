@@ -41,4 +41,9 @@ public class CmdLineGateway implements APIGateway {
     public String createPet(String name, int age) {
         return petController.createPet(name, age);
     }
+
+    @Override
+    public String fetchPetProfile(String petId) {
+        return petController.fetchPetProfile(petId);
+    }
 }

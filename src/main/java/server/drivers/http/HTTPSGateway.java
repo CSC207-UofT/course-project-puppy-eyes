@@ -71,6 +71,16 @@ public class HTTPSGateway implements APIGateway {
         return petController.createPet(name, age);
     }
 
+    @GetMapping("/pets/profile")
+    public String getPetProfile(@RequestBody FetchPetProfileRequestBody requestBody) {
+        return fetchPetProfile(requestBody.getPetId());
+    }
+
+    @Override
+    public String fetchPetProfile(String petId) {
+        return petController.fetchPetProfile(petId);
+    }
+
     @PostMapping("/auth/login")
     public String generateJwt(@RequestBody LoginRequestBody loginRequest) {
         return sessionController.generateJwt(loginRequest.getEmail(), loginRequest.getPassword());

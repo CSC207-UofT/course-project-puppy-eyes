@@ -3,6 +3,10 @@ package server.drivers.repository;
 import org.springframework.stereotype.Repository;
 import server.drivers.dbEntities.PetDatabaseEntity;
 import server.use_cases.repo_abstracts.IPetRepository;
+import server.use_cases.repo_abstracts.PetNotFoundException;
+import server.use_cases.repo_abstracts.PetRepositoryPetProfileFetcherResponse;
+
+import java.util.Optional;
 
 /**
  * An access point from the program to the "Pet" table in our database.
@@ -31,11 +35,26 @@ public class PetRepository implements IPetRepository {
         return petDbEntity.getId();
     }
 
+    /**
+     *
+     * @param petId The pet's id.
+     * @return An object containing the pet's name and age.
+     * @throws PetNotFoundException if no pet with such an id was found.
+     */
+    @Override
+    public PetRepositoryPetProfileFetcherResponse fetchPetProfile(int petId) throws PetNotFoundException {
+        Optional<PetDatabaseEntity> searchResult = repository.findById(petId);
+
+        if (searchResult.isPresent()) {
+            PetDatabaseEntity pet = searchResult.get();
+            return new PetRepositoryPetProfileFetcherResponse(pet.getName(), pet.getAge(), pet.getBreed(), pet.getBiography());
+        } else {
+            throw new PetNotFoundException("Pet of ID: " + petId + " not found");
+        }
+
+    }
 
     // TODO: Implementing following methods
-
-    @Override
-    public void fetchPetProfile() {}
 
     @Override
     public void matchPet() {}

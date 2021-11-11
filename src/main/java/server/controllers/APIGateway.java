@@ -21,4 +21,6 @@ public interface APIGateway {
     public String fetchUserAccount(String userId);
 
     public String createPet(String name, int age);
+
+    public String fetchPetProfile(String petId);
 }
