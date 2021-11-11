@@ -3,14 +3,12 @@ package server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import server.controllers.IJSONPresenter;
-import server.controllers.IUserController;
-import server.controllers.IPetController;
-import server.controllers.JSONPresenter;
-import server.controllers.UserController;
-import server.controllers.PetController;
+import server.controllers.*;
+import server.drivers.http.AuthFilter;
+import server.drivers.JwtService;
 import server.drivers.cmd.CmdLineIOSystem;
 import server.drivers.cmd.IOSystem;
 import server.drivers.repository.UserRepository;
@@ -26,7 +24,7 @@ import server.use_cases.*;
 
 @Configuration
 class BeanHolder {
-
+    // Use Cases
     @Autowired
     @Bean()
     UserCreatorInputBoundary userCreatorBean(UserRepository userRepository) {
@@ -46,10 +44,11 @@ class BeanHolder {
     }
 
     @Bean
-    IJSONPresenter jsonPresenterBean() {
-        return new JSONPresenter();
+    SessionTokenGeneratorInputBoundary sessionTokenGeneratorBean(UserRepository userRepository) {
+        return new SessionTokenGenerator(userRepository, jwtServiceBean());
     }
 
+    // Controllers
     @Autowired
     @Bean
     IUserController userControllerBean(UserRepository userRepository) {
@@ -63,12 +62,36 @@ class BeanHolder {
         return new PetController(petCreatorBean(petRepository), jsonPresenterBean());
     }
 
+    ISessionController sessionControllerBean(UserRepository userRepository) {
+        return new SessionController(sessionTokenGeneratorBean(userRepository));
+    }
+
+    // Utils/Services
     @Bean
     IOSystem ioSystemBean() {
         return new CmdLineIOSystem();
     }
-}
 
+    @Bean
+    IJSONPresenter jsonPresenterBean() {
+        return new JSONPresenter();
+    }
+
+    @Bean
+    JwtService jwtServiceBean() {
+        return new JwtService();
+    }
+
+    @Bean
+    public FilterRegistrationBean<AuthFilter> authFilter() {
+        FilterRegistrationBean<AuthFilter> authBean = new FilterRegistrationBean<>();
+
+        authBean.setFilter(new AuthFilter(jwtServiceBean()));
+        authBean.addUrlPatterns("/authtest");
+
+        return authBean;
+    }
+}
 
 @SpringBootApplication
 public class ServerApplication {

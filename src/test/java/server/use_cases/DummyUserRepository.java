@@ -78,4 +78,15 @@ public class DummyUserRepository implements IUserRepository {
             throw new UserNotFoundException("User with ID: " + userId + " not found.");
         }
     }
+
+    @Override
+    public boolean validateCredentials(String email, String password) {
+        for (DummyUserRepositoryEntity user : users) {
+            if (user.getEmail().equals(email) && user.getPasswordHash().equals(password)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

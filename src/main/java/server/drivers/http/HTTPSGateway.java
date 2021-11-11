@@ -1,12 +1,12 @@
 package server.drivers.http;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import server.controllers.APIGateway;
 import server.controllers.IPetController;
 import server.controllers.IUserController;
+import server.controllers.ISessionController;
+import server.controllers.IUserController;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * A gateway that makes a connection between an HTTP API back-end (as input)
@@ -14,19 +14,27 @@ import server.controllers.IUserController;
  */
 @RestController
 public class HTTPSGateway implements APIGateway {
+
     private final IUserController userController;
     private final IPetController petController;
+    private final ISessionController sessionController;
 
     // Inject all the repositories into the constructor
-    public HTTPSGateway(IUserController userController, IPetController petController) {
-        // Inject user/pet repository into UserController/PetController
+    public HTTPSGateway(IUserController userController, IPetController petController, ISessionController sessionController) {
+        // Inject repositories into related controllers
         this.userController = userController;
-        this.petController = petController;
+        this.petController = petController;;
+        this.sessionController = sessionController;
     }
 
     @GetMapping("/")
     public String landingMessage() {
         return "Welcome to Cupet";
+    }
+
+    @GetMapping("/authtest")
+    public String authTest(HttpServletRequest request) {
+        return "You are authenticated! Welcome " + request.getHeader("userId");
     }
 
     @PostMapping("/users/create")
@@ -62,4 +70,10 @@ public class HTTPSGateway implements APIGateway {
     public String createPet(String name, int age) {
         return petController.createPet(name, age);
     }
+
+    @PostMapping("/auth/login")
+    public String generateJwt(@RequestBody LoginRequestBody loginRequest) {
+        return sessionController.generateJwt(loginRequest.getEmail(), loginRequest.getPassword());
+    }
+    
 }
