@@ -22,6 +22,8 @@ public class PetController implements IPetController {
      *
      * @param name The pet's name;
      * @param age The pet's age;
+     * @param breed The pet's breed;
+     * @param biography The pet's biography;
      * @return a JSON structure containing:
      *      * {
      *      *  isSuccess: "true"/"false"
@@ -31,15 +33,17 @@ public class PetController implements IPetController {
      *      * }
      */
     @Override
-    public String createPet(String name, int age) {
+    public String createPet(String name, int age, String breed, String biography) {
 
-        PetCreatorRequestModel request = new PetCreatorRequestModel(name, age);
+        PetCreatorRequestModel request = new PetCreatorRequestModel(name, age, breed, biography);
         PetCreatorResponseModel response = petCreator.createPet(request);
 
         HashMap<String, String> responseMap = new HashMap<String, String>() {{
             put("isSuccess", response.isSuccess() ? "true": "false");
             put("name", response.getName());
             put("age", String.valueOf(response.getAge()));
+            put("breed", response.getBreed());
+            put("biography", response.getBiography());
             put("petId", response.getPetId());
         }};
 

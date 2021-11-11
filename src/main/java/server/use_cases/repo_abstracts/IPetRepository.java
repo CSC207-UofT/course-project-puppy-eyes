@@ -11,9 +11,11 @@ public interface IPetRepository {
      *
      * @param name The pet's name.
      * @param age The Pet's age.
+     * @param breed The Pet's breed.
+     * @param biography The Pet's biography.
      * @return New pet's id.
      */
-    public int createPet(String name, int age);
+    public int createPet(String name, int age, String breed, String biography);
 
     /**
      * Fetch a pet's profile information given a pet id.
@@ -27,5 +29,4 @@ public interface IPetRepository {
     // TODO: Complete following methods (return, args,...)
     public void matchPet();
     public void editPet();
-
 }

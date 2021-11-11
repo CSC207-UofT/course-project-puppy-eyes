@@ -38,8 +38,8 @@ public class CmdLineGateway implements APIGateway {
     }
 
     @Override
-    public String createPet(String name, int age) {
-        return petController.createPet(name, age);
+    public String createPet(String name, int age, String breed, String biography) {
+        return petController.createPet(name, age, breed, biography);
     }
 
     @Override

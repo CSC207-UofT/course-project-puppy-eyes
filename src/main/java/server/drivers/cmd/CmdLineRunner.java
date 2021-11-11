@@ -106,11 +106,15 @@ public class CmdLineRunner implements CommandLineRunner {
      *
      *  name -> user's entered pet's name
      *  age -> user's entered pet's age
+     *  breed -> user's entered pet's breed
+     *  biography -> user's entered pet's biography
      */
     public Map<String, String> getCreatePetInputs() {
         PromptAndInputNameTuple[] inputPrompts = {
                 new PromptAndInputNameTuple("Enter your pet's name: ", "name"),
                 new PromptAndInputNameTuple("Enter your pet's age: ", "age"),
+                new PromptAndInputNameTuple("Enter your pet's breed: ", "breed"),
+                new PromptAndInputNameTuple("Enter your pet's biography: ", "biography"),
         };
 
         return getCommandInputs(inputPrompts);
@@ -150,14 +154,14 @@ public class CmdLineRunner implements CommandLineRunner {
 
             case "createPet":
                 inputs = getCreatePetInputs();
-                return gateway.createPet(inputs.get("name"), Integer.parseInt(inputs.get("age")));
+                return gateway.createPet(inputs.get("name"), Integer.parseInt(inputs.get("age")), inputs.get("breed"), inputs.get("biography"));
 
             case "fetchPetProfile":
                 inputs = getFetchPetProfileInputs();
                 return gateway.fetchPetProfile(inputs.get("petId"));
 
             default:
-                return "Command not found. Choose from fetchUsers, createUsers, createPets and exit.";
+                return "Command not found. Choose from createUsers, fetchUsers, createPets, fetchPets and exit.";
         }
     }
 

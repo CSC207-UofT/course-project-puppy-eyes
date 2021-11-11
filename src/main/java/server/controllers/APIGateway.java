@@ -18,9 +18,30 @@ public interface APIGateway {
     public String createUser(String firstName, String lastName,
                       String homeAddress, String password, String email);
 
+    /**
+     * Fetch a user by given user id.
+     *
+     * @param userId the user's id
+     * @return A JSON structure of the user
+     */
     public String fetchUserAccount(String userId);
 
-    public String createPet(String name, int age);
+    /**
+     * Create a new pet.
+     *
+     * @param name the pet's name
+     * @param age the pet's age
+     * @param breed the pet's breed
+     * @param biography the pet's biography
+     * @return A JSON structure of the pet
+     */
+    public String createPet(String name, int age, String breed, String biography);
 
+    /**
+     * Fetch a pet by given pet id.
+     *
+     * @param petId the pet's id
+     * @return A JSON structure of the pet
+     */
     public String fetchPetProfile(String petId);
 }

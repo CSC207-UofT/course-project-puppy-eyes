@@ -23,13 +23,15 @@ public class PetRepository implements IPetRepository {
     /**
      * Create and save a new pet to the database.
      * @param name The pet's name.
-     * @param age The pet's last name.
+     * @param age The pet's age.
+     * @param breed The pet's breed.
+     * @param biography The pet's biography.
      *
      * @return The id of the new pet.
      */
     @Override
-    public int createPet(String name, int age) {
-        PetDatabaseEntity petDbEntity = new PetDatabaseEntity(name, age, "", "");
+    public int createPet(String name, int age, String breed, String biography) {
+        PetDatabaseEntity petDbEntity = new PetDatabaseEntity(name, age, breed, biography);
         repository.save(petDbEntity);
 
         return petDbEntity.getId();

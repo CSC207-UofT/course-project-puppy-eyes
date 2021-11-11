@@ -63,12 +63,12 @@ public class HTTPSGateway implements APIGateway {
 
     @PostMapping("/pets/create")
     public String createPet(@RequestBody CreatePetRequestBody requestBody) {
-        return createPet(requestBody.getName(), requestBody.getAge());
+        return createPet(requestBody.getName(), requestBody.getAge(), requestBody.getBreed(), requestBody.getBiography());
     }
 
     @Override
-    public String createPet(String name, int age) {
-        return petController.createPet(name, age);
+    public String createPet(String name, int age, String breed, String biography) {
+        return petController.createPet(name, age, breed, biography);
     }
 
     @GetMapping("/pets/profile")

@@ -7,14 +7,22 @@ package server.controllers;
 public interface IPetController {
 
     /**
-     * Creating a new pet.
+     * Create a new pet.
      *
      * @param name The pet's name;
      * @param age The pet's age;
-     * @return A response in the form of a JSON string
+     * @param breed The pet's breed;
+     * @param biography The pet's biography;
+     * @return A JSON structure;
      */
-    String createPet(String name, int age);
+    String createPet(String name, int age, String breed, String biography);
 
+    /**
+     * Fetch a pet by given id.
+     *
+     * @param petId User entered pet id;
+     * @return A JSON structure
+     */
     String fetchPetProfile(String petId);
 
     // TODO: following methods is not completed yet

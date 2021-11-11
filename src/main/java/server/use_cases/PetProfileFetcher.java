@@ -11,6 +11,12 @@ public class PetProfileFetcher implements PetProfileFetcherInputBoundary {
         this.petRepository = petRepository;
     }
 
+    /**
+     * Create a new PetProfileFetcherResponseModel with given request.
+     *
+     * @param request Object containing id of the pet.
+     * @return a PetProfileFetcherResponseModel that contains the created pet's basic information.
+     */
     @Override
     public PetProfileFetcherResponseModel fetchPetProfile(PetProfileFetcherRequestModel request) {
         int id;
