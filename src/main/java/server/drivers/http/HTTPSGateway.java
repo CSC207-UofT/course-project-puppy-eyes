@@ -5,7 +5,6 @@ import server.controllers.APIGateway;
 import server.controllers.IPetController;
 import server.controllers.IUserController;
 import server.controllers.ISessionController;
-import server.controllers.IUserController;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -20,7 +19,8 @@ public class HTTPSGateway implements APIGateway {
     private final ISessionController sessionController;
 
     // Inject all the repositories into the constructor
-    public HTTPSGateway(IUserController userController, IPetController petController, ISessionController sessionController) {
+    public HTTPSGateway(IUserController userController, IPetController petController,
+                        ISessionController sessionController) {
         // Inject repositories into related controllers
         this.userController = userController;
         this.petController = petController;;
@@ -63,12 +63,33 @@ public class HTTPSGateway implements APIGateway {
 
     @PostMapping("/pets/create")
     public String createPet(@RequestBody CreatePetRequestBody requestBody) {
-        return createPet(requestBody.getName(), requestBody.getAge());
+        return createPet(requestBody.getName(), requestBody.getAge(), requestBody.getBreed(), requestBody.getBiography());
     }
 
     @Override
-    public String createPet(String name, int age) {
-        return petController.createPet(name, age);
+    public String createPet(String name, int age, String breed, String biography) {
+        return petController.createPet(name, age, breed, biography);
+    }
+
+    @GetMapping("/pets/profile")
+    public String getPetProfile(@RequestBody FetchPetProfileRequestBody requestBody) {
+        return fetchPetProfile(requestBody.getPetId());
+    }
+
+    @Override
+    public String fetchPetProfile(String petId) {
+        return petController.fetchPetProfile(petId);
+    }
+
+    @PostMapping("/pets/edit")
+    public String editPet(@RequestBody EditPetRequestBody requestBody) {
+        return editPet(requestBody.getPetId(), requestBody.getNewName(), requestBody.getNewAge(),
+                requestBody.getNewBreed(), requestBody.getNewBiography());
+    }
+
+    @Override
+    public String editPet(String petId, String newName, int newAge, String newBreed, String newBiography) {
+        return petController.editPet(petId, newName, newAge, newBreed, newBiography);
     }
 
     @PostMapping("/auth/login")

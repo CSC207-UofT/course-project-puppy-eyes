@@ -4,14 +4,14 @@ public abstract class Pet {
     private final String name;
     private final int age;
     private String biography;
-    private String breed;
+    private final String breed;
     private int id;
 
-    public Pet(String name, int age){
+    public Pet(String name, int age, String breed, String biography){
         this.name = name;
         this.age = age;
-        this.biography = "";
-        this.breed = "";
+        this.biography = biography;
+        this.breed = breed;
     }
     public String getName(){
         return this.name;
@@ -40,9 +40,4 @@ public abstract class Pet {
     public void setBiography(String biography) {
         this.biography = biography;
     }
-
-    public void setBreed(String breed) {
-        this.breed = breed;
-    }
-
 }

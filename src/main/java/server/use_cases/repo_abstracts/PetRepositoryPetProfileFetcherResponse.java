@@ -1,15 +1,17 @@
-package server.drivers.http;
+package server.use_cases.repo_abstracts;
 
 /**
- * Represents an HTTP request body for the "/pets/create" POST route.
+ * A class defining the structure of the IPetRepository response
+ * for the fetchPetProfile method.
  */
-public class CreatePetRequestBody {
+public class PetRepositoryPetProfileFetcherResponse {
     private final String name;
     private final int age;
-    private final String breed;
-    private final String biography;
+    private String breed;
+    private String biography;
 
-    public CreatePetRequestBody(String name, int age, String breed, String biography) {
+
+    public PetRepositoryPetProfileFetcherResponse(String name, int age, String breed, String biography) {
         this.name = name;
         this.age = age;
         this.breed = breed;

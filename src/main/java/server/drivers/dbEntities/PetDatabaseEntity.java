@@ -17,18 +17,20 @@ public class PetDatabaseEntity {
     @Column(name = "age")
     private int age;
 
-    @Column(name = "biography")
-    private String biography;
-
     @Column(name = "breed")
     private String breed;
 
-    public PetDatabaseEntity(String name, int age, String biography, String breed) {
+    @Column(name = "biography")
+    private String biography;
+
+
+    public PetDatabaseEntity(String name, int age, String breed, String biography) {
         super();
         this.name = name;
         this.age = age;
-        this.biography = biography;
         this.breed = breed;
+        this.biography = biography;
+
     }
 
     public PetDatabaseEntity() {}
@@ -45,11 +47,27 @@ public class PetDatabaseEntity {
         return age;
     }
 
+    public String getBreed() {
+        return breed;
+    }
+
     public String getBiography() {
         return biography;
     }
 
-    public String getBreed() {
-        return breed;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
     }
 }

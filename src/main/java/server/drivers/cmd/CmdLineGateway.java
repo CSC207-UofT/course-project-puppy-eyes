@@ -19,7 +19,8 @@ public class CmdLineGateway implements APIGateway {
     private final IPetRepository petRepository;
     private final IPetController petController;
 
-    public CmdLineGateway(IUserRepository userRepository, IUserController userController, IPetRepository petRepository, IPetController petController) {
+    public CmdLineGateway(IUserRepository userRepository, IUserController userController, IPetRepository petRepository,
+                          IPetController petController) {
         this.userRepository = userRepository;
         this.userController = userController;
         this.petRepository = petRepository;
@@ -38,7 +39,17 @@ public class CmdLineGateway implements APIGateway {
     }
 
     @Override
-    public String createPet(String name, int age) {
-        return petController.createPet(name, age);
+    public String createPet(String name, int age, String breed, String biography) {
+        return petController.createPet(name, age, breed, biography);
+    }
+
+    @Override
+    public String fetchPetProfile(String petId) {
+        return petController.fetchPetProfile(petId);
+    }
+
+    @Override
+    public String editPet(String petId, String newName, int newAge, String newBreed, String newBiography) {
+        return petController.editPet(petId, newName, newAge, newBreed, newBiography);
     }
 }
