@@ -139,7 +139,7 @@ public class CmdLineRunner implements CommandLineRunner {
                 return gateway.createPet(inputs.get("name"), Integer.parseInt(inputs.get("age")));
 
             default:
-                return "Command not found. Choose from fetchUsers, createUsers, and exit.";
+                return "Command not found. Choose from fetchUsers, createUsers, createPets and exit.";
         }
     }
 
@@ -152,7 +152,7 @@ public class CmdLineRunner implements CommandLineRunner {
         boolean isRunning = true;
 
         while (isRunning) {
-            ioSystem.showOutput("Enter either createUser, fetchUserAccount, createPet. or exit.");
+            ioSystem.showOutput("Enter either createUser, fetchUserAccount, createPet, or exit.");
             String command = ioSystem.getInput();
 
             if (command.equals("exit")){
