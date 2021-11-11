@@ -1,5 +1,7 @@
 package server.controllers;
 
+import server.use_cases.repo_abstracts.PetNotFoundException;
+
 /**
  * An interface representing a controller that handles all
  * functions relating to pet data.
@@ -25,9 +27,19 @@ public interface IPetController {
      */
     String fetchPetProfile(String petId);
 
+    /**
+     * Edit a pet.
+     *
+     * @param petId User entered pet id;
+     * @param newName User entered pet's new name;
+     * @param newAge User entered pet's new age;
+     * @param newBreed User entered pet's new breed;
+     * @param newBiography User entered pet's new biography;
+     * @return A JSON structure;
+     */
+    String editPet(String petId, String newName, int newAge, String newBreed, String newBiography);
+
     // TODO: following methods is not completed yet
     String matchPet();
 
-    String editPet();
-
-}
+    }

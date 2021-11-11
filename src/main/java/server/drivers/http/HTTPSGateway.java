@@ -5,7 +5,6 @@ import server.controllers.APIGateway;
 import server.controllers.IPetController;
 import server.controllers.IUserController;
 import server.controllers.ISessionController;
-import server.controllers.IUserController;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -79,6 +78,17 @@ public class HTTPSGateway implements APIGateway {
     @Override
     public String fetchPetProfile(String petId) {
         return petController.fetchPetProfile(petId);
+    }
+
+    @PostMapping("/pets/edit")
+    public String editPet(@RequestBody EditPetRequestBody requestBody) {
+        return editPet(requestBody.getPetId(), requestBody.getNewName(), requestBody.getNewAge(),
+                requestBody.getNewBreed(), requestBody.getNewBiography());
+    }
+
+    @Override
+    public String editPet(String petId, String newName, int newAge, String newBreed, String newBiography) {
+        return petController.editPet(petId, newName, newAge, newBreed, newBiography);
     }
 
     @PostMapping("/auth/login")

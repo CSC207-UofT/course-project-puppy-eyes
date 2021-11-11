@@ -54,4 +54,20 @@ public class PetDatabaseEntity {
     public String getBiography() {
         return biography;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
 }

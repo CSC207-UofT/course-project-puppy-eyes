@@ -22,12 +22,13 @@ public class PetRepository implements IPetRepository {
 
     /**
      * Create and save a new pet to the database.
-     * @param name The pet's name.
-     * @param age The pet's age.
-     * @param breed The pet's breed.
-     * @param biography The pet's biography.
      *
-     * @return The id of the new pet.
+     * @param name the pet's name;
+     * @param age the pet's age;
+     * @param breed the pet's breed;
+     * @param biography the pet's biography;
+     *
+     * @return the id of the new pet;
      */
     @Override
     public int createPet(String name, int age, String breed, String biography) {
@@ -38,10 +39,11 @@ public class PetRepository implements IPetRepository {
     }
 
     /**
+     * Fetch a pet in the database by given pet id.
      *
-     * @param petId The pet's id.
-     * @return An object containing the pet's name and age.
-     * @throws PetNotFoundException if no pet with such an id was found.
+     * @param petId the pet's id;
+     * @return an object containing the pet's name and age;
+     * @throws PetNotFoundException if no pet with such an id was found;
      */
     @Override
     public PetRepositoryPetProfileFetcherResponse fetchPetProfile(int petId) throws PetNotFoundException {
@@ -56,12 +58,34 @@ public class PetRepository implements IPetRepository {
 
     }
 
-    // TODO: Implementing following methods
+    /**
+     * Edit a pet's information in the database.
+     *
+     * @param petId the pet's id;
+     * @param newName the pet's new name;
+     * @param newAge the pet's new age;
+     * @param newBreed the pet's new breed;
+     * @param newBiography the pet's new biography;
+     * @return if editing is successfully done;
+     */
+    @Override
+    public boolean editPet(int petId, String newName, int newAge, String newBreed, String newBiography) {
+        Optional<PetDatabaseEntity> searchResult = repository.findById(petId);
 
+        if (searchResult.isPresent()) {
+            PetDatabaseEntity pet = searchResult.get();
+            pet.setName(newName);
+            pet.setAge(newAge);
+            pet.setBreed(newBreed);
+            pet.setBiography(newBiography);
+            repository.save(pet);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // TODO: Implement following method
     @Override
     public void matchPet() {}
-
-    @Override
-    public void editPet() {}
-
 }

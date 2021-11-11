@@ -6,6 +6,7 @@ import server.controllers.IPetController;
 import server.controllers.IUserController;
 import server.use_cases.repo_abstracts.IUserRepository;
 import server.use_cases.repo_abstracts.IPetRepository;
+import server.use_cases.repo_abstracts.PetNotFoundException;
 
 /**
  * A gateway that makes a connection between the command line (as input)
@@ -45,5 +46,10 @@ public class CmdLineGateway implements APIGateway {
     @Override
     public String fetchPetProfile(String petId) {
         return petController.fetchPetProfile(petId);
+    }
+
+    @Override
+    public String editPet(String petId, String newName, int newAge, String newBreed, String newBiography) {
+        return petController.editPet(petId, newName, newAge, newBreed, newBiography);
     }
 }

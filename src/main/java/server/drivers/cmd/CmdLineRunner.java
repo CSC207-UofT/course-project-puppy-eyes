@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import server.ServerApplication;
+import server.use_cases.repo_abstracts.PetNotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -135,12 +136,35 @@ public class CmdLineRunner implements CommandLineRunner {
     }
 
     /**
+     * Return a mapping containing the necessary inputs for the
+     * editPet command. The mapping is of the form:
+     *
+     *  petId -> user's entered pet id
+     *  newName -> user's entered pet's new name
+     *  newAge -> user's entered pet's new age
+     *  newBreed -> user's entered pet's new breed
+     *  newBiography -> user's entered pet's newbiography
+     */
+    public Map<String, String> getEditPetInputs() {
+        PromptAndInputNameTuple[] inputPrompts = {
+                new PromptAndInputNameTuple("Enter your pet's id: ", "petId"),
+                new PromptAndInputNameTuple("Enter your pet's new name: ", "newName"),
+                new PromptAndInputNameTuple("Enter your pet's new age: ", "newAge"),
+                new PromptAndInputNameTuple("Enter your pet's new breed: ", "newBreed"),
+                new PromptAndInputNameTuple("Enter your pet's new biography: ", "newBiography"),
+
+        };
+
+        return getCommandInputs(inputPrompts);
+    }
+
+    /**
      * Given a string representation of a command name, if a corresponding
      * command exists, gather user inputs and run the command.
      *
      * @return the output of the command
      */
-    private String selectAndRun(String command){
+    private String selectAndRun(String command) {
         Map<String, String> inputs;
         switch (command) {
             case "createUser":
@@ -160,8 +184,12 @@ public class CmdLineRunner implements CommandLineRunner {
                 inputs = getFetchPetProfileInputs();
                 return gateway.fetchPetProfile(inputs.get("petId"));
 
+            case "editPet":
+                inputs = getEditPetInputs();
+                return gateway.editPet(inputs.get("petId"), inputs.get("newName"), Integer.parseInt(inputs.get("newAge")), inputs.get("newBreed"), inputs.get("newBiography"));
+
             default:
-                return "Command not found. Choose from createUsers, fetchUsers, createPets, fetchPets and exit.";
+                return "Command not found. Choose from createUsers, fetchUsers, createPets, fetchPets, editPets and exit.";
         }
     }
 
@@ -174,7 +202,7 @@ public class CmdLineRunner implements CommandLineRunner {
         boolean isRunning = true;
 
         while (isRunning) {
-            ioSystem.showOutput("Enter either createUser, fetchUserAccount, createPet, fetchPetProfile, or exit.");
+            ioSystem.showOutput("Enter either createUser, fetchUserAccount, createPet, fetchPetProfile, editPet or exit.");
             String command = ioSystem.getInput();
 
             if (command.equals("exit")){
