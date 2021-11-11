@@ -12,6 +12,7 @@ import server.drivers.JwtService;
 import server.drivers.cmd.CmdLineIOSystem;
 import server.drivers.cmd.IOSystem;
 import server.drivers.repository.UserRepository;
+import server.drivers.repository.PetRepository;
 import server.use_cases.*;
 
 /**
@@ -38,6 +39,11 @@ class BeanHolder {
 
     @Autowired
     @Bean
+    PetCreatorInputBoundary petCreatorBean(PetRepository petRepository) {
+        return new PetCreator(petRepository);
+    }
+
+    @Bean
     SessionTokenGeneratorInputBoundary sessionTokenGeneratorBean(UserRepository userRepository) {
         return new SessionTokenGenerator(userRepository, jwtServiceBean());
     }
@@ -52,6 +58,10 @@ class BeanHolder {
 
     @Autowired
     @Bean
+    IPetController petControllerBean(PetRepository petRepository) {
+        return new PetController(petCreatorBean(petRepository), jsonPresenterBean());
+    }
+
     ISessionController sessionControllerBean(UserRepository userRepository) {
         return new SessionController(sessionTokenGeneratorBean(userRepository));
     }

@@ -2,9 +2,10 @@ package server.drivers.http;
 
 import org.springframework.web.bind.annotation.*;
 import server.controllers.APIGateway;
+import server.controllers.IPetController;
+import server.controllers.IUserController;
 import server.controllers.ISessionController;
 import server.controllers.IUserController;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -15,12 +16,14 @@ import javax.servlet.http.HttpServletRequest;
 public class HTTPSGateway implements APIGateway {
 
     private final IUserController userController;
+    private final IPetController petController;
     private final ISessionController sessionController;
 
     // Inject all the repositories into the constructor
-    public HTTPSGateway(IUserController userController, ISessionController sessionController) {
-        // Inject user repository into UserController
+    public HTTPSGateway(IUserController userController, IPetController petController, ISessionController sessionController) {
+        // Inject repositories into related controllers
         this.userController = userController;
+        this.petController = petController;;
         this.sessionController = sessionController;
     }
 
@@ -56,6 +59,16 @@ public class HTTPSGateway implements APIGateway {
     @Override
     public String fetchUserAccount(String userId) {
         return userController.fetchUserAccount(userId);
+    }
+
+    @PostMapping("/pets/create")
+    public String createPet(@RequestBody CreatePetRequestBody requestBody) {
+        return createPet(requestBody.getName(), requestBody.getAge());
+    }
+
+    @Override
+    public String createPet(String name, int age) {
+        return petController.createPet(name, age);
     }
 
     @PostMapping("/auth/login")

@@ -1,8 +1,10 @@
 package server.drivers.repository;
 
+import org.springframework.stereotype.Repository;
 import server.drivers.dbEntities.PetDatabaseEntity;
 import server.use_cases.repo_abstracts.IPetRepository;
 
+@Repository
 public class PetRepository implements IPetRepository {
 
     private final JpaPetRepository repository;
