@@ -1,5 +1,7 @@
 package server.use_cases;
 
+import java.util.Objects;
+
 /**
  * An object defining the response type for PetEditor.editPet.
  */
@@ -42,5 +44,17 @@ public class PetEditorResponseModel {
 
     public String getPetId() {
         return petId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PetEditorResponseModel that = (PetEditorResponseModel) o;
+        return isSuccess == that.isSuccess
+                && Objects.equals(name, that.name)
+                && Objects.equals(age, that.age)
+                && Objects.equals(breed, that.breed) &&
+                Objects.equals(biography, that.biography);
     }
 }
