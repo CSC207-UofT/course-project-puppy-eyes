@@ -27,8 +27,8 @@ public class CmdLineGateway implements APIGateway {
     }
 
     @Override
-    public String createUser(String firstName, String lastName, String homeAddress, String password, String email) {
-        String userJson = userController.createUser(firstName, lastName, homeAddress, password, email);
+    public String createUser(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
+        String userJson = userController.createUser(firstName, lastName, currentAddress, currentCity, password, email);
         return userJson;
     }
 
@@ -38,7 +38,21 @@ public class CmdLineGateway implements APIGateway {
     }
 
     @Override
-    public String createPet(String name, int age) {
-        return petController.createPet(name, age);
+    public String createPet(int userId, String name, int age) {
+        return petController.createPet(userId, name, age);
     }
+
+    // TODO define these methods in interface
+    public String swipePets(int pet1Id, int pet2Id) {
+        return petController.swipePets(pet1Id, pet2Id);
+    }
+
+    public String unswipePets(int pet1Id, int pet2Id) {
+        return petController.unswipePets(pet1Id, pet2Id);
+    }
+
+    public String matchPets(int pet1Id, int pet2Id) {
+        return petController.matchPets(pet1Id, pet2Id);
+    }
+
 }
