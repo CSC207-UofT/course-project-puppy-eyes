@@ -39,13 +39,13 @@ public class HTTPSGateway implements APIGateway {
 
     @PostMapping("/users/create")
     public String createUser(@RequestBody CreateUserRequestBody requestBody) {
-        return createUser(requestBody.getFirstName(), requestBody.getLastName(), requestBody.getHomeAddress(),
-                requestBody.getPassword(), requestBody.getEmailAddress());
+        return createUser(requestBody.getFirstName(), requestBody.getLastName(), requestBody.getCurrentAddress(),
+                requestBody.getCurrentCity(), requestBody.getPassword(), requestBody.getEmailAddress());
     }
 
     @Override
-    public String createUser(String firstName, String lastName, String homeAddress, String password, String email) {
-        String userJson = userController.createUser(firstName, lastName, homeAddress, password, email);
+    public String createUser(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
+        String userJson = userController.createUser(firstName, lastName, currentAddress, currentCity, password, email);
         // TODO remove print statement later
         System.out.println(userJson);
         return userJson;
@@ -63,12 +63,12 @@ public class HTTPSGateway implements APIGateway {
 
     @PostMapping("/pets/create")
     public String createPet(@RequestBody CreatePetRequestBody requestBody) {
-        return createPet(requestBody.getName(), requestBody.getAge(), requestBody.getBreed(), requestBody.getBiography());
+        return createPet(requestBody.getUserId(), requestBody.getName(), requestBody.getAge(), requestBody.getBreed(), requestBody.getBiography());
     }
 
     @Override
-    public String createPet(String name, int age, String breed, String biography) {
-        return petController.createPet(name, age, breed, biography);
+    public String createPet(int userId, String name, int age, String breed, String biography) {
+        return petController.createPet(userId, name, age, breed, biography);
     }
 
     @GetMapping("/pets/profile")

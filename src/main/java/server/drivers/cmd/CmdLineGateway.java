@@ -28,8 +28,8 @@ public class CmdLineGateway implements APIGateway {
     }
 
     @Override
-    public String createUser(String firstName, String lastName, String homeAddress, String password, String email) {
-        String userJson = userController.createUser(firstName, lastName, homeAddress, password, email);
+    public String createUser(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
+        String userJson = userController.createUser(firstName, lastName, currentAddress, currentCity, password, email);
         return userJson;
     }
 
@@ -39,8 +39,8 @@ public class CmdLineGateway implements APIGateway {
     }
 
     @Override
-    public String createPet(String name, int age, String breed, String biography) {
-        return petController.createPet(name, age, breed, biography);
+    public String createPet(int userId, String name, int age, String breed, String biography) {
+        return petController.createPet(int userId, name, age, breed, biography);
     }
 
     @Override
@@ -52,4 +52,18 @@ public class CmdLineGateway implements APIGateway {
     public String editPet(String petId, String newName, int newAge, String newBreed, String newBiography) {
         return petController.editPet(petId, newName, newAge, newBreed, newBiography);
     }
+
+    // TODO define these methods in interface
+    public String swipePets(int pet1Id, int pet2Id) {
+        return petController.swipePets(pet1Id, pet2Id);
+    }
+
+    public String unswipePets(int pet1Id, int pet2Id) {
+        return petController.unswipePets(pet1Id, pet2Id);
+    }
+
+    public String matchPets(int pet1Id, int pet2Id) {
+        return petController.matchPets(pet1Id, pet2Id);
+    }
+
 }

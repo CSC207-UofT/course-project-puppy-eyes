@@ -6,11 +6,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 import server.controllers.*;
+import server.drivers.GeocoderService;
 import server.drivers.http.AuthFilter;
 import server.drivers.JwtService;
 import server.drivers.cmd.CmdLineIOSystem;
 import server.drivers.cmd.IOSystem;
+import server.drivers.repository.RelationRepository;
 import server.drivers.repository.UserRepository;
 import server.drivers.repository.PetRepository;
 import server.use_cases.*;
@@ -40,8 +43,14 @@ class BeanHolder {
 
     @Autowired
     @Bean
-    PetCreatorInputBoundary petCreatorBean(PetRepository petRepository) {
-        return new PetCreator(petRepository);
+    PetCreatorInputBoundary petCreatorBean(PetRepository petRepository, UserRepository userRepository) {
+        return new PetCreator(petRepository, userRepository);
+    }
+
+    @Autowired
+    @Bean
+    PetSwiperInputBoundary petSwiperBean(RelationRepository relationRepository) {
+        return new PetSwiper(relationRepository);
     }
 
     @Autowired
@@ -72,9 +81,9 @@ class BeanHolder {
 
     @Autowired
     @Bean
-    IPetController petControllerBean(PetRepository petRepository) {
-        return new PetController(petCreatorBean(petRepository), petProfileFetcherBean(petRepository),
-                petEditorBean(petRepository), jsonPresenterBean());
+    IPetController petControllerBean(RelationRepository relationRepository, PetRepository petRepository, UserRepository userRepository) {
+        return new PetController(petCreatorBean(petRepository, userRepository), petSwiperBean(relationRepository),
+                petProfileFetcherBean(petRepository), petEditorBean(petRepository), jsonPresenterBean());
     }
 
     @Autowired
@@ -97,6 +106,11 @@ class BeanHolder {
     @Bean
     JwtService jwtServiceBean() {
         return new JwtService();
+    }
+
+    @Bean
+    GeocoderService geocoderServiceBean() {
+        return new GeocoderService(new RestTemplate());
     }
 
     @Bean

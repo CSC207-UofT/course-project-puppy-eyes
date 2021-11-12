@@ -12,13 +12,15 @@ public class PetController implements IPetController {
     PetProfileFetcherInputBoundary profileFetcher;
     PetEditorInputBoundary petEditor;
     IJSONPresenter jsonPresenter;
+    PetSwiperInputBoundary petSwiper;
 
     public PetController(PetCreatorInputBoundary petCreator, PetProfileFetcherInputBoundary profileFetcher,
-                         PetEditorInputBoundary petEditor, IJSONPresenter jsonPresenter) {
+                         PetEditorInputBoundary petEditor, PetSwiperInputBoundary petSwiper, IJSONPresenter jsonPresenter) {
         this.petCreator = petCreator;
         this.profileFetcher = profileFetcher;
         this.petEditor = petEditor;
         this.jsonPresenter = jsonPresenter;
+        this.petSwiper = petSwiper;
     }
 
     /**
@@ -37,15 +39,15 @@ public class PetController implements IPetController {
      *      * }
      */
     @Override
-    public String createPet(String name, int age, String breed, String biography) {
-
-        PetCreatorRequestModel request = new PetCreatorRequestModel(name, age, breed, biography);
+    public String createPet(int userId, String name, int age, String breed, String biography) {
+        PetCreatorRequestModel request = new PetCreatorRequestModel(userId, name, age, breed, biography);
         PetCreatorResponseModel response = petCreator.createPet(request);
 
         HashMap<String, String> responseMap = new HashMap<String, String>() {{
             put("isSuccess", response.isSuccess() ? "true": "false");
+            put("userId", response.getUserId());
             put("name", response.getName());
-            put("age", String.valueOf(response.getAge()));
+            put("age", response.getAge());
             put("breed", response.getBreed());
             put("biography", response.getBiography());
             put("petId", response.getPetId());
@@ -83,7 +85,24 @@ public class PetController implements IPetController {
         return jsonPresenter.toJSON(responseMap);
     }
 
-    /**
+    @Override
+    public String matchPets(int pet1Id, int pet2Id) {
+        return null;
+    }
+
+    @Override
+    public String swipePets(int pet1Id, int pet2Id) {
+        PetSwiperRequestModel request = new PetSwiperRequestModel(pet1Id, pet2Id);
+        PetSwiperResponseModel response = petSwiper.swipe(request);
+        return String.valueOf(response.isSuccess());
+    }
+
+    @Override
+    public String unswipePets(int pet1Id, int pet2Id) {
+        return null;
+    }
+
+     /**
      * Given new information, edit a pet's information in the database.
      *
      * @param petId User entered pet id;
@@ -102,7 +121,6 @@ public class PetController implements IPetController {
      *      *  biography: the new biography of pet
      *      * }
      */
-    @Override
     public String editPet(String petId, String newName, int newAge, String newBreed, String newBiography) {
         PetEditorRequestModel request = new PetEditorRequestModel(petId, newName, newAge, newBreed, newBiography);
         PetEditorResponseModel response = petEditor.editPet(request);
@@ -117,11 +135,5 @@ public class PetController implements IPetController {
         }};
 
         return jsonPresenter.toJSON(responseMap);
-    }
-
-    // TODO: implements following method
-    @Override
-    public String matchPet() {
-        return null;
     }
 }

@@ -13,12 +13,13 @@ public interface APIGateway {
      *
      * @param firstName the user's first name
      * @param lastName the user's last name
-     * @param homeAddress the user's home address
+     * @param currentAddress the user's current address
+     * @param currentCity the user's current city
      * @param password the user's password
      * @param email the user's email
      */
-    public String createUser(String firstName, String lastName,
-                      String homeAddress, String password, String email);
+    public String createUser(String firstName, String lastName, String currentAddress, String currentCity,
+                             String password, String email);
 
     /**
      * Fetch a user by given user id.
@@ -31,13 +32,14 @@ public interface APIGateway {
     /**
      * Create a new pet.
      *
+     * @param userId the user id of the pet's owner
      * @param name the pet's name
      * @param age the pet's age
      * @param breed the pet's breed
      * @param biography the pet's biography
      * @return A JSON structure of the pet
      */
-    public String createPet(String name, int age, String breed, String biography);
+    public String createPet(int userId, String name, int age, String breed, String biography);
 
     /**
      * Fetch a pet by given pet id.

@@ -10,14 +10,16 @@ public class UserAccountFetcherResponseModel {
     private final boolean isSuccess;
     private final String firstName;
     private final String lastName;
-    private final String homeAddress;
+    private final String currentAddress;
+    private final String currentCity;
     private final String email;
 
-    public UserAccountFetcherResponseModel(boolean isSuccess, String firstName, String lastName, String homeAddress, String email) {
+    public UserAccountFetcherResponseModel(boolean isSuccess, String firstName, String lastName, String currentAddress, String currentCity, String email) {
         this.isSuccess = isSuccess;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.homeAddress = homeAddress;
+        this.currentAddress = currentAddress;
+        this.currentCity = currentCity;
         this.email = email;
     }
 
@@ -33,8 +35,12 @@ public class UserAccountFetcherResponseModel {
         return lastName;
     }
 
-    public String getHomeAddress() {
-        return homeAddress;
+    public String getCurrentAddress() {
+        return currentAddress;
+    }
+
+    public String getCurrentCity() {
+        return currentCity;
     }
 
     public String getEmail() {
@@ -47,7 +53,7 @@ public class UserAccountFetcherResponseModel {
         if (o == null || getClass() != o.getClass()) return false;
         UserAccountFetcherResponseModel that = (UserAccountFetcherResponseModel) o;
         return isSuccess == that.isSuccess && Objects.equals(firstName, that.firstName) &&
-                Objects.equals(lastName, that.lastName) && Objects.equals(homeAddress, that.homeAddress) &&
-                Objects.equals(email, that.email);
+                Objects.equals(lastName, that.lastName) && Objects.equals(currentAddress, that.currentAddress) &&
+                Objects.equals(currentCity, that.currentCity) && Objects.equals(email, that.email);
     }
 }

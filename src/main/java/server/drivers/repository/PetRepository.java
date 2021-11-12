@@ -31,8 +31,8 @@ public class PetRepository implements IPetRepository {
      * @return the id of the new pet;
      */
     @Override
-    public int createPet(String name, int age, String breed, String biography) {
-        PetDatabaseEntity petDbEntity = new PetDatabaseEntity(name, age, breed, biography);
+    public int createPet(int userId, String name, int age, String breed, String biography) {
+        PetDatabaseEntity petDbEntity = new PetDatabaseEntity(userId, name, age, breed, biography);
         repository.save(petDbEntity);
 
         return petDbEntity.getId();

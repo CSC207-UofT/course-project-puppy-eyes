@@ -1,7 +1,9 @@
 package server.use_cases;
 
 import server.entities.Pet;
+import server.entities.User;
 import server.use_cases.repo_abstracts.IPetRepository;
+import server.use_cases.repo_abstracts.IUserRepository;
 
 /**
  * A use case responsible for creating new Pet.
@@ -9,9 +11,11 @@ import server.use_cases.repo_abstracts.IPetRepository;
 public class PetCreator implements PetCreatorInputBoundary {
 
     IPetRepository petRepository;
+    IUserRepository userRepository;
 
-    public PetCreator(IPetRepository petRepository) {
+    public PetCreator(IPetRepository petRepository, IUserRepository userRepository) {
         this.petRepository = petRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -21,18 +25,22 @@ public class PetCreator implements PetCreatorInputBoundary {
      * @return a PetCreatorResponseModel that contains the created pet's basic information.
      */
     public PetCreatorResponseModel createPet(PetCreatorRequestModel request) {
-        Pet newPet = new Pet(request.getName(), request.getAge(), request.getBreed(), request.getBiography()) {};
+        Pet newPet = new Pet(request.getUserId(), request.getName(), request.getAge(), request.getBreed(), request.getBiography()) {};
 
-        int id = petRepository.createPet(newPet.getName(), newPet.getAge(), newPet.getBreed(), newPet.getBiography());
+        // TODO check if user exists from userId in request
+
+        int id = petRepository.createPet(request.getUserId(), newPet.getName(), newPet.getAge(), newPet.getBreed(), newPet.getBiography());
         newPet.setId(id);
 
         // TODO: Introduce cases where isSuccess is false
-        return new PetCreatorResponseModel(true,
+        return new PetCreatorResponseModel(
+                true,
+                String.valueOf(newPet.getId()),
+                String.valueOf(newPet.getUserId()),
                 newPet.getName(),
                 newPet.getAge(),
                 newPet.getBreed(),
                 newPet.getBiography(),
-                ((Integer) newPet.getId()).toString()
         );
     }
 }

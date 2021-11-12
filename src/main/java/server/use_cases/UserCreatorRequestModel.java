@@ -8,14 +8,16 @@ public class UserCreatorRequestModel {
     private final String firstName;
     private final String lastName;
     private final String email;
-    private final String homeAddress;
+    private final String currentAddress;
+    private final String currentCity;
     private final String password;
 
-    public UserCreatorRequestModel(String firstName, String lastName, String homeAddress, String pass, String email){
+    public UserCreatorRequestModel(String firstName, String lastName, String currentAddress, String currentCity, String pass, String email){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.homeAddress = homeAddress;
+        this.currentAddress = currentAddress;
+        this.currentCity = currentCity;
         this.password = pass;
     }
 
@@ -31,8 +33,12 @@ public class UserCreatorRequestModel {
         return this.email;
     }
 
-    public String getHomeAddress(){
-        return this.homeAddress;
+    public String getCurrentAddress(){
+        return this.currentAddress;
+    }
+
+    public String getCurrentCity(){
+        return this.currentCity;
     }
 
     public String getPassword(){

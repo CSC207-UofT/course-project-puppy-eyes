@@ -27,7 +27,7 @@ public class TestSessionTokenGenerator {
         String email = "john.appleseed@email.com";
 
         dummyUserRepository.createUser("John", "Appleseed", "20 St George Street",
-                "123456", email);
+                "Toronto", "123456", email);
 
         SessionTokenGeneratorResponseModel response = sessionTokenGenerator.generateSessionToken(
                 new SessionTokenGeneratorRequestModel(email, "123456")
@@ -56,7 +56,7 @@ public class TestSessionTokenGenerator {
     @Test()
     public void TestFailIncorrectCredentialsSessionTokenGenerator() {
         dummyUserRepository.createUser("John", "Appleseed", "20 St George Street",
-                "123456", "john.appleseed@email.com");
+                "Toronto", "123456", "john.appleseed@email.com");
 
         SessionTokenGeneratorResponseModel response = sessionTokenGenerator.generateSessionToken(
                 new SessionTokenGeneratorRequestModel("fake@email.com", "654321")
