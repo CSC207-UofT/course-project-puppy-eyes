@@ -33,18 +33,18 @@ public class UserController implements IUserController {
      *
      * @param firstName user's first name
      * @param lastName user's last name
-     * @param homeAddress user's home address
+     * @param currentAddress user's current address
+     * @param currentCity user's current city
      * @param password user's password
      * @param email user's email
      *
      * @return The JSON response
      */
     @Override
-    public String createUser(String firstName, String lastName, String homeAddress, String password, String email) {
+    public String createUser(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
 
         // Creating a UserCreatorRequestModel called newRequestModel with input
-        UserCreatorRequestModel newRequestModel = new UserCreatorRequestModel(firstName, lastName, email,
-                homeAddress, password);
+        UserCreatorRequestModel newRequestModel = new UserCreatorRequestModel(firstName, lastName, currentAddress, currentCity, password, email);
 
         UserCreatorResponseModel response = userCreator.createUser(newRequestModel);
         // Un-pack response into a map and prepare to convert to JSON
@@ -52,7 +52,7 @@ public class UserController implements IUserController {
             put("isSuccess", response.isSuccess() ? "true": "false");
             put("firstName", response.getFirstName());
             put("lastName", response.getLastName());
-            put("homeAddress", response.getHomeAddress());
+            put("homeAddress", response.getCurrentAddress());
             put("email", response.getEmail());
             put("userId", response.getUserId());
         }};
@@ -84,7 +84,8 @@ public class UserController implements IUserController {
             put("isSuccess", response.isSuccess() ? "true": "false");
             put("firstName", response.getFirstName());
             put("lastName", response.getLastName());
-            put("homeAddress", response.getHomeAddress());
+            put("currentAddress", response.getCurrentAddress());
+            put("currentCity", response.getCurrentCity());
             put("email", response.getEmail());
         }};
 

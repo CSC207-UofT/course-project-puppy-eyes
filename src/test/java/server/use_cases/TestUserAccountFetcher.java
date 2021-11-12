@@ -23,14 +23,14 @@ public class TestUserAccountFetcher {
     public void TestSuccessFetchUser() {
         // Fill the repository with some dummy users
         dummyUserRepository.createUser("andrew", "qiu", "1234 home st",
-                "12345", "andrew@email.com");
+                "Toronto", "12345", "andrew@email.com");
         dummyUserRepository.createUser("asd", "last", "12345 tom st",
-                "65432", "asd@e.com");
+                "Toronto", "65432", "asd@e.com");
         dummyUserRepository.createUser("gm", "qw", "45 test st",
-                "7777", "8888@1234.com");
+                "Toronto", "7777", "8888@1234.com");
 
         UserAccountFetcherResponseModel expected = new UserAccountFetcherResponseModel(true, "asd",
-                "last", "12345 tom st", "asd@e.com");
+                "last", "12345 tom st", "Toronto", "asd@e.com");
 
         UserAccountFetcherResponseModel actual = userAccountFetcher.fetchUserAccount(
                 new UserAccountFetcherRequestModel("1"));
@@ -45,14 +45,14 @@ public class TestUserAccountFetcher {
     public void TestFailFetchUser() {
         // Fill the repository with some dummy users
         dummyUserRepository.createUser("andrew", "qiu", "1234 home st",
-                "12345", "andrew@email.com");
+                "Toronto", "12345", "andrew@email.com");
         dummyUserRepository.createUser("asd", "last", "12345 tom st",
-                "65432", "asd@e.com");
+                "Toronto", "65432", "asd@e.com");
         dummyUserRepository.createUser("gm", "qw", "45 test st",
-                "7777", "8888@1234.com");
+                "Toronto", "7777", "8888@1234.com");
 
         UserAccountFetcherResponseModel expected = new UserAccountFetcherResponseModel(false, "",
-                "", "", "");
+                "", "", "", "");
 
         UserAccountFetcherResponseModel actual = userAccountFetcher.fetchUserAccount(
                 new UserAccountFetcherRequestModel("3"));

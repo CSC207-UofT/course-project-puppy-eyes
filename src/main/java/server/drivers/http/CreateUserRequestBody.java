@@ -8,14 +8,17 @@ public class CreateUserRequestBody {
     private final String firstName;
     private final String lastName;
     private final String emailAddress;
-    private final String homeAddress;
+    private final String currentAddress;
+    private final String currentCity;
     private final String password;
 
-    public CreateUserRequestBody(String firstName, String lastName, String email, String home, String pass) {
+    public CreateUserRequestBody(String firstName, String lastName, String email, String currentAddress,
+                                 String currentCity, String pass) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = email;
-        this.homeAddress = home;
+        this.currentAddress = currentAddress;
+        this.currentCity = currentCity;
         this.password = pass;
     }
     public String getFirstName() {
@@ -30,8 +33,12 @@ public class CreateUserRequestBody {
         return this.emailAddress;
     }
 
-    public String getHomeAddress(){
-        return this.homeAddress;
+    public String getCurrentAddress(){
+        return this.currentAddress;
+    }
+
+    public String getCurrentCity(){
+        return this.currentCity;
     }
 
     public String getPassword(){

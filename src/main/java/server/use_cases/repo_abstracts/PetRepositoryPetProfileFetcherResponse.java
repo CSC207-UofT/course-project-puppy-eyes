@@ -1,25 +1,21 @@
-package server.use_cases;
+package server.use_cases.repo_abstracts;
 
 /**
- * An object defining the request type for PetCreator.createPet
+ * A class defining the structure of the IPetRepository response
+ * for the fetchPetProfile method.
  */
-public class PetCreatorRequestModel {
-    private final int userId;
+public class PetRepositoryPetProfileFetcherResponse {
     private final String name;
     private final int age;
-    private final String breed;
-    private final String biography;
+    private String breed;
+    private String biography;
 
-    public PetCreatorRequestModel(int userId, String name, int age, String breed, String biography) {
-        this.userId = userId;
+
+    public PetRepositoryPetProfileFetcherResponse(String name, int age, String breed, String biography) {
         this.name = name;
         this.age = age;
         this.breed = breed;
         this.biography = biography;
-    }
-
-    public int getUserId() {
-        return this.userId;
     }
 
     public String getName() {
