@@ -2,7 +2,6 @@ package server.drivers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -17,8 +16,8 @@ public class GeocoderService {
     private final RestTemplate restTemplate;
     private final ObjectMapper mapper;
 
-    public GeocoderService(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder.build();
+    public GeocoderService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
         this.mapper = new ObjectMapper();
     }
 
