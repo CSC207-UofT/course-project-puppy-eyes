@@ -6,9 +6,7 @@ import server.use_cases.repo_abstracts.UserNotFoundException;
 import server.use_cases.repo_abstracts.UserRepositoryUserAccountFetcherResponse;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A dummy class representing a user entity in the repository

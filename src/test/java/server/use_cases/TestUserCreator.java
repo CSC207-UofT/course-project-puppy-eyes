@@ -16,10 +16,10 @@ public class TestUserCreator {
     @Test()
     public void TestSuccessCreateUser() {
         UserCreatorResponseModel expected = new UserCreatorResponseModel(true, "joe",
-                "bob", "8888 Joe St", "joe@email.com", "0");
+                "bob", "8888 Joe St", "Toronto", "joe@email.com", "0");
 
         UserCreatorResponseModel actual = userCreator.createUser(new UserCreatorRequestModel("joe",
-                "bob", "8888 Joe St", "12345", "joe@email.com"));
+                "bob", "8888 Joe St", "Toronto", "12345", "joe@email.com"));
 
         assertEquals(expected, actual);
     }

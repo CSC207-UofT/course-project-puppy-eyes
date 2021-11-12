@@ -69,6 +69,7 @@ public class DummyPetRepository implements IPetRepository {
     /**
      * Create a new pet and save it in the repository.
      *
+     * @param userId    the user id of the pet's owner;
      * @param name      the pet's name;
      * @param age       the Pet's age;
      * @param breed     the Pet's breed;
@@ -76,7 +77,7 @@ public class DummyPetRepository implements IPetRepository {
      * @return new pet's id;
      */
     @Override
-    public int createPet(String name, int age, String breed, String biography) {
+    public int createPet(int userId, String name, int age, String breed, String biography) {
         currentMaxId++;
         int petId = currentMaxId;
         pets.add(new DummyPetRepositoryEntity(name, age, breed, biography));
@@ -125,9 +126,4 @@ public class DummyPetRepository implements IPetRepository {
         }
     }
 
-    // TODO: implement the following method
-    @Override
-    public void matchPet() {
-
-    }
 }
