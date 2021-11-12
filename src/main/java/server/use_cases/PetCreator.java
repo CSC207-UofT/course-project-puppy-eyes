@@ -38,9 +38,9 @@ public class PetCreator implements PetCreatorInputBoundary {
                 String.valueOf(newPet.getId()),
                 String.valueOf(newPet.getUserId()),
                 newPet.getName(),
-                newPet.getAge(),
+                String.valueOf(newPet.getAge()),
                 newPet.getBreed(),
-                newPet.getBiography(),
+                newPet.getBiography()
         );
     }
 }

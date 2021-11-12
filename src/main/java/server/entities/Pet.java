@@ -8,7 +8,7 @@ public abstract class Pet {
     private final String name;
     private final int age;
     private String biography;
-    private final String breed;
+    private String breed;
     private int id;
     private List<Pet> swiped, matched;
 
