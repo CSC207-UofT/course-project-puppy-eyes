@@ -8,18 +8,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TestPetProfileFetcher {
     private static DummyPetRepository dummyPetRepository;
     private static PetProfileFetcher petProfileFetcher;
+    private static UserCreator userCreator;
 
     @BeforeEach
     public void setUp() {
+        userCreator = new UserCreator(new DummyUserRepository());
         dummyPetRepository = new DummyPetRepository();
         petProfileFetcher = new PetProfileFetcher(dummyPetRepository);
     }
 
     @Test
     public void TestFetchPetWithValidId() {
-        dummyPetRepository.createPet("Amy", 100, "Turtle", "Ahhhh");
-        dummyPetRepository.createPet("Bob", 2, "Dog", "Bobobobobo");
-        dummyPetRepository.createPet("Cindy", 7, "Cat", "Meow");
+        // Create some users
+        UserCreatorResponseModel userCreatorResponse = userCreator.createUser(new UserCreatorRequestModel("John", "Appleseed", "20 St George Street",
+                "Toronto", "123456", "john.appleseed@gmail.com"));
+
+        int userId = Integer.parseInt(userCreatorResponse.getUserId());
+
+        dummyPetRepository.createPet(userId,"Amy", 100, "Turtle", "Ahhhh");
+        dummyPetRepository.createPet(userId,"Bob", 2, "Dog", "Bobobobobo");
+        dummyPetRepository.createPet(userId,"Cindy", 7, "Cat", "Meow");
 
         PetProfileFetcherResponseModel expected = new PetProfileFetcherResponseModel(true, "Cindy",
                 7, "Cat", "Meow");
@@ -31,9 +39,15 @@ public class TestPetProfileFetcher {
 
     @Test
     public void TestFetchPetWithoutValidId() {
-        dummyPetRepository.createPet("Amy", 100, "Turtle", "Ahhhh");
-        dummyPetRepository.createPet("Bob", 2, "Dog", "Bobobobobo");
-        dummyPetRepository.createPet("Cindy", 7, "Cat", "Meow");
+        // Create some users
+        UserCreatorResponseModel userCreatorResponse = userCreator.createUser(new UserCreatorRequestModel("John", "Appleseed", "20 St George Street",
+                "Toronto", "123456", "john.appleseed@gmail.com"));
+
+        int userId = Integer.parseInt(userCreatorResponse.getUserId());
+
+        dummyPetRepository.createPet(userId,"Amy", 100, "Turtle", "Ahhhh");
+        dummyPetRepository.createPet(userId,"Bob", 2, "Dog", "Bobobobobo");
+        dummyPetRepository.createPet(userId,"Cindy", 7, "Cat", "Meow");
 
         PetProfileFetcherResponseModel expected = new PetProfileFetcherResponseModel(false, "",
                 -1, "", "");

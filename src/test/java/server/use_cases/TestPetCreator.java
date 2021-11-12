@@ -6,19 +6,31 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestPetCreator {
+
     private static PetCreator petCreator;
+    private static UserCreator userCreator;
 
     @BeforeAll
     public static void setUp() {
-        petCreator = new PetCreator(new DummyPetRepository());
+        DummyUserRepository userRepository = new DummyUserRepository();
+        DummyPetRepository petRepository = new DummyPetRepository();
+
+        userCreator = new UserCreator(userRepository);
+        petCreator = new PetCreator(petRepository, userRepository);
     }
 
     @Test
     public void TestSuccessCreatePet() {
-        PetCreatorResponseModel expected = new PetCreatorResponseModel(true, "Koko", 3,
-                "Dog", "Nice", "0");
+        // Create some users
+        UserCreatorResponseModel userCreatorResponse = userCreator.createUser(new UserCreatorRequestModel("John", "Appleseed", "20 St George Street",
+                "Toronto", "123456", "john.appleseed@gmail.com"));
 
-        PetCreatorResponseModel actual = petCreator.createPet(new PetCreatorRequestModel("Koko", 3,
+        int userId = Integer.parseInt(userCreatorResponse.getUserId());
+
+        PetCreatorResponseModel expected = new PetCreatorResponseModel(true, "0", "0", "Koko", "3",
+                "Dog", "Nice");
+
+        PetCreatorResponseModel actual = petCreator.createPet(new PetCreatorRequestModel(userId, "Koko", 3,
                 "Dog", "Nice"));
 
         assertEquals(expected, actual);

@@ -8,18 +8,28 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TestPetEditor {
     private static DummyPetRepository dummyPetRepository;
     private static PetEditor petEditor;
+    private static UserCreator userCreator;
 
     @BeforeEach
     public void setUp() {
+        DummyUserRepository userRepository = new DummyUserRepository();
         dummyPetRepository = new DummyPetRepository();
+
+        userCreator = new UserCreator(userRepository);
         petEditor = new PetEditor(dummyPetRepository);
     }
 
     @Test
     public void TestEditPetWithValidId() {
-        dummyPetRepository.createPet("Amy", 100, "Turtle", "Ahhhh");
-        dummyPetRepository.createPet("Bob", 2, "Dog", "Bobobobobo");
-        dummyPetRepository.createPet("Cindy", 7, "Cat", "Meow");
+        // Create some users
+        UserCreatorResponseModel userCreatorResponse = userCreator.createUser(new UserCreatorRequestModel("John", "Appleseed", "20 St George Street",
+                "Toronto", "123456", "john.appleseed@gmail.com"));
+
+        int userId = Integer.parseInt(userCreatorResponse.getUserId());
+
+        dummyPetRepository.createPet(userId,"Amy", 100, "Turtle", "Ahhhh");
+        dummyPetRepository.createPet(userId,"Bob", 2, "Dog", "Bobobobobo");
+        dummyPetRepository.createPet(userId,"Cindy", 7, "Cat", "Meow");
 
         PetEditorResponseModel expected = new PetEditorResponseModel(true, "Koko", 5,
                 "Bird", "Hello", "2");
@@ -29,10 +39,16 @@ public class TestPetEditor {
         assertEquals(expected, actual);
     }
 
-    @Test void TestEditPetWithouValidId() {
-        dummyPetRepository.createPet("Amy", 100, "Turtle", "Ahhhh");
-        dummyPetRepository.createPet("Bob", 2, "Dog", "Bobobobobo");
-        dummyPetRepository.createPet("Cindy", 7, "Cat", "Meow");
+    @Test void TestEditPetWithoutValidId() {
+        // Create some users
+        UserCreatorResponseModel userCreatorResponse = userCreator.createUser(new UserCreatorRequestModel("John", "Appleseed", "20 St George Street",
+                "Toronto", "123456", "john.appleseed@gmail.com"));
+
+        int userId = Integer.parseInt(userCreatorResponse.getUserId());
+
+        dummyPetRepository.createPet(userId,"Amy", 100, "Turtle", "Ahhhh");
+        dummyPetRepository.createPet(userId,"Bob", 2, "Dog", "Bobobobobo");
+        dummyPetRepository.createPet(userId,"Cindy", 7, "Cat", "Meow");
 
         PetEditorResponseModel expected = new PetEditorResponseModel(false, "Koko", 5,
                 "Bird", "Hello", "3");

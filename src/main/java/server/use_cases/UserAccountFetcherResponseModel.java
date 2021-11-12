@@ -56,4 +56,5 @@ public class UserAccountFetcherResponseModel {
                 Objects.equals(lastName, that.lastName) && Objects.equals(currentAddress, that.currentAddress) &&
                 Objects.equals(currentCity, that.currentCity) && Objects.equals(email, that.email);
     }
+
 }
