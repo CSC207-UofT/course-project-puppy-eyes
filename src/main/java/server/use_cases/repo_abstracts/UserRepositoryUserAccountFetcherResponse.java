@@ -28,7 +28,7 @@ public class UserRepositoryUserAccountFetcherResponse {
     }
 
     public String getCurrentAddress() {
-        return currentCity;
+        return currentAddress;
     }
 
     public String getCurrentCity() {
