@@ -10,13 +10,17 @@ public class PetCreatorResponseModel {
     private final boolean isSuccess;
     private final String name;
     private final String age;
+    private final String breed;
+    private final String biography;
     private final String petId;
     private final String userId;
 
-    public PetCreatorResponseModel(boolean isSuccess, String petId, String userId, String name, String age) {
+    public PetCreatorResponseModel(boolean isSuccess, String petId, String userId, String name, String age, String breed, String biography) {
         this.isSuccess = isSuccess;
         this.name = name;
         this.age = age;
+        this.breed = breed;
+        this.biography = biography;
         this.petId = petId;
         this.userId = userId;
     }
@@ -54,5 +58,13 @@ public class PetCreatorResponseModel {
 
     public String getUserId() {
         return this.userId;
+    }
+
+    public String getBreed() {
+        return breed;
+    }
+
+    public String getBiography() {
+        return biography;
     }
 }

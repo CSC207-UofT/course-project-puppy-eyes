@@ -8,16 +8,16 @@ public abstract class Pet {
     private final String name;
     private final int age;
     private String biography;
-    private String breed;
+    private final String breed;
     private int id;
     private List<Pet> swiped, matched;
 
-    public Pet(int userId, String name, int age) {
+    public Pet(int userId, String name, int age, String breed, String biography) {
         this.userId = userId;
         this.name = name;
         this.age = age;
-        this.biography = "";
-        this.breed = "";
+        this.biography = biography;
+        this.breed = breed;
         this.swiped = new ArrayList<>();
         this.matched = new ArrayList<>();
     }
@@ -26,15 +26,15 @@ public abstract class Pet {
         return this.userId;
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
-    public int getAge(){
+    public int getAge() {
         return this.age;
     }
 
-    public String getBiography(){
+    public String getBiography() {
         return this.biography;
     }
 

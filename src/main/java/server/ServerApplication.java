@@ -27,6 +27,7 @@ import server.use_cases.*;
 
 @Configuration
 class BeanHolder {
+
     // Use Cases
     @Autowired
     @Bean()
@@ -52,6 +53,19 @@ class BeanHolder {
         return new PetSwiper(relationRepository);
     }
 
+    @Autowired
+    @Bean
+    PetProfileFetcherInputBoundary petProfileFetcherBean(PetRepository petRepository) {
+        return new PetProfileFetcher(petRepository);
+    }
+
+    @Autowired
+    @Bean
+    PetEditorInputBoundary petEditorBean(PetRepository petRepository) {
+        return new PetEditor(petRepository);
+    }
+
+    @Autowired
     @Bean
     SessionTokenGeneratorInputBoundary sessionTokenGeneratorBean(UserRepository userRepository) {
         return new SessionTokenGenerator(userRepository, jwtServiceBean());
@@ -68,7 +82,8 @@ class BeanHolder {
     @Autowired
     @Bean
     IPetController petControllerBean(RelationRepository relationRepository, PetRepository petRepository, UserRepository userRepository) {
-        return new PetController(petCreatorBean(petRepository, userRepository), petSwiperBean(relationRepository), jsonPresenterBean());
+        return new PetController(petCreatorBean(petRepository, userRepository), petSwiperBean(relationRepository),
+                petProfileFetcherBean(petRepository), petEditorBean(petRepository), jsonPresenterBean());
     }
 
     @Autowired

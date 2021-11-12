@@ -20,11 +20,12 @@ public class PetDatabaseEntity {
     @Column(name = "age")
     private int age;
 
+    @Column(name = "breed")
+    private String breed;
+
     @Column(name = "biography")
     private String biography;
 
-    @Column(name = "breed")
-    private String breed;
 
     @ManyToOne
     @JoinColumn(name="user_id", insertable = false, updatable = false)
@@ -35,8 +36,9 @@ public class PetDatabaseEntity {
         this.userId = userId;
         this.name = name;
         this.age = age;
-        this.biography = biography;
         this.breed = breed;
+        this.biography = biography;
+
     }
 
     public PetDatabaseEntity() {}
@@ -61,12 +63,28 @@ public class PetDatabaseEntity {
         return age;
     }
 
+    public String getBreed() {
+        return breed;
+    }
+
     public String getBiography() {
         return biography;
     }
 
-    public String getBreed() {
-        return breed;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
     }
 
 }
