@@ -40,7 +40,7 @@ public class CmdLineGateway implements APIGateway {
 
     @Override
     public String createPet(int userId, String name, int age, String breed, String biography) {
-        return petController.createPet(int userId, name, age, breed, biography);
+        return petController.createPet(userId, name, age, breed, biography);
     }
 
     @Override
