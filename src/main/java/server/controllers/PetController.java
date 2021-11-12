@@ -14,8 +14,8 @@ public class PetController implements IPetController {
     IJSONPresenter jsonPresenter;
     PetSwiperInputBoundary petSwiper;
 
-    public PetController(PetCreatorInputBoundary petCreator, PetProfileFetcherInputBoundary profileFetcher,
-                         PetEditorInputBoundary petEditor, PetSwiperInputBoundary petSwiper, IJSONPresenter jsonPresenter) {
+    public PetController(PetCreatorInputBoundary petCreator, PetSwiperInputBoundary petSwiper, PetProfileFetcherInputBoundary profileFetcher,
+                         PetEditorInputBoundary petEditor, IJSONPresenter jsonPresenter) {
         this.petCreator = petCreator;
         this.profileFetcher = profileFetcher;
         this.petEditor = petEditor;

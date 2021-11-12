@@ -85,8 +85,4 @@ public class PetRepository implements IPetRepository {
             return false;
         }
     }
-
-    // TODO: Implement following method
-    @Override
-    public void matchPet() {}
 }
