@@ -7,13 +7,15 @@ package server.use_cases.repo_abstracts;
 public class UserRepositoryUserAccountFetcherResponse {
     private final String firstName;
     private final String lastName;
-    private final String homeAddress;
+    private final String currentAddress;
+    private final String currentCity;
     private final String email;
 
-    public UserRepositoryUserAccountFetcherResponse(String firstName, String lastName, String homeAddress, String email) {
+    public UserRepositoryUserAccountFetcherResponse(String firstName, String lastName, String currentAddress, String currentCity, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.homeAddress = homeAddress;
+        this.currentAddress = currentAddress;
+        this.currentCity = currentCity;
         this.email = email;
     }
 
@@ -25,8 +27,12 @@ public class UserRepositoryUserAccountFetcherResponse {
         return lastName;
     }
 
-    public String getHomeAddress() {
-        return homeAddress;
+    public String getCurrentAddress() {
+        return currentCity;
+    }
+
+    public String getCurrentCity() {
+        return currentCity;
     }
 
     public String getEmail() {

@@ -1,7 +1,8 @@
 package server.use_cases.repo_abstracts;
 
-import server.use_cases.repo_abstracts.UserNotFoundException;
-import server.use_cases.repo_abstracts.UserRepositoryUserAccountFetcherResponse;
+import server.entities.User;
+
+import java.util.List;
 
 /**
  * An interface defining an access point from the program
@@ -10,16 +11,17 @@ import server.use_cases.repo_abstracts.UserRepositoryUserAccountFetcherResponse;
 public interface IUserRepository {
 
     /**
-     * Create a new user and save it in the repository.
-     * Return the new user's id.
+     * Create and save a new user to the database.
+     * @param firstName The user's first name.
+     * @param lastName The user's last name.
+     * @param currentAddress The user's current address.
+     * @param currentCity The user's current city
+     * @param password The user's password.
+     * @param email The user's email.
      *
-     * @param firstName The user's first name
-     * @param lastName The user's last name
-     * @param homeAddress The user's home address
-     * @param password The user's password
-     * @param email The user's email
+     * @return The id of the new user.
      */
-    public int createUser(String firstName, String lastName, String homeAddress, String password, String email);
+    public int createUser(String firstName, String lastName, String password, String currentAddress, String currentCity, String email);
 
     /**
      * Fetch a user's account information given a user id.
@@ -35,5 +37,12 @@ public interface IUserRepository {
      * @return true if credentials exist, false otherwise
      */
     public boolean validateCredentials(String email, String password);
+
+    /**
+     * Return a list of all users from the database
+     * @return a list of all users from the database
+     */
+    public List<User> fetchAllUsers();
+
 }
 

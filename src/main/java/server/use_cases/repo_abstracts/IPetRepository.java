@@ -9,13 +9,14 @@ public interface IPetRepository {
     /**
      * Create a new pet and save it in the repository.
      *
+     * @param userId the user id of the pet's owner
      * @param name the pet's name;
-     * @param age the Pet's age;
-     * @param breed the Pet's breed;
+     * @param age the pet's age;
+     * @param breed the pet's breed;
      * @param biography the Pet's biography;
      * @return new pet's id;
      */
-    public int createPet(String name, int age, String breed, String biography);
+    public int createPet(int userId, String name, int age, String breed, String biography);
 
     /**
      * Fetch a pet's profile information by a given pet id.
@@ -37,7 +38,5 @@ public interface IPetRepository {
      * @return if the editing is successfully done;
      */
     public boolean editPet(int petId, String newName, int newAge, String newBreed, String newBiography);
-
-    // TODO: Complete following methods (return, args,...)
-    public void matchPet();
+  
 }
