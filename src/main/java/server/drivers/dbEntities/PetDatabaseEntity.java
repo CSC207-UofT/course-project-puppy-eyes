@@ -11,6 +11,9 @@ public class PetDatabaseEntity {
     @Column(name = "id")
     private int id;
 
+    @Column(name = "user_id")
+    private int userId;
+
     @Column(name = "name")
     private String name;
 
@@ -23,8 +26,13 @@ public class PetDatabaseEntity {
     @Column(name = "breed")
     private String breed;
 
-    public PetDatabaseEntity(String name, int age, String biography, String breed) {
+    @ManyToOne
+    @JoinColumn(name="user_id", insertable = false, updatable = false)
+    private UserDatabaseEntity user;
+
+    public PetDatabaseEntity(int userId, String name, int age, String biography, String breed) {
         super();
+        this.userId = userId;
         this.name = name;
         this.age = age;
         this.biography = biography;
@@ -32,6 +40,14 @@ public class PetDatabaseEntity {
     }
 
     public PetDatabaseEntity() {}
+
+    public UserDatabaseEntity getUser() {
+        return this.user;
+    }
+
+    public void setUser(UserDatabaseEntity user) {
+        this.user = user;
+    }
 
     public int getId() {
         return id;
@@ -52,4 +68,5 @@ public class PetDatabaseEntity {
     public String getBreed() {
         return breed;
     }
+
 }
