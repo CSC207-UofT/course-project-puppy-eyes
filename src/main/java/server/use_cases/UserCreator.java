@@ -23,13 +23,14 @@ public class UserCreator implements UserCreatorInputBoundary{
     public UserCreatorResponseModel createUser(UserCreatorRequestModel request) {
         User newUser = new User(request.getFirstName(),
                 request.getLastName(),
-                request.getHomeAddress(),
+                request.getCurrentAddress(),
+                request.getCurrentCity(),
                 request.getPassword(),
                 request.getEmail()) {
         };
 
-        int id = userRepository.createUser(newUser.getFirstName(), newUser.getLastName(), newUser.getHomeAddress(),
-                newUser.getPasswordHash(), newUser.getContactInfo().getEmail());
+        int id = userRepository.createUser(newUser.getFirstName(), newUser.getLastName(), newUser.getCurrentAddress(),
+                newUser.getCurrentCity(), newUser.getPasswordHash(), newUser.getContactInfo().getEmail());
 
         newUser.setId(id);
 
@@ -40,7 +41,8 @@ public class UserCreator implements UserCreatorInputBoundary{
         return new UserCreatorResponseModel(true,
                 newUser.getFirstName(),
                 newUser.getLastName(),
-                newUser.getHomeAddress(),
+                newUser.getCurrentAddress(),
+                newUser.getCurrentCity(),
                 newUser.getContactInfo().getEmail(),
                 ((Integer) newUser.getId()).toString()
         );

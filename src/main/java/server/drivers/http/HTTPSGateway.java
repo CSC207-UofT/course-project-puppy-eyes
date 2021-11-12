@@ -39,13 +39,13 @@ public class HTTPSGateway implements APIGateway {
 
     @PostMapping("/users/create")
     public String createUser(@RequestBody CreateUserRequestBody requestBody) {
-        return createUser(requestBody.getFirstName(), requestBody.getLastName(), requestBody.getHomeAddress(),
-                requestBody.getPassword(), requestBody.getEmailAddress());
+        return createUser(requestBody.getFirstName(), requestBody.getLastName(), requestBody.getCurrentAddress(),
+                requestBody.getCurrentCity(), requestBody.getPassword(), requestBody.getEmailAddress());
     }
 
     @Override
-    public String createUser(String firstName, String lastName, String homeAddress, String password, String email) {
-        String userJson = userController.createUser(firstName, lastName, homeAddress, password, email);
+    public String createUser(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
+        String userJson = userController.createUser(firstName, lastName, currentAddress, currentCity, password, email);
         // TODO remove print statement later
         System.out.println(userJson);
         return userJson;
@@ -63,12 +63,12 @@ public class HTTPSGateway implements APIGateway {
 
     @PostMapping("/pets/create")
     public String createPet(@RequestBody CreatePetRequestBody requestBody) {
-        return createPet(requestBody.getName(), requestBody.getAge());
+        return createPet(requestBody.getUserId(), requestBody.getName(), requestBody.getAge());
     }
 
     @Override
-    public String createPet(String name, int age) {
-        return petController.createPet(name, age);
+    public String createPet(int userId, String name, int age) {
+        return petController.createPet(userId, name, age);
     }
 
     @PostMapping("/auth/login")

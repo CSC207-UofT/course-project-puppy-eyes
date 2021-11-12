@@ -26,7 +26,7 @@ public class UserAccountFetcher implements UserAccountFetcherInputBoundary {
             id = Integer.parseInt(request.getUserId());
         } catch (NumberFormatException e) {
             // Then the user id string was not valid
-            return new UserAccountFetcherResponseModel(false, "", "", "", "");
+            return new UserAccountFetcherResponseModel(false, "", "", "", "", "");
         }
 
         UserRepositoryUserAccountFetcherResponse user;
@@ -34,11 +34,11 @@ public class UserAccountFetcher implements UserAccountFetcherInputBoundary {
             user = userRepository.fetchUserAccount(id);
 
             return new UserAccountFetcherResponseModel(true, user.getFirstName(), user.getLastName(),
-                    user.getHomeAddress(), user.getEmail());
+                    user.getCurrentAddress(), user.getCurrentCity(), user.getEmail());
 
         } catch (UserNotFoundException e) {
             // Then user not found
-            return new UserAccountFetcherResponseModel(false, "", "", "", "");
+            return new UserAccountFetcherResponseModel(false, "", "", "", "", "");
         }
 
     }
