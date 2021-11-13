@@ -30,7 +30,6 @@ public class ContactInfo {
         this.facebook = facebook;
     }
 
-    // Getter functions
     public String getPhoneNumber() {
         return phoneNumber;
     }

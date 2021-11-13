@@ -113,4 +113,31 @@ public class UserDatabaseEntity {
         return contactInfo;
     }
 
+    public void setFirstName(String newFirstName) {
+        this.firstName = newFirstName;
+    }
+
+    public void setLastName(String newLastName) {
+        this.lastName = newLastName;
+    }
+
+    public void setCurrentAddress(String newAddress) {
+        this.currentAddress = newAddress;
+    }
+
+    public void setCurrentCity(String newCity) {
+        this.currentCity = newCity;
+    }
+
+    public void setPassword(String newPassword) {
+        this.password = newPassword;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+    public void setContactInfo(ContactInfoDatabaseEntity newContactInfo) {
+        this.contactInfo = newContactInfo;
+    }
 }

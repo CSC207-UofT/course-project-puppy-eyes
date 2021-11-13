@@ -1,9 +1,8 @@
 package server.use_cases;
 
+import server.entities.ContactInfo;
 import server.entities.User;
-import server.use_cases.repo_abstracts.IUserRepository;
-import server.use_cases.repo_abstracts.UserNotFoundException;
-import server.use_cases.repo_abstracts.UserRepositoryUserAccountFetcherResponse;
+import server.use_cases.repo_abstracts.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +11,14 @@ import java.util.List;
  * A dummy class representing a user entity in the repository
  */
 class DummyUserRepositoryEntity{
-    private final String firstName;
-    private final String lastName;
-    private final String currentAddress;
-    private final String currentCity;
-    private final String passwordHash;
-    private final String email;
+    private String firstName;
+    private String lastName;
+    private String currentAddress;
+    private String currentCity;
+    private String passwordHash;
+    private String email;
+    private String biography;
+    private DummyContactInfoRepositoryEntity contactInfo;
 
     public DummyUserRepositoryEntity(String firstName, String lastName, String currentAddress, String currentCity, String passwordHash, String email) {
         this.firstName = firstName;
@@ -25,7 +26,9 @@ class DummyUserRepositoryEntity{
         this.currentAddress = currentAddress;
         this.currentCity = currentCity;
         this.passwordHash = passwordHash;
-        this.email = email;
+        this.contactInfo = new DummyContactInfoRepositoryEntity();
+        this.contactInfo.setEmail(email);
+        this.biography = "";
     }
 
     public String getFirstName() {
@@ -48,8 +51,85 @@ class DummyUserRepositoryEntity{
         return passwordHash;
     }
 
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setCurrentAddress(String currentAddress) {
+        this.currentAddress = currentAddress;
+    }
+
+    public void setCurrentCity(String currentCity) {
+        this.currentCity = currentCity;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+    public DummyContactInfoRepositoryEntity getContactInfo() {
+        return contactInfo;
+    }
+}
+
+/**
+ * A dummy class representing a contactInfo entity in the repository
+ */
+class DummyContactInfoRepositoryEntity {
+    private String phoneNumber;
+    private String email;
+    private String instagram;
+    private String facebook;
+
+    public DummyContactInfoRepositoryEntity() {
+        this.phoneNumber = "";
+        this.email = "";
+        this.instagram = "";
+        this.facebook = "";
+    }
+
+    public void setPhoneNumber(String phoneNumber){
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setEmail(String address){
+        this.email = address;
+    }
+
+    public void setInstagram(String instagram){
+        this.instagram = instagram;
+    }
+
+    public void setFacebook(String facebook){
+        this.facebook = facebook;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public String getInstagram() {
+        return instagram;
+    }
+
+    public String getFacebook() {
+        return facebook;
     }
 }
 
@@ -79,8 +159,8 @@ public class DummyUserRepository implements IUserRepository {
         if (userId >= 0 && userId <= currentMaxId){
             DummyUserRepositoryEntity user = users.get(userId);
             return new UserRepositoryUserAccountFetcherResponse(user.getFirstName(), user.getLastName(),
-                    user.getCurrentAddress(), user.getCurrentCity(), user.getEmail());
-        }else{
+                    user.getCurrentAddress(), user.getCurrentCity(), user.getContactInfo().getEmail());
+        } else {
             throw new UserNotFoundException("User with ID: " + userId + " not found.");
         }
     }
@@ -88,7 +168,7 @@ public class DummyUserRepository implements IUserRepository {
     @Override
     public boolean validateCredentials(String email, String password) {
         for (DummyUserRepositoryEntity user : users) {
-            if (user.getEmail().equals(email) && user.getPasswordHash().equals(password)) {
+            if (user.getContactInfo().getEmail().equals(email) && user.getPasswordHash().equals(password)) {
                 return true;
             }
         }
@@ -104,11 +184,53 @@ public class DummyUserRepository implements IUserRepository {
         // TODO factory pattern
         for (DummyUserRepositoryEntity dbUser : dbUsers) {
             User user = new User(dbUser.getFirstName(), dbUser.getLastName(), dbUser.getCurrentAddress(),
-                    dbUser.getCurrentCity(), dbUser.getPasswordHash(), dbUser.getEmail()) {};
+                    dbUser.getCurrentCity(), dbUser.getPasswordHash(), dbUser.getContactInfo().getEmail()) {};
             users.add(user);
         }
 
         return users;
+    }
+
+    @Override
+    public boolean editUserAccount(int userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail) {
+        if (userId >= 0 && userId <= currentMaxId) {
+            DummyUserRepositoryEntity user = users.get(userId);
+            user.setFirstName(newFirstName);
+            user.setLastName(newLastName);
+            user.setCurrentAddress(newAddress);
+            user.setCurrentCity(newCity);
+            user.setPasswordHash(newPassword);
+            user.getContactInfo().setEmail(newEmail);
+            return true;
+        } else return false;
+    }
+
+
+    @Override
+    public UserRepositoryUserProfileFetcherResponse fetchUserProfile(int userId) throws UserNotFoundException {
+        if (userId >= 0 && userId <= currentMaxId){
+            DummyUserRepositoryEntity user = users.get(userId);
+            DummyContactInfoRepositoryEntity contactInfo = user.getContactInfo();
+            return new UserRepositoryUserProfileFetcherResponse(user.getFirstName(), user.getLastName(),
+                    user.getBiography(), contactInfo.getPhoneNumber(), contactInfo.getEmail(),
+                    contactInfo.getInstagram(), contactInfo.getFacebook());
+        } else {
+            throw new UserNotFoundException("User with ID: " + userId + " not found.");
+        }
+    }
+
+
+    @Override
+    public boolean editUserProfile(int userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook) {
+        if (userId >= 0 && userId <= currentMaxId) {
+            DummyUserRepositoryEntity user = users.get(userId);
+            DummyContactInfoRepositoryEntity contactInfo = user.getContactInfo();
+            user.setBiography(newBiography);
+            contactInfo.setPhoneNumber(newPhoneNumber);
+            contactInfo.setInstagram(newInstagram);
+            contactInfo.setFacebook(newFacebook);
+            return true;
+        } else return false;
     }
 
 }
