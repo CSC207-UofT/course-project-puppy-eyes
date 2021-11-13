@@ -56,4 +56,16 @@ public class RelationRepository implements IRelationRepository {
     public boolean hasRelation(int fromId, int toId, String relationType) {
         return this.repository.existsByFromIdAndToIdAndRelationType(fromId, toId, relationType);
     }
+
+//    /**
+//     * Return
+//     * @param fromId
+//     * @param relationType
+//     * @return
+//     */
+//    @Override
+//    public List<String> getRelations(int fromId, String relationType) {
+//
+//    }
+
 }

@@ -7,6 +7,8 @@ import server.controllers.IUserController;
 import server.use_cases.repo_abstracts.IUserRepository;
 import server.use_cases.repo_abstracts.IPetRepository;
 
+import java.util.List;
+
 /**
  * A gateway that makes a connection between the command line (as input)
  * and the controllers in our program. This class is complementary to the CmdLineRunner class.
@@ -53,17 +55,34 @@ public class CmdLineGateway implements APIGateway {
         return petController.editPet(petId, newName, newAge, newBreed, newBiography);
     }
 
-    // TODO define these methods in interface
+    @Override
     public String swipePets(int pet1Id, int pet2Id) {
         return petController.swipePets(pet1Id, pet2Id);
     }
 
+    @Override
     public String unswipePets(int pet1Id, int pet2Id) {
         return petController.unswipePets(pet1Id, pet2Id);
     }
 
-    public String matchPets(int pet1Id, int pet2Id) {
-        return petController.matchPets(pet1Id, pet2Id);
+    @Override
+    public String rejectPets(int pet1Id, int pet2Id) {
+        return petController.rejectPets(pet1Id, pet2Id);
+    }
+
+    @Override
+    public String fetchPetSwipes(int petId) {
+        return petController.fetchPetSwipes(petId);
+    }
+
+    @Override
+    public String fetchPetMatches(int petId) {
+        return petController.fetchPetMatches(petId);
+    }
+
+    @Override
+    public String fetchUserPets(int userId) {
+        return userController.fetchUserPets(userId);
     }
 
 }

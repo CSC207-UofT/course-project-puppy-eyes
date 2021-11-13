@@ -96,5 +96,66 @@ public class HTTPSGateway implements APIGateway {
     public String generateJwt(@RequestBody LoginRequestBody loginRequest) {
         return sessionController.generateJwt(loginRequest.getEmail(), loginRequest.getPassword());
     }
-    
+
+    @Override
+    public String swipePets(int pet1Id, int pet2Id) {
+        return petController.swipePets(pet1Id, pet2Id);
+    }
+
+    @PostMapping("/pets/swipe")
+    public String swipePets(@RequestBody SwipePetsRequestBody requestBody) {
+        return swipePets(requestBody.getFirstPetId(), requestBody.getSecondPetId());
+    }
+
+    @Override
+    public String unswipePets(int pet1Id, int pet2Id) {
+        return petController.unswipePets(pet1Id, pet2Id);
+    }
+
+
+    @PostMapping("/pets/unswipe")
+    public String unswipePets(@RequestBody UnswipePetsRequestBody requestBody) {
+        return unswipePets(requestBody.getFirstPetId(), requestBody.getSecondPetId());
+    }
+
+    @Override
+    public String rejectPets(int pet1Id, int pet2Id) {
+        return petController.rejectPets(pet1Id, pet2Id);
+    }
+
+    @PostMapping("/pets/reject")
+    public String rejectPets(@RequestBody RejectPetsRequestBody requestBody) {
+        return rejectPets(requestBody.getFirstPetId(), requestBody.getSecondPetId());
+    }
+
+    @Override
+    public String fetchPetSwipes(int petId) {
+        return fetchPetSwipes(petId);
+    }
+
+    @GetMapping("/pets/fetchswipes")
+    public String fetchPetSwipes(@RequestBody FetchPetSwipesRequestBody requestBody) {
+        return fetchPetSwipes(requestBody.getPetId());
+    }
+
+    @Override
+    public String fetchPetMatches(int petId) {
+        return fetchPetMatches(petId);
+    }
+
+    @GetMapping("/pets/fetchmatches")
+    public String fetchPetMatches(@RequestBody FetchPetMatchesRequestBody requestBody) {
+        return fetchPetMatches(requestBody.getPetId());
+    }
+
+    @Override
+    public String fetchUserPets(int userId) {
+        return userController.fetchUserPets(userId);
+    }
+
+    @GetMapping("/users/fetchpets")
+    public String fetchUserPets(@RequestBody FetchUserPetsRequestBody requestBody) {
+        return fetchUserPets(requestBody.getUserId());
+    }
+
 }

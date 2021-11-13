@@ -1,8 +1,10 @@
 package server.drivers.repository;
 
 import org.springframework.stereotype.Repository;
+import server.drivers.dbEntities.PetDatabaseEntity;
 import server.entities.User;
 import server.use_cases.repo_abstracts.IUserRepository;
+import server.use_cases.repo_abstracts.PetNotFoundException;
 import server.use_cases.repo_abstracts.UserNotFoundException;
 import server.use_cases.repo_abstracts.UserRepositoryUserAccountFetcherResponse;
 import server.drivers.dbEntities.ContactInfoDatabaseEntity;
@@ -11,6 +13,7 @@ import server.drivers.dbEntities.UserDatabaseEntity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * An access point from the program to the "User" table in our database.
@@ -85,6 +88,8 @@ public class UserRepository implements IUserRepository {
         return false;
     }
 
+
+
     /**
      * Return a list of all users from the database
      * @return a list of all users from the database
@@ -103,6 +108,37 @@ public class UserRepository implements IUserRepository {
         }
 
         return users;
+    }
+
+    /**
+     * Return the user id corresponding to the given email
+     * @param email
+     * @return user id, -1 if non-existent
+     */
+    @Override
+    public int fetchIdFromEmail(String email) {
+        Optional<UserDatabaseEntity> searchResult = Optional.ofNullable(repository.findByContactInfo_email(email));
+
+        if (searchResult.isPresent()) {
+            UserDatabaseEntity user = searchResult.get();
+            return user.getId();
+        }
+
+        return -1;
+    }
+
+    @Override
+    public List<Integer> fetchUserPets(int userId) throws UserNotFoundException {
+        Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
+
+        if (searchResult.isPresent()) {
+            UserDatabaseEntity user = searchResult.get();
+            // Collect only the pet ids from the database entities
+            List<Integer> petIds = user.getPets().stream().map(PetDatabaseEntity::getId).collect(Collectors.toList());
+            return petIds;
+        } else {
+            throw new UserNotFoundException("User of ID: " + userId + " not found");
+        }
     }
 
 }

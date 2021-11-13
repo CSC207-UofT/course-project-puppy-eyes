@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import server.ServerApplication;
+import server.drivers.repository.PetRepository;
 import server.drivers.repository.UserRepository;
+import server.use_cases.repo_abstracts.PetNotFoundException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -211,9 +214,9 @@ public class CmdLineRunner implements CommandLineRunner {
                 inputs = getPetSwiperInputs();
                 return gateway.unswipePets(Integer.parseInt(inputs.get("pet1Id")), Integer.parseInt(inputs.get("pet2Id")));
 
-            case "matchPets":
+            case "rejectPets":
                 inputs = getPetSwiperInputs();
-                return gateway.matchPets(Integer.parseInt(inputs.get("pet1Id")), Integer.parseInt(inputs.get("pet2Id")));
+                return gateway.rejectPets(Integer.parseInt(inputs.get("pet1Id")), Integer.parseInt(inputs.get("pet2Id")));
 
             case "fetchPetProfile":
                 inputs = getFetchPetProfileInputs();
@@ -224,14 +227,41 @@ public class CmdLineRunner implements CommandLineRunner {
                 return gateway.editPet(inputs.get("petId"), inputs.get("newName"),
                         Integer.parseInt(inputs.get("newAge")), inputs.get("newBreed"), inputs.get("newBiography"));
 
+            case "fetchPetSwipes":
+                inputs = getFetchPetProfileInputs();
+                return gateway.fetchPetSwipes(Integer.parseInt(inputs.get("petId")));
+
+            case "fetchPetMatches":
+                inputs = getFetchPetProfileInputs();
+                return gateway.fetchPetMatches(Integer.parseInt(inputs.get("petId")));
+
+            case "fetchUserPets":
+                inputs = getFetchUserAccountInputs();
+                return gateway.fetchUserPets(Integer.parseInt(inputs.get("userId")));
+
             default:
-                return "Command not found. Choose from createUsers, fetchUsers, " +
-                        "createPets, fetchPets, editPets and exit.";
+                return "Command not found.";
         }
     }
 
-    @Autowired
-    public UserRepository userRepository;
+    /**
+     * Display a list of commands to terminal.
+     */
+    public void showCommands() {
+        ioSystem.showOutput("== COMMANDS ==");
+        ioSystem.showOutput("- createUser");
+        ioSystem.showOutput("- createPet");
+        ioSystem.showOutput("- fetchUserAccount");
+        ioSystem.showOutput("- fetchPetProfile");
+        ioSystem.showOutput("- editPet");
+        ioSystem.showOutput("- wipePets");
+        ioSystem.showOutput("- unswipePets");
+        ioSystem.showOutput("- rejectPets");
+        ioSystem.showOutput("- fetchPetMatches");
+        ioSystem.showOutput("- fetchPetSwipes");
+        ioSystem.showOutput("- fetchUserPets");
+        ioSystem.showOutput("- exit");
+    }
 
     /**
      * Run the command line application
@@ -242,8 +272,7 @@ public class CmdLineRunner implements CommandLineRunner {
         boolean isRunning = true;
 
         while (isRunning) {
-            ioSystem.showOutput("Enter either createUser, fetchUserAccount, " +
-                    "createPet, fetchPetProfile, editPet, swipePets, unswipePets, matchPets, or exit.");
+            showCommands();
             String command = ioSystem.getInput();
 
             if (command.equals("exit")){
