@@ -40,4 +40,13 @@ public interface IUserController {
      */
     String editUserAccount(String userId, String newFirstName, String newLastName, String newAddress,
                            String newCity, String newPassword, String newEmail);
+
+    /**
+     * Fetch a user's profile details (first name, last name, biography, phone number, email, Instagram, Facebook)
+     * given their user id. The returned response is in the form of a JSON object.
+     *
+     * @param userId The user's id
+     * @return a JSON object
+     */
+    String fetchUserProfile(String userId);
 }

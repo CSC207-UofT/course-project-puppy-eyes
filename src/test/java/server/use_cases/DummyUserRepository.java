@@ -4,6 +4,7 @@ import server.entities.User;
 import server.use_cases.repo_abstracts.IUserRepository;
 import server.use_cases.repo_abstracts.UserNotFoundException;
 import server.use_cases.repo_abstracts.UserRepositoryUserAccountFetcherResponse;
+import server.use_cases.repo_abstracts.UserRepositoryUserProfileFetcherResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,7 +112,7 @@ public class DummyUserRepository implements IUserRepository {
         return users;
     }
 
-    // TODO: add test for editUserAccount
+    // TODO: add test for following
     /**
      * Edit a user's Account given user id and new information.
      *
@@ -127,6 +128,18 @@ public class DummyUserRepository implements IUserRepository {
     @Override
     public boolean editUserAccount(int userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail) {
         return false;
+    }
+
+    /**
+     * Fetch a user's profile information given a user id.
+     *
+     * @param userId the user's id
+     * @return A UserRepositoryUserProfileFetcherResponse object containing the profile information
+     * @throws UserNotFoundException
+     */
+    @Override
+    public UserRepositoryUserProfileFetcherResponse fetchUserProfile(int userId) throws UserNotFoundException {
+        return null;
     }
 
 }

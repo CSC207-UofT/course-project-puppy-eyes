@@ -11,15 +11,18 @@ public class UserController implements IUserController {
     UserCreatorInputBoundary userCreator;
     UserAccountFetcherInputBoundary accountFetcher;
     UserAccountEditorInputBoundary accountEditor;
+    UserProfileFetcherInputBoundary profileFetcher;
     IJSONPresenter jsonPresenter;
 
     public UserController(UserCreatorInputBoundary userCreator,
                           UserAccountFetcherInputBoundary accountFetcher,
                           UserAccountEditorInputBoundary accountEditor,
+                          UserProfileFetcherInputBoundary profileFetcher,
                           IJSONPresenter jsonPresenter) {
         this.userCreator = userCreator;
         this.accountFetcher = accountFetcher;
         this.accountEditor = accountEditor;
+        this.profileFetcher = profileFetcher;
         this.jsonPresenter = jsonPresenter;
     }
 
@@ -121,6 +124,34 @@ public class UserController implements IUserController {
             put("currentAddress", response.getNewAddress());
             put("currentCity", response.getNewCity());
             put("email", response.getNewEmail());
+        }};
+
+        return jsonPresenter.toJSON(responseMap);
+    }
+
+    /**
+     * Fetch a user's profile details (first name, last name, biography, phone number, email, Instagram, Facebook)
+     * given their user id. The returned response is in the form of a JSON object.
+     *
+     * @param userId The user's id
+     * @return a JSON object
+     */
+    @Override
+    public String fetchUserProfile(String userId) {
+        UserProfileFetcherRequestModel request = new UserProfileFetcherRequestModel(userId);
+
+        UserProfileFetcherResponseModel response = profileFetcher.fetchUserProfile(request);
+
+        // Un-pack response into a map and prepare to convert to JSON
+        HashMap<String, String> responseMap = new HashMap<String, String>(){{
+            put("isSuccess", response.isSuccess() ? "true": "false");
+            put("firstName", response.getFirstName());
+            put("lastName", response.getLastName());
+            put("biography", response.getBiography());
+            put("phoneNumber", response.getPhoneNumber());
+            put("email", response.getEmail());
+            put("instagram", response.getInstagram());
+            put("facebook", response.getFacebook());
         }};
 
         return jsonPresenter.toJSON(responseMap);

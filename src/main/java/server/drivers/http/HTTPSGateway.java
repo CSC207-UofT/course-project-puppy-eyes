@@ -76,6 +76,17 @@ public class HTTPSGateway implements APIGateway {
                 newEmail);
     }
 
+    @GetMapping("/users/profile")
+    public String getUserProfile(@RequestBody FetchUserProfileRequestBody requestBody) {
+        return fetchUserProfile(requestBody.getUserId());
+    }
+
+    @Override
+    public String fetchUserProfile(String userId) {
+        return userController.fetchUserProfile(userId);
+    }
+
+
     @PostMapping("/pets/create")
     public String createPet(@RequestBody CreatePetRequestBody requestBody) {
         return createPet(requestBody.getUserId(), requestBody.getName(), requestBody.getAge(), requestBody.getBreed(),

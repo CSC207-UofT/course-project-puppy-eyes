@@ -7,6 +7,7 @@ import server.use_cases.repo_abstracts.UserNotFoundException;
 import server.use_cases.repo_abstracts.UserRepositoryUserAccountFetcherResponse;
 import server.drivers.dbEntities.ContactInfoDatabaseEntity;
 import server.drivers.dbEntities.UserDatabaseEntity;
+import server.use_cases.repo_abstracts.UserRepositoryUserProfileFetcherResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +100,29 @@ public class UserRepository implements IUserRepository {
             return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Fetch a user's profile information given a user id.
+     *
+     * @param userId the user's id
+     * @return A UserRepositoryUserProfileFetcherResponse object containing the profile information
+     * @throws UserNotFoundException
+     */
+    @Override
+    public UserRepositoryUserProfileFetcherResponse fetchUserProfile(int userId) throws UserNotFoundException {
+        Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
+
+        if (searchResult.isPresent()) {
+            UserDatabaseEntity user = searchResult.get();
+            ContactInfoDatabaseEntity contactInfo = user.getContactInfo();
+
+            return new UserRepositoryUserProfileFetcherResponse(user.getFirstName(), user.getLastName(),
+                    user.getBiography(), contactInfo.getPhoneNumber(), contactInfo.getEmail(),
+                    contactInfo.getInstagram(), contactInfo.getFacebook());
+        } else {
+            throw new UserNotFoundException("User of ID: " + userId + " not found");
         }
     }
 

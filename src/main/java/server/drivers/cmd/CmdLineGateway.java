@@ -47,6 +47,11 @@ public class CmdLineGateway implements APIGateway {
     }
 
     @Override
+    public String fetchUserProfile(String userId) {
+        return userController.fetchUserProfile(userId);
+    }
+
+    @Override
     public String createPet(int userId, String name, int age, String breed, String biography) {
         return petController.createPet(userId, name, age, breed, biography);
     }

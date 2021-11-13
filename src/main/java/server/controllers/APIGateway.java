@@ -1,7 +1,5 @@
 package server.controllers;
 
-import server.use_cases.repo_abstracts.PetNotFoundException;
-
 /**
  * An interface representing a connection to some implementation
  * of a back-end API.
@@ -43,6 +41,14 @@ public interface APIGateway {
      */
     public String editUserAccount(String userId, String newFirstName, String newLastName, String newAddress,
                                   String newCity, String newPassword, String newEmail);
+
+    /**
+     * Fetch a user's profile by given user id.
+     *
+     * @param userId the user's id
+     * @return A JSON structure of the user's profile
+     */
+    public String fetchUserProfile(String userId);
 
     /**
      * Create a new pet.
