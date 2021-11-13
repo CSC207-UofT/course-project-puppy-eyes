@@ -1,8 +1,10 @@
 package server.controllers;
 
 import server.use_cases.*;
+import server.use_cases.repo_abstracts.PetNotFoundException;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * A controller that handles all functions relating to pet data.
@@ -13,14 +15,24 @@ public class PetController implements IPetController {
     PetEditorInputBoundary petEditor;
     IJSONPresenter jsonPresenter;
     PetSwiperInputBoundary petSwiper;
+    PetUnswiperInputBoundary petUnswiper;
+    PetRejectorInputBoundary petRejector;
+    PetSwipesFetcherInputBoundary petSwipesFetcher;
+    PetMatchesFetcherInputBoundary petMatchesFetcher;
 
     public PetController(PetCreatorInputBoundary petCreator, PetSwiperInputBoundary petSwiper, PetProfileFetcherInputBoundary profileFetcher,
-                         PetEditorInputBoundary petEditor, IJSONPresenter jsonPresenter) {
+                         PetEditorInputBoundary petEditor, PetRejectorInputBoundary petRejector, PetUnswiperInputBoundary petUnswiper,
+                         PetSwipesFetcherInputBoundary petSwipesFetcher, PetMatchesFetcherInputBoundary petMatchesFetcher,
+                         IJSONPresenter jsonPresenter) {
         this.petCreator = petCreator;
         this.profileFetcher = profileFetcher;
         this.petEditor = petEditor;
         this.jsonPresenter = jsonPresenter;
         this.petSwiper = petSwiper;
+        this.petSwipesFetcher = petSwipesFetcher;
+        this.petMatchesFetcher = petMatchesFetcher;
+        this.petRejector = petRejector;
+        this.petUnswiper = petUnswiper;
     }
 
     /**
@@ -85,11 +97,25 @@ public class PetController implements IPetController {
         return jsonPresenter.toJSON(responseMap);
     }
 
+    /**
+     * Add the pet with pet2Id to the pet with pet1Id's reject list
+     * @param pet1Id
+     * @param pet2Id
+     * @return "true" if successful, "false" otherwise
+     */
     @Override
-    public String matchPets(int pet1Id, int pet2Id) {
-        return null;
+    public String rejectPets(int pet1Id, int pet2Id) {
+        PetRejectorRequestModel request = new PetRejectorRequestModel(pet1Id, pet2Id);
+        PetRejectorResponseModel response = petRejector.rejectPets(request);
+        return String.valueOf(response.isSuccess());
     }
 
+    /**
+     * Add the pet with pet2Id to the pet with pet1Id's swiped list
+     * @param pet1Id
+     * @param pet2Id
+     * @return "true" if successful, "false" otherwise
+     */
     @Override
     public String swipePets(int pet1Id, int pet2Id) {
         PetSwiperRequestModel request = new PetSwiperRequestModel(pet1Id, pet2Id);
@@ -97,12 +123,70 @@ public class PetController implements IPetController {
         return String.valueOf(response.isSuccess());
     }
 
+    /**
+     * Remove the pet with pet2Id to the pet with pet1Id's swiped list
+     * @param pet1Id
+     * @param pet2Id
+     * @return "true" if successful, "false" otherwise
+     */
     @Override
     public String unswipePets(int pet1Id, int pet2Id) {
-        return null;
+        PetUnswiperRequestModel request = new PetUnswiperRequestModel(pet1Id, pet2Id);
+        PetUnswiperResponseModel response = petUnswiper.unswipePets(request);
+        return String.valueOf(response.isSuccess());
     }
 
-     /**
+    /**
+     * Return a list of pet ids that the pet with petId1 has swiped on
+     * @param petId
+     * @return a JSON structure containing:
+     *      {
+     *          isSuccess: "true"/"false",
+     *          // if successful:
+     *          petIds: [pet_id_1, pet_id_2, ..., pet_id_n]
+     *          // else,
+     *          petIds: null
+     *      }
+     */
+    @Override
+    public String fetchPetSwipes(int petId) {
+        PetSwipesFetcherRequestModel request = new PetSwipesFetcherRequestModel(String.valueOf(petId));
+        PetSwipesFetcherResponseModel response = petSwipesFetcher.fetchPetSwipes(request);
+
+        HashMap<String, String> responseMap = new HashMap<String, String>() {{
+            put("isSuccess", response.isSuccess() ? "true": "false");
+            put("petIds", jsonPresenter.toJSON(response.getPetIds()));
+        }};
+
+        return jsonPresenter.toJSON(responseMap);
+    }
+
+    /**
+     * Return a list of pet ids that are matched with the pet with this pet id
+     * @param petId
+     * @return a JSON structure containing:
+     *      {
+     *          isSuccess: "true"/"false",
+     *          // if successful:
+     *          petIds: [pet_id_1, pet_id_2, ..., pet_id_n]
+     *          // else,
+     *          petIds: null
+     *      }
+     */
+    @Override
+    public String fetchPetMatches(int petId) {
+        PetMatchesFetcherRequestModel request = new PetMatchesFetcherRequestModel(String.valueOf(petId));
+        PetMatchesFetcherResponseModel response = petMatchesFetcher.fetchPetMatches(request);
+
+        HashMap<String, String> responseMap = new HashMap<String, String>() {{
+            put("isSuccess", response.isSuccess() ? "true" : "false");
+            put("petIds", jsonPresenter.toJSON(response.getPetIds()));
+        }};
+
+        return jsonPresenter.toJSON(responseMap);
+    }
+
+    /**
      * Given new information, edit a pet's information in the database.
      *
      * @param petId User entered pet id;

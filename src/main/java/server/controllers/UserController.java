@@ -11,12 +11,15 @@ public class UserController implements IUserController {
     UserCreatorInputBoundary userCreator;
     UserAccountFetcherInputBoundary accountFetcher;
     IJSONPresenter jsonPresenter;
+    UserPetsFetcherInputBoundary userPetsFetcher;
 
     public UserController(UserCreatorInputBoundary userCreator,
                           UserAccountFetcherInputBoundary accountFetcher,
+                          UserPetsFetcherInputBoundary userPetsFetcher,
                           IJSONPresenter jsonPresenter) {
         this.userCreator = userCreator;
         this.accountFetcher = accountFetcher;
+        this.userPetsFetcher = userPetsFetcher;
         this.jsonPresenter = jsonPresenter;
     }
 
@@ -91,4 +94,30 @@ public class UserController implements IUserController {
 
         return jsonPresenter.toJSON(responseMap);
     }
+
+    /**
+     * Return a list of pet ids of pets that belong to the user with this user id
+     * @param userId
+     * @return a JSON structure containing:
+     *      {
+     *          isSuccess: "true"/"false",
+     *          // if successful:
+     *          petIds: [pet_id_1, pet_id_2, ..., pet_id_n]
+     *          // else,
+     *          petIds: null
+     *      }
+     */
+    @Override
+    public String fetchUserPets(int userId) {
+        UserPetsFetcherRequestModel request = new UserPetsFetcherRequestModel(String.valueOf(userId));
+        UserPetsFetcherResponseModel response = userPetsFetcher.fetchUserPets(request);
+
+        HashMap<String, String> responseMap = new HashMap<String, String>() {{
+            put("isSuccess", response.isSuccess() ? "true": "false");
+            put("petIds", jsonPresenter.toJSON(response.getPetIds()));
+        }};
+
+        return jsonPresenter.toJSON(responseMap);
+    }
+
 }

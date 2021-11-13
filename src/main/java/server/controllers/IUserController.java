@@ -25,4 +25,11 @@ public interface IUserController {
      * @param userId The user's id
      */
     String fetchUserAccount(String userId);
+
+    /**
+     * Return a list of pet ids that belong to the user
+     * @param userId
+     * @return a JSON structure
+     */
+    String fetchUserPets(int userId);
 }

@@ -1,5 +1,7 @@
 package server.controllers;
 
+import java.util.List;
+
 /**
  * An interface representing a controller that handles all
  * functions relating to pet data.
@@ -40,18 +42,18 @@ public interface IPetController {
     String editPet(String petId, String newName, int newAge, String newBreed, String newBiography);
 
     /**
-     * Match two pets.
+     * Add the Pet with id pet2Id to the Pet with id pet1Id's rejection list
      * @param pet1Id
      * @param pet2Id
-     * @return
+     * @return a String of "true" or "false whether the rejection successfully occurred
      */
-    String matchPets(int pet1Id, int pet2Id);
+    String rejectPets(int pet1Id, int pet2Id);
 
     /**
      * Add the Pet with id pet2Id to the Pet with id pet1Id's swiped list
      * @param pet1Id
      * @param pet2Id
-     * @return
+     * @return a String of "true" or "false whether the swipe successfully occurred
      */
     String swipePets(int pet1Id, int pet2Id);
 
@@ -59,8 +61,22 @@ public interface IPetController {
      * Remove the Pet with id pet2Id to the Pet with id pet1Id's swiped list
      * @param pet1Id
      * @param pet2Id
-     * @return
+     * @return a String of "true" or "false whether the unswipe successfully occurred
      */
     String unswipePets(int pet1Id, int pet2Id);
+
+    /**
+     * Return a list of pet ids that the given pet has swiped on
+     * @param petId
+     * @return a JSON structure
+     */
+    String fetchPetSwipes(int petId);
+
+    /**
+     * Return a list of pet ids that the given pet has matched with
+     * @param petId
+     * @return a JSON structure
+     */
+    String fetchPetMatches(int petId);
 
 }
