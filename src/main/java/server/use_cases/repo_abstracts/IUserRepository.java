@@ -1,5 +1,6 @@
 package server.use_cases.repo_abstracts;
 
+import server.entities.Pet;
 import server.entities.User;
 
 import java.util.List;
@@ -43,6 +44,20 @@ public interface IUserRepository {
      * @return a list of all users from the database
      */
     public List<User> fetchAllUsers();
+
+    /**
+     * Return the user id corresponding to the given email
+     * @param email
+     * @return user id
+     */
+    public int fetchIdFromEmail(String email);
+
+    /**
+     * Return a list of pet ids of pets that belong to this user
+     * @param userId
+     * @return a list of pet ids
+     */
+    public List<Integer> fetchUserPets(int userId) throws UserNotFoundException;
 
 }
 
