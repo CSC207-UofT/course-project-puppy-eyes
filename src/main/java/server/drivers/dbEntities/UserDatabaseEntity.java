@@ -133,6 +133,10 @@ public class UserDatabaseEntity {
         this.password = newPassword;
     }
 
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
     public void setContactInfo(ContactInfoDatabaseEntity newContactInfo) {
         this.contactInfo = newContactInfo;
     }

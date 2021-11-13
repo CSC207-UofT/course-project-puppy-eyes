@@ -12,17 +12,20 @@ public class UserController implements IUserController {
     UserAccountFetcherInputBoundary accountFetcher;
     UserAccountEditorInputBoundary accountEditor;
     UserProfileFetcherInputBoundary profileFetcher;
+    UserProfileEditorInputBoundary profileEditor;
     IJSONPresenter jsonPresenter;
 
     public UserController(UserCreatorInputBoundary userCreator,
                           UserAccountFetcherInputBoundary accountFetcher,
                           UserAccountEditorInputBoundary accountEditor,
                           UserProfileFetcherInputBoundary profileFetcher,
+                          UserProfileEditorInputBoundary profileEditor,
                           IJSONPresenter jsonPresenter) {
         this.userCreator = userCreator;
         this.accountFetcher = accountFetcher;
         this.accountEditor = accountEditor;
         this.profileFetcher = profileFetcher;
+        this.profileEditor = profileEditor;
         this.jsonPresenter = jsonPresenter;
     }
 
@@ -152,6 +155,32 @@ public class UserController implements IUserController {
             put("email", response.getEmail());
             put("instagram", response.getInstagram());
             put("facebook", response.getFacebook());
+        }};
+
+        return jsonPresenter.toJSON(responseMap);
+    }
+
+    /**
+     * Edit a user's profile details given their user id and new information.
+     *
+     * @param userId         the user's id;
+     * @param newBiography   the user's new biography;
+     * @param newPhoneNumber the user's new phone number;
+     * @param newInstagram   the user's new Instagram
+     * @param newFacebook    the user's new Facebook
+     * @return A JSON object
+     */
+    @Override
+    public String editUserProfile(String userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook) {
+        UserProfileEditorRequestModel request = new UserProfileEditorRequestModel(userId, newBiography, newPhoneNumber, newInstagram, newFacebook);
+        UserProfileEditorResponseModel response = profileEditor.editUserProfile(request);
+
+        HashMap<String, String> responseMap = new HashMap<String, String>(){{
+            put("isSuccess", response.isSuccess() ? "true": "false");
+            put("biography", response.getNewBiography());
+            put("phoneNumber", response.getNewPhoneNumber());
+            put("instagram", response.getNewInstagram());
+            put("facebook", response.getNewFacebook());
         }};
 
         return jsonPresenter.toJSON(responseMap);

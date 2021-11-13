@@ -45,8 +45,20 @@ public interface IUserController {
      * Fetch a user's profile details (first name, last name, biography, phone number, email, Instagram, Facebook)
      * given their user id. The returned response is in the form of a JSON object.
      *
-     * @param userId The user's id
-     * @return a JSON object
+     * @param userId The user's id;
+     * @return a JSON object;
      */
     String fetchUserProfile(String userId);
+
+    /**
+     * Edit a user's profile details given their user id and new information.
+     *
+     * @param userId the user's id;
+     * @param newBiography the user's new biography;
+     * @param newPhoneNumber the user's new phone number;
+     * @param newInstagram the user's new Instagram
+     * @param newFacebook the user's new Facebook
+     * @return A JSON object
+     */
+    String editUserProfile(String userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook);
 }

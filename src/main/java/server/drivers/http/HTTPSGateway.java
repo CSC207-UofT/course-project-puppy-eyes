@@ -86,6 +86,16 @@ public class HTTPSGateway implements APIGateway {
         return userController.fetchUserProfile(userId);
     }
 
+    @PostMapping("/users/profile-edit")
+    public String editUserProfile(@RequestBody EditUserProfileRequestBody requestBody) {
+        return editUserProfile(requestBody.getUserId(), requestBody.getNewBiography(), requestBody.getNewPhoneNumber(),
+                requestBody.getNewInstagram(), requestBody.getNewFacebook());
+    }
+
+    @Override
+    public String editUserProfile(String userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook) {
+        return userController.editUserProfile(userId, newBiography, newPhoneNumber, newInstagram, newFacebook);
+    }
 
     @PostMapping("/pets/create")
     public String createPet(@RequestBody CreatePetRequestBody requestBody) {

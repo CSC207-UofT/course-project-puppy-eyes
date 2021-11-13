@@ -55,6 +55,12 @@ class BeanHolder {
 
     @Autowired
     @Bean
+    UserProfileEditorInputBoundary userProfileEditorBean(UserRepository userRepository) {
+        return new UserProfileEditor(userRepository);
+    }
+
+    @Autowired
+    @Bean
     PetCreatorInputBoundary petCreatorBean(PetRepository petRepository, UserRepository userRepository) {
         return new PetCreator(petRepository, userRepository);
     }
@@ -91,6 +97,7 @@ class BeanHolder {
                 userAccountFetcherBean(userRepository),
                 userAccountEditorBean(userRepository),
                 userProfileFetcherBean(userRepository),
+                userProfileEditorBean(userRepository),
                 jsonPresenterBean());
     }
 

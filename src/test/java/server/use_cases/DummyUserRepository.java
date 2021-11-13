@@ -142,4 +142,19 @@ public class DummyUserRepository implements IUserRepository {
         return null;
     }
 
+    /**
+     * Edit a user's profile given user id and new information.
+     *
+     * @param userId         the user's id
+     * @param newBiography   the user's new entered biography
+     * @param newPhoneNumber the user's new entered phone number
+     * @param newInstagram   the user's new entered Instagram
+     * @param newFacebook    the user's new entered Facebook
+     * @return if the editing is successfully done or not
+     */
+    @Override
+    public boolean editUserProfile(int userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook) {
+        return false;
+    }
+
 }

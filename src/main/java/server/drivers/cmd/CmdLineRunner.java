@@ -146,6 +146,28 @@ public class CmdLineRunner implements CommandLineRunner {
 
     /**
      * Return a mapping containing the necessary inputs for the
+     * editUserProfile command. The mapping is of the form:
+     *
+     *  userId -> user's entered user id
+     *  newBiography -> user's entered new biography
+     *  newPhoneNumber -> user's entered new phone number
+     *  newInstagram -> user's entered new Instagram
+     *  newFacebook -> user's entered new Facebook
+     */
+    public Map<String, String> getEditUserProfileInputs() {
+        PromptAndInputNameTuple[] inputPrompts = {
+                new PromptAndInputNameTuple("Enter a user id: ", "userId"),
+                new PromptAndInputNameTuple("Enter your new biography: ", "newBiography"),
+                new PromptAndInputNameTuple("Enter your new phone number: ", "newPhoneNumber"),
+                new PromptAndInputNameTuple("Enter your new Instagram: ", "newInstagram"),
+                new PromptAndInputNameTuple("Enter your new Facebook: ", "newFacebook")
+        };
+
+        return getCommandInputs(inputPrompts);
+    }
+
+    /**
+     * Return a mapping containing the necessary inputs for the
      * createPet command. The mapping is of the form:
      *
      *  userId -> id of user this pet belongs to
@@ -248,6 +270,11 @@ public class CmdLineRunner implements CommandLineRunner {
                 inputs = getFetchUserProfileInputs();
                 return gateway.fetchUserProfile(inputs.get("userId"));
 
+            case "editUserProfile":
+                inputs = getEditUserProfileInputs();
+                return gateway.editUserProfile(inputs.get("userId"), inputs.get("newBiography"),
+                        inputs.get("newPhoneNumber"), inputs.get("newInstagram"), inputs.get("newFacebook"));
+
             case "createPet":
                 inputs = getCreatePetInputs();
                 return gateway.createPet(Integer.parseInt(inputs.get("userId")), inputs.get("name"),
@@ -293,7 +320,7 @@ public class CmdLineRunner implements CommandLineRunner {
 
         while (isRunning) {
             ioSystem.showOutput("Enter either createUser, fetchUserAccount, editUserAccount, fetchUserProfile, " +
-                    "createPet, fetchPetProfile, editPet, swipePets, unswipePets, matchPets, or exit.");
+                    "editUserProfile, createPet, fetchPetProfile, editPet, swipePets, unswipePets, matchPets, or exit.");
             String command = ioSystem.getInput();
 
             if (command.equals("exit")){

@@ -127,6 +127,39 @@ public class UserRepository implements IUserRepository {
     }
 
     /**
+     * Edit a user's profile given user id and new information.
+     *
+     * @param userId         the user's id
+     * @param newBiography   the user's new entered biography
+     * @param newPhoneNumber the user's new entered phone number
+     * @param newInstagram   the user's new entered Instagram
+     * @param newFacebook    the user's new entered Facebook
+     * @return if the editing is successfully done or not
+     */
+    @Override
+    public boolean editUserProfile(int userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook) {
+        Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
+
+
+        if (searchResult.isPresent()) {
+            UserDatabaseEntity user = searchResult.get();
+            ContactInfoDatabaseEntity userContactInfo = user.getContactInfo();
+
+            user.setBiography(newBiography);
+
+            userContactInfo.setPhoneNumber(newPhoneNumber);
+            userContactInfo.setInstagram(newInstagram);
+            userContactInfo.setFacebook(newFacebook);
+
+            repository.save(user);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Return whether an email-password pair exist as credentials in the database.
      *
      * @param email

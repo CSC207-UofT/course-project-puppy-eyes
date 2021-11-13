@@ -2,7 +2,6 @@ package server.use_cases;
 
 import server.use_cases.repo_abstracts.IUserRepository;
 
-
 /**
  * A use case responsible for editing a user's account.
  */
@@ -17,7 +16,7 @@ public class UserAccountEditor implements UserAccountEditorInputBoundary {
      * Create a UserAccountEditorResponseModel with given request.
      *
      * @param request Object containing new information of the user;
-     * @return a UserAccountEditorResponseModel that contains the edited information of the pet.
+     * @return a UserAccountEditorResponseModel that contains the edited information of the user's account.
      */
     @Override
     public UserAccountEditorResponseModel editUserAccount(UserAccountEditorRequestModel request) {

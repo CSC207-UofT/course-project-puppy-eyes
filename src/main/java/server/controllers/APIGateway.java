@@ -28,7 +28,7 @@ public interface APIGateway {
     public String fetchUserAccount(String userId);
 
     /**
-     * Edit a user's information.
+     * Edit a user's account information.
      *
      * @param userId the user's id
      * @param newFirstName the user's new entered first name
@@ -37,7 +37,7 @@ public interface APIGateway {
      * @param newCity the user's new entered current city
      * @param newPassword the user's new entered password
      * @param newEmail the user's new entered email
-     * @return A JSON structure of the edited user's information
+     * @return A JSON structure of the edited user's account information
      */
     public String editUserAccount(String userId, String newFirstName, String newLastName, String newAddress,
                                   String newCity, String newPassword, String newEmail);
@@ -49,6 +49,19 @@ public interface APIGateway {
      * @return A JSON structure of the user's profile
      */
     public String fetchUserProfile(String userId);
+
+    /**
+     * Edit a user's profile information.
+     *
+     * @param userId the user's id
+     * @param newBiography the user's new entered biography
+     * @param newPhoneNumber the user's new entered phone number
+     * @param newInstagram the user's new entered Instagram
+     * @param newFacebook the user's new entered Facebook
+     * @return A JSON structure of the edited user's profile information
+     */
+    public String editUserProfile(String userId, String newBiography, String newPhoneNumber,
+                                  String newInstagram, String newFacebook);
 
     /**
      * Create a new pet.
