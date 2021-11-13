@@ -121,9 +121,7 @@ public class DummyPetRepository implements IPetRepository {
             pet.setBreed(newBreed);
             pet.setBiography(newBiography);
             return true;
-        } else {
-            return false;
-        }
+        } else return false;
     }
 
 }
