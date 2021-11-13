@@ -51,10 +51,6 @@ class DummyUserRepositoryEntity{
         return passwordHash;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
     public String getBiography() {
         return biography;
     }
@@ -77,10 +73,6 @@ class DummyUserRepositoryEntity{
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public void setBiography(String biography) {
@@ -167,7 +159,7 @@ public class DummyUserRepository implements IUserRepository {
         if (userId >= 0 && userId <= currentMaxId){
             DummyUserRepositoryEntity user = users.get(userId);
             return new UserRepositoryUserAccountFetcherResponse(user.getFirstName(), user.getLastName(),
-                    user.getCurrentAddress(), user.getCurrentCity(), user.getEmail());
+                    user.getCurrentAddress(), user.getCurrentCity(), user.getContactInfo().getEmail());
         } else {
             throw new UserNotFoundException("User with ID: " + userId + " not found.");
         }
@@ -176,7 +168,7 @@ public class DummyUserRepository implements IUserRepository {
     @Override
     public boolean validateCredentials(String email, String password) {
         for (DummyUserRepositoryEntity user : users) {
-            if (user.getEmail().equals(email) && user.getPasswordHash().equals(password)) {
+            if (user.getContactInfo().getEmail().equals(email) && user.getPasswordHash().equals(password)) {
                 return true;
             }
         }
@@ -192,7 +184,7 @@ public class DummyUserRepository implements IUserRepository {
         // TODO factory pattern
         for (DummyUserRepositoryEntity dbUser : dbUsers) {
             User user = new User(dbUser.getFirstName(), dbUser.getLastName(), dbUser.getCurrentAddress(),
-                    dbUser.getCurrentCity(), dbUser.getPasswordHash(), dbUser.getEmail()) {};
+                    dbUser.getCurrentCity(), dbUser.getPasswordHash(), dbUser.getContactInfo().getEmail()) {};
             users.add(user);
         }
 
@@ -208,7 +200,7 @@ public class DummyUserRepository implements IUserRepository {
             user.setCurrentAddress(newAddress);
             user.setCurrentCity(newCity);
             user.setPasswordHash(newPassword);
-            user.setEmail(newEmail);
+            user.getContactInfo().setEmail(newEmail);
             return true;
         } else return false;
     }
