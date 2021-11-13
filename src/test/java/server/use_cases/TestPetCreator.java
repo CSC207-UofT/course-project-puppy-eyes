@@ -25,7 +25,7 @@ public class TestPetCreator {
         UserCreatorResponseModel userCreatorResponse = userCreator.createUser(new UserCreatorRequestModel("John", "Appleseed", "20 St George Street",
                 "Toronto", "123456", "john.appleseed@gmail.com"));
 
-        int userId = Integer.parseInt(userCreatorResponse.getUserId());
+        String userId = userCreatorResponse.getUserId();
 
         PetCreatorResponseModel expected = new PetCreatorResponseModel(true, "0", "0", "Koko", "3",
                 "Dog", "Nice");

@@ -25,11 +25,11 @@ public class PetCreator implements PetCreatorInputBoundary {
      * @return a PetCreatorResponseModel that contains the created pet's basic information.
      */
     public PetCreatorResponseModel createPet(PetCreatorRequestModel request) {
-        Pet newPet = new Pet(request.getUserId(), request.getName(), request.getAge(), request.getBreed(), request.getBiography()) {};
+        Pet newPet = new Pet(Integer.parseInt(request.getUserId()), request.getName(), request.getAge(), request.getBreed(), request.getBiography()) {};
 
         // TODO check if user exists from userId in request
 
-        int id = petRepository.createPet(request.getUserId(), newPet.getName(), newPet.getAge(), newPet.getBreed(), newPet.getBiography());
+        int id = petRepository.createPet(Integer.parseInt(request.getUserId()), newPet.getName(), newPet.getAge(), newPet.getBreed(), newPet.getBiography());
         newPet.setId(id);
 
         // TODO: Introduce cases where isSuccess is false

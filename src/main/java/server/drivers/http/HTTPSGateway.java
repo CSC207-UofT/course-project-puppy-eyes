@@ -104,7 +104,7 @@ public class HTTPSGateway implements APIGateway {
     }
 
     @Override
-    public String createPet(int userId, String name, int age, String breed, String biography) {
+    public String createPet(String userId, String name, int age, String breed, String biography) {
         return petController.createPet(userId, name, age, breed, biography);
     }
 
