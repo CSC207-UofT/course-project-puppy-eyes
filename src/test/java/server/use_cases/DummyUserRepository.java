@@ -111,4 +111,15 @@ public class DummyUserRepository implements IUserRepository {
         return users;
     }
 
+    // TODO implement following methods
+    @Override
+    public int fetchIdFromEmail(String email) {
+        return 0;
+    }
+
+    @Override
+    public List<Integer> fetchUserPets(int userId) throws UserNotFoundException {
+        return null;
+    }
+
 }

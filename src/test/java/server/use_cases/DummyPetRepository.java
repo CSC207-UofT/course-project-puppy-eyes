@@ -5,6 +5,7 @@ import server.use_cases.repo_abstracts.PetNotFoundException;
 import server.use_cases.repo_abstracts.PetRepositoryPetProfileFetcherResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A dummy class representing a pet entity in the repository
@@ -124,6 +125,17 @@ public class DummyPetRepository implements IPetRepository {
         } else {
             return false;
         }
+    }
+
+    // TODO implement following methods
+    @Override
+    public List<Integer> fetchPetSwipes(int petId) throws PetNotFoundException {
+        return null;
+    }
+
+    @Override
+    public List<Integer> fetchPetMatches(int petId) throws PetNotFoundException {
+        return null;
     }
 
 }
