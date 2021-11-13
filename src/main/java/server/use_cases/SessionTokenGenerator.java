@@ -22,7 +22,7 @@ public class SessionTokenGenerator implements SessionTokenGeneratorInputBoundary
         boolean success = false;
 
         if (userRepository.validateCredentials(request.getEmail(), request.getPassword())) {
-            token = jwtService.createToken(request.getEmail());
+            token = jwtService.createToken(String.valueOf(userRepository.fetchIdFromEmail(request.getEmail())));
             success = true;
         }
 
