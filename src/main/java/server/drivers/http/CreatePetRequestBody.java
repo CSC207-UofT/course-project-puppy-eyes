@@ -6,11 +6,11 @@ package server.drivers.http;
 public class CreatePetRequestBody {
     private final String name;
     private final int age;
-    private final int userId;
+    private final String userId;
     private final String breed;
     private final String biography;
 
-    public CreatePetRequestBody(int userId, String name, int age, String breed, String biography) {
+    public CreatePetRequestBody(String userId, String name, int age, String breed, String biography) {
         this.userId = userId;
         this.name = name;
         this.age = age;
@@ -18,7 +18,7 @@ public class CreatePetRequestBody {
         this.biography = biography;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return this.userId;
     }
 

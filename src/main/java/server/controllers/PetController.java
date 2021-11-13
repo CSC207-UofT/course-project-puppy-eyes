@@ -26,6 +26,8 @@ public class PetController implements IPetController {
     /**
      * Create a new pet.
      *
+     *
+     * @param userId
      * @param name          the pet's name
      * @param age           the pet's age
      * @param breed         the pet's breed
@@ -39,7 +41,7 @@ public class PetController implements IPetController {
      *      * }
      */
     @Override
-    public String createPet(int userId, String name, int age, String breed, String biography) {
+    public String createPet(String userId, String name, int age, String breed, String biography) {
         PetCreatorRequestModel request = new PetCreatorRequestModel(userId, name, age, breed, biography);
         PetCreatorResponseModel response = petCreator.createPet(request);
 

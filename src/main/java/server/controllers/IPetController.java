@@ -17,7 +17,7 @@ public interface IPetController {
      * @return A JSON structure
      */
 
-    String createPet(int userId, String name, int age, String breed, String biography);
+    String createPet(String userId, String name, int age, String breed, String biography);
 
     /**
      * Fetch a pet by given id.

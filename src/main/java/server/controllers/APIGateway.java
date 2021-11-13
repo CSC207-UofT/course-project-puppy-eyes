@@ -73,7 +73,7 @@ public interface APIGateway {
      * @param biography the pet's biography
      * @return A JSON structure of the pet
      */
-    public String createPet(int userId, String name, int age, String breed, String biography);
+    public String createPet(String userId, String name, int age, String breed, String biography);
 
     /**
      * Fetch a pet by given pet id.

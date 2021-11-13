@@ -277,7 +277,7 @@ public class CmdLineRunner implements CommandLineRunner {
 
             case "createPet":
                 inputs = getCreatePetInputs();
-                return gateway.createPet(Integer.parseInt(inputs.get("userId")), inputs.get("name"),
+                return gateway.createPet(inputs.get("userId"), inputs.get("name"),
                         Integer.parseInt(inputs.get("age")), inputs.get("breed"), inputs.get("biography"));
 
             case "swipePets":
