@@ -44,7 +44,8 @@ public class HTTPSGateway implements APIGateway {
     }
 
     @Override
-    public String createUser(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
+    public String createUser(String firstName, String lastName, String currentAddress, String currentCity,
+                             String password, String email) {
         String userJson = userController.createUser(firstName, lastName, currentAddress, currentCity, password, email);
         // TODO remove print statement later
         System.out.println(userJson);
@@ -61,9 +62,24 @@ public class HTTPSGateway implements APIGateway {
         return userController.fetchUserAccount(userId);
     }
 
+    @PostMapping("/users/account-edit")
+    public String editUserAccount(@RequestBody EditUserAccountRequestBody requestBody) {
+        return editUserAccount(requestBody.getUserId(), requestBody.getNewFirstName(), requestBody.getNewLastName(),
+                requestBody.getNewAddress(), requestBody.getNewCity(), requestBody.getNewPassword(),
+                requestBody.getNewEmail());
+    }
+
+    @Override
+    public String editUserAccount(String userId, String newFirstName, String newLastName, String newAddress,
+                                  String newCity, String newPassword, String newEmail) {
+        return userController.editUserAccount(userId, newFirstName, newLastName, newAddress, newCity, newPassword,
+                newEmail);
+    }
+
     @PostMapping("/pets/create")
     public String createPet(@RequestBody CreatePetRequestBody requestBody) {
-        return createPet(requestBody.getUserId(), requestBody.getName(), requestBody.getAge(), requestBody.getBreed(), requestBody.getBiography());
+        return createPet(requestBody.getUserId(), requestBody.getName(), requestBody.getAge(), requestBody.getBreed(),
+                requestBody.getBiography());
     }
 
     @Override

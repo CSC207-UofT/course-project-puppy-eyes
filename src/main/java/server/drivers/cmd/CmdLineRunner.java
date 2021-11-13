@@ -106,6 +106,32 @@ public class CmdLineRunner implements CommandLineRunner {
 
     /**
      * Return a mapping containing the necessary inputs for the
+     * editUserAccount command. The mapping is of the form:
+     *
+     *  userId -> user's entered user id
+     *  newFirstName -> user's entered new first name
+     *  newLastName -> user's entered new last name
+     *  newAddress -> user's entered new current address
+     *  newCity -> user's entered new current city
+     *  newPassword -> user's entered new password
+     *  newEmail -> user's entered new email
+     */
+    public Map<String, String> getEditUserAccountInputs() {
+        PromptAndInputNameTuple[] inputPrompts = {
+                new PromptAndInputNameTuple("Enter a user id: ", "userId"),
+                new PromptAndInputNameTuple("Enter your new first name: ", "newFirstName"),
+                new PromptAndInputNameTuple("Enter your new last name: ", "newLastName"),
+                new PromptAndInputNameTuple("Enter your new current address: ", "newAddress"),
+                new PromptAndInputNameTuple("Enter your new current city: ", "newCity"),
+                new PromptAndInputNameTuple("Enter your new password: ", "newPassword"),
+                new PromptAndInputNameTuple("Enter your new email: ", "newEmail")
+        };
+
+        return getCommandInputs(inputPrompts);
+    }
+
+    /**
+     * Return a mapping containing the necessary inputs for the
      * createPet command. The mapping is of the form:
      *
      *  userId -> id of user this pet belongs to
@@ -198,6 +224,12 @@ public class CmdLineRunner implements CommandLineRunner {
                 inputs = getFetchUserAccountInputs();
                 return gateway.fetchUserAccount(inputs.get("userId"));
 
+            case "editUserAccount":
+                inputs = getEditUserAccountInputs();
+                return gateway.editUserAccount(inputs.get("userId"), inputs.get("newFirstName"),
+                        inputs.get("newLastName"), inputs.get("newAddress"), inputs.get("newCity"),
+                        inputs.get("newPassword"), inputs.get("newEmail"));
+
             case "createPet":
                 inputs = getCreatePetInputs();
                 return gateway.createPet(Integer.parseInt(inputs.get("userId")), inputs.get("name"),
@@ -225,7 +257,7 @@ public class CmdLineRunner implements CommandLineRunner {
                         Integer.parseInt(inputs.get("newAge")), inputs.get("newBreed"), inputs.get("newBiography"));
 
             default:
-                return "Command not found. Choose from createUsers, fetchUsers, " +
+                return "Command not found. Choose from createUsers, fetchUsers, editUsers, " +
                         "createPets, fetchPets, editPets and exit.";
         }
     }
@@ -242,7 +274,7 @@ public class CmdLineRunner implements CommandLineRunner {
         boolean isRunning = true;
 
         while (isRunning) {
-            ioSystem.showOutput("Enter either createUser, fetchUserAccount, " +
+            ioSystem.showOutput("Enter either createUser, fetchUserAccount, editUserAccount, " +
                     "createPet, fetchPetProfile, editPet, swipePets, unswipePets, matchPets, or exit.");
             String command = ioSystem.getInput();
 

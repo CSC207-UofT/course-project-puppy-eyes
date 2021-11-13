@@ -32,6 +32,7 @@ public interface IUserRepository {
 
     /**
      * Return whether an email-password pair exist as credentials in the database.
+     *
      * @param email
      * @param password
      * @return true if credentials exist, false otherwise
@@ -44,5 +45,18 @@ public interface IUserRepository {
      */
     public List<User> fetchAllUsers();
 
+    /**
+     * Edit a user's Account given user id and new information.
+     *
+     * @param userId the user's id
+     * @param newFirstName the user's new first name
+     * @param newLastName the user's new last name
+     * @param newAddress the user's new current address
+     * @param newCity the user's new current city
+     * @param newPassword the user's new password
+     * @param newEmail the user's new email
+     * @return if the editing is successfully done or not
+     */
+    public boolean editUserAccount(int userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail);
 }
 

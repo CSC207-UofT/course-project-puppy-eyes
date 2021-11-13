@@ -30,6 +30,21 @@ public interface APIGateway {
     public String fetchUserAccount(String userId);
 
     /**
+     * Edit a user's information.
+     *
+     * @param userId the user's id
+     * @param newFirstName the user's new entered first name
+     * @param newLastName the user's new entered last name
+     * @param newAddress the user's new entered current address
+     * @param newCity the user's new entered current city
+     * @param newPassword the user's new entered password
+     * @param newEmail the user's new entered email
+     * @return A JSON structure of the edited user's information
+     */
+    public String editUserAccount(String userId, String newFirstName, String newLastName, String newAddress,
+                                  String newCity, String newPassword, String newEmail);
+
+    /**
      * Create a new pet.
      *
      * @param userId the user id of the pet's owner

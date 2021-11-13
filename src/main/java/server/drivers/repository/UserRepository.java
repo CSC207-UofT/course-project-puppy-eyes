@@ -66,7 +66,45 @@ public class UserRepository implements IUserRepository {
     }
 
     /**
+     * Edit a user's Account given user id and new information.
+     *
+     * @param userId the user's id
+     * @param newFirstName the user's new first name
+     * @param newLastName the user's new last name
+     * @param newAddress the user's new current address
+     * @param newCity the user's new current city
+     * @param newPassword the user's new password
+     * @param newEmail the user's new email
+     * @return if the editing is successfully done or not
+     */
+    @Override
+    public boolean editUserAccount(int userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail) {
+        Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
+
+
+        if (searchResult.isPresent()) {
+            UserDatabaseEntity user = searchResult.get();
+            ContactInfoDatabaseEntity userContactInfo = user.getContactInfo();
+
+            user.setFirstName(newFirstName);
+            user.setLastName(newLastName);
+            user.setCurrentAddress(newAddress);
+            user.setCurrentCity(newCity);
+            user.setPassword(newPassword);
+
+            userContactInfo.setEmail(newEmail);
+
+            repository.save(user);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Return whether an email-password pair exist as credentials in the database.
+     *
      * @param email
      * @param password
      * @return true if credentials exist, false otherwise
@@ -104,5 +142,4 @@ public class UserRepository implements IUserRepository {
 
         return users;
     }
-
 }

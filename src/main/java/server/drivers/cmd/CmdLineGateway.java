@@ -28,7 +28,8 @@ public class CmdLineGateway implements APIGateway {
     }
 
     @Override
-    public String createUser(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
+    public String createUser(String firstName, String lastName, String currentAddress, String currentCity,
+                             String password, String email) {
         String userJson = userController.createUser(firstName, lastName, currentAddress, currentCity, password, email);
         return userJson;
     }
@@ -36,6 +37,13 @@ public class CmdLineGateway implements APIGateway {
     @Override
     public String fetchUserAccount(String userId) {
         return userController.fetchUserAccount(userId);
+    }
+
+    @Override
+    public String editUserAccount(String userId, String newFirstName, String newLastName, String newAddress,
+                                  String newCity, String newPassword, String newEmail) {
+        return userController.editUserAccount(userId, newFirstName, newLastName, newAddress, newCity, newPassword,
+                newEmail);
     }
 
     @Override

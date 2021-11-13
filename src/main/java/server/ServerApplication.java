@@ -43,6 +43,12 @@ class BeanHolder {
 
     @Autowired
     @Bean
+    UserAccountEditorInputBoundary userAccountEditorBean(UserRepository userRepository) {
+        return new UserAccountEditor(userRepository);
+    }
+
+    @Autowired
+    @Bean
     PetCreatorInputBoundary petCreatorBean(PetRepository petRepository, UserRepository userRepository) {
         return new PetCreator(petRepository, userRepository);
     }
@@ -76,14 +82,21 @@ class BeanHolder {
     @Bean
     IUserController userControllerBean(UserRepository userRepository) {
         return new UserController(userCreatorBean(userRepository),
-                userAccountFetcherBean(userRepository), jsonPresenterBean());
+                userAccountFetcherBean(userRepository),
+                userAccountEditorBean(userRepository),
+                jsonPresenterBean());
     }
 
     @Autowired
     @Bean
-    IPetController petControllerBean(RelationRepository relationRepository, PetRepository petRepository, UserRepository userRepository) {
-        return new PetController(petCreatorBean(petRepository, userRepository), petSwiperBean(relationRepository),
-                petProfileFetcherBean(petRepository), petEditorBean(petRepository), jsonPresenterBean());
+    IPetController petControllerBean(RelationRepository relationRepository,
+                                     PetRepository petRepository,
+                                     UserRepository userRepository) {
+        return new PetController(petCreatorBean(petRepository, userRepository),
+                petSwiperBean(relationRepository),
+                petProfileFetcherBean(petRepository),
+                petEditorBean(petRepository),
+                jsonPresenterBean());
     }
 
     @Autowired

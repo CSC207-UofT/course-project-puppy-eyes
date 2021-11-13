@@ -10,13 +10,16 @@ import java.util.HashMap;
 public class UserController implements IUserController {
     UserCreatorInputBoundary userCreator;
     UserAccountFetcherInputBoundary accountFetcher;
+    UserAccountEditorInputBoundary accountEditor;
     IJSONPresenter jsonPresenter;
 
     public UserController(UserCreatorInputBoundary userCreator,
                           UserAccountFetcherInputBoundary accountFetcher,
+                          UserAccountEditorInputBoundary accountEditor,
                           IJSONPresenter jsonPresenter) {
         this.userCreator = userCreator;
         this.accountFetcher = accountFetcher;
+        this.accountEditor = accountEditor;
         this.jsonPresenter = jsonPresenter;
     }
 
@@ -87,6 +90,37 @@ public class UserController implements IUserController {
             put("currentAddress", response.getCurrentAddress());
             put("currentCity", response.getCurrentCity());
             put("email", response.getEmail());
+        }};
+
+        return jsonPresenter.toJSON(responseMap);
+    }
+
+    /**
+     * Edit a user's account details given their user id and new information.
+     *
+     * @param userId       the user's id;
+     * @param newFirstName the user's new first name;
+     * @param newLastName  the user's new last name;
+     * @param newAddress   the user's new current address;
+     * @param newCity      the user's new current city;
+     * @param newPassword  the user's new password;
+     * @param newEmail     the user's new email;
+     * @return a JSON object
+     */
+    @Override
+    public String editUserAccount(String userId, String newFirstName, String newLastName, String newAddress,
+                                  String newCity, String newPassword, String newEmail) {
+        UserAccountEditorRequestModel request = new UserAccountEditorRequestModel(userId, newFirstName, newLastName,
+                newAddress, newCity, newPassword, newEmail);
+        UserAccountEditorResponseModel response = accountEditor.editUserAccount(request);
+
+        HashMap<String, String> responseMap = new HashMap<String, String>(){{
+            put("isSuccess", response.isSuccess() ? "true": "false");
+            put("firstName", response.getNewFirstName());
+            put("lastName", response.getNewLastName());
+            put("currentAddress", response.getNewAddress());
+            put("currentCity", response.getNewCity());
+            put("email", response.getNewEmail());
         }};
 
         return jsonPresenter.toJSON(responseMap);

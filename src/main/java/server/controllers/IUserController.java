@@ -25,4 +25,19 @@ public interface IUserController {
      * @param userId The user's id
      */
     String fetchUserAccount(String userId);
+
+    /**
+     * Edit a user's account details given their user id and new information.
+     *
+     * @param userId the user's id;
+     * @param newFirstName the user's new first name;
+     * @param newLastName the user's new last name;
+     * @param newAddress the user's new current address;
+     * @param newCity the user's new current city;
+     * @param newPassword the user's new password;
+     * @param newEmail the user's new email;
+     * @return a JSON object
+     */
+    String editUserAccount(String userId, String newFirstName, String newLastName, String newAddress,
+                           String newCity, String newPassword, String newEmail);
 }
