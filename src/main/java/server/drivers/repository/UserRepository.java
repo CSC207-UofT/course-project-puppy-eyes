@@ -27,12 +27,13 @@ public class UserRepository implements IUserRepository {
     
     /**
      * Create and save a new user to the database.
-     * @param firstName The user's first name.
-     * @param lastName The user's last name.
-     * @param currentAddress The user's current address.
-     * @param currentCity The user's current city
-     * @param password The user's password.
-     * @param email The user's email.
+     *
+     * @param firstName         the user's first name
+     * @param lastName          the user's last name
+     * @param currentAddress    the user's current address
+     * @param currentCity       the user's current city
+     * @param password          the user's password
+     * @param email             the user's email
      *
      * @return The id of the new user.
      */
@@ -48,7 +49,8 @@ public class UserRepository implements IUserRepository {
     /**
      * Retrieve a user's account information given their user id.
      *
-     * @param userId The user's id.
+     * @param userId    the user's id
+     *
      * @return An object containing the user's first name, last name, current address, current city, and email.
      * @throws UserNotFoundException if no user with such an id was found
      */
@@ -69,13 +71,14 @@ public class UserRepository implements IUserRepository {
     /**
      * Edit a user's Account given user id and new information.
      *
-     * @param userId the user's id
-     * @param newFirstName the user's new first name
-     * @param newLastName the user's new last name
-     * @param newAddress the user's new current address
-     * @param newCity the user's new current city
-     * @param newPassword the user's new password
-     * @param newEmail the user's new email
+     * @param userId        the user's id
+     * @param newFirstName  the user's new first name
+     * @param newLastName   the user's new last name
+     * @param newAddress    the user's new current address
+     * @param newCity       the user's new current city
+     * @param newPassword   the user's new password
+     * @param newEmail      the user's new email
+     *
      * @return if the editing is successfully done or not
      */
     @Override
@@ -106,7 +109,8 @@ public class UserRepository implements IUserRepository {
     /**
      * Fetch a user's profile information given a user id.
      *
-     * @param userId the user's id
+     * @param userId    the user's id
+     *
      * @return A UserRepositoryUserProfileFetcherResponse object containing the profile information
      * @throws UserNotFoundException
      */
@@ -134,6 +138,7 @@ public class UserRepository implements IUserRepository {
      * @param newPhoneNumber the user's new entered phone number
      * @param newInstagram   the user's new entered Instagram
      * @param newFacebook    the user's new entered Facebook
+     *
      * @return if the editing is successfully done or not
      */
     @Override

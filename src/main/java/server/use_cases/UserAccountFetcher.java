@@ -16,7 +16,7 @@ public class UserAccountFetcher implements UserAccountFetcherInputBoundary {
 
     /**
      * Fetch a user's account.
-     * @param request An object containing the user's id.
+     * @param request Object containing the user's id.
      * @return An object containing the user's account information.
      */
     @Override

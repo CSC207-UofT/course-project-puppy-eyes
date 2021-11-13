@@ -210,7 +210,7 @@ public class CmdLineRunner implements CommandLineRunner {
      *  newName -> user's entered pet's new name
      *  newAge -> user's entered pet's new age
      *  newBreed -> user's entered pet's new breed
-     *  newBiography -> user's entered pet's newbiography
+     *  newBiography -> user's entered pet's new biography
      */
     public Map<String, String> getEditPetInputs() {
         PromptAndInputNameTuple[] inputPrompts = {

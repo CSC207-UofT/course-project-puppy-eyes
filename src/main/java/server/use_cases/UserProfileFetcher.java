@@ -17,7 +17,7 @@ public class UserProfileFetcher implements UserProfileFetcherInputBoundary {
     /**
      * Fetch a user's profile.
      *
-     * @param request An object containing the user's id.
+     * @param request Object containing the user's id.
      * @return An object containing the user's profile information.
      */
     @Override

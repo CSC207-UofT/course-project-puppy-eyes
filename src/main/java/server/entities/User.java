@@ -20,12 +20,12 @@ public abstract class User {
     /**
      * Creates a new User given their first name, last name, current address, current city, password, and email.
      *
-     * @param firstName The first name of the user
-     * @param lastName The last name of the user
-     * @param currentAddress The current address of the user
-     * @param currentCity The current city of the user
-     * @param password The user's password
-     * @param email The user's email
+     * @param firstName         the first name of the user
+     * @param lastName          the last name of the user
+     * @param currentAddress    the current address of the user
+     * @param currentCity       the current city of the user
+     * @param password          the user's password
+     * @param email             the user's email
      */
     public User(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
         this.firstName = firstName;

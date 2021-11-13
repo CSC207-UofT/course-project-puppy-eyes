@@ -40,12 +40,12 @@ public class UserController implements IUserController {
      *  email: give back the email of the new user
      * }
      *
-     * @param firstName user's first name
-     * @param lastName user's last name
-     * @param currentAddress user's current address
-     * @param currentCity user's current city
-     * @param password user's password
-     * @param email user's email
+     * @param firstName         user's first name
+     * @param lastName          user's last name
+     * @param currentAddress    user's current address
+     * @param currentCity       user's current city
+     * @param password          user's password
+     * @param email             user's email
      *
      * @return The JSON response
      */
@@ -71,6 +71,8 @@ public class UserController implements IUserController {
 
     /**
      * Given a user id, fetch a user's account information.
+     *
+     * @param userId    user's id
      *
      * Return a JSON structure containing:
      *      * {
@@ -104,13 +106,13 @@ public class UserController implements IUserController {
     /**
      * Edit a user's account details given their user id and new information.
      *
-     * @param userId       the user's id;
-     * @param newFirstName the user's new first name;
-     * @param newLastName  the user's new last name;
-     * @param newAddress   the user's new current address;
-     * @param newCity      the user's new current city;
-     * @param newPassword  the user's new password;
-     * @param newEmail     the user's new email;
+     * @param userId       the user's id
+     * @param newFirstName the user's new first name
+     * @param newLastName  the user's new last name
+     * @param newAddress   the user's new current address
+     * @param newCity      the user's new current city
+     * @param newPassword  the user's new password
+     * @param newEmail     the user's new email
      * @return a JSON object
      */
     @Override
@@ -136,7 +138,7 @@ public class UserController implements IUserController {
      * Fetch a user's profile details (first name, last name, biography, phone number, email, Instagram, Facebook)
      * given their user id. The returned response is in the form of a JSON object.
      *
-     * @param userId The user's id
+     * @param userId    the user's id
      * @return a JSON object
      */
     @Override
@@ -163,9 +165,9 @@ public class UserController implements IUserController {
     /**
      * Edit a user's profile details given their user id and new information.
      *
-     * @param userId         the user's id;
-     * @param newBiography   the user's new biography;
-     * @param newPhoneNumber the user's new phone number;
+     * @param userId         the user's id
+     * @param newBiography   the user's new biography
+     * @param newPhoneNumber the user's new phone number
      * @param newInstagram   the user's new Instagram
      * @param newFacebook    the user's new Facebook
      * @return A JSON object
