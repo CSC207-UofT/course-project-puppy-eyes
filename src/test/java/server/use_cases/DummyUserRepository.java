@@ -111,4 +111,22 @@ public class DummyUserRepository implements IUserRepository {
         return users;
     }
 
+    // TODO: add test for editUserAccount
+    /**
+     * Edit a user's Account given user id and new information.
+     *
+     * @param userId       the user's id
+     * @param newFirstName the user's new first name
+     * @param newLastName  the user's new last name
+     * @param newAddress   the user's new current address
+     * @param newCity      the user's new current city
+     * @param newPassword  the user's new password
+     * @param newEmail     the user's new email
+     * @return if the editing is successfully done or not
+     */
+    @Override
+    public boolean editUserAccount(int userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail) {
+        return false;
+    }
+
 }
