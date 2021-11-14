@@ -2,16 +2,12 @@ package server.drivers.cmd;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import server.ServerApplication;
-import server.drivers.repository.PetRepository;
-import server.drivers.repository.UserRepository;
-import server.use_cases.repo_abstracts.PetNotFoundException;
+import server.drivers.APIGateway;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,10 +40,10 @@ class PromptAndInputNameTuple {
 public class CmdLineRunner implements CommandLineRunner {
 
     private static Logger logger = LoggerFactory.getLogger(ServerApplication.class);
-    private final CmdLineGateway gateway;
+    private final APIGateway gateway;
     private final IOSystem ioSystem;
 
-    public CmdLineRunner(CmdLineGateway gateway, IOSystem ioSystem) {
+    public CmdLineRunner(APIGateway gateway, IOSystem ioSystem) {
         this.gateway = gateway;
         this.ioSystem = ioSystem;
     }
@@ -261,11 +257,11 @@ public class CmdLineRunner implements CommandLineRunner {
 
             case "fetchUserAccount":
                 inputs = getFetchUserAccountInputs();
-                return gateway.fetchUserAccount(inputs.get("userId"));
+                return gateway.fetchUserAccount(true, "", inputs.get("userId"));
 
             case "editUserAccount":
                 inputs = getEditUserAccountInputs();
-                return gateway.editUserAccount(inputs.get("userId"), inputs.get("newFirstName"),
+                return gateway.editUserAccount(true, "", inputs.get("userId"), inputs.get("newFirstName"),
                         inputs.get("newLastName"), inputs.get("newAddress"), inputs.get("newCity"),
                         inputs.get("newPassword"), inputs.get("newEmail"));
 
@@ -275,46 +271,46 @@ public class CmdLineRunner implements CommandLineRunner {
 
             case "editUserProfile":
                 inputs = getEditUserProfileInputs();
-                return gateway.editUserProfile(inputs.get("userId"), inputs.get("newBiography"),
+                return gateway.editUserProfile(true, "", inputs.get("userId"), inputs.get("newBiography"),
                         inputs.get("newPhoneNumber"), inputs.get("newInstagram"), inputs.get("newFacebook"));
 
             case "createPet":
                 inputs = getCreatePetInputs();
-                return gateway.createPet(inputs.get("userId"), inputs.get("name"),
+                return gateway.createPet(true, "", inputs.get("userId"), inputs.get("name"),
                         Integer.parseInt(inputs.get("age")), inputs.get("breed"), inputs.get("biography"));
 
             case "swipePets":
                 inputs = getPetSwiperInputs();
-                return gateway.swipePets(Integer.parseInt(inputs.get("pet1Id")), Integer.parseInt(inputs.get("pet2Id")));
+                return gateway.swipePets(true, "", Integer.parseInt(inputs.get("pet1Id")), Integer.parseInt(inputs.get("pet2Id")));
 
             case "unswipePets":
                 inputs = getPetSwiperInputs();
-                return gateway.unswipePets(Integer.parseInt(inputs.get("pet1Id")), Integer.parseInt(inputs.get("pet2Id")));
+                return gateway.unswipePets(true, "", Integer.parseInt(inputs.get("pet1Id")), Integer.parseInt(inputs.get("pet2Id")));
 
             case "rejectPets":
                 inputs = getPetSwiperInputs();
-                return gateway.rejectPets(Integer.parseInt(inputs.get("pet1Id")), Integer.parseInt(inputs.get("pet2Id")));
+                return gateway.rejectPets(true, "", Integer.parseInt(inputs.get("pet1Id")), Integer.parseInt(inputs.get("pet2Id")));
 
             case "fetchPetProfile":
                 inputs = getFetchPetProfileInputs();
-                return gateway.fetchPetProfile(inputs.get("petId"));
+                return gateway.fetchPetProfile(true, "", inputs.get("petId"));
 
             case "editPet":
                 inputs = getEditPetInputs();
-                return gateway.editPet(inputs.get("petId"), inputs.get("newName"),
+                return gateway.editPet(true, "", inputs.get("petId"), inputs.get("newName"),
                         Integer.parseInt(inputs.get("newAge")), inputs.get("newBreed"), inputs.get("newBiography"));
 
             case "fetchPetSwipes":
                 inputs = getFetchPetProfileInputs();
-                return gateway.fetchPetSwipes(Integer.parseInt(inputs.get("petId")));
+                return gateway.fetchPetSwipes(true, "", Integer.parseInt(inputs.get("petId")));
 
             case "fetchPetMatches":
                 inputs = getFetchPetProfileInputs();
-                return gateway.fetchPetMatches(Integer.parseInt(inputs.get("petId")));
+                return gateway.fetchPetMatches(true, "", Integer.parseInt(inputs.get("petId")));
 
             case "fetchUserPets":
                 inputs = getFetchUserAccountInputs();
-                return gateway.fetchUserPets(Integer.parseInt(inputs.get("userId")));
+                return gateway.fetchUserPets(true, "", Integer.parseInt(inputs.get("userId")));
 
             default:
                 return "Command not found.";
