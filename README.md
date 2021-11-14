@@ -1,33 +1,505 @@
-## Note
+# Note
 
-This repository contains the backend only. The HTTP request endpoints and the command line allow you to interact with the server in lieu of a front end application.
+This repository contains the backend only. The HTTP request endpoints and the command line allow you to interact with the server in lieu of a front end application. To access the repository for the frontend part of the project (Android app), go to https://github.com/CSC207-UofT/cupet-frontend.
 
-## Testing
+# API Documentation
 
-### Starting up the server
+Subject to change.
 
-ServerApplication.java contains the main method that hooks into Spring. When the backend is started, the server will run on http://localhost:8080 (port 8080 by default).
-To test that the HTTPSGateway is correctly receiving the endpoints, you may use following curl command:
 
-`curl localhost:8080/`
+## Login/Generate Session Token
+- **URL**:
 
-which should return "Welcome to Cupet"
+/auth/login
 
-Or, you can directly head to http://localhost:8080/ on any web browser.
+- **Requires Authenication**
 
-### Create a User
+No
 
-To test user creation, use the following curl command:
+- **Method**
 
-`curl -X POST -d "{ \"firstName\": \"<FirstName>\", \"lastName\": \"<LastName>\", \"homeAddress\": \"<HomeAddress>\", \"password\": \"<Password>\", \"email\": \"<Email>\" }" -H "Content-Type: application/json" http://localhost:8080/users/create`
+POST
 
-Replace the values with <> with any reasonable values.
-This sends a POST request to the endpoint "/users/create" with a request body that contains the keys `firstName`, `lastName`, `homeAddress`, `password`, and `email`.
+- **Request Body Format**
 
-To test that this action successfuly wrote to the database, either use the following curl command:
+`{
+    email: <String>,
+	password: <String>
+ }`
 
-`curl localhost:8080/users/all`
+- **Response**
 
-or head to http://localhost:8080/users/all/ on any web browser.
+`{ 
+  isSuccess: <boolean>,
+  message: <String>,
+  data: {
+    jwt: <String>
+  }
+}`
 
-The user you just created should appear in the returned array.
+
+
+## Create User
+- **URL**:
+
+/users/create
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+POST
+
+- **Request Body Format**
+
+`{
+    firstName: <String>,
+    lastName: <String>,
+    currentAddress: <String>,
+    currentCity: <String>,
+    password: <String>,
+    emailAddress: <String>
+ }`
+
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>,
+  data: {
+    userId: <String>,
+    firstName: <String>,
+    lastName: <String>,
+    currentAddress: <String>,
+    currentCity: <String>,
+    email: <String>
+  }
+}`
+
+
+
+## Fetch User Account
+- **URL**:
+
+/users/account?userId=[userId]
+
+- **Method**
+
+GET
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Request Body Format**
+
+N/A
+
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>,
+  data: {
+    firstName: <String>,
+    lastName: <String>,
+    currentAddress: <String>,
+    currentCity: <String>,
+    email: <String>
+  }
+}`
+  
+
+## Edit User Profile
+- **URL**:
+
+/users/editprofile
+
+- **Method**
+
+POST
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Request Body Format**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>,
+  data: {
+    userId: <Integer>,
+    newBiography: <String>,
+    newPhoneNumber: <String>,
+    newInstagram: <String>,
+    newFacebook: <String>
+  }
+}`
+
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>,
+  data: {
+    userId: <Integer>,
+		newBiography: <String>,
+		newPhoneNumber: <String>,
+		newInstagram: <String>,
+		newFacebook: <String>
+  }
+}`
+
+## Edit User Account
+- **URL**:
+
+/users/editaccount
+
+- **Method**
+
+POST
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Request Body Format**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>,
+  data: {
+    userId: <Integer>,
+    newFirstName: <String>,
+    newLastName: <String>,
+    newCurrentAddress: <String>,
+    newCurrentCity: <String>,
+	newPassword: <String>,
+    newEmail: <String>
+  }
+}`
+
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>,
+  data: {
+    userId: <Integer>,
+    newFirstName: <String>,
+    newLastName: <String>,
+    newCurrentAddress: <String>,
+    newCurrentCity: <String>,
+    newEmail: <String>
+  }
+}`
+
+
+## Fetch User Profile
+- **URL**:
+
+/users/profile?userId=[userId]
+
+- **Method**
+
+GET
+
+- **Requires Authenication**
+
+No
+
+- **Request Body Format**
+
+N/A
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>,
+  data: {
+    firstName: <Integer>,
+    lastName: <String>,
+    biography: <String>,
+    phoneNumber: <String>,
+    email: <String>,
+    instagram: <String>,
+	facebook: <String>
+  }
+}`
+
+
+## Create Pet
+- **URL**:
+
+/pets/create
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+POST
+
+- **Request Body Format**
+
+`{
+    userId: <String>,
+    name: <String>,
+    age: <String>,
+    breed: <String>,
+    biography: <String>
+ }`
+
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>,
+  data: {
+    userId: <String>,
+    petId: <String>,
+    name: <String>,
+    age: <String>,
+    breed: <String>,
+    biography: <String>
+  }
+}`
+
+
+## Fetch Pet Profile
+- **URL**:
+
+/pets/profile?petId=[petId]
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+GET
+
+- **Request Body Format**
+
+N/A
+
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>,
+  data: {
+    name: <String>,
+    age: <String>,
+    breed: <String>,
+    biography: <String>
+  }
+}`
+
+
+## Edit Pet Profile
+- **URL**:
+
+/pets/editprofile
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+POST
+
+- **Request Body Format**
+
+`{
+    userId: <String>,
+	petId: <String>,
+    newName: <String>,
+    newAge: <String>,
+    newBreed: <String>,
+    newBiography: <String>
+ }`
+
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>,
+  data: {
+    petId: <String>,
+    name: <String>,
+    age: <String>,
+    breed: <String>,
+    biography: <String>
+  }
+}`
+
+
+## Swipe Pets
+- **URL**:
+
+/pets/swipe
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+POST
+
+- **Request Body Format**
+
+`{
+    pet1Id: <Integer>,
+	pet2Id: <Integer>
+ }`
+
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>
+}`
+
+
+## Unswipe Pets
+- **URL**:
+
+/pets/unswipe
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+POST
+
+- **Request Body Format**
+
+`{
+    pet1Id: <Integer>,
+	pet2Id: <Integer>
+ }`
+
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>
+}`
+
+
+## Reject Pets
+- **URL**:
+
+/pets/reject
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+POST
+
+- **Request Body Format**
+
+`{
+    pet1Id: <Integer>,
+	pet2Id: <Integer>
+ }`
+
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>
+}`
+
+
+## Fetch Pet Swipes
+- **URL**:
+
+/pets/fetchswipes?petId=[petId]
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+GET
+
+- **Request Body Format**
+
+N/A
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>,
+  data: {
+	petIds: [<Integer>]
+  }
+}`
+
+
+## Fetch Pet Matches
+- **URL**:
+
+/pets/fetchmatches?petId=[petId]
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+GET
+
+- **Request Body Format**
+
+N/A
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>,
+  data: {
+	petIds: [<Integer>]
+  }
+}`
+
+
+## Fetch User's Pets
+- **URL**:
+
+/pets/fetchswipes?userId=[petId]
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+GET
+
+- **Request Body Format**
+
+N/A
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>,
+  data: {
+	petIds: [<Integer>]
+  }
+}`
