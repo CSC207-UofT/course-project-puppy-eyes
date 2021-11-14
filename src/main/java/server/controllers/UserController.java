@@ -131,6 +131,7 @@ public class UserController implements IUserController {
         return jsonPresenter.toJSON(responseMap);
     }
 
+    /*
      * Edit a user's account details given their user id and new information.
      *
      * @param userId       the user's id

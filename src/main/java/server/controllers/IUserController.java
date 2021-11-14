@@ -33,6 +33,7 @@ public interface IUserController {
      */
     String fetchUserPets(int userId);
 
+    /*
      * Edit a user's account details given their user id and new information.
      *
      * @param userId        the user's id
