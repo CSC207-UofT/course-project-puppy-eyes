@@ -13,7 +13,7 @@ public class JwtService {
 
     private String SECRET_KEY = "secret";
 
-    public String extractEmail(String token) {
+    public String extractSubject(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -42,9 +42,9 @@ public class JwtService {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
-    public boolean validateToken(String token, String email) {
-        String tokenEmail = extractEmail(token);
-        return (tokenEmail.equals(email) && !isTokenExpired(token));
+    public boolean validateToken(String token, String subject) {
+        String tokenSubject = extractSubject(token);
+        return (tokenSubject.equals(subject) && !isTokenExpired(token));
     }
 
 }
