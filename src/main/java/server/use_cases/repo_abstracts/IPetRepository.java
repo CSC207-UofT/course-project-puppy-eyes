@@ -1,5 +1,7 @@
 package server.use_cases.repo_abstracts;
 
+import server.entities.Pet;
+
 import java.util.List;
 
 /**
@@ -21,16 +23,24 @@ public interface IPetRepository {
      */
     public int createPet(int userId, String name, int age, String breed, String biography);
 
+//    /**
+//     * Fetch a pet's profile information by a given pet id.
+//     *
+//     * @param petId     the pet's id;
+//     *
+//     * @return PetRepositoryPetProfileFetcherResponse
+//     *
+//     * @throws PetNotFoundException
+//     */
+//    public PetRepositoryPetProfileFetcherResponse fetchPetProfile(int petId) throws PetNotFoundException;
+
     /**
-     * Fetch a pet's profile information by a given pet id.
-     *
-     * @param petId     the pet's id;
-     *
-     * @return PetRepositoryPetProfileFetcherResponse
-     *
+     * Fetch a Pet from the database.
+     * @param petId
+     * @return
      * @throws PetNotFoundException
      */
-    public PetRepositoryPetProfileFetcherResponse fetchPetProfile(int petId) throws PetNotFoundException;
+    public Pet fetchPet(int petId) throws PetNotFoundException;
 
     /**
      * Edit a pet's information, given all new information.
@@ -45,18 +55,18 @@ public interface IPetRepository {
      */
     public boolean editPet(int petId, String newName, int newAge, String newBreed, String newBiography);
 
-    /**
-     * Return a list of pet ids that the given pet has swiped on
-     * @param petId
-     * @return a list of pet ids that the given pet has swiped on
-     */
-    public List<Integer> fetchPetSwipes(int petId) throws PetNotFoundException;
-
-    /**
-     * Return a list of pet ids that the given pet has matched with
-     * @param petId
-     * @return a list of pet ids that the given pet has matched with
-     */
-    public List<Integer> fetchPetMatches(int petId) throws PetNotFoundException;
+//    /**
+//     * Return a list of pet ids that the given pet has swiped on
+//     * @param petId
+//     * @return a list of pet ids that the given pet has swiped on
+//     */
+//    public List<Integer> fetchPetSwipes(int petId) throws PetNotFoundException;
+//
+//    /**
+//     * Return a list of pet ids that the given pet has matched with
+//     * @param petId
+//     * @return a list of pet ids that the given pet has matched with
+//     */
+//    public List<Integer> fetchPetMatches(int petId) throws PetNotFoundException;
 
 }
