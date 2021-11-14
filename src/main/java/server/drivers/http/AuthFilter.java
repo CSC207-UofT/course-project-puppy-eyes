@@ -36,10 +36,10 @@ public class AuthFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
-        String email = jwtService.extractEmail(token);
+        String userId = jwtService.extractUserId(token);
 
         // If the JWT was not validated
-        if (!jwtService.validateToken(token, email)) {
+        if (!jwtService.validateToken(token, userId)) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             return;
         }
@@ -48,7 +48,7 @@ public class AuthFilter extends OncePerRequestFilter {
             public String getHeader(String name) {
                 // Modify the original request by appending the userId to the list of headers
                 if (name.equals("userId")) {
-                    return email;
+                    return userId;
                 }
 
                 return super.getHeader(name);
