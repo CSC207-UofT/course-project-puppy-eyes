@@ -1,8 +1,8 @@
 package server.use_cases;
 
+import server.entities.Pet;
 import server.use_cases.repo_abstracts.IPetRepository;
 import server.use_cases.repo_abstracts.PetNotFoundException;
-import server.use_cases.repo_abstracts.PetRepositoryPetProfileFetcherResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,16 +11,31 @@ import java.util.List;
  * A dummy class representing a pet entity in the repository
  */
 class DummyPetRepositoryEntity {
+
+    private int id, userId;
     private String name;
     private int age;
     private String breed;
     private String biography;
+    private List<Integer> swipedOn, matches;
 
-    public DummyPetRepositoryEntity(String name, int age, String breed, String biography) {
+    public DummyPetRepositoryEntity(int id, int userId, String name, int age, String breed, String biography) {
+        this.id = id;
+        this.userId = userId;
         this.name = name;
         this.age = age;
         this.breed = breed;
         this.biography = biography;
+        this.swipedOn = new ArrayList<>();
+        this.matches = new ArrayList<>();
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public int getUserId() {
+        return this.userId;
     }
 
     public String getName() {
@@ -37,6 +52,14 @@ class DummyPetRepositoryEntity {
 
     public String getBiography() {
         return biography;
+    }
+
+    public List<Integer> getSwipedOn() {
+        return this.swipedOn;
+    }
+
+    public List<Integer> getMatches() {
+        return this.matches;
     }
 
     public void setName(String newName) {
@@ -81,23 +104,26 @@ public class DummyPetRepository implements IPetRepository {
     public int createPet(int userId, String name, int age, String breed, String biography) {
         currentMaxId++;
         int petId = currentMaxId;
-        pets.add(new DummyPetRepositoryEntity(name, age, breed, biography));
+        pets.add(new DummyPetRepositoryEntity(petId, userId, name, age, breed, biography));
         return petId;
     }
 
     /**
-     * Fetch a pet's profile information by a given pet id.
+     * Fetch a pet's by a given pet id.
      *
      * @param petId the pet's id;
-     * @return PetRepositoryPetProfileFetcherResponse;
+     * @return Pet;
      * @throws PetNotFoundException ;
      */
     @Override
-    public PetRepositoryPetProfileFetcherResponse fetchPetProfile(int petId) throws PetNotFoundException {
-        if (petId >= 0 && petId <= currentMaxId) {
-            DummyPetRepositoryEntity pet = pets.get(petId);
-            return new PetRepositoryPetProfileFetcherResponse(pet.getName(), pet.getAge(),
-                    pet.getBreed(), pet.getBiography());
+    public Pet fetchPet(int petId) throws PetNotFoundException {
+        DummyPetRepositoryEntity dbPet = pets.stream().filter(pet -> pet.getId() == petId).findFirst().orElse(null);
+
+        if (petId >= 0 && petId <= currentMaxId && dbPet != null) {
+            Pet pet = new Pet(dbPet.getUserId(), dbPet.getName(), dbPet.getAge(), dbPet.getBreed(), dbPet.getBiography()) {};
+            pet.getSwipedOn().addAll(dbPet.getSwipedOn());
+            pet.getMatches().addAll(dbPet.getMatches());
+            return pet;
         } else {
             throw new PetNotFoundException("Pet with ID: " + petId + " not found.");
         }
@@ -115,25 +141,15 @@ public class DummyPetRepository implements IPetRepository {
      */
     @Override
     public boolean editPet(int petId, String newName, int newAge, String newBreed, String newBiography) {
-        if (petId >= 0 && petId <= currentMaxId) {
-            DummyPetRepositoryEntity pet = pets.get(petId);
-            pet.setName(newName);
-            pet.setAge(newAge);
-            pet.setBreed(newBreed);
-            pet.setBiography(newBiography);
+        DummyPetRepositoryEntity dbPet = pets.stream().filter(pet -> pet.getId() == petId).findFirst().orElse(null);
+
+        if (petId >= 0 && petId <= currentMaxId && dbPet != null) {
+            dbPet.setName(newName);
+            dbPet.setAge(newAge);
+            dbPet.setBreed(newBreed);
+            dbPet.setBiography(newBiography);
             return true;
         } else return false;
-    }
-
-    // TODO implement following methods
-    @Override
-    public List<Integer> fetchPetSwipes(int petId) throws PetNotFoundException {
-        return null;
-    }
-
-    @Override
-    public List<Integer> fetchPetMatches(int petId) throws PetNotFoundException {
-        return null;
     }
 
 }
