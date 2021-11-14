@@ -205,7 +205,6 @@ public class DummyUserRepository implements IUserRepository {
         } else return false;
     }
 
-
     @Override
     public UserRepositoryUserProfileFetcherResponse fetchUserProfile(int userId) throws UserNotFoundException {
         if (userId >= 0 && userId <= currentMaxId){
@@ -218,7 +217,6 @@ public class DummyUserRepository implements IUserRepository {
             throw new UserNotFoundException("User with ID: " + userId + " not found.");
         }
     }
-
 
     @Override
     public boolean editUserProfile(int userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook) {
@@ -233,4 +231,15 @@ public class DummyUserRepository implements IUserRepository {
         } else return false;
     }
 
+    // TODO implement following methods
+    @Override
+    public int fetchIdFromEmail(String email) {
+        return 0;
+    }
+
+    @Override
+    public List<Integer> fetchUserPets(int userId) throws UserNotFoundException {
+        return null;
+    }
+  
 }

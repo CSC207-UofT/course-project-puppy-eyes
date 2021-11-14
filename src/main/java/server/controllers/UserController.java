@@ -14,18 +14,21 @@ public class UserController implements IUserController {
     UserProfileFetcherInputBoundary profileFetcher;
     UserProfileEditorInputBoundary profileEditor;
     IJSONPresenter jsonPresenter;
+    UserPetsFetcherInputBoundary userPetsFetcher;
 
     public UserController(UserCreatorInputBoundary userCreator,
                           UserAccountFetcherInputBoundary accountFetcher,
                           UserAccountEditorInputBoundary accountEditor,
                           UserProfileFetcherInputBoundary profileFetcher,
                           UserProfileEditorInputBoundary profileEditor,
+                          UserPetsFetcherInputBoundary userPetsFetcher,
                           IJSONPresenter jsonPresenter) {
         this.userCreator = userCreator;
         this.accountFetcher = accountFetcher;
         this.accountEditor = accountEditor;
         this.profileFetcher = profileFetcher;
         this.profileEditor = profileEditor;
+        this.userPetsFetcher = userPetsFetcher;
         this.jsonPresenter = jsonPresenter;
     }
 
@@ -104,6 +107,31 @@ public class UserController implements IUserController {
     }
 
     /**
+     * Return a list of pet ids of pets that belong to the user with this user id
+     * @param userId
+     * @return a JSON structure containing:
+     *      {
+     *          isSuccess: "true"/"false",
+     *          // if successful:
+     *          petIds: [pet_id_1, pet_id_2, ..., pet_id_n]
+     *          // else,
+     *          petIds: null
+     *      }
+     */
+    @Override
+    public String fetchUserPets(int userId) {
+        UserPetsFetcherRequestModel request = new UserPetsFetcherRequestModel(String.valueOf(userId));
+        UserPetsFetcherResponseModel response = userPetsFetcher.fetchUserPets(request);
+
+        HashMap<String, String> responseMap = new HashMap<String, String>() {{
+            put("isSuccess", response.isSuccess() ? "true": "false");
+            put("petIds", jsonPresenter.toJSON(response.getPetIds()));
+        }};
+      
+        return jsonPresenter.toJSON(responseMap);
+    }
+
+    /*
      * Edit a user's account details given their user id and new information.
      *
      * @param userId       the user's id
@@ -187,4 +215,5 @@ public class UserController implements IUserController {
 
         return jsonPresenter.toJSON(responseMap);
     }
+
 }

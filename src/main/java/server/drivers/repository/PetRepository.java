@@ -2,10 +2,14 @@ package server.drivers.repository;
 
 import org.springframework.stereotype.Repository;
 import server.drivers.dbEntities.PetDatabaseEntity;
+import server.entities.Pet;
+import server.use_cases.PetProfileFetcherResponseModel;
 import server.use_cases.repo_abstracts.IPetRepository;
 import server.use_cases.repo_abstracts.PetNotFoundException;
 import server.use_cases.repo_abstracts.PetRepositoryPetProfileFetcherResponse;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -85,4 +89,39 @@ public class PetRepository implements IPetRepository {
             return false;
         }
     }
+
+    /**
+     * Return a list of pet ids that the given pet has swiped on
+     * @param petId
+     * @return a list of pet ids that the given pet has swiped on
+     */
+    @Override
+    public List<Integer> fetchPetSwipes(int petId) throws PetNotFoundException {
+        Optional<PetDatabaseEntity> searchResult = repository.findById(petId);
+
+        if (searchResult.isPresent()) {
+            PetDatabaseEntity pet = searchResult.get();
+            return pet.getSwipedOn();
+        } else {
+            throw new PetNotFoundException("Pet of ID: " + petId + " not found");
+        }
+    }
+
+    /**
+     * Return a list of pet ids that the given pet has matched with
+     * @param petId
+     * @return a list of pet ids that the given pet has matched with
+     */
+    @Override
+    public List<Integer> fetchPetMatches(int petId) throws PetNotFoundException {
+        Optional<PetDatabaseEntity> searchResult = repository.findById(petId);
+
+        if (searchResult.isPresent()) {
+            PetDatabaseEntity pet = searchResult.get();
+            return pet.getMatches();
+        } else {
+            throw new PetNotFoundException("Pet of ID: " + petId + " not found");
+        }
+    }
+
 }

@@ -94,4 +94,50 @@ public interface APIGateway {
      * @return A JSON structure of the edited pet's information
      */
     public String editPet(String petId, String newName, int newAge, String newBreed, String newBiography);
+
+    /**
+     * Add the pet with id pet2Id to the pet with id pet1Id's swiped list
+     * @param pet1Id
+     * @param pet2Id
+     * @return a String of "true" or "false whether the match successfully occurred
+     */
+    public String swipePets(int pet1Id, int pet2Id);
+
+    /**
+     * Remove the pet with id pet2Id to the pet with id pet1Id's swiped list
+     * @param pet1Id
+     * @param pet2Id
+     * @return a String of "true" or "false whether the match successfully occurred
+     */
+    public String unswipePets(int pet1Id, int pet2Id);
+
+    /**
+     * Add the pet with id pet2Id to the pet with id pet1Id's reject list
+     * @param pet1Id
+     * @param pet2Id
+     * @return a String of "true" or "false whether the rejection successfully occurred
+     */
+    public String rejectPets(int pet1Id, int pet2Id);
+
+    /**
+     * Fetch all the pet ids of the pets that this pet has swiped on, returned in a JSON string
+     * @param petId
+     * @return a JSON string
+     */
+    public String fetchPetSwipes(int petId);
+
+    /**
+     * Fetch all the pet ids of the pets that this pet has matched with, returned in a JSON string
+     * @param petId
+     * @return a JSON string
+     */
+    public String fetchPetMatches(int petId);
+
+    /**
+     * Fetch all the pet ids of the pets that belong to the user with this userId, returned in a JSON string
+     * @param userId
+     * @return a JSON string
+     */
+    public String fetchUserPets(int userId);
+
 }

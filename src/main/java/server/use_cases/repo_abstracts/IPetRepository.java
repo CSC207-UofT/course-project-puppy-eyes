@@ -1,5 +1,7 @@
 package server.use_cases.repo_abstracts;
 
+import java.util.List;
+
 /**
  * An interface defining an access point from the program
  * to a repository storing the information of all pets.
@@ -42,5 +44,19 @@ public interface IPetRepository {
      * @return if the editing is successfully done
      */
     public boolean editPet(int petId, String newName, int newAge, String newBreed, String newBiography);
-  
+
+    /**
+     * Return a list of pet ids that the given pet has swiped on
+     * @param petId
+     * @return a list of pet ids that the given pet has swiped on
+     */
+    public List<Integer> fetchPetSwipes(int petId) throws PetNotFoundException;
+
+    /**
+     * Return a list of pet ids that the given pet has matched with
+     * @param petId
+     * @return a list of pet ids that the given pet has matched with
+     */
+    public List<Integer> fetchPetMatches(int petId) throws PetNotFoundException;
+
 }

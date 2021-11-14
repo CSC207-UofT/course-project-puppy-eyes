@@ -27,6 +27,13 @@ public interface IUserController {
     String fetchUserAccount(String userId);
 
     /**
+     * Return a list of pet ids that belong to the user
+     * @param userId
+     * @return a JSON structure
+     */
+    String fetchUserPets(int userId);
+
+    /*
      * Edit a user's account details given their user id and new information.
      *
      * @param userId        the user's id
@@ -61,4 +68,5 @@ public interface IUserController {
      * @return A JSON object
      */
     String editUserProfile(String userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook);
+
 }

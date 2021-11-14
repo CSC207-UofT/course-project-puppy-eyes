@@ -1,6 +1,11 @@
 package server.drivers.dbEntities;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "pets")
@@ -26,6 +31,13 @@ public class PetDatabaseEntity {
     @Column(name = "biography")
     private String biography;
 
+    @OneToMany(mappedBy="fromId", fetch = FetchType.EAGER)
+    @Where(clause="relation_type = 'SWIPE'")
+    private List<RelationDatabaseEntity> swipedOn;
+
+    @OneToMany(mappedBy="fromId", fetch = FetchType.EAGER)
+    @Where(clause="relation_type = 'MATCH'")
+    private List<RelationDatabaseEntity> matches;
 
     @ManyToOne
     @JoinColumn(name="user_id", insertable = false, updatable = false)
@@ -69,6 +81,14 @@ public class PetDatabaseEntity {
 
     public String getBiography() {
         return biography;
+    }
+
+    public List<Integer> getSwipedOn() {
+        return this.swipedOn.stream().map(swiped -> swiped.getToId()).collect(Collectors.toList());
+    }
+
+    public List<Integer> getMatches() {
+        return this.matches.stream().map(match -> match.getToId()).collect(Collectors.toList());
     }
 
     public void setName(String name) {
