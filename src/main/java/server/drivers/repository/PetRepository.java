@@ -27,10 +27,10 @@ public class PetRepository implements IPetRepository {
     /**
      * Create and save a new pet to the database.
      *
-     * @param name the pet's name;
-     * @param age the pet's age;
-     * @param breed the pet's breed;
-     * @param biography the pet's biography;
+     * @param name      the pet's name
+     * @param age       the pet's age
+     * @param breed     the pet's breed
+     * @param biography the pet's biography
      *
      * @return the id of the new pet;
      */
@@ -45,9 +45,9 @@ public class PetRepository implements IPetRepository {
     /**
      * Fetch a pet in the database by given pet id.
      *
-     * @param petId the pet's id;
-     * @return an object containing the pet's name and age;
-     * @throws PetNotFoundException if no pet with such an id was found;
+     * @param petId     the pet's id
+     * @return an object containing the pet's name and age
+     * @throws PetNotFoundException if no pet with such an id was found
      */
     @Override
     public PetRepositoryPetProfileFetcherResponse fetchPetProfile(int petId) throws PetNotFoundException {
@@ -66,12 +66,12 @@ public class PetRepository implements IPetRepository {
     /**
      * Edit a pet's information in the database.
      *
-     * @param petId the pet's id;
-     * @param newName the pet's new name;
-     * @param newAge the pet's new age;
-     * @param newBreed the pet's new breed;
-     * @param newBiography the pet's new biography;
-     * @return if editing is successfully done;
+     * @param petId         the pet's id
+     * @param newName       the pet's new name
+     * @param newAge        the pet's new age
+     * @param newBreed      the pet's new breed
+     * @param newBiography  the pet's new biography
+     * @return if editing is successfully done
      */
     @Override
     public boolean editPet(int petId, String newName, int newAge, String newBreed, String newBiography) {

@@ -19,7 +19,7 @@ public class TestUserAccountFetcher {
     }
 
     /**
-     * Test fetching a user with a valid user id.
+     * Test fetching a user's account with a valid user id.
      */
     @Test()
     public void TestSuccessFetchUser() {
@@ -41,7 +41,7 @@ public class TestUserAccountFetcher {
     }
 
     /**
-     * Test fetching a user with an invalid id.
+     * Test fetching a user's account with an invalid id.
      */
     @Test()
     public void TestFailFetchUser() {

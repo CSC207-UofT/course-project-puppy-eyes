@@ -16,7 +16,8 @@ public class RelationRepository implements IRelationRepository {
     }
 
     /**
-     * Add a relationship between two ids
+     * Add a relationship between two ids.
+     *
      * @param fromId
      * @param toId
      * @param relationType
@@ -28,7 +29,8 @@ public class RelationRepository implements IRelationRepository {
     }
 
     /**
-     * Remove a relationship between two ids
+     * Remove a relationship between two ids.
+     *
      * @param fromId
      * @param toId
      * @param relationType
@@ -46,7 +48,8 @@ public class RelationRepository implements IRelationRepository {
     }
 
     /**
-     * Return whether fromId has a relation to toId with type relationType
+     * Return whether fromId has a relation to toId with type relationType.
+     *
      * @param fromId
      * @param toId
      * @param relationType

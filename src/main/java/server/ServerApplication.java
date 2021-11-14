@@ -43,6 +43,24 @@ class BeanHolder {
 
     @Autowired
     @Bean
+    UserAccountEditorInputBoundary userAccountEditorBean(UserRepository userRepository) {
+        return new UserAccountEditor(userRepository);
+    }
+
+    @Autowired
+    @Bean
+    UserProfileFetcherInputBoundary userProfileFetcherBean(UserRepository userRepository) {
+        return new UserProfileFetcher(userRepository);
+    }
+
+    @Autowired
+    @Bean
+    UserProfileEditorInputBoundary userProfileEditorBean(UserRepository userRepository) {
+        return new UserProfileEditor(userRepository);
+    }
+
+    @Autowired
+    @Bean
     PetCreatorInputBoundary petCreatorBean(PetRepository petRepository, UserRepository userRepository) {
         return new PetCreator(petRepository, userRepository);
     }
@@ -105,17 +123,30 @@ class BeanHolder {
     @Autowired
     @Bean
     IUserController userControllerBean(UserRepository userRepository) {
-        return new UserController(userCreatorBean(userRepository), userAccountFetcherBean(userRepository),
-                userPetsFetcherBean(userRepository), jsonPresenterBean());
+        return new UserController(
+                userCreatorBean(userRepository),
+                userAccountFetcherBean(userRepository),
+                userAccountEditorBean(userRepository),
+                userProfileFetcherBean(userRepository),
+                userProfileEditorBean(userRepository),
+                userPetsFetcherBean(userRepository),
+                jsonPresenterBean());
     }
 
     @Autowired
     @Bean
     IPetController petControllerBean(RelationRepository relationRepository, PetRepository petRepository, UserRepository userRepository) {
-        return new PetController(petCreatorBean(petRepository, userRepository), petSwiperBean(relationRepository),
-                petProfileFetcherBean(petRepository), petEditorBean(petRepository), petRejectorBean(relationRepository),
-                petUnswiperBean(relationRepository), petSwipesFetcherBean(petRepository),
-                petMatchesFetcherBean(petRepository), jsonPresenterBean());
+        return new PetController(
+                petCreatorBean(petRepository, userRepository),
+                petSwiperBean(relationRepository),
+                petProfileFetcherBean(petRepository),
+                petEditorBean(petRepository),
+                petRejectorBean(relationRepository),
+                petUnswiperBean(relationRepository),
+                petSwipesFetcherBean(petRepository),
+                petMatchesFetcherBean(petRepository),
+                jsonPresenterBean()
+        );
     }
 
     @Autowired

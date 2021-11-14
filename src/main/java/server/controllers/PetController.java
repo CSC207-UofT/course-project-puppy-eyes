@@ -38,10 +38,12 @@ public class PetController implements IPetController {
     /**
      * Create a new pet.
      *
-     * @param name The pet's name;
-     * @param age The pet's age;
-     * @param breed The pet's breed;
-     * @param biography The pet's biography;
+     *
+     * @param userId
+     * @param name          the pet's name
+     * @param age           the pet's age
+     * @param breed         the pet's breed
+     * @param biography     the pet's biography
      * @return a JSON structure containing:
      *      * {
      *      *  isSuccess: "true"/"false"
@@ -51,7 +53,7 @@ public class PetController implements IPetController {
      *      * }
      */
     @Override
-    public String createPet(int userId, String name, int age, String breed, String biography) {
+    public String createPet(String userId, String name, int age, String breed, String biography) {
         PetCreatorRequestModel request = new PetCreatorRequestModel(userId, name, age, breed, biography);
         PetCreatorResponseModel response = petCreator.createPet(request);
 
@@ -71,7 +73,7 @@ public class PetController implements IPetController {
     /**
      * Given a pet id, fetch a pet's profile information.
      *
-     * @param petId
+     * @param petId     the pet's id
      * @return a JSON structure containing:
      *      * {
      *      *  isSuccess: "true"/"false"
@@ -189,11 +191,11 @@ public class PetController implements IPetController {
     /**
      * Given new information, edit a pet's information in the database.
      *
-     * @param petId User entered pet id;
-     * @param newName User entered pet's new name;
-     * @param newAge User entered pet's new age;
-     * @param newBreed User entered pet's new breed;
-     * @param newBiography User entered pet's new biography;
+     * @param petId         user entered pet id
+     * @param newName       user entered pet's new name
+     * @param newAge        user entered pet's new age
+     * @param newBreed      user entered pet's new breed
+     * @param newBiography  user entered pet's new biography
      * @return a JSON structure containing:
      *      * {
      *      *  isSuccess: "true"/"false"

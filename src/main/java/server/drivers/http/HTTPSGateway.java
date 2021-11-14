@@ -44,7 +44,8 @@ public class HTTPSGateway implements APIGateway {
     }
 
     @Override
-    public String createUser(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
+    public String createUser(String firstName, String lastName, String currentAddress, String currentCity,
+                             String password, String email) {
         String userJson = userController.createUser(firstName, lastName, currentAddress, currentCity, password, email);
         // TODO remove print statement later
         System.out.println(userJson);
@@ -61,13 +62,49 @@ public class HTTPSGateway implements APIGateway {
         return userController.fetchUserAccount(userId);
     }
 
-    @PostMapping("/pets/create")
-    public String createPet(@RequestBody CreatePetRequestBody requestBody) {
-        return createPet(requestBody.getUserId(), requestBody.getName(), requestBody.getAge(), requestBody.getBreed(), requestBody.getBiography());
+    @PostMapping("/users/account-edit")
+    public String editUserAccount(@RequestBody EditUserAccountRequestBody requestBody) {
+        return editUserAccount(requestBody.getUserId(), requestBody.getNewFirstName(), requestBody.getNewLastName(),
+                requestBody.getNewAddress(), requestBody.getNewCity(), requestBody.getNewPassword(),
+                requestBody.getNewEmail());
     }
 
     @Override
-    public String createPet(int userId, String name, int age, String breed, String biography) {
+    public String editUserAccount(String userId, String newFirstName, String newLastName, String newAddress,
+                                  String newCity, String newPassword, String newEmail) {
+        return userController.editUserAccount(userId, newFirstName, newLastName, newAddress, newCity, newPassword,
+                newEmail);
+    }
+
+    @GetMapping("/users/profile")
+    public String getUserProfile(@RequestBody FetchUserProfileRequestBody requestBody) {
+        return fetchUserProfile(requestBody.getUserId());
+    }
+
+    @Override
+    public String fetchUserProfile(String userId) {
+        return userController.fetchUserProfile(userId);
+    }
+
+    @PostMapping("/users/profile-edit")
+    public String editUserProfile(@RequestBody EditUserProfileRequestBody requestBody) {
+        return editUserProfile(requestBody.getUserId(), requestBody.getNewBiography(), requestBody.getNewPhoneNumber(),
+                requestBody.getNewInstagram(), requestBody.getNewFacebook());
+    }
+
+    @Override
+    public String editUserProfile(String userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook) {
+        return userController.editUserProfile(userId, newBiography, newPhoneNumber, newInstagram, newFacebook);
+    }
+
+    @PostMapping("/pets/create")
+    public String createPet(@RequestBody CreatePetRequestBody requestBody) {
+        return createPet(requestBody.getUserId(), requestBody.getName(), requestBody.getAge(), requestBody.getBreed(),
+                requestBody.getBiography());
+    }
+
+    @Override
+    public String createPet(String userId, String name, int age, String breed, String biography) {
         return petController.createPet(userId, name, age, breed, biography);
     }
 
