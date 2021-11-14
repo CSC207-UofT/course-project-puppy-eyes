@@ -2,6 +2,7 @@ package server.use_cases;
 
 import server.drivers.JwtService;
 import server.use_cases.repo_abstracts.IUserRepository;
+import server.use_cases.repo_abstracts.ResponseModel;
 
 /**
  * A use case responsible for generating a JWT token for a given user
@@ -17,16 +18,16 @@ public class SessionTokenGenerator implements SessionTokenGeneratorInputBoundary
     }
 
     @Override
-    public SessionTokenGeneratorResponseModel generateSessionToken(SessionTokenGeneratorRequestModel request) {
-        String token = null;
-        boolean success = false;
-
-        if (userRepository.validateCredentials(request.getEmail(), request.getPassword())) {
-            token = jwtService.createToken(String.valueOf(userRepository.fetchIdFromEmail(request.getEmail())));
-            success = true;
+    public ResponseModel generateSessionToken(SessionTokenGeneratorRequestModel request) {
+        if (!userRepository.validateCredentials(request.getEmail(), request.getPassword())) {
+            return new ResponseModel(false, "Incorrect credentials.");
         }
 
-        SessionTokenGeneratorResponseModel response = new SessionTokenGeneratorResponseModel(token, success);
-        return response;
+        String token = jwtService.createToken(String.valueOf(userRepository.fetchIdFromEmail(request.getEmail())));
+        return new ResponseModel(
+            true,
+            "Successfuly generated session token.",
+            new SessionTokenGeneratorResponseModel(token)
+        );
     }
 }

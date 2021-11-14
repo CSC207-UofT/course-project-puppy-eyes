@@ -42,25 +42,42 @@ public class PetRepository implements IPetRepository {
         return petDbEntity.getId();
     }
 
-    /**
-     * Fetch a pet in the database by given pet id.
-     *
-     * @param petId     the pet's id
-     * @return an object containing the pet's name and age
-     * @throws PetNotFoundException if no pet with such an id was found
-     */
+//    /**
+//     * Fetch a pet in the database by given pet id.
+//     *
+//     * @param petId     the pet's id
+//     * @return an object containing the pet's name and age
+//     * @throws PetNotFoundException if no pet with such an id was found
+//     */
+//    @Override
+//    public PetRepositoryPetProfileFetcherResponse fetchPetProfile(int petId) throws PetNotFoundException {
+//        Optional<PetDatabaseEntity> searchResult = repository.findById(petId);
+//
+//        if (searchResult.isPresent()) {
+//            PetDatabaseEntity pet = searchResult.get();
+//            return new PetRepositoryPetProfileFetcherResponse(pet.getName(), pet.getAge(), pet.getBreed(),
+//                    pet.getBiography());
+//        } else {
+//            throw new PetNotFoundException("Pet of ID: " + petId + " not found");
+//        }
+//
+//    }
+
     @Override
-    public PetRepositoryPetProfileFetcherResponse fetchPetProfile(int petId) throws PetNotFoundException {
+    public Pet fetchPet(int petId) throws PetNotFoundException {
         Optional<PetDatabaseEntity> searchResult = repository.findById(petId);
 
+        // Todo factory to create pet from db pet
         if (searchResult.isPresent()) {
-            PetDatabaseEntity pet = searchResult.get();
-            return new PetRepositoryPetProfileFetcherResponse(pet.getName(), pet.getAge(), pet.getBreed(),
-                    pet.getBiography());
+            PetDatabaseEntity dbPet = searchResult.get();
+            Pet pet = new Pet(dbPet.getUser().getId(), dbPet.getName(), dbPet.getAge(), dbPet.getBreed(), dbPet.getBiography()) {};
+            pet.setId(dbPet.getId());
+            pet.getSwipedOn().addAll(dbPet.getSwipedOn());
+            pet.getMatches().addAll(dbPet.getMatches());
+            return pet;
         } else {
             throw new PetNotFoundException("Pet of ID: " + petId + " not found");
         }
-
     }
 
     /**
@@ -89,39 +106,39 @@ public class PetRepository implements IPetRepository {
             return false;
         }
     }
-
-    /**
-     * Return a list of pet ids that the given pet has swiped on
-     * @param petId
-     * @return a list of pet ids that the given pet has swiped on
-     */
-    @Override
-    public List<Integer> fetchPetSwipes(int petId) throws PetNotFoundException {
-        Optional<PetDatabaseEntity> searchResult = repository.findById(petId);
-
-        if (searchResult.isPresent()) {
-            PetDatabaseEntity pet = searchResult.get();
-            return pet.getSwipedOn();
-        } else {
-            throw new PetNotFoundException("Pet of ID: " + petId + " not found");
-        }
-    }
-
-    /**
-     * Return a list of pet ids that the given pet has matched with
-     * @param petId
-     * @return a list of pet ids that the given pet has matched with
-     */
-    @Override
-    public List<Integer> fetchPetMatches(int petId) throws PetNotFoundException {
-        Optional<PetDatabaseEntity> searchResult = repository.findById(petId);
-
-        if (searchResult.isPresent()) {
-            PetDatabaseEntity pet = searchResult.get();
-            return pet.getMatches();
-        } else {
-            throw new PetNotFoundException("Pet of ID: " + petId + " not found");
-        }
-    }
+//
+//    /**
+//     * Return a list of pet ids that the given pet has swiped on
+//     * @param petId
+//     * @return a list of pet ids that the given pet has swiped on
+//     */
+//    @Override
+//    public List<Integer> fetchPetSwipes(int petId) throws PetNotFoundException {
+//        Optional<PetDatabaseEntity> searchResult = repository.findById(petId);
+//
+//        if (searchResult.isPresent()) {
+//            PetDatabaseEntity pet = searchResult.get();
+//            return pet.getSwipedOn();
+//        } else {
+//            throw new PetNotFoundException("Pet of ID: " + petId + " not found");
+//        }
+//    }
+//
+//    /**
+//     * Return a list of pet ids that the given pet has matched with
+//     * @param petId
+//     * @return a list of pet ids that the given pet has matched with
+//     */
+//    @Override
+//    public List<Integer> fetchPetMatches(int petId) throws PetNotFoundException {
+//        Optional<PetDatabaseEntity> searchResult = repository.findById(petId);
+//
+//        if (searchResult.isPresent()) {
+//            PetDatabaseEntity pet = searchResult.get();
+//            return pet.getMatches();
+//        } else {
+//            throw new PetNotFoundException("Pet of ID: " + petId + " not found");
+//        }
+//    }
 
 }

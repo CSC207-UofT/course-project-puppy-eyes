@@ -1,11 +1,14 @@
 package server.use_cases;
 
-public class PetRejectorRequestModel {
+import server.use_cases.repo_abstracts.AuthRequestModel;
+
+public class PetRejectorRequestModel extends AuthRequestModel {
 
     private int pet1Id;
     private int pet2Id;
 
-    public PetRejectorRequestModel(int pet1Id, int pet2Id) {
+    public PetRejectorRequestModel(String headerUserId, int pet1Id, int pet2Id) {
+        super(headerUserId);
         this.pet1Id = pet1Id;
         this.pet2Id = pet2Id;
     }

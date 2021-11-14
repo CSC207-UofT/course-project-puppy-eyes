@@ -1,8 +1,10 @@
 package server.use_cases;
 
+import server.use_cases.repo_abstracts.ResponseModel;
+
 /**
  * An input boundary for the "fetch pet" use case.
  */
 public interface PetProfileFetcherInputBoundary {
-    PetProfileFetcherResponseModel fetchPetProfile(PetProfileFetcherRequestModel request);
+    ResponseModel fetchPetProfile(PetProfileFetcherRequestModel request);
 }

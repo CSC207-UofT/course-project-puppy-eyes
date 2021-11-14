@@ -5,10 +5,13 @@ import server.drivers.LatLng;
 import server.entities.Pet;
 import server.entities.User;
 import server.use_cases.repo_abstracts.IUserRepository;
+import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.repo_abstracts.UserNotFoundException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A use case responsible for generating a list of matches for a given pet.
@@ -24,11 +27,29 @@ public class PetMatchesGenerator implements PetMatchesGeneratorInputBoundary {
     }
 
     @Override
-    public PetMatchesGeneratorResponseModel generatePotentialMatches(PetMatchesGeneratorRequestModel request) {
-        List<Pet> potentialMatches = new ArrayList<>();
-        boolean isSuccess = true;
+    public ResponseModel generatePotentialMatches(PetMatchesGeneratorRequestModel request) {
+        List<String> potentialMatches = new ArrayList<>();
 
-        User currentUser = request.getUser();
+        if (!request.isRequestAuthorized()) {
+            return new ResponseModel(false, "You are not authorized to make this request.");
+        }
+
+        int userId;
+
+        try {
+            userId = Integer.parseInt(request.getUserId());
+        } catch (NumberFormatException exception) {
+            return new ResponseModel(false, "ID must be an integer");
+        }
+
+        User currentUser;
+
+        try {
+            currentUser = userRepository.fetchUser(userId);
+        } catch (UserNotFoundException exception) {
+            return new ResponseModel(false, "User with ID: " + userId + " does not exist.");
+        }
+
         // GeocoderService.getLatLng returns a List of LatLng objects, but here we are assuming that the current user's
         // current address and city are sufficiently specific to return a unique latitude-longitude tuple
         try {
@@ -45,15 +66,18 @@ public class PetMatchesGenerator implements PetMatchesGeneratorInputBoundary {
                     if (currentUserLatLng.calculateDistance(otherLatLng) <= currentUser.getMatchingDistanceCap()) {
                         // for now, add every pet of the other user as a potential match
                         // later, include filtering options
-                        potentialMatches.addAll(user.getPetList());
+                        potentialMatches.addAll(user.getPetList().stream().map(String::valueOf).collect(Collectors.toList()));
                     }
                 }
             }
-        } catch (IOException | InterruptedException e) {
-            isSuccess = false;
-        }
 
-        PetMatchesGeneratorResponseModel response = new PetMatchesGeneratorResponseModel(isSuccess, potentialMatches);
-        return response;
+            return new ResponseModel(
+                true,
+                "Successfully generated pet potential matches.",
+                new PetMatchesFetcherResponseModel(potentialMatches)
+            );
+        } catch (IOException | InterruptedException e) {
+            return new ResponseModel(false, "An unexpected error occured.");
+        }
     }
 }

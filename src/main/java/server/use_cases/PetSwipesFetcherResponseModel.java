@@ -8,16 +8,10 @@ import java.util.List;
  */
 public class PetSwipesFetcherResponseModel {
 
-    private final boolean isSuccess;
     private final List<String> petIds;
 
-    public PetSwipesFetcherResponseModel(boolean isSuccess, List<String> petIds) {
-        this.isSuccess = isSuccess;
+    public PetSwipesFetcherResponseModel(List<String> petIds) {
         this.petIds = petIds;
-    }
-
-    public boolean isSuccess() {
-        return this.isSuccess;
     }
 
     public List<String> getPetIds() {

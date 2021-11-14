@@ -1,7 +1,9 @@
 package server.use_cases;
 
+import server.use_cases.repo_abstracts.ResponseModel;
+
 public interface PetRejectorInputBoundary {
 
-    public PetRejectorResponseModel rejectPets(PetRejectorRequestModel request);
+    public ResponseModel rejectPets(PetRejectorRequestModel request);
 
 }

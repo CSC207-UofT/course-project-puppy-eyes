@@ -9,19 +9,13 @@ import java.util.List;
  */
 public class PetMatchesGeneratorResponseModel {
 
-    private final boolean isSuccess;
-    private final List<Pet> potentialMatches;
+    private final List<String> potentialMatches;
 
-    public PetMatchesGeneratorResponseModel(boolean isSuccess, List<Pet> potentialMatches) {
-        this.isSuccess = isSuccess;
+    public PetMatchesGeneratorResponseModel(List<String> potentialMatches) {
         this.potentialMatches = potentialMatches;
     }
 
-    public boolean isSuccess() {
-        return this.isSuccess;
-    }
-
-    public List<Pet> getPotentialMatches() {
+    public List<String> getPotentialMatches() {
         return this.potentialMatches;
     }
 

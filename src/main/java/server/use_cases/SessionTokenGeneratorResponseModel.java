@@ -1,20 +1,17 @@
 package server.use_cases;
 
-public class SessionTokenGeneratorResponseModel {
+import server.use_cases.repo_abstracts.ResponseData;
+
+public class SessionTokenGeneratorResponseModel extends ResponseData {
 
     private final String jwt;
-    private final boolean isSuccess;
 
-    public SessionTokenGeneratorResponseModel(String jwt, boolean isSuccess) {
+    public SessionTokenGeneratorResponseModel(String jwt) {
         this.jwt = jwt;
-        this.isSuccess = isSuccess;
     }
 
     public String getJwt() {
         return this.jwt;
     }
 
-    public boolean isSuccess() {
-        return this.isSuccess;
-    }
 }

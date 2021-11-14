@@ -1,25 +1,23 @@
 package server.use_cases;
 
+import server.use_cases.repo_abstracts.AuthRequestModel;
+
 /**
  * An object defining the request type for PetCreator.createPet
  */
-public class PetCreatorRequestModel {
-    private final String userId;
+public class PetCreatorRequestModel extends AuthRequestModel {
+
     private final String name;
     private final int age;
     private final String breed;
     private final String biography;
 
-    public PetCreatorRequestModel(String userId, String name, int age, String breed, String biography) {
-        this.userId = userId;
+    public PetCreatorRequestModel(String headerUserId, String userId, String name, int age, String breed, String biography) {
+        super(headerUserId, userId);
         this.name = name;
         this.age = age;
         this.breed = breed;
         this.biography = biography;
-    }
-
-    public String getUserId() {
-        return this.userId;
     }
 
     public String getName() {

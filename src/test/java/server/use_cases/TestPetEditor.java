@@ -22,8 +22,8 @@ public class TestPetEditor {
     @Test
     public void TestEditPetWithValidId() {
         // Create some users
-        UserCreatorResponseModel userCreatorResponse = userCreator.createUser(new UserCreatorRequestModel("John", "Appleseed", "20 St George Street",
-                "Toronto", "123456", "john.appleseed@gmail.com"));
+        UserCreatorResponseModel userCreatorResponse = (UserCreatorResponseModel) userCreator.createUser(new UserCreatorRequestModel("John", "Appleseed", "20 St George Street",
+                "Toronto", "123456", "john.appleseed@gmail.com")).getResponseData();
 
         int userId = Integer.parseInt(userCreatorResponse.getUserId());
 
@@ -31,10 +31,10 @@ public class TestPetEditor {
         dummyPetRepository.createPet(userId,"Bob", 2, "Dog", "Bobobobobo");
         dummyPetRepository.createPet(userId,"Cindy", 7, "Cat", "Meow");
 
-        PetEditorResponseModel expected = new PetEditorResponseModel(true, "Koko", 5,
+        PetEditorResponseModel expected = new PetEditorResponseModel("Koko", 5,
                 "Bird", "Hello", "2");
-        PetEditorResponseModel actual = petEditor.editPet(new PetEditorRequestModel("2", "Koko",
-                5, "Bird", "Hello"));
+        PetEditorResponseModel actual = (PetEditorResponseModel) petEditor.editPet(new PetEditorRequestModel(String.valueOf(userId),"2", "Koko",
+                5, "Bird", "Hello")).getResponseData();
 
         assertEquals(expected, actual);
     }

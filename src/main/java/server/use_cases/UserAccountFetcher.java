@@ -1,8 +1,9 @@
 package server.use_cases;
 
+import server.entities.User;
 import server.use_cases.repo_abstracts.IUserRepository;
+import server.use_cases.repo_abstracts.ResponseModel;
 import server.use_cases.repo_abstracts.UserNotFoundException;
-import server.use_cases.repo_abstracts.UserRepositoryUserAccountFetcherResponse;
 
 /**
  * A use case responsible for fetching a user's account based on a user id.
@@ -20,25 +21,36 @@ public class UserAccountFetcher implements UserAccountFetcherInputBoundary {
      * @return An object containing the user's account information.
      */
     @Override
-    public UserAccountFetcherResponseModel fetchUserAccount(UserAccountFetcherRequestModel request) {
+    public ResponseModel fetchUserAccount(UserAccountFetcherRequestModel request) {
         int id;
         try {
             id = Integer.parseInt(request.getUserId());
         } catch (NumberFormatException e) {
-            // Then the user id string was not valid
-            return new UserAccountFetcherResponseModel(false, "", "", "", "", "");
+            // Invalid user id
+            return new ResponseModel(false, "ID must be an integer.");
         }
 
-        UserRepositoryUserAccountFetcherResponse user;
         try {
-            user = userRepository.fetchUserAccount(id);
+            User user = userRepository.fetchUser(id);
 
-            return new UserAccountFetcherResponseModel(true, user.getFirstName(), user.getLastName(),
-                    user.getCurrentAddress(), user.getCurrentCity(), user.getEmail());
+            if (!request.isRequestAuthorized()) {
+                return new ResponseModel(false, "You are not authorized to make this request.");
+            }
 
+            return new ResponseModel(
+                true,
+                "Successfully fetched pet profile.",
+                new UserAccountFetcherResponseModel(
+                    user.getFirstName(),
+                    user.getLastName(),
+                    user.getCurrentAddress(),
+                    user.getCurrentCity(),
+                    user.getContactInfo().getEmail()
+                )
+            );
         } catch (UserNotFoundException e) {
             // Then user not found
-            return new UserAccountFetcherResponseModel(false, "", "", "", "", "");
+            return new ResponseModel(false, "User with ID: " + request.getUserId() + " does not exist.");
         }
 
     }
