@@ -63,6 +63,7 @@ public class UserRepository implements IUserRepository {
             user.getContactInfo().setInstagram(dbUser.getContactInfo().getInstagram());
             user.getContactInfo().setPhoneNumber(dbUser.getContactInfo().getPhoneNumber());
             user.getPetList().addAll(dbUser.getPets().stream().map(PetDatabaseEntity::getId).collect(Collectors.toList()));
+            user.setId(dbUser.getId());
             return user;
         } else {
             throw new UserNotFoundException("User of ID: " + userId + " not found");
@@ -222,6 +223,12 @@ public class UserRepository implements IUserRepository {
             // TODO factory method
             User user = new User(dbUser.getFirstName(), dbUser.getLastName(), dbUser.getCurrentAddress(),
                     dbUser.getCurrentCity(), dbUser.getPassword(), dbUser.getContactInfo().getEmail()) {};
+            user.getContactInfo().setEmail(dbUser.getContactInfo().getEmail());
+            user.getContactInfo().setFacebook(dbUser.getContactInfo().getFacebook());
+            user.getContactInfo().setInstagram(dbUser.getContactInfo().getInstagram());
+            user.getContactInfo().setPhoneNumber(dbUser.getContactInfo().getPhoneNumber());
+            user.getPetList().addAll(dbUser.getPets().stream().map(PetDatabaseEntity::getId).collect(Collectors.toList()));
+            user.setId(dbUser.getId());
             users.add(user);
         }
 
