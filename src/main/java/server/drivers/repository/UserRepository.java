@@ -49,27 +49,48 @@ public class UserRepository implements IUserRepository {
         return userDbEntity.getId();
     }
 
-    /**
-     * Retrieve a user's account information given their user id.
-     *
-     * @param userId    the user's id
-     *
-     * @return An object containing the user's first name, last name, current address, current city, and email.
-     * @throws UserNotFoundException if no user with such an id was found
-     */
     @Override
-    public UserRepositoryUserAccountFetcherResponse fetchUserAccount(int userId) throws UserNotFoundException {
+    public User fetchUser(int userId) throws UserNotFoundException {
         Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
 
         if (searchResult.isPresent()) {
-            UserDatabaseEntity user = searchResult.get();
+            UserDatabaseEntity dbUser = searchResult.get();
 
-            return new UserRepositoryUserAccountFetcherResponse(user.getFirstName(), user.getLastName(),
-                    user.getCurrentAddress(), user.getCurrentCity(), user.getContactInfo().getEmail());
-        }else{
+            // TODO factory
+            User user = new User(dbUser.getFirstName(), dbUser.getLastName(), dbUser.getCurrentAddress(), dbUser.getCurrentCity(), dbUser.getPassword(), dbUser.getContactInfo().getEmail()) {};
+            user.getContactInfo().setEmail(dbUser.getContactInfo().getEmail());
+            user.getContactInfo().setFacebook(dbUser.getContactInfo().getFacebook());
+            user.getContactInfo().setInstagram(dbUser.getContactInfo().getInstagram());
+            user.getContactInfo().setPhoneNumber(dbUser.getContactInfo().getPhoneNumber());
+            user.getPetList().addAll(dbUser.getPets().stream().map(PetDatabaseEntity::getId).collect(Collectors.toList()));
+            user.setId(dbUser.getId());
+            return user;
+        } else {
             throw new UserNotFoundException("User of ID: " + userId + " not found");
         }
     }
+
+//    /**
+//     * Retrieve a user's account information given their user id.
+//     *
+//     * @param userId    the user's id
+//     *
+//     * @return An object containing the user's first name, last name, current address, current city, and email.
+//     * @throws UserNotFoundException if no user with such an id was found
+//     */
+//    @Override
+//    public UserRepositoryUserAccountFetcherResponse fetchUserAccount(int userId) throws UserNotFoundException {
+//        Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
+//
+//        if (searchResult.isPresent()) {
+//            UserDatabaseEntity user = searchResult.get();
+//
+//            return new UserRepositoryUserAccountFetcherResponse(user.getFirstName(), user.getLastName(),
+//                    user.getCurrentAddress(), user.getCurrentCity(), user.getContactInfo().getEmail());
+//        }else{
+//            throw new UserNotFoundException("User of ID: " + userId + " not found");
+//        }
+//    }
 
     /**
      * Edit a user's Account given user id and new information.
@@ -109,29 +130,29 @@ public class UserRepository implements IUserRepository {
         }
     }
 
-    /**
-     * Fetch a user's profile information given a user id.
-     *
-     * @param userId    the user's id
-     *
-     * @return A UserRepositoryUserProfileFetcherResponse object containing the profile information
-     * @throws UserNotFoundException
-     */
-    @Override
-    public UserRepositoryUserProfileFetcherResponse fetchUserProfile(int userId) throws UserNotFoundException {
-        Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
-
-        if (searchResult.isPresent()) {
-            UserDatabaseEntity user = searchResult.get();
-            ContactInfoDatabaseEntity contactInfo = user.getContactInfo();
-
-            return new UserRepositoryUserProfileFetcherResponse(user.getFirstName(), user.getLastName(),
-                    user.getBiography(), contactInfo.getPhoneNumber(), contactInfo.getEmail(),
-                    contactInfo.getInstagram(), contactInfo.getFacebook());
-        } else {
-            throw new UserNotFoundException("User of ID: " + userId + " not found");
-        }
-    }
+//    /**
+//     * Fetch a user's profile information given a user id.
+//     *
+//     * @param userId    the user's id
+//     *
+//     * @return A UserRepositoryUserProfileFetcherResponse object containing the profile information
+//     * @throws UserNotFoundException
+//     */
+//    @Override
+//    public UserRepositoryUserProfileFetcherResponse fetchUserProfile(int userId) throws UserNotFoundException {
+//        Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
+//
+//        if (searchResult.isPresent()) {
+//            UserDatabaseEntity user = searchResult.get();
+//            ContactInfoDatabaseEntity contactInfo = user.getContactInfo();
+//
+//            return new UserRepositoryUserProfileFetcherResponse(user.getFirstName(), user.getLastName(),
+//                    user.getBiography(), contactInfo.getPhoneNumber(), contactInfo.getEmail(),
+//                    contactInfo.getInstagram(), contactInfo.getFacebook());
+//        } else {
+//            throw new UserNotFoundException("User of ID: " + userId + " not found");
+//        }
+//    }
 
     /**
      * Edit a user's profile given user id and new information.
@@ -202,6 +223,12 @@ public class UserRepository implements IUserRepository {
             // TODO factory method
             User user = new User(dbUser.getFirstName(), dbUser.getLastName(), dbUser.getCurrentAddress(),
                     dbUser.getCurrentCity(), dbUser.getPassword(), dbUser.getContactInfo().getEmail()) {};
+            user.getContactInfo().setEmail(dbUser.getContactInfo().getEmail());
+            user.getContactInfo().setFacebook(dbUser.getContactInfo().getFacebook());
+            user.getContactInfo().setInstagram(dbUser.getContactInfo().getInstagram());
+            user.getContactInfo().setPhoneNumber(dbUser.getContactInfo().getPhoneNumber());
+            user.getPetList().addAll(dbUser.getPets().stream().map(PetDatabaseEntity::getId).collect(Collectors.toList()));
+            user.setId(dbUser.getId());
             users.add(user);
         }
 
@@ -225,18 +252,18 @@ public class UserRepository implements IUserRepository {
         return -1;
     }
 
-    @Override
-    public List<Integer> fetchUserPets(int userId) throws UserNotFoundException {
-        Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
-
-        if (searchResult.isPresent()) {
-            UserDatabaseEntity user = searchResult.get();
-            // Collect only the pet ids from the database entities
-            List<Integer> petIds = user.getPets().stream().map(PetDatabaseEntity::getId).collect(Collectors.toList());
-            return petIds;
-        } else {
-            throw new UserNotFoundException("User of ID: " + userId + " not found");
-        }
-    }
+//    @Override
+//    public List<Integer> fetchUserPets(int userId) throws UserNotFoundException {
+//        Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
+//
+//        if (searchResult.isPresent()) {
+//            UserDatabaseEntity user = searchResult.get();
+//            // Collect only the pet ids from the database entities
+//            List<Integer> petIds = user.getPets().stream().map(PetDatabaseEntity::getId).collect(Collectors.toList());
+//            return petIds;
+//        } else {
+//            throw new UserNotFoundException("User of ID: " + userId + " not found");
+//        }
+//    }
 
 }

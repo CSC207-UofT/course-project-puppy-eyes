@@ -1,8 +1,10 @@
 package server.use_cases;
 
+import server.use_cases.repo_abstracts.ResponseModel;
+
 /**
  * An input boundary for the "edit user account" use case.
  */
 public interface UserAccountEditorInputBoundary {
-    UserAccountEditorResponseModel editUserAccount(UserAccountEditorRequestModel request);
+    public ResponseModel editUserAccount(UserAccountEditorRequestModel request);
 }

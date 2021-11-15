@@ -1,16 +1,20 @@
 package server.use_cases;
 
+import server.use_cases.repo_abstracts.AuthRequestModel;
+
 /**
  * An object defining the request type for PetEditor.editPet
  */
-public class PetEditorRequestModel {
+public class PetEditorRequestModel extends AuthRequestModel {
+
     private final String newName;
     private final int newAge;
     private String newBreed;
     private String newBiography;
-    private final String petId;
+    private String petId;
 
-    public PetEditorRequestModel(String petId, String newName, int newAge, String newBreed, String newBiography) {
+    public PetEditorRequestModel(String headerUserId, String petId, String newName, int newAge, String newBreed, String newBiography) {
+        super(headerUserId);
         this.petId = petId;
         this.newName = newName;
         this.newAge = newAge;

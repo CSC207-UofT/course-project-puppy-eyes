@@ -1,11 +1,14 @@
 package server.use_cases;
 
-public class PetUnswiperRequestModel {
+import server.use_cases.repo_abstracts.AuthRequestModel;
+
+public class PetUnswiperRequestModel extends AuthRequestModel {
 
     private int pet1Id;
     private int pet2Id;
 
-    public PetUnswiperRequestModel(int pet1Id, int pet2Id) {
+    public PetUnswiperRequestModel(String headerUserId, int pet1Id, int pet2Id) {
+        super(headerUserId);
         this.pet1Id = pet1Id;
         this.pet2Id = pet2Id;
     }

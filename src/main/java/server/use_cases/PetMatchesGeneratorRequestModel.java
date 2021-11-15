@@ -1,27 +1,21 @@
 package server.use_cases;
 
-import server.entities.Pet;
-import server.entities.User;
+import server.use_cases.repo_abstracts.AuthRequestModel;
 
 /**
  * An object defining the request type for PetMatchesGenerator.generatePotentialMatches
  */
-public class PetMatchesGeneratorRequestModel {
+public class PetMatchesGeneratorRequestModel extends AuthRequestModel {
 
-    private Pet pet;
-    private User user;
+    private String petId;
 
-    public PetMatchesGeneratorRequestModel(Pet pet, User user) {
-        this.pet = pet;
-        this.user = user;
+    public PetMatchesGeneratorRequestModel(String headerUserId, String petId) {
+        super(headerUserId);
+        this.petId = petId;
     }
 
-    public Pet getPet() {
-        return this.pet;
-    }
-
-    public User getUser() {
-        return this.user;
+    public String getPetId() {
+        return this.petId;
     }
 
 }

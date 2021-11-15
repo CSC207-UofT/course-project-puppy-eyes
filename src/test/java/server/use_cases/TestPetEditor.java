@@ -2,8 +2,10 @@ package server.use_cases;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import server.use_cases.repo_abstracts.ResponseModel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestPetEditor {
     private static DummyPetRepository dummyPetRepository;
@@ -13,7 +15,7 @@ public class TestPetEditor {
     @BeforeEach
     public void setUp() {
         DummyUserRepository userRepository = new DummyUserRepository();
-        dummyPetRepository = new DummyPetRepository();
+        dummyPetRepository = new DummyPetRepository(userRepository);
 
         userCreator = new UserCreator(userRepository);
         petEditor = new PetEditor(dummyPetRepository);
@@ -22,8 +24,8 @@ public class TestPetEditor {
     @Test
     public void TestEditPetWithValidId() {
         // Create some users
-        UserCreatorResponseModel userCreatorResponse = userCreator.createUser(new UserCreatorRequestModel("John", "Appleseed", "20 St George Street",
-                "Toronto", "123456", "john.appleseed@gmail.com"));
+        UserCreatorResponseModel userCreatorResponse = (UserCreatorResponseModel) userCreator.createUser(new UserCreatorRequestModel("John", "Appleseed", "20 St George Street",
+                "Toronto", "123456", "john.appleseed@gmail.com")).getResponseData();
 
         int userId = Integer.parseInt(userCreatorResponse.getUserId());
 
@@ -31,18 +33,18 @@ public class TestPetEditor {
         dummyPetRepository.createPet(userId,"Bob", 2, "Dog", "Bobobobobo");
         dummyPetRepository.createPet(userId,"Cindy", 7, "Cat", "Meow");
 
-        PetEditorResponseModel expected = new PetEditorResponseModel(true, "Koko", 5,
+        PetEditorResponseModel expected = new PetEditorResponseModel("Koko", 5,
                 "Bird", "Hello", "2");
-        PetEditorResponseModel actual = petEditor.editPet(new PetEditorRequestModel("2", "Koko",
-                5, "Bird", "Hello"));
+        PetEditorResponseModel actual = (PetEditorResponseModel) petEditor.editPet(new PetEditorRequestModel(String.valueOf(userId),"2", "Koko",
+                5, "Bird", "Hello")).getResponseData();
 
         assertEquals(expected, actual);
     }
 
     @Test void TestEditPetWithoutValidId() {
         // Create some users
-        UserCreatorResponseModel userCreatorResponse = userCreator.createUser(new UserCreatorRequestModel("John", "Appleseed", "20 St George Street",
-                "Toronto", "123456", "john.appleseed@gmail.com"));
+        UserCreatorResponseModel userCreatorResponse = (UserCreatorResponseModel) userCreator.createUser(new UserCreatorRequestModel("John", "Appleseed", "20 St George Street",
+                "Toronto", "123456", "john.appleseed@gmail.com")).getResponseData();
 
         int userId = Integer.parseInt(userCreatorResponse.getUserId());
 
@@ -50,11 +52,11 @@ public class TestPetEditor {
         dummyPetRepository.createPet(userId,"Bob", 2, "Dog", "Bobobobobo");
         dummyPetRepository.createPet(userId,"Cindy", 7, "Cat", "Meow");
 
-        PetEditorResponseModel expected = new PetEditorResponseModel(false, "Koko", 5,
-                "Bird", "Hello", "3");
-        PetEditorResponseModel actual = petEditor.editPet(new PetEditorRequestModel("3", "Koko",
-                5, "Bird", "Hello"));
+        ResponseModel expected = new ResponseModel(false, "Pet with ID: 3 does not exist.");
+        ResponseModel actual = petEditor.editPet(new PetEditorRequestModel(String.valueOf(userId),
+                "3", "Koko", 5, "Bird", "Hello"));
 
         assertEquals(expected, actual);
+        assertTrue(!actual.isSuccess());
     }
 }

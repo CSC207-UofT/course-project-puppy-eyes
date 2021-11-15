@@ -1,6 +1,5 @@
 package server.use_cases;
 
-import server.entities.ContactInfo;
 import server.entities.User;
 import server.use_cases.repo_abstracts.*;
 
@@ -10,17 +9,20 @@ import java.util.List;
 /**
  * A dummy class representing a user entity in the repository
  */
-class DummyUserRepositoryEntity{
+class DummyUserRepositoryEntity {
+
+    private int id;
     private String firstName;
     private String lastName;
     private String currentAddress;
     private String currentCity;
     private String passwordHash;
-    private String email;
     private String biography;
+    private List<Integer> petList;
     private DummyContactInfoRepositoryEntity contactInfo;
 
-    public DummyUserRepositoryEntity(String firstName, String lastName, String currentAddress, String currentCity, String passwordHash, String email) {
+    public DummyUserRepositoryEntity(int id, String firstName, String lastName, String currentAddress, String currentCity, String passwordHash, String email) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.currentAddress = currentAddress;
@@ -29,6 +31,15 @@ class DummyUserRepositoryEntity{
         this.contactInfo = new DummyContactInfoRepositoryEntity();
         this.contactInfo.setEmail(email);
         this.biography = "";
+        this.petList = new ArrayList<>();
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public List<Integer> getPets() {
+        return this.petList;
     }
 
     public String getFirstName() {
@@ -131,6 +142,7 @@ class DummyContactInfoRepositoryEntity {
     public String getFacebook() {
         return facebook;
     }
+
 }
 
 /**
@@ -146,24 +158,44 @@ public class DummyUserRepository implements IUserRepository {
     }
 
     @Override
-    public int createUser(String firstName, String lastName, String currentAddress, String currentCity, String passwordHash, String email) {
+    public int createUser(String firstName, String lastName, String passwordHash, String currentAddress, String currentCity, String email) {
         currentMaxId++;
         int id = currentMaxId;
-        users.add(new DummyUserRepositoryEntity(firstName, lastName, currentAddress, currentCity, passwordHash, email));
-
+        users.add(new DummyUserRepositoryEntity(id, firstName, lastName, currentAddress, currentCity, passwordHash, email));
         return id;
     }
 
     @Override
-    public UserRepositoryUserAccountFetcherResponse fetchUserAccount(int userId) throws UserNotFoundException {
-        if (userId >= 0 && userId <= currentMaxId){
-            DummyUserRepositoryEntity user = users.get(userId);
-            return new UserRepositoryUserAccountFetcherResponse(user.getFirstName(), user.getLastName(),
-                    user.getCurrentAddress(), user.getCurrentCity(), user.getContactInfo().getEmail());
+    public User fetchUser(int userId) throws UserNotFoundException {
+        DummyUserRepositoryEntity dbUser = users.stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
+
+        if (userId >= 0 && userId <= currentMaxId && dbUser != null) {
+            // TODO factory pattern
+            User user = new User(dbUser.getFirstName(), dbUser.getLastName(), dbUser.getCurrentAddress(),
+                    dbUser.getCurrentCity(), dbUser.getPasswordHash(), dbUser.getContactInfo().getEmail()) {};
+            user.getContactInfo().setPhoneNumber(dbUser.getContactInfo().getPhoneNumber());
+            user.getContactInfo().setInstagram(dbUser.getContactInfo().getInstagram());
+            user.getContactInfo().setFacebook(dbUser.getContactInfo().getFacebook());
+            user.getContactInfo().setEmail(dbUser.getContactInfo().getEmail());
+            user.setBiography(dbUser.getBiography());
+            user.getPetList().addAll(dbUser.getPets());
+            user.setId(dbUser.getId());
+            return user;
         } else {
             throw new UserNotFoundException("User with ID: " + userId + " not found.");
         }
     }
+
+//    @Override
+//    public UserRepositoryUserAccountFetcherResponse fetchUserAccount(int userId) throws UserNotFoundException {
+//        if (userId >= 0 && userId <= currentMaxId){
+//            DummyUserRepositoryEntity user = users.get(userId);
+//            return new UserRepositoryUserAccountFetcherResponse(user.getFirstName(), user.getLastName(),
+//                    user.getCurrentAddress(), user.getCurrentCity(), user.getContactInfo().getEmail());
+//        } else {
+//            throw new UserNotFoundException("User with ID: " + userId + " not found.");
+//        }
+//    }
 
     @Override
     public boolean validateCredentials(String email, String password) {
@@ -185,6 +217,13 @@ public class DummyUserRepository implements IUserRepository {
         for (DummyUserRepositoryEntity dbUser : dbUsers) {
             User user = new User(dbUser.getFirstName(), dbUser.getLastName(), dbUser.getCurrentAddress(),
                     dbUser.getCurrentCity(), dbUser.getPasswordHash(), dbUser.getContactInfo().getEmail()) {};
+            user.getContactInfo().setPhoneNumber(dbUser.getContactInfo().getPhoneNumber());
+            user.getContactInfo().setInstagram(dbUser.getContactInfo().getInstagram());
+            user.getContactInfo().setFacebook(dbUser.getContactInfo().getFacebook());
+            user.getContactInfo().setEmail(dbUser.getContactInfo().getEmail());
+            user.setBiography(dbUser.getBiography());
+            user.setId(dbUser.getId());
+            user.getPetList().addAll(dbUser.getPets());
             users.add(user);
         }
 
@@ -193,37 +232,39 @@ public class DummyUserRepository implements IUserRepository {
 
     @Override
     public boolean editUserAccount(int userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail) {
-        if (userId >= 0 && userId <= currentMaxId) {
-            DummyUserRepositoryEntity user = users.get(userId);
-            user.setFirstName(newFirstName);
-            user.setLastName(newLastName);
-            user.setCurrentAddress(newAddress);
-            user.setCurrentCity(newCity);
-            user.setPasswordHash(newPassword);
-            user.getContactInfo().setEmail(newEmail);
+        DummyUserRepositoryEntity dbUser = users.stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
+
+        if (userId >= 0 && userId <= currentMaxId && dbUser != null) {
+            dbUser.setFirstName(newFirstName);
+            dbUser.setLastName(newLastName);
+            dbUser.setCurrentAddress(newAddress);
+            dbUser.setCurrentCity(newCity);
+            dbUser.setPasswordHash(newPassword);
+            dbUser.getContactInfo().setEmail(newEmail);
             return true;
         } else return false;
     }
 
-    @Override
-    public UserRepositoryUserProfileFetcherResponse fetchUserProfile(int userId) throws UserNotFoundException {
-        if (userId >= 0 && userId <= currentMaxId){
-            DummyUserRepositoryEntity user = users.get(userId);
-            DummyContactInfoRepositoryEntity contactInfo = user.getContactInfo();
-            return new UserRepositoryUserProfileFetcherResponse(user.getFirstName(), user.getLastName(),
-                    user.getBiography(), contactInfo.getPhoneNumber(), contactInfo.getEmail(),
-                    contactInfo.getInstagram(), contactInfo.getFacebook());
-        } else {
-            throw new UserNotFoundException("User with ID: " + userId + " not found.");
-        }
-    }
+//    @Override
+//    public UserRepositoryUserProfileFetcherResponse fetchUserProfile(int userId) throws UserNotFoundException {
+//        if (userId >= 0 && userId <= currentMaxId){
+//            DummyUserRepositoryEntity user = users.get(userId);
+//            DummyContactInfoRepositoryEntity contactInfo = user.getContactInfo();
+//            return new UserRepositoryUserProfileFetcherResponse(user.getFirstName(), user.getLastName(),
+//                    user.getBiography(), contactInfo.getPhoneNumber(), contactInfo.getEmail(),
+//                    contactInfo.getInstagram(), contactInfo.getFacebook());
+//        } else {
+//            throw new UserNotFoundException("User with ID: " + userId + " not found.");
+//        }
+//    }
 
     @Override
     public boolean editUserProfile(int userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook) {
-        if (userId >= 0 && userId <= currentMaxId) {
-            DummyUserRepositoryEntity user = users.get(userId);
-            DummyContactInfoRepositoryEntity contactInfo = user.getContactInfo();
-            user.setBiography(newBiography);
+        DummyUserRepositoryEntity dbUser = users.stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
+
+        if (userId >= 0 && userId <= currentMaxId && dbUser != null) {
+            DummyContactInfoRepositoryEntity contactInfo = dbUser.getContactInfo();
+            dbUser.setBiography(newBiography);
             contactInfo.setPhoneNumber(newPhoneNumber);
             contactInfo.setInstagram(newInstagram);
             contactInfo.setFacebook(newFacebook);
@@ -231,15 +272,23 @@ public class DummyUserRepository implements IUserRepository {
         } else return false;
     }
 
-    // TODO implement following methods
     @Override
     public int fetchIdFromEmail(String email) {
-        return 0;
+        for (DummyUserRepositoryEntity dbUser : users) {
+            if (dbUser.getContactInfo().getEmail().equals(email)) {
+                return dbUser.getId();
+            }
+        }
+
+        return -1;
     }
 
-    @Override
-    public List<Integer> fetchUserPets(int userId) throws UserNotFoundException {
-        return null;
+    public void addPet(int userId, int petId) {
+        DummyUserRepositoryEntity dbUser = users.stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
+
+        if (userId >= 0 && userId <= currentMaxId && dbUser != null) {
+            dbUser.getPets().add(petId);
+        }
     }
   
 }

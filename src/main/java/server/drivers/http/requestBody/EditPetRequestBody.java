@@ -1,4 +1,4 @@
-package server.drivers.http;
+package server.drivers.http.requestBody;
 
 /**
  * Represents an HTTP request body for the "/pets/edit" POST route.

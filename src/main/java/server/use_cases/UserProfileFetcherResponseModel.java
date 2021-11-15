@@ -1,13 +1,15 @@
 package server.use_cases;
 
+import server.use_cases.repo_abstracts.ResponseData;
+
 import java.util.Objects;
 
 /**
  * An object defining the response type for
  * UserProfileFetcherInputBoundary.fetchUserProfile
  */
-public class UserProfileFetcherResponseModel {
-    private final boolean isSuccess;
+public class UserProfileFetcherResponseModel extends ResponseData {
+
     private final String firstName;
     private final String lastName;
     private final String biography;
@@ -16,9 +18,8 @@ public class UserProfileFetcherResponseModel {
     private final String instagram;
     private final String facebook;
 
-    public UserProfileFetcherResponseModel(boolean isSuccess, String firstName, String lastName, String biography, String phoneNumber,
+    public UserProfileFetcherResponseModel(String firstName, String lastName, String biography, String phoneNumber,
                                            String email, String instagram, String facebook) {
-        this.isSuccess = isSuccess;
         this.firstName = firstName;
         this.lastName = lastName;
         this.biography = biography;
@@ -26,10 +27,6 @@ public class UserProfileFetcherResponseModel {
         this.email = email;
         this.instagram = instagram;
         this.facebook = facebook;
-    }
-
-    public boolean isSuccess() {
-        return isSuccess;
     }
 
     public String getFirstName() {
@@ -65,8 +62,7 @@ public class UserProfileFetcherResponseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserProfileFetcherResponseModel that = (UserProfileFetcherResponseModel) o;
-        return isSuccess == that.isSuccess
-                && Objects.equals(firstName, that.firstName)
+        return  Objects.equals(firstName, that.firstName)
                 && Objects.equals(lastName, that.lastName)
                 && Objects.equals(biography, that.biography)
                 && Objects.equals(phoneNumber, that.phoneNumber)

@@ -5,13 +5,15 @@ package server.use_cases;
  * UserProfileFetcherInputBoundary.fetchUserProfile
  */
 public class UserProfileFetcherRequestModel {
-    private final String userId;
+
+    private String userId;
 
     public UserProfileFetcherRequestModel(String userId) {
         this.userId = userId;
     }
 
     public String getUserId() {
-        return userId;
+        return this.userId;
     }
+
 }

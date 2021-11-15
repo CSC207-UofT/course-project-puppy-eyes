@@ -1,7 +1,9 @@
 package server.use_cases;
 
+import server.use_cases.repo_abstracts.ResponseModel;
+
 public interface PetSwipesFetcherInputBoundary {
 
-    public PetSwipesFetcherResponseModel fetchPetSwipes(PetSwipesFetcherRequestModel request);
+    public ResponseModel fetchPetSwipes(PetSwipesFetcherRequestModel request);
 
 }

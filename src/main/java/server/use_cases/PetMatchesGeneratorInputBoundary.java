@@ -1,9 +1,11 @@
 package server.use_cases;
 
+import server.use_cases.repo_abstracts.ResponseModel;
+
 import java.io.IOException;
 
 public interface PetMatchesGeneratorInputBoundary {
 
-    public PetMatchesGeneratorResponseModel generatePotentialMatches(PetMatchesGeneratorRequestModel request) throws IOException, InterruptedException;
+    public ResponseModel generatePotentialMatches(PetMatchesGeneratorRequestModel request);
 
 }

@@ -19,23 +19,36 @@ public interface IUserController {
                       String password, String email);
 
     /**
-     * Fetch a user's account details (first name, last name, home address, email)
+     * Fetch a user's account details (firstName, lastName, currentAddress, currentCity, email)
      * given their user id. The returned response is in the form of a JSON object.
      *
-     * @param userId    the user's id
-     */
-    String fetchUserAccount(String userId);
-
-    /**
-     * Return a list of pet ids that belong to the user
+     *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
      * @param userId
      * @return a JSON structure
      */
-    String fetchUserPets(int userId);
+    String fetchUserAccount(boolean fromTerminal, String headerUserId, String userId);
 
-    /*
+    /**
+     * Return a list of pet ids that belong to the user
+     *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
+     * @param userId
+     * @return a JSON structure
+     */
+    String fetchUserPets(boolean fromTerminal, String headerUserId, int userId);
+
+    /**
      * Edit a user's account details given their user id and new information.
      *
+     *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
      * @param userId        the user's id
      * @param newFirstName  the user's new first name
      * @param newLastName   the user's new last name
@@ -43,30 +56,33 @@ public interface IUserController {
      * @param newCity       the user's new current city
      * @param newPassword   the user's new password
      * @param newEmail      the user's new email
-     * @return a JSON object
+     * @return a JSON structure
      */
-    String editUserAccount(String userId, String newFirstName, String newLastName, String newAddress,
-                           String newCity, String newPassword, String newEmail);
+    String editUserAccount(boolean fromTerminal, String headerUserId, String userId, String newFirstName, String newLastName,
+                           String newAddress, String newCity, String newPassword, String newEmail);
 
     /**
      * Fetch a user's profile details (first name, last name, biography, phone number, email, Instagram, Facebook)
      * given their user id. The returned response is in the form of a JSON object.
      *
      * @param userId    the user's id
-     * @return a JSON object
+     * @return a JSON structure
      */
     String fetchUserProfile(String userId);
 
     /**
      * Edit a user's profile details given their user id and new information.
      *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
      * @param userId            the user's id
      * @param newBiography      the user's new biography
      * @param newPhoneNumber    the user's new phone number
      * @param newInstagram      the user's new Instagram
      * @param newFacebook       the user's new Facebook
-     * @return A JSON object
+     * @return A JSON structure
      */
-    String editUserProfile(String userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook);
+    String editUserProfile(boolean fromTerminal, String headerUserId, String userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook);
 
 }

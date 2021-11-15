@@ -1,8 +1,9 @@
 package server.use_cases;
 
+import server.entities.Pet;
 import server.use_cases.repo_abstracts.IPetRepository;
 import server.use_cases.repo_abstracts.PetNotFoundException;
-import server.use_cases.repo_abstracts.PetRepositoryPetProfileFetcherResponse;
+import server.use_cases.repo_abstracts.ResponseModel;
 
 public class PetProfileFetcher implements PetProfileFetcherInputBoundary {
     private final IPetRepository petRepository;
@@ -18,24 +19,36 @@ public class PetProfileFetcher implements PetProfileFetcherInputBoundary {
      * @return a PetProfileFetcherResponseModel that contains the created pet's basic information.
      */
     @Override
-    public PetProfileFetcherResponseModel fetchPetProfile(PetProfileFetcherRequestModel request) {
+    public ResponseModel fetchPetProfile(PetProfileFetcherRequestModel request) {
         int id;
         try {
             id = Integer.parseInt(request.getPetId());
         } catch (NumberFormatException e) {
             // Invalid pet id
-            return new PetProfileFetcherResponseModel(false, "", -1, "", "");
+            return new ResponseModel(false, "ID must be an integer.");
         }
 
-        PetRepositoryPetProfileFetcherResponse pet;
         try {
-            pet = petRepository.fetchPetProfile(id);
+            Pet pet = petRepository.fetchPet(id);
+            request.setUserId(String.valueOf(pet.getUserId()));
 
-            return new PetProfileFetcherResponseModel(true, pet.getName(), pet.getAge(),
-                    pet.getBreed(), pet.getBiography());
+            if (!request.isRequestAuthorized()) {
+                return new ResponseModel(false, "You are not authorized to make this request.");
+            }
+
+            return new ResponseModel(
+                true,
+                "Successfully fetched pet profile.",
+                new PetProfileFetcherResponseModel(
+                    pet.getName(),
+                    pet.getAge(),
+                    pet.getBreed(),
+                    pet.getBiography()
+                )
+            );
         } catch (PetNotFoundException e) {
             // Pet not found
-            return new PetProfileFetcherResponseModel(false, "", -1, "", "");
+            return new ResponseModel(false, "Pet with ID: " + request.getPetId() + " does not exist.");
         }
     }
 

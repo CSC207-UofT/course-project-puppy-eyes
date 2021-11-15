@@ -1,6 +1,5 @@
 package server.drivers.dbEntities;
 
-import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -39,6 +38,10 @@ public class PetDatabaseEntity {
     @Where(clause="relation_type = 'MATCH'")
     private List<RelationDatabaseEntity> matches;
 
+    @OneToMany(mappedBy="fromId", fetch = FetchType.EAGER)
+    @Where(clause="relation_type = 'REJECT'")
+    private List<RelationDatabaseEntity> rejected;
+
     @ManyToOne
     @JoinColumn(name="user_id", insertable = false, updatable = false)
     private UserDatabaseEntity user;
@@ -53,7 +56,7 @@ public class PetDatabaseEntity {
 
     }
 
-    public PetDatabaseEntity() {}
+    public PetDatabaseEntity() { }
 
     public UserDatabaseEntity getUser() {
         return this.user;
@@ -89,6 +92,10 @@ public class PetDatabaseEntity {
 
     public List<Integer> getMatches() {
         return this.matches.stream().map(match -> match.getToId()).collect(Collectors.toList());
+    }
+
+    public List<Integer> getRejected() {
+        return this.rejected.stream().map(rejected -> rejected.getToId()).collect(Collectors.toList());
     }
 
     public void setName(String name) {

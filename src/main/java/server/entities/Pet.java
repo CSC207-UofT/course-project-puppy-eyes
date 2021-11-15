@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Pet {
-    private final int userId;
-    private final String name;
-    private final int age;
+
+    private int userId;
+    private String name;
+    private int age;
     private String biography;
     private String breed;
     private int id;
-    private List<Pet> swiped, matched;
+    private List<Integer> swipedOn, matches, rejected;
 
     public Pet(int userId, String name, int age, String breed, String biography) {
         this.userId = userId;
@@ -18,8 +19,21 @@ public abstract class Pet {
         this.age = age;
         this.biography = biography;
         this.breed = breed;
-        this.swiped = new ArrayList<>();
-        this.matched = new ArrayList<>();
+        this.swipedOn = new ArrayList<>();
+        this.matches = new ArrayList<>();
+        this.rejected = new ArrayList<>();
+    }
+
+    public boolean isNameValid() {
+        return this.name.trim().length() >= 3;
+    }
+
+    public boolean isAgeValid() {
+        return this.age >= 0;
+    }
+
+    public boolean isBreedValid() {
+        return this.breed.trim().length() >= 3;
     }
 
     public int getUserId() {
@@ -46,16 +60,16 @@ public abstract class Pet {
         return id;
     }
 
-    public List<Pet> getSwiped() {
-        return this.swiped;
+    public List<Integer> getSwipedOn() {
+        return this.swipedOn;
     }
 
-    public List<Pet> getMatched() {
-        return this.matched;
+    public List<Integer> getMatches() {
+        return this.matches;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public List<Integer> getRejected() {
+        return this.rejected;
     }
 
     public void setBiography(String biography) {
@@ -64,6 +78,14 @@ public abstract class Pet {
 
     public void setBreed(String breed) {
         this.breed = breed;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     @Override
@@ -75,4 +97,7 @@ public abstract class Pet {
         return ((Pet) other).getId() == this.id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 }

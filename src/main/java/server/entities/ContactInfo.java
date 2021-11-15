@@ -14,6 +14,10 @@ public class ContactInfo {
     }
     /** Probably can set return statement as string or boolean to confirm changes */
 
+    public boolean isEmailValid() {
+        return this.email.length() >= 5;
+    }
+
     public void setPhoneNumber(String phoneNumber){
         this.phoneNumber = phoneNumber;
     }

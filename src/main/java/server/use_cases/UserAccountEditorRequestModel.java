@@ -1,10 +1,12 @@
 package server.use_cases;
 
+import server.use_cases.repo_abstracts.AuthRequestModel;
+
 /**
  * An object defining the request type for UserAccountEditor.editUserAccount
  */
-public class UserAccountEditorRequestModel {
-    private final String userId;
+public class UserAccountEditorRequestModel extends AuthRequestModel {
+
     private final String newFirstName;
     private final String newLastName;
     private final String newAddress;
@@ -12,18 +14,14 @@ public class UserAccountEditorRequestModel {
     private final String newPassword;
     private final String newEmail;
 
-    public UserAccountEditorRequestModel(String userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail) {
-        this.userId = userId;
+    public UserAccountEditorRequestModel(String headerUserId, String userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail) {
+        super(headerUserId, userId);
         this.newFirstName = newFirstName;
         this.newLastName = newLastName;
         this.newAddress = newAddress;
         this.newCity = newCity;
         this.newPassword = newPassword;
         this.newEmail = newEmail;
-    }
-
-    public String getUserId() {
-        return userId;
     }
 
     public String getNewFirstName() {

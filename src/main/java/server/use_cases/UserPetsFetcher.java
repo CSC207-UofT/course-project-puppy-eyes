@@ -1,9 +1,8 @@
 package server.use_cases;
 
-import server.use_cases.repo_abstracts.IPetRepository;
-import server.use_cases.repo_abstracts.IUserRepository;
-import server.use_cases.repo_abstracts.PetNotFoundException;
-import server.use_cases.repo_abstracts.UserNotFoundException;
+import server.entities.Pet;
+import server.entities.User;
+import server.use_cases.repo_abstracts.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,29 +16,40 @@ public class UserPetsFetcher implements UserPetsFetcherInputBoundary {
     }
 
     /**
-     * Create a new UserPetsFetcher with given request.
+     * Create a new ResponseModel with given request.
      *
      * @param request Object containing id of the user.
-     * @return a UserPetsFetcherResponseModel listing all the pets .
+     * @return a ResponseModel listing all the pets.
      */
     @Override
-    public UserPetsFetcherResponseModel fetchUserPets(UserPetsFetcherRequestModel request)  {
+    public ResponseModel fetchUserPets(UserPetsFetcherRequestModel request)  {
         int id;
         try {
             id = Integer.parseInt(request.getUserId());
         } catch (NumberFormatException e) {
-            // Invalid pet id
-            return new UserPetsFetcherResponseModel(false, null);
+            // Invalid user id
+            return new ResponseModel(false, "ID must be an integer.");
         }
 
         try {
-            List<Integer> petIds = userRepository.fetchUserPets(id);
-            // Convert integers to strings
-            List<String> stringPetIds = petIds.stream().map(String::valueOf).collect(Collectors.toList());
+            User user = userRepository.fetchUser(id);
 
-            return new UserPetsFetcherResponseModel(true, stringPetIds);
+            if (!request.isRequestAuthorized()) {
+                return new ResponseModel(false, "You are not authorized to make this request.");
+            }
+
+            // Convert integers to strings
+            List<String> stringPetIds = user.getPetList().stream().
+                    map(String::valueOf).
+                    collect(Collectors.toList());
+
+            return new ResponseModel(
+                true,
+                "Successfully fetched user pets.",
+                new UserPetsFetcherResponseModel(stringPetIds)
+            );
         } catch (UserNotFoundException exception) {
-            return new UserPetsFetcherResponseModel(false, null);
+            return new ResponseModel(false, "User with ID: " + id + " does not exist.");
         }
     }
 

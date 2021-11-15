@@ -1,29 +1,32 @@
 package server.drivers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GeocoderService {
+@Component
+public class GeocoderService implements IGeocoderService {
 
     private final RestTemplate restTemplate;
     private final ObjectMapper mapper;
 
-    public GeocoderService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public GeocoderService() {
+        this.restTemplate = new RestTemplate();
         this.mapper = new ObjectMapper();
     }
 
     private final String GEOCODING_RESOURCE = "https://geocode.search.hereapi.com/v1/geocode";
-    // TODO replace with API key
-    private final String API_KEY = "KEY";
+    @Value("${geocoder.key}")
+    private String API_KEY;
 
     /**
      * Given a query, make a GET request to the HERE Geocoding API to fetch latitude and longitude.
@@ -32,29 +35,32 @@ public class GeocoderService {
      * @throws IOException
      * @throws InterruptedException
      */
-    public List<LatLng> getLatLng(String query) throws IOException, InterruptedException {
-        String encodedQuery = URLEncoder.encode(query,"UTF-8");
-        String requestUrl = GEOCODING_RESOURCE + "?apiKey=" + API_KEY + "&q=" + encodedQuery;
+    public List<LatLng> getLatLng(String query) {
+        try {
+            String requestUrl = GEOCODING_RESOURCE + "?apiKey=" + API_KEY + "&q=" + query;
 
-        // Make a GET request to the geocode API and store the response
-        ResponseEntity<String> response = this.restTemplate.getForEntity(requestUrl, String.class);
+            // Make a GET request to the geocode API and store the response
+            ResponseEntity<String> response = this.restTemplate.getForEntity(requestUrl, String.class);
 
-        List<LatLng> results = new ArrayList<>();
+            List<LatLng> results = new ArrayList<>();
 
-        if (response.getStatusCode() == HttpStatus.OK) {
-            // Convert the raw String response into a JSON node
-            JsonNode jsonNodeItems = mapper.readTree(response.getBody()).get("items");
+            if (response.getStatusCode() == HttpStatus.OK) {
+                // Convert the raw String response into a JSON node
+                JsonNode jsonNodeItems = mapper.readTree(response.getBody()).get("items");
 
-            for (JsonNode item : jsonNodeItems) {
-                JsonNode position = item.get("position");
-                Double lat = position.get("lat").asDouble();
-                Double lng = position.get("lng").asDouble();
+                for (JsonNode item : jsonNodeItems) {
+                    JsonNode position = item.get("position");
+                    Double lat = position.get("lat").asDouble();
+                    Double lng = position.get("lng").asDouble();
 
-                results.add(new LatLng(lat, lng));
+                    results.add(new LatLng(lat, lng));
+                }
             }
-        }
 
-        return results;
+            return results;
+        } catch (JsonProcessingException e) {
+            return null;
+        }
     }
 
 }

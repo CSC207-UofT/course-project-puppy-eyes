@@ -1,8 +1,10 @@
 package server.use_cases;
 
+import server.use_cases.repo_abstracts.ResponseModel;
+
 /**
  * An input boundary for the "create pet" use case.
  */
 public interface PetCreatorInputBoundary {
-    PetCreatorResponseModel createPet(PetCreatorRequestModel request);
+    ResponseModel createPet(PetCreatorRequestModel request);
 }

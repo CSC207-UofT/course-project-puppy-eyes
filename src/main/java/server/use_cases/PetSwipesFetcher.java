@@ -1,8 +1,9 @@
 package server.use_cases;
 
+import server.entities.Pet;
 import server.use_cases.repo_abstracts.IPetRepository;
 import server.use_cases.repo_abstracts.PetNotFoundException;
-import server.use_cases.repo_abstracts.PetRepositoryPetProfileFetcherResponse;
+import server.use_cases.repo_abstracts.ResponseModel;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,22 +22,34 @@ public class PetSwipesFetcher implements PetSwipesFetcherInputBoundary {
      * @return a PetSwipesFetcherResponseModel that a list of pet ids that the pet has swiped on.
      */
     @Override
-    public PetSwipesFetcherResponseModel fetchPetSwipes(PetSwipesFetcherRequestModel request)  {
+    public ResponseModel fetchPetSwipes(PetSwipesFetcherRequestModel request)  {
         int id;
         try {
             id = Integer.parseInt(request.getPetId());
         } catch (NumberFormatException e) {
             // Invalid pet id
-            return new PetSwipesFetcherResponseModel(false, null);
+            return new ResponseModel(false, "ID must be an integer.");
         }
 
         try {
-            List<Integer> petIds = petRepository.fetchPetSwipes(id);
-            List<String> stringPetIds = petIds.stream().map(String::valueOf).collect(Collectors.toList());
+            Pet pet = petRepository.fetchPet(id);
+            request.setUserId(String.valueOf(pet.getUserId()));
 
-            return new PetSwipesFetcherResponseModel(true, stringPetIds);
+            if (!request.isRequestAuthorized()) {
+                return new ResponseModel(false, "You are not authorized to make this request.");
+            }
+
+            List<String> stringPetIds = pet.getSwipedOn().stream().
+                    map(String::valueOf).
+                    collect(Collectors.toList());
+
+            return new ResponseModel(
+                    true,
+                    "Successfully retrieved pet swipes.",
+                    new PetMatchesFetcherResponseModel(stringPetIds)
+            );
         } catch (PetNotFoundException exception) {
-            return new PetSwipesFetcherResponseModel(false, null);
+            return new ResponseModel(false, "Pet with ID: " + request.getPetId() + " does not exist.");
         }
     }
 

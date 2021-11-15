@@ -1,27 +1,21 @@
 package server.use_cases;
 
-import server.entities.Pet;
+import server.use_cases.repo_abstracts.ResponseData;
 
 import java.util.List;
 
 /**
  * An object defining the response type for PetMatchesGenerator.generatePotentialMatches
  */
-public class PetMatchesGeneratorResponseModel {
+public class PetMatchesGeneratorResponseModel extends ResponseData {
 
-    private final boolean isSuccess;
-    private final List<Pet> potentialMatches;
+    private final List<String> potentialMatches;
 
-    public PetMatchesGeneratorResponseModel(boolean isSuccess, List<Pet> potentialMatches) {
-        this.isSuccess = isSuccess;
+    public PetMatchesGeneratorResponseModel(List<String> potentialMatches) {
         this.potentialMatches = potentialMatches;
     }
 
-    public boolean isSuccess() {
-        return this.isSuccess;
-    }
-
-    public List<Pet> getPotentialMatches() {
+    public List<String> getPotentialMatches() {
         return this.potentialMatches;
     }
 

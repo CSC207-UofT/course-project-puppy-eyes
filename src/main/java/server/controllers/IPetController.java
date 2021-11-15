@@ -1,6 +1,7 @@
 package server.controllers;
 
-import java.util.List;
+import server.use_cases.PetMatchesGeneratorRequestModel;
+import server.use_cases.repo_abstracts.ResponseModel;
 
 /**
  * An interface representing a controller that handles all
@@ -11,6 +12,10 @@ public interface IPetController {
     /**
      * Create a new pet.
      *
+     *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
      * @param userId    the user id of this pet's owner
      * @param name      the pet's name
      * @param age       the pet's age
@@ -19,19 +24,26 @@ public interface IPetController {
      * @return A JSON structure
      */
 
-    String createPet(String userId, String name, int age, String breed, String biography);
+    String createPet(boolean fromTerminal, String headerUserId, String userId, String name, int age, String breed, String biography);
 
     /**
      * Fetch a pet by given id.
      *
+     *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
      * @param petId     user entered pet id
      * @return A JSON structure
      */
-    String fetchPetProfile(String petId);
+    String fetchPetProfile(boolean fromTerminal, String headerUserId, String petId);
 
     /**
      * Edit a pet.
      *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
      * @param petId         user entered pet id
      * @param newName       user entered pet's new name
      * @param newAge        user entered pet's new age
@@ -39,46 +51,76 @@ public interface IPetController {
      * @param newBiography  user entered pet's new biography
      * @return A JSON structure
      */
-    String editPet(String petId, String newName, int newAge, String newBreed, String newBiography);
+    String editPet(boolean fromTerminal, String headerUserId, String petId, String newName, int newAge, String newBreed, String newBiography);
 
     /**
      * Add the Pet with id pet2Id to the Pet with id pet1Id's rejection list
+     *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
      * @param pet1Id
      * @param pet2Id
      * @return a String of "true" or "false whether the rejection successfully occurred
      */
-    String rejectPets(int pet1Id, int pet2Id);
+    String rejectPets(boolean fromTerminal, String headerUserId, int pet1Id, int pet2Id);
+
+    /**
+     * Return a list of pet ids that the pet may potentially want to match with
+     *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
+     * @param petId
+     * @return a JSON structure
+     */
+    public String generatePotentialMatches(boolean fromTerminal, String headerUserId, String petId);
 
     /**
      * Add the Pet with id pet2Id to the Pet with id pet1Id's swiped list.
      *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
      * @param pet1Id
      * @param pet2Id
      * @return a String of "true" or "false whether the swipe successfully occurred
      */
-    String swipePets(int pet1Id, int pet2Id);
+    String swipePets(boolean fromTerminal, String headerUserId, int pet1Id, int pet2Id);
 
     /**
      * Remove the Pet with id pet2Id to the Pet with id pet1Id's swiped list.
      *
+     *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
      * @param pet1Id
      * @param pet2Id
      * @return a String of "true" or "false whether the unswipe successfully occurred
      */
-    String unswipePets(int pet1Id, int pet2Id);
+    String unswipePets(boolean fromTerminal, String headerUserId, int pet1Id, int pet2Id);
 
     /**
      * Return a list of pet ids that the given pet has swiped on
+     *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
      * @param petId
      * @return a JSON structure
      */
-    String fetchPetSwipes(int petId);
+    String fetchPetSwipes(boolean fromTerminal, String headerUserId, int petId);
 
     /**
      * Return a list of pet ids that the given pet has matched with
+     *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
      * @param petId
      * @return a JSON structure
      */
-    String fetchPetMatches(int petId);
+    String fetchPetMatches(boolean fromTerminal, String headerUserId, int petId);
 
 }

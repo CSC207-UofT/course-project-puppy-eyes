@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 import server.controllers.*;
 import server.drivers.GeocoderService;
 import server.drivers.http.AuthFilter;
@@ -67,20 +66,20 @@ class BeanHolder {
 
     @Autowired
     @Bean
-    PetSwiperInputBoundary petSwiperBean(RelationRepository relationRepository) {
-        return new PetSwiper(relationRepository);
+    PetSwiperInputBoundary petSwiperBean(RelationRepository relationRepository, PetRepository petRepository) {
+        return new PetSwiper(relationRepository, petRepository);
     }
 
     @Autowired
     @Bean
-    PetUnswiperInputBoundary petUnswiperBean(RelationRepository relationRepository) {
-        return new PetUnswiper(relationRepository);
+    PetUnswiperInputBoundary petUnswiperBean(RelationRepository relationRepository, PetRepository petRepository) {
+        return new PetUnswiper(relationRepository, petRepository);
     }
 
     @Autowired
     @Bean
-    PetRejectorInputBoundary petRejectorBean(RelationRepository relationRepository) {
-        return new PetRejector(relationRepository);
+    PetRejectorInputBoundary petRejectorBean(RelationRepository relationRepository, PetRepository petRepository) {
+        return new PetRejector(relationRepository, petRepository);
     }
 
     @Autowired
@@ -105,6 +104,12 @@ class BeanHolder {
     @Bean
     PetMatchesFetcherInputBoundary petMatchesFetcherBean(PetRepository petRepository) {
         return new PetMatchesFetcher(petRepository);
+    }
+
+    @Autowired
+    @Bean
+    PetMatchesGeneratorInputBoundary petMatchesGeneratorBean(UserRepository userRepository, PetRepository petRepository) {
+        return new PetMatchesGenerator(userRepository, petRepository);
     }
 
     @Autowired
@@ -138,13 +143,14 @@ class BeanHolder {
     IPetController petControllerBean(RelationRepository relationRepository, PetRepository petRepository, UserRepository userRepository) {
         return new PetController(
                 petCreatorBean(petRepository, userRepository),
-                petSwiperBean(relationRepository),
+                petSwiperBean(relationRepository, petRepository),
                 petProfileFetcherBean(petRepository),
                 petEditorBean(petRepository),
-                petRejectorBean(relationRepository),
-                petUnswiperBean(relationRepository),
+                petRejectorBean(relationRepository, petRepository),
+                petUnswiperBean(relationRepository, petRepository),
                 petSwipesFetcherBean(petRepository),
                 petMatchesFetcherBean(petRepository),
+                petMatchesGeneratorBean(userRepository, petRepository),
                 jsonPresenterBean()
         );
     }
@@ -152,7 +158,7 @@ class BeanHolder {
     @Autowired
     @Bean
     ISessionController sessionControllerBean(UserRepository userRepository) {
-        return new SessionController(sessionTokenGeneratorBean(userRepository));
+        return new SessionController(sessionTokenGeneratorBean(userRepository), jsonPresenterBean());
     }
 
     // Utils/Services
@@ -173,7 +179,7 @@ class BeanHolder {
 
     @Bean
     GeocoderService geocoderServiceBean() {
-        return new GeocoderService(new RestTemplate());
+        return new GeocoderService();
     }
 
     @Bean
@@ -182,6 +188,10 @@ class BeanHolder {
 
         authBean.setFilter(new AuthFilter(jwtServiceBean()));
         authBean.addUrlPatterns("/authtest");
+        authBean.addUrlPatterns("/pets/*");
+        authBean.addUrlPatterns("/users/account");
+        authBean.addUrlPatterns("/users/editaccount");
+        authBean.addUrlPatterns("/users/editprofile");
 
         return authBean;
     }

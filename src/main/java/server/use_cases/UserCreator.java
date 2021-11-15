@@ -2,11 +2,13 @@ package server.use_cases;
 
 import server.entities.User;
 import server.use_cases.repo_abstracts.IUserRepository;
+import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.repo_abstracts.UserNotFoundException;
 
 /**
  * A use case responsible for creating a new user.
  */
-public class UserCreator implements UserCreatorInputBoundary{
+public class UserCreator implements UserCreatorInputBoundary {
 
     IUserRepository userRepository;
 
@@ -20,31 +22,50 @@ public class UserCreator implements UserCreatorInputBoundary{
      *
      * @param request Object containing registration data of the new user.
      */
-    public UserCreatorResponseModel createUser(UserCreatorRequestModel request) {
-        User newUser = new User(request.getFirstName(),
-                request.getLastName(),
-                request.getCurrentAddress(),
-                request.getCurrentCity(),
-                request.getPassword(),
-                request.getEmail()) {
-        };
+    public ResponseModel createUser(UserCreatorRequestModel request) {
+        // Check if user exists
+        if (userRepository.fetchIdFromEmail(request.getEmail()) >= 0) {
+            return new ResponseModel(false, "A user with this email already exists.");
+        }
 
-        int id = userRepository.createUser(newUser.getFirstName(), newUser.getLastName(), newUser.getCurrentAddress(),
-                newUser.getCurrentCity(), newUser.getPasswordHash(), newUser.getContactInfo().getEmail());
+        // TODO factory method
+        User newUser = new User(
+            request.getFirstName(),
+            request.getLastName(),
+            request.getCurrentAddress(),
+            request.getCurrentCity(),
+            request.getPassword(),
+            request.getEmail()
+        ) {};
+
+        if (!newUser.isFirstNameValid() || !newUser.isLastNameValid()) {
+            return new ResponseModel(false, "Please enter a name of at least 3 characters.");
+        }
+
+        if (!newUser.isPasswordValid()) {
+            return new ResponseModel(false, "Please enter a password of at least 6 characters.");
+        }
+
+        if (!newUser.getContactInfo().isEmailValid()) {
+            return new ResponseModel(false, "Please enter an email of at least 5 characters.");
+        }
+
+        int id = userRepository.createUser(newUser.getFirstName(), newUser.getLastName(), newUser.getPasswordHash(), newUser.getCurrentAddress(),
+                newUser.getCurrentCity(), newUser.getContactInfo().getEmail());
 
         newUser.setId(id);
 
-
-        // Return a UserCreatorResponseModel
-        // TODO: Introduce cases where isSuccess is false
-        // TODO: Replace isSuccess (everywhere) with an enum
-        return new UserCreatorResponseModel(true,
+        return new ResponseModel(
+            true,
+            "Successfully created new user.",
+            new UserCreatorResponseModel(
+                String.valueOf(id),
                 newUser.getFirstName(),
                 newUser.getLastName(),
                 newUser.getCurrentAddress(),
                 newUser.getCurrentCity(),
-                newUser.getContactInfo().getEmail(),
-                ((Integer) newUser.getId()).toString()
+                newUser.getContactInfo().getEmail()
+            )
         );
     }
 }

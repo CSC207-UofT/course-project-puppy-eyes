@@ -1,6 +1,7 @@
 package server.entities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class User {
     private String firstName;
@@ -8,7 +9,7 @@ public abstract class User {
     private String currentAddress;
     private String currentCity;
     private double matchingDistanceCap;
-    private final ArrayList<Pet> petList;
+    private final List<Integer> petList;
     /* A hash of the user's password. */
     // In a security perspective, it is unwise to store the user's password
     // as raw plaintext.
@@ -42,6 +43,22 @@ public abstract class User {
         this.biography = "";
     }
 
+    public boolean isFirstNameValid() {
+        return this.firstName.length() >= 3;
+    }
+
+    public boolean isLastNameValid() {
+        return this.lastName.length() >= 3;
+    }
+
+    public boolean isCurrentCityValid() {
+        return this.currentCity.length() >= 3;
+    }
+
+    public boolean isPasswordValid() {
+        return this.passwordHash.length() >= 6;
+    }
+
     public String getFirstName() {return this.firstName;}
 
     public String getLastName() {return this.lastName;}
@@ -70,7 +87,7 @@ public abstract class User {
         return this.contactInfo;
     }
 
-    public ArrayList<Pet> getPetList(){
+    public List<Integer> getPetList(){
         return this.petList;
     }
 

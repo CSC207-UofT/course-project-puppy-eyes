@@ -1,4 +1,4 @@
-package server.drivers.http;
+package server.drivers.http.requestBody;
 
 /**
  * Represents an HTTP request body for the "/pets/create" POST route.
@@ -37,4 +37,5 @@ public class CreatePetRequestBody {
     public String getBiography() {
         return biography;
     }
+
 }
