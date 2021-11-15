@@ -1,13 +1,13 @@
 package server.use_cases;
 
-import server.entities.Pet;
+import server.use_cases.repo_abstracts.ResponseData;
 
 import java.util.List;
 
 /**
  * An object defining the response type for PetMatchesGenerator.generatePotentialMatches
  */
-public class PetMatchesGeneratorResponseModel {
+public class PetMatchesGeneratorResponseModel extends ResponseData {
 
     private final List<String> potentialMatches;
 

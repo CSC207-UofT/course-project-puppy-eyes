@@ -14,7 +14,7 @@ public class PetMatchesGeneratorRequestModel extends AuthRequestModel {
         this.petId = petId;
     }
 
-    public String getPet() {
+    public String getPetId() {
         return this.petId;
     }
 
