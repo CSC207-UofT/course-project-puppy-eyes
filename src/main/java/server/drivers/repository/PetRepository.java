@@ -74,6 +74,7 @@ public class PetRepository implements IPetRepository {
             pet.setId(dbPet.getId());
             pet.getSwipedOn().addAll(dbPet.getSwipedOn());
             pet.getMatches().addAll(dbPet.getMatches());
+            pet.getRejected().addAll(dbPet.getRejected());
             return pet;
         } else {
             throw new PetNotFoundException("Pet of ID: " + petId + " not found");

@@ -11,7 +11,7 @@ public abstract class Pet {
     private String biography;
     private String breed;
     private int id;
-    private List<Integer> swipedOn, matches;
+    private List<Integer> swipedOn, matches, rejected;
 
     public Pet(int userId, String name, int age, String breed, String biography) {
         this.userId = userId;
@@ -21,6 +21,7 @@ public abstract class Pet {
         this.breed = breed;
         this.swipedOn = new ArrayList<>();
         this.matches = new ArrayList<>();
+        this.rejected = new ArrayList<>();
     }
 
     public boolean isNameValid() {
@@ -65,6 +66,10 @@ public abstract class Pet {
 
     public List<Integer> getMatches() {
         return this.matches;
+    }
+
+    public List<Integer> getRejected() {
+        return this.rejected;
     }
 
     public void setBiography(String biography) {

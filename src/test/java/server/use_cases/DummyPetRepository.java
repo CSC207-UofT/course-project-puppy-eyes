@@ -17,7 +17,7 @@ class DummyPetRepositoryEntity {
     private int age;
     private String breed;
     private String biography;
-    private List<Integer> swipedOn, matches;
+    private List<Integer> swipedOn, matches, rejected;
 
     public DummyPetRepositoryEntity(int id, int userId, String name, int age, String breed, String biography) {
         this.id = id;
@@ -27,6 +27,7 @@ class DummyPetRepositoryEntity {
         this.breed = breed;
         this.biography = biography;
         this.swipedOn = new ArrayList<>();
+        this.rejected = new ArrayList<>();
         this.matches = new ArrayList<>();
     }
 
@@ -58,6 +59,10 @@ class DummyPetRepositoryEntity {
         return this.swipedOn;
     }
 
+    public List<Integer> getRejected() {
+        return this.swipedOn;
+    }
+
     public List<Integer> getMatches() {
         return this.matches;
     }
@@ -84,8 +89,10 @@ class DummyPetRepositoryEntity {
 public class DummyPetRepository implements IPetRepository {
     private final ArrayList<DummyPetRepositoryEntity> pets;
     private int currentMaxId;
+    private DummyUserRepository dummyUserRepository;
 
-    public DummyPetRepository() {
+    public DummyPetRepository(DummyUserRepository dummyUserRepository) {
+        this.dummyUserRepository = dummyUserRepository;
         pets = new ArrayList<>();
         currentMaxId = -1;
     }
@@ -104,7 +111,9 @@ public class DummyPetRepository implements IPetRepository {
     public int createPet(int userId, String name, int age, String breed, String biography) {
         currentMaxId++;
         int petId = currentMaxId;
-        pets.add(new DummyPetRepositoryEntity(petId, userId, name, age, breed, biography));
+        DummyPetRepositoryEntity dbPet = new DummyPetRepositoryEntity(petId, userId, name, age, breed, biography);
+        dummyUserRepository.addPet(userId, petId);
+        pets.add(dbPet);
         return petId;
     }
 
@@ -123,6 +132,7 @@ public class DummyPetRepository implements IPetRepository {
             Pet pet = new Pet(dbPet.getUserId(), dbPet.getName(), dbPet.getAge(), dbPet.getBreed(), dbPet.getBiography()) {};
             pet.getSwipedOn().addAll(dbPet.getSwipedOn());
             pet.getMatches().addAll(dbPet.getMatches());
+            pet.getRejected().addAll(dbPet.getRejected());
             return pet;
         } else {
             throw new PetNotFoundException("Pet with ID: " + petId + " not found.");
