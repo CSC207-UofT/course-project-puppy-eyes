@@ -57,7 +57,10 @@ public class UserRepository implements IUserRepository {
             UserDatabaseEntity dbUser = searchResult.get();
 
             // TODO factory
-            User user = new User(dbUser.getFirstName(), dbUser.getLastName(), dbUser.getCurrentAddress(), dbUser.getCurrentCity(), dbUser.getPassword(), dbUser.getContactInfo().getEmail()) {};
+            User user = new User(dbUser.getFirstName(), dbUser.getLastName(), dbUser.getCurrentAddress(),
+                    dbUser.getCurrentCity(), dbUser.getPassword(), dbUser.getContactInfo().getEmail()) {};
+            user.setBiography(dbUser.getBiography());
+
             user.getContactInfo().setEmail(dbUser.getContactInfo().getEmail());
             user.getContactInfo().setFacebook(dbUser.getContactInfo().getFacebook());
             user.getContactInfo().setInstagram(dbUser.getContactInfo().getInstagram());
