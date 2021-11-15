@@ -18,6 +18,7 @@ class DummyUserRepositoryEntity {
     private String currentCity;
     private String passwordHash;
     private String biography;
+    private List<Integer> petList;
     private DummyContactInfoRepositoryEntity contactInfo;
 
     public DummyUserRepositoryEntity(int id, String firstName, String lastName, String currentAddress, String currentCity, String passwordHash, String email) {
@@ -30,10 +31,15 @@ class DummyUserRepositoryEntity {
         this.contactInfo = new DummyContactInfoRepositoryEntity();
         this.contactInfo.setEmail(email);
         this.biography = "";
+        this.petList = new ArrayList<>();
     }
 
     public int getId() {
         return this.id;
+    }
+
+    public List<Integer> getPets() {
+        return this.petList;
     }
 
     public String getFirstName() {
@@ -136,6 +142,7 @@ class DummyContactInfoRepositoryEntity {
     public String getFacebook() {
         return facebook;
     }
+
 }
 
 /**
@@ -155,7 +162,6 @@ public class DummyUserRepository implements IUserRepository {
         currentMaxId++;
         int id = currentMaxId;
         users.add(new DummyUserRepositoryEntity(id, firstName, lastName, currentAddress, currentCity, passwordHash, email));
-
         return id;
     }
 
@@ -172,6 +178,8 @@ public class DummyUserRepository implements IUserRepository {
             user.getContactInfo().setFacebook(dbUser.getContactInfo().getFacebook());
             user.getContactInfo().setEmail(dbUser.getContactInfo().getEmail());
             user.setBiography(dbUser.getBiography());
+            user.getPetList().addAll(dbUser.getPets());
+            user.setId(dbUser.getId());
             return user;
         } else {
             throw new UserNotFoundException("User with ID: " + userId + " not found.");
@@ -214,6 +222,8 @@ public class DummyUserRepository implements IUserRepository {
             user.getContactInfo().setFacebook(dbUser.getContactInfo().getFacebook());
             user.getContactInfo().setEmail(dbUser.getContactInfo().getEmail());
             user.setBiography(dbUser.getBiography());
+            user.setId(dbUser.getId());
+            user.getPetList().addAll(dbUser.getPets());
             users.add(user);
         }
 
@@ -250,10 +260,11 @@ public class DummyUserRepository implements IUserRepository {
 
     @Override
     public boolean editUserProfile(int userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook) {
-        if (userId >= 0 && userId <= currentMaxId) {
-            DummyUserRepositoryEntity user = users.get(userId);
-            DummyContactInfoRepositoryEntity contactInfo = user.getContactInfo();
-            user.setBiography(newBiography);
+        DummyUserRepositoryEntity dbUser = users.stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
+
+        if (userId >= 0 && userId <= currentMaxId && dbUser != null) {
+            DummyContactInfoRepositoryEntity contactInfo = dbUser.getContactInfo();
+            dbUser.setBiography(newBiography);
             contactInfo.setPhoneNumber(newPhoneNumber);
             contactInfo.setInstagram(newInstagram);
             contactInfo.setFacebook(newFacebook);
@@ -270,6 +281,14 @@ public class DummyUserRepository implements IUserRepository {
         }
 
         return -1;
+    }
+
+    public void addPet(int userId, int petId) {
+        DummyUserRepositoryEntity dbUser = users.stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
+
+        if (userId >= 0 && userId <= currentMaxId && dbUser != null) {
+            dbUser.getPets().add(petId);
+        }
     }
   
 }

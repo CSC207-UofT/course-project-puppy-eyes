@@ -15,7 +15,7 @@ public class TestPetCreator {
     @BeforeEach
     public void setUp() {
         DummyUserRepository userRepository = new DummyUserRepository();
-        DummyPetRepository petRepository = new DummyPetRepository();
+        DummyPetRepository petRepository = new DummyPetRepository(userRepository);
 
         userCreator = new UserCreator(userRepository);
         petCreator = new PetCreator(petRepository, userRepository);

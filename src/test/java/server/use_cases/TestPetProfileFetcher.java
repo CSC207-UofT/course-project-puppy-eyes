@@ -16,8 +16,9 @@ public class TestPetProfileFetcher {
 
     @BeforeEach
     public void setUp() {
-        userCreator = new UserCreator(new DummyUserRepository());
-        dummyPetRepository = new DummyPetRepository();
+        DummyUserRepository userRepository = new DummyUserRepository();
+        userCreator = new UserCreator(userRepository);
+        dummyPetRepository = new DummyPetRepository(userRepository);
         petProfileFetcher = new PetProfileFetcher(dummyPetRepository);
     }
 

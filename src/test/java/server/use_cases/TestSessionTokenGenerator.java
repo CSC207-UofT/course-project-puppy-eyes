@@ -14,11 +14,10 @@ public class TestSessionTokenGenerator {
     private SessionTokenGenerator sessionTokenGenerator;
     private UserCreator userCreator;
     private JwtService jwtService;
-    private DummyUserRepository userRepository;
 
     @BeforeEach
     public void setUp() {
-        userRepository = new DummyUserRepository();
+        DummyUserRepository userRepository = new DummyUserRepository();
         userCreator = new UserCreator(userRepository);
         jwtService = new JwtService();
         sessionTokenGenerator = new SessionTokenGenerator(userRepository, jwtService);
