@@ -1,17 +1,11 @@
 package server;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.web.client.RestTemplate;
 import server.controllers.*;
 import server.drivers.GeocoderService;
 import server.drivers.http.AuthFilter;
@@ -22,8 +16,6 @@ import server.drivers.repository.RelationRepository;
 import server.drivers.repository.UserRepository;
 import server.drivers.repository.PetRepository;
 import server.use_cases.*;
-
-import javax.sql.DataSource;
 
 /**
  * Class that holds all the dependencies used in the application at the moment.
