@@ -46,7 +46,7 @@ public class PetDatabaseEntity {
     @JoinColumn(name="user_id", insertable = false, updatable = false)
     private UserDatabaseEntity user;
 
-    public PetDatabaseEntity(int userId, String name, int age, String biography, String breed) {
+    public PetDatabaseEntity(int userId, String name, int age, String breed, String biography) {
         super();
         this.userId = userId;
         this.name = name;
