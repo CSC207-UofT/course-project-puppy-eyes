@@ -473,7 +473,34 @@ N/A
 ## Fetch User's Pets
 - **URL**:
 
-/pets/fetchswipes?userId=[petId]
+/pets/fetchswipes?petId=[petId]
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+GET
+
+- **Request Body Format**
+
+N/A
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>,
+  data: {
+	petIds: [<Integer>]
+  }
+}`
+
+
+## Generate Potential Pet Matches
+- **URL**:
+
+/pets/generatepotentialmatches?petId=[petId]
 
 - **Requires Authenication**
 

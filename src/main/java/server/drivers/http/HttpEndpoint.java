@@ -111,8 +111,8 @@ public class HttpEndpoint {
     }
 
     @GetMapping("/users/generatepotentialmatches")
-    public String generatePotentialMatches(HttpServletRequest req, @RequestParam String userId) {
-        return gateway.generatePotentialMatches(false, req.getHeader("userId"), Integer.parseInt(userId));
+    public String generatePotentialMatches(HttpServletRequest req, @RequestParam String petId) {
+        return gateway.generatePotentialMatches(false, req.getHeader("userId"), Integer.parseInt(petId));
     }
 
 }
