@@ -1,5 +1,8 @@
 package server.controllers;
 
+import server.use_cases.PetMatchesGeneratorRequestModel;
+import server.use_cases.repo_abstracts.ResponseModel;
+
 /**
  * An interface representing a controller that handles all
  * functions relating to pet data.
@@ -61,6 +64,17 @@ public interface IPetController {
      * @return a String of "true" or "false whether the rejection successfully occurred
      */
     String rejectPets(boolean fromTerminal, String headerUserId, int pet1Id, int pet2Id);
+
+    /**
+     * Return a list of pet ids that the pet may potentially want to match with
+     *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
+     * @param petId
+     * @return a JSON structure
+     */
+    public String generatePotentialMatches(boolean fromTerminal, String headerUserId, String petId);
 
     /**
      * Add the Pet with id pet2Id to the Pet with id pet1Id's swiped list.

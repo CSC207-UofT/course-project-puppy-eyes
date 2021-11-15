@@ -109,6 +109,12 @@ class BeanHolder {
 
     @Autowired
     @Bean
+    PetMatchesGeneratorInputBoundary petMatchesGeneratorBean(UserRepository userRepository) {
+        return new PetMatchesGenerator(userRepository, geocoderServiceBean());
+    }
+
+    @Autowired
+    @Bean
     PetEditorInputBoundary petEditorBean(PetRepository petRepository) {
         return new PetEditor(petRepository);
     }
@@ -145,6 +151,7 @@ class BeanHolder {
                 petUnswiperBean(relationRepository, petRepository),
                 petSwipesFetcherBean(petRepository),
                 petMatchesFetcherBean(petRepository),
+                petMatchesGeneratorBean(userRepository),
                 jsonPresenterBean()
         );
     }

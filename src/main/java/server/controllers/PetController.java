@@ -19,12 +19,13 @@ public class PetController implements IPetController {
     PetRejectorInputBoundary petRejector;
     PetSwipesFetcherInputBoundary petSwipesFetcher;
     PetMatchesFetcherInputBoundary petMatchesFetcher;
+    PetMatchesGeneratorInputBoundary petMatchesGenerator;
     UseCaseOutputBoundary responsePresenter;
 
     public PetController(PetCreatorInputBoundary petCreator, PetSwiperInputBoundary petSwiper, PetProfileFetcherInputBoundary profileFetcher,
                          PetEditorInputBoundary petEditor, PetRejectorInputBoundary petRejector, PetUnswiperInputBoundary petUnswiper,
                          PetSwipesFetcherInputBoundary petSwipesFetcher, PetMatchesFetcherInputBoundary petMatchesFetcher,
-                         IJSONPresenter jsonPresenter) {
+                         PetMatchesGeneratorInputBoundary petMatchesGenerator, IJSONPresenter jsonPresenter) {
         this.petCreator = petCreator;
         this.profileFetcher = profileFetcher;
         this.petEditor = petEditor;
@@ -33,6 +34,7 @@ public class PetController implements IPetController {
         this.petMatchesFetcher = petMatchesFetcher;
         this.petRejector = petRejector;
         this.petUnswiper = petUnswiper;
+        this.petMatchesGenerator = petMatchesGenerator;
         this.responsePresenter = new ResponsePresenter(jsonPresenter);
     }
 
@@ -119,6 +121,32 @@ public class PetController implements IPetController {
         PetRejectorRequestModel request = new PetRejectorRequestModel(headerUserId, pet1Id, pet2Id);
         request.setFromTerminal(fromTerminal);
         ResponseModel response = petRejector.rejectPets(request);
+        return responsePresenter.formatResponse(response);
+    }
+
+    /**
+     * Return a list of pet ids that the pet may potentially want to match with
+     *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
+     * @param petId
+     * @return a JSON structure containing:
+     *      {
+     *          isSuccess: "true"/"false",
+     *          // if successful:
+     *          data: {
+     *              petIds: [pet_id_1, pet_id_2, ..., pet_id_n]
+     *          }
+     *          // else,
+     *          data: null
+     *      }
+     */
+    @Override
+    public String generatePotentialMatches(boolean fromTerminal, String headerUserId, String petId) {
+        PetMatchesGeneratorRequestModel request = new PetMatchesGeneratorRequestModel(headerUserId, petId);
+        request.setFromTerminal(fromTerminal);
+        ResponseModel response = petMatchesGenerator.generatePotentialMatches(request);
         return responsePresenter.formatResponse(response);
     }
 
