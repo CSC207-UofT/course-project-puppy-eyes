@@ -7,10 +7,10 @@ public class CreateUserRequestBody {
 
     private final String firstName;
     private final String lastName;
-    private final String emailAddress;
     private final String currentAddress;
     private final String currentCity;
     private final String password;
+    private final String emailAddress;
 
     public CreateUserRequestBody(String firstName, String lastName, String email, String currentAddress,
                                  String currentCity, String pass) {
