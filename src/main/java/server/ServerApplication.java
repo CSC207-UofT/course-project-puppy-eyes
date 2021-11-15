@@ -190,7 +190,6 @@ class BeanHolder {
         authBean.setFilter(new AuthFilter(jwtServiceBean()));
         authBean.addUrlPatterns("/authtest");
         authBean.addUrlPatterns("/pets/*");
-        authBean.addUrlPatterns("/users/create");
         authBean.addUrlPatterns("/users/account");
         authBean.addUrlPatterns("/users/editaccount");
         authBean.addUrlPatterns("/users/editprofile");
