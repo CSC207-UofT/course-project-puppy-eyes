@@ -1,7 +1,5 @@
 package server.use_cases;
 
-import server.entities.Pet;
-
 import java.util.List;
 
 /**

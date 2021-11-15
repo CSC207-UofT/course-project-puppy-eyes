@@ -3,13 +3,9 @@ package server.drivers.repository;
 import org.springframework.stereotype.Repository;
 import server.drivers.dbEntities.PetDatabaseEntity;
 import server.entities.Pet;
-import server.use_cases.PetProfileFetcherResponseModel;
 import server.use_cases.repo_abstracts.IPetRepository;
 import server.use_cases.repo_abstracts.PetNotFoundException;
-import server.use_cases.repo_abstracts.PetRepositoryPetProfileFetcherResponse;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 /**

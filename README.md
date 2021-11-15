@@ -128,15 +128,11 @@ Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
 - **Request Body Format**
 
 `{ 
-  isSuccess: <boolean>,
-  message: <String>,
-  data: {
     userId: <Integer>,
     newBiography: <String>,
     newPhoneNumber: <String>,
     newInstagram: <String>,
     newFacebook: <String>
-  }
 }`
 
 - **Response**
@@ -169,17 +165,13 @@ Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
 - **Request Body Format**
 
 `{ 
-  isSuccess: <boolean>,
-  message: <String>,
-  data: {
-    userId: <Integer>,
-    newFirstName: <String>,
-    newLastName: <String>,
-    newCurrentAddress: <String>,
-    newCurrentCity: <String>,
+	userId: <Integer>,
+	newFirstName: <String>,
+	newLastName: <String>,
+	newCurrentAddress: <String>,
+	newCurrentCity: <String>,
 	newPassword: <String>,
-    newEmail: <String>
-  }
+	newEmail: <String>
 }`
 
 - **Response**

@@ -1,8 +1,5 @@
 package server.controllers;
 
-import server.use_cases.PetMatchesGeneratorRequestModel;
-import server.use_cases.repo_abstracts.ResponseModel;
-
 /**
  * An interface representing a controller that handles all
  * functions relating to pet data.

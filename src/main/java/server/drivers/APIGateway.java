@@ -68,6 +68,11 @@ public class APIGateway implements IAPIGateway {
     }
 
     @Override
+    public String generatePotentialMatches(boolean fromTerminal, String headerUserId, int petId) {
+        return petController.generatePotentialMatches(fromTerminal, headerUserId, String.valueOf(petId));
+    }
+
+    @Override
     public String swipePets(boolean fromTerminal, String headerUserId, int pet1Id, int pet2Id) {
         return petController.swipePets(fromTerminal, headerUserId, pet1Id, pet2Id);
     }

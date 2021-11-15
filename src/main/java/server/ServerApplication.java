@@ -1,8 +1,10 @@
 package server;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,8 @@ import server.drivers.repository.RelationRepository;
 import server.drivers.repository.UserRepository;
 import server.drivers.repository.PetRepository;
 import server.use_cases.*;
+
+import javax.sql.DataSource;
 
 /**
  * Class that holds all the dependencies used in the application at the moment.
@@ -195,6 +199,19 @@ class BeanHolder {
         authBean.addUrlPatterns("/users/editprofile");
 
         return authBean;
+    }
+
+    // API KEYS
+    @Bean
+    public DataSource getDataSource() {
+        Dotenv dotenv = Dotenv.configure().load();
+
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName(dotenv.get("mysql"));
+        dataSourceBuilder.url(dotenv.get("SPRING_DATASOURCE_URL"));
+        dataSourceBuilder.username(dotenv.get("SPRING_DATASOURCE_USERNAME"));
+        dataSourceBuilder.password(dotenv.get("SPRING_DATASOURCE_PASSWORD"));
+        return dataSourceBuilder.build();
     }
 }
 

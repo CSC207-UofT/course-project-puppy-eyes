@@ -1,6 +1,5 @@
 package server.use_cases;
 
-import server.entities.User;
 import server.use_cases.repo_abstracts.IUserRepository;
 import server.use_cases.repo_abstracts.ResponseModel;
 import server.use_cases.repo_abstracts.UserNotFoundException;

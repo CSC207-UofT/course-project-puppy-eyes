@@ -114,6 +114,17 @@ public interface IAPIGateway {
     public String editPet(boolean fromTerminal, String headerUserId, String petId, String newName, int newAge, String newBreed, String newBiography);
 
     /**
+     * Generate a list of potential matches for a pet.
+     *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
+     * @param petId
+     * @return a String of "true" or "false whether the match successfully occurred
+     */
+    public String generatePotentialMatches(boolean fromTerminal, String headerUserId, int petId);
+
+    /**
      * Add the pet with id pet2Id to the pet with id pet1Id's swiped list
      *
      * @param fromTerminal  whether this action is being run from command line prompt

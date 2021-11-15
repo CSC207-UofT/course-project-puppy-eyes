@@ -5,8 +5,6 @@ import server.use_cases.repo_abstracts.ResponseModel;
 import server.use_cases.repo_abstracts.ResponsePresenter;
 import server.use_cases.repo_abstracts.UseCaseOutputBoundary;
 
-import java.util.HashMap;
-
 /**
  * A controller that handles all functions relating to pet data.
  */

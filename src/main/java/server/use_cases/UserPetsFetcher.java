@@ -1,6 +1,5 @@
 package server.use_cases;
 
-import server.entities.Pet;
 import server.entities.User;
 import server.use_cases.repo_abstracts.*;
 

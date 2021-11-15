@@ -5,6 +5,10 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### Sensitive Information ###
+/src/main/assets/env
+/src/main/java/server/JpaConfig.java
+
 ### STS ###
 .apt_generated
 .classpath
