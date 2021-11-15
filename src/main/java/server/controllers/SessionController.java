@@ -2,6 +2,7 @@ package server.controllers;
 
 import server.use_cases.SessionTokenGeneratorInputBoundary;
 import server.use_cases.SessionTokenGeneratorRequestModel;
+import server.use_cases.SessionTokenGeneratorResponseModel;
 import server.use_cases.repo_abstracts.ResponseModel;
 import server.use_cases.repo_abstracts.ResponsePresenter;
 import server.use_cases.repo_abstracts.UseCaseOutputBoundary;

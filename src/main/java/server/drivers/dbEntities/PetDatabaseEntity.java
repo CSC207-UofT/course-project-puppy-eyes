@@ -1,6 +1,7 @@
 package server.drivers.dbEntities;
 
 import org.hibernate.annotations.Where;
+import server.entities.Pet;
 
 import javax.persistence.*;
 import java.util.List;

@@ -4,9 +4,12 @@ import org.springframework.stereotype.Repository;
 import server.drivers.dbEntities.PetDatabaseEntity;
 import server.entities.User;
 import server.use_cases.repo_abstracts.IUserRepository;
+import server.use_cases.repo_abstracts.PetNotFoundException;
 import server.use_cases.repo_abstracts.UserNotFoundException;
+import server.use_cases.repo_abstracts.UserRepositoryUserAccountFetcherResponse;
 import server.drivers.dbEntities.ContactInfoDatabaseEntity;
 import server.drivers.dbEntities.UserDatabaseEntity;
+import server.use_cases.repo_abstracts.UserRepositoryUserProfileFetcherResponse;
 
 import java.util.ArrayList;
 import java.util.List;

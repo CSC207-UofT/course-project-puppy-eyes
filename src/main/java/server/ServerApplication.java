@@ -8,6 +8,9 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.client.RestTemplate;
 import server.controllers.*;
 import server.drivers.GeocoderService;
@@ -184,7 +187,7 @@ class BeanHolder {
 
     @Bean
     GeocoderService geocoderServiceBean() {
-        return new GeocoderService(new RestTemplate());
+        return new GeocoderService();
     }
 
     @Bean
@@ -199,19 +202,6 @@ class BeanHolder {
         authBean.addUrlPatterns("/users/editprofile");
 
         return authBean;
-    }
-
-    // API KEYS
-    @Bean
-    public DataSource getDataSource() {
-        Dotenv dotenv = Dotenv.configure().load();
-
-        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName(dotenv.get("mysql"));
-        dataSourceBuilder.url(dotenv.get("SPRING_DATASOURCE_URL"));
-        dataSourceBuilder.username(dotenv.get("SPRING_DATASOURCE_USERNAME"));
-        dataSourceBuilder.password(dotenv.get("SPRING_DATASOURCE_PASSWORD"));
-        return dataSourceBuilder.build();
     }
 }
 

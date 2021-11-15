@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import server.ServerApplication;
+import server.controllers.JSONPresenter;
 import server.drivers.APIGateway;
+import server.drivers.IGeocoderService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,10 +44,12 @@ public class CmdLineRunner implements CommandLineRunner {
     private static Logger logger = LoggerFactory.getLogger(ServerApplication.class);
     private final APIGateway gateway;
     private final IOSystem ioSystem;
+    private final IGeocoderService geocoderService;
 
-    public CmdLineRunner(APIGateway gateway, IOSystem ioSystem) {
+    public CmdLineRunner(APIGateway gateway, IOSystem ioSystem, IGeocoderService geocoderService) {
         this.gateway = gateway;
         this.ioSystem = ioSystem;
+        this.geocoderService = geocoderService;
     }
 
     /**
@@ -241,6 +245,19 @@ public class CmdLineRunner implements CommandLineRunner {
     }
 
     /**
+     * Return a mapping containing the necessary inputs for the
+     * geocoding command. The mapping is of the form:
+     *
+     *  query -> String query
+     */
+    public Map<String, String> getGeocoderInputs() {
+        PromptAndInputNameTuple[] inputPrompts = {
+                new PromptAndInputNameTuple("Enter a query: ", "query")
+        };
+
+        return getCommandInputs(inputPrompts);
+    }
+    /**
      * Given a string representation of a command name, if a corresponding
      * command exists, gather user inputs and run the command.
      *
@@ -312,6 +329,15 @@ public class CmdLineRunner implements CommandLineRunner {
                 inputs = getFetchUserAccountInputs();
                 return gateway.fetchUserPets(true, "", Integer.parseInt(inputs.get("userId")));
 
+            case "generatePotentialMatches":
+                inputs = getFetchPetProfileInputs();
+                return gateway.generatePotentialMatches(true, "", Integer.parseInt(inputs.get("petId")));
+
+            case "geocoder":
+                inputs = getGeocoderInputs();
+                JSONPresenter jsonPresenter = new JSONPresenter();
+                return jsonPresenter.toJSON(geocoderService.getLatLng(inputs.get("query")));
+
             default:
                 return "Command not found.";
         }
@@ -335,6 +361,7 @@ public class CmdLineRunner implements CommandLineRunner {
         ioSystem.showOutput("- fetchUserPets");
         ioSystem.showOutput("- editUserProfile");
         ioSystem.showOutput("- fetchUserProfile");
+        ioSystem.showOutput("- generatePotentialMatches");
         ioSystem.showOutput("- exit");
     }
 

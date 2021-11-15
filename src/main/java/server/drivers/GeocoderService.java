@@ -3,29 +3,30 @@ package server.drivers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class GeocoderService implements IGeocoderService {
 
     private final RestTemplate restTemplate;
     private final ObjectMapper mapper;
-    private Dotenv dotenv;
 
-    public GeocoderService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public GeocoderService() {
+        this.restTemplate = new RestTemplate();
         this.mapper = new ObjectMapper();
-        dotenv = Dotenv.load();
     }
 
     private final String GEOCODING_RESOURCE = "https://geocode.search.hereapi.com/v1/geocode";
-    private final String API_KEY = dotenv.get("GEOCODER_API_KEY");
+    @Value("${geocoder.key}")
+    private String API_KEY;
 
     /**
      * Given a query, make a GET request to the HERE Geocoding API to fetch latitude and longitude.

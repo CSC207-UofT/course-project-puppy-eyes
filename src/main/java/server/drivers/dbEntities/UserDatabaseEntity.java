@@ -1,5 +1,7 @@
 package server.drivers.dbEntities;
 
+import org.hibernate.annotations.Fetch;
+
 import javax.persistence.*;
 import java.util.List;
 

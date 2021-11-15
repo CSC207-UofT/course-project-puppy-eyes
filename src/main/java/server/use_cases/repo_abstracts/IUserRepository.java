@@ -1,5 +1,6 @@
 package server.use_cases.repo_abstracts;
 
+import server.entities.Pet;
 import server.entities.User;
 
 import java.util.List;

@@ -2,6 +2,8 @@ package server.use_cases.repo_abstracts;
 
 import server.entities.Pet;
 
+import java.util.List;
+
 /**
  * An interface defining an access point from the program
  * to a repository storing the information of all pets.
