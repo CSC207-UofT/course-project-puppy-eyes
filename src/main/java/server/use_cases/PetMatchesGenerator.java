@@ -52,32 +52,28 @@ public class PetMatchesGenerator implements PetMatchesGeneratorInputBoundary {
 
         // GeocoderService.getLatLng returns a List of LatLng objects, but here we are assuming that the current user's
         // current address and city are sufficiently specific to return a unique latitude-longitude tuple
-        try {
-            LatLng currentUserLatLng = this.geocoderService.getLatLng(currentUser.getCurrentAddress() + ", " + currentUser.getCurrentCity()).get(0);
+        LatLng currentUserLatLng = this.geocoderService.getLatLng(currentUser.getCurrentAddress() + ", " + currentUser.getCurrentCity()).get(0);
 
-            // Fetch all users from the database
-            List<User> users = this.userRepository.fetchAllUsers();
+        // Fetch all users from the database
+        List<User> users = this.userRepository.fetchAllUsers();
 
-            for (User user : users) {
-                List<LatLng> otherLatLngs = geocoderService.getLatLng(user.getCurrentAddress() + ", " + user.getCurrentCity());
+        for (User user : users) {
+            List<LatLng> otherLatLngs = geocoderService.getLatLng(user.getCurrentAddress() + ", " + user.getCurrentCity());
 
-                for (LatLng otherLatLng : otherLatLngs) {
-                    // If the other user is within this user's matching distance
-                    if (currentUserLatLng.calculateDistance(otherLatLng) <= currentUser.getMatchingDistanceCap()) {
-                        // for now, add every pet of the other user as a potential match
-                        // later, include filtering options
-                        potentialMatches.addAll(user.getPetList().stream().map(String::valueOf).collect(Collectors.toList()));
-                    }
+            for (LatLng otherLatLng : otherLatLngs) {
+                // If the other user is within this user's matching distance
+                if (currentUserLatLng.calculateDistance(otherLatLng) <= currentUser.getMatchingDistanceCap()) {
+                    // for now, add every pet of the other user as a potential match
+                    // later, include filtering options
+                    potentialMatches.addAll(user.getPetList().stream().map(String::valueOf).collect(Collectors.toList()));
                 }
             }
-
-            return new ResponseModel(
-                true,
-                "Successfully generated pet potential matches.",
-                new PetMatchesFetcherResponseModel(potentialMatches)
-            );
-        } catch (IOException | InterruptedException e) {
-            return new ResponseModel(false, "An unexpected error occured.");
         }
+
+        return new ResponseModel(
+            true,
+            "Successfully generated pet potential matches.",
+            new PetMatchesFetcherResponseModel(potentialMatches)
+        );
     }
 }

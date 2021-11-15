@@ -33,9 +33,9 @@ public class UserProfileEditor implements UserProfileEditorInputBoundary {
         }
 
         try {
-            User user = userRepository.fetchUser(id);
+            userRepository.fetchUser(id);
         } catch (UserNotFoundException exception) {
-            return new ResponseModel(false, "Pet with ID: " + request.getUserId() + " does not exist.");
+            return new ResponseModel(false, "User with ID: " + request.getUserId() + " does not exist.");
         }
 
         if (!request.isRequestAuthorized()) {
@@ -50,7 +50,7 @@ public class UserProfileEditor implements UserProfileEditorInputBoundary {
             request.getNewFacebook()
         );
 
-        if (!isSuccess) {
+        if (isSuccess) {
             return new ResponseModel(
                 true,
                 "Successfully edited user account.",

@@ -52,7 +52,7 @@ public class UserAccountEditor implements UserAccountEditorInputBoundary {
             request.getNewEmail()
         );
 
-        if (!isSuccess) {
+        if (isSuccess) {
             return new ResponseModel(
                 true,
                 "Successfully edited user account.",

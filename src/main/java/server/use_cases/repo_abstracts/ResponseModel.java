@@ -38,7 +38,7 @@ public class ResponseModel {
         ResponseModel other = (ResponseModel) o;
 
         return other.isSuccess == this.isSuccess && other.message.equals(this.message) &&
-                other.getResponseData().equals(this.data);
+                ((this.data == null && other.getResponseData() == null) || other.getResponseData().equals(this.data));
     }
 
 }

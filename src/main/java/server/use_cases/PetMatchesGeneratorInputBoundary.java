@@ -6,6 +6,6 @@ import java.io.IOException;
 
 public interface PetMatchesGeneratorInputBoundary {
 
-    public ResponseModel generatePotentialMatches(PetMatchesGeneratorRequestModel request) throws IOException, InterruptedException;
+    public ResponseModel generatePotentialMatches(PetMatchesGeneratorRequestModel request);
 
 }

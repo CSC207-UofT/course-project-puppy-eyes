@@ -9,8 +9,8 @@ public class PetMatchesGeneratorRequestModel extends AuthRequestModel {
 
     private String petId;
 
-    public PetMatchesGeneratorRequestModel(String headerUserId, String userId, String petId) {
-        super(headerUserId, userId);
+    public PetMatchesGeneratorRequestModel(String headerUserId, String petId) {
+        super(headerUserId);
         this.petId = petId;
     }
 
