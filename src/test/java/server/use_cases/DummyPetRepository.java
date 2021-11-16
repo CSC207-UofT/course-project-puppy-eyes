@@ -90,11 +90,9 @@ public class DummyPetRepository implements IPetRepository {
     private final ArrayList<DummyPetRepositoryEntity> pets;
     private int currentMaxId;
     private DummyUserRepository dummyUserRepository;
-    private DummyRelationRepository dummyRelationRepository;
 
-    public DummyPetRepository(DummyUserRepository dummyUserRepository, DummyRelationRepository dummyRelationRepository) {
+    public DummyPetRepository(DummyUserRepository dummyUserRepository) {
         this.dummyUserRepository = dummyUserRepository;
-        this.dummyRelationRepository = dummyRelationRepository;
         pets = new ArrayList<>();
         currentMaxId = -1;
     }
@@ -133,21 +131,9 @@ public class DummyPetRepository implements IPetRepository {
         if (petId >= 0 && petId <= currentMaxId && dbPet != null) {
             Pet pet = new Pet(dbPet.getUserId(), dbPet.getName(), dbPet.getAge(), dbPet.getBreed(), dbPet.getBiography()) {};
             pet.setId(dbPet.getId());
-
-            for (DummyRelationRepository.Relation relation : dummyRelationRepository.getRelations()) {
-                if (relation.getFromId() == pet.getId() && relation.getRelationType().equals("SWIPE")) {
-                    pet.getSwipedOn().add(relation.getToId());
-                }
-                if (relation.getFromId() == pet.getId() && relation.getRelationType().equals("REJECT")) {
-                    pet.getMatches().add(relation.getToId());
-                }
-                if (relation.getFromId() == pet.getId() && relation.getRelationType().equals("MATCH")) {
-                    pet.getRejected().add(relation.getToId());
-                }
-            }
             return pet;
         } else {
-            throw new PetNotFoundException("Pet with ID: " + petId + " not found.");
+            throw new PetNotFoundException("Pet with ID: " + petId + " not found.", petId);
         }
     }
 
@@ -172,6 +158,108 @@ public class DummyPetRepository implements IPetRepository {
             dbPet.setBiography(newBiography);
             return true;
         } else return false;
+    }
+
+    @Override
+    public boolean swipePets(int pet1Id, int pet2Id) throws PetNotFoundException {
+        DummyPetRepositoryEntity dbPet1 = pets.stream().filter(pet -> pet.getId() == pet1Id).findFirst().orElse(null);
+        DummyPetRepositoryEntity dbPet2 = pets.stream().filter(pet -> pet.getId() == pet2Id).findFirst().orElse(null);
+
+        if (dbPet1 == null) {
+            throw new PetNotFoundException("Pet with ID: " + pet1Id + " does not exist.", pet1Id);
+        }
+
+        if (dbPet2 == null) {
+            throw new PetNotFoundException("Pet with ID: " + pet2Id + " does not exist.", pet2Id);
+        }
+
+        dbPet1.getSwipedOn().add(dbPet2.getId());
+        return true;
+    }
+
+    @Override
+    public boolean matchPets(int pet1Id, int pet2Id) throws PetNotFoundException {
+        DummyPetRepositoryEntity dbPet1 = pets.stream().filter(pet -> pet.getId() == pet1Id).findFirst().orElse(null);
+        DummyPetRepositoryEntity dbPet2 = pets.stream().filter(pet -> pet.getId() == pet2Id).findFirst().orElse(null);
+
+        if (dbPet1 == null) {
+            throw new PetNotFoundException("Pet with ID: " + pet1Id + " does not exist.", pet1Id);
+        }
+
+        if (dbPet2 == null) {
+            throw new PetNotFoundException("Pet with ID: " + pet2Id + " does not exist.", pet2Id);
+        }
+
+        dbPet1.getMatches().add(dbPet2.getId());
+        dbPet2.getMatches().add(dbPet1.getId());
+        return true;
+    }
+
+    @Override
+    public boolean unswipePets(int pet1Id, int pet2Id) throws PetNotFoundException {
+        DummyPetRepositoryEntity dbPet1 = pets.stream().filter(pet -> pet.getId() == pet1Id).findFirst().orElse(null);
+        DummyPetRepositoryEntity dbPet2 = pets.stream().filter(pet -> pet.getId() == pet2Id).findFirst().orElse(null);
+
+        if (dbPet1 == null) {
+            throw new PetNotFoundException("Pet with ID: " + pet1Id + " does not exist.", pet1Id);
+        }
+
+        if (dbPet2 == null) {
+            throw new PetNotFoundException("Pet with ID: " + pet2Id + " does not exist.", pet2Id);
+        }
+
+        dbPet1.getSwipedOn().remove((Integer) dbPet2.getId());
+        return true;
+    }
+
+    @Override
+    public boolean rejectPets(int pet1Id, int pet2Id) throws PetNotFoundException {
+        DummyPetRepositoryEntity dbPet1 = pets.stream().filter(pet -> pet.getId() == pet1Id).findFirst().orElse(null);
+        DummyPetRepositoryEntity dbPet2 = pets.stream().filter(pet -> pet.getId() == pet2Id).findFirst().orElse(null);
+
+        if (dbPet1 == null) {
+            throw new PetNotFoundException("Pet with ID: " + pet1Id + " does not exist.", pet1Id);
+        }
+
+        if (dbPet2 == null) {
+            throw new PetNotFoundException("Pet with ID: " + pet2Id + " does not exist.", pet2Id);
+        }
+
+        dbPet1.getRejected().add(dbPet2.getId());
+        return true;
+    }
+
+    @Override
+    public List<Integer> fetchSwipedOn(int petId) throws PetNotFoundException {
+        DummyPetRepositoryEntity dbPet = pets.stream().filter(pet -> pet.getId() == petId).findFirst().orElse(null);
+
+        if (dbPet == null) {
+            throw new PetNotFoundException("Pet with ID: " + petId + " does not exist.", petId);
+        }
+
+        return dbPet.getSwipedOn();
+    }
+
+    @Override
+    public List<Integer> fetchRejected(int petId) throws PetNotFoundException {
+        DummyPetRepositoryEntity dbPet = pets.stream().filter(pet -> pet.getId() == petId).findFirst().orElse(null);
+
+        if (dbPet == null) {
+            throw new PetNotFoundException("Pet with ID: " + petId + " does not exist.", petId);
+        }
+
+        return dbPet.getRejected();
+    }
+
+    @Override
+    public List<Integer> fetchMatches(int petId) throws PetNotFoundException {
+        DummyPetRepositoryEntity dbPet = pets.stream().filter(pet -> pet.getId() == petId).findFirst().orElse(null);
+
+        if (dbPet == null) {
+            throw new PetNotFoundException("Pet with ID: " + petId + " does not exist.", petId);
+        }
+
+        return dbPet.getMatches();
     }
 
 }

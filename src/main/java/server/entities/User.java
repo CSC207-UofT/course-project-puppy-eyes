@@ -1,15 +1,11 @@
 package server.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class User {
     private String firstName;
     private String lastName;
     private String currentAddress;
     private String currentCity;
     private double matchingDistanceCap;
-    private final List<Integer> petList;
     /* A hash of the user's password. */
     // In a security perspective, it is unwise to store the user's password
     // as raw plaintext.
@@ -37,7 +33,6 @@ public abstract class User {
         // TODO: Convert the password into a hash.
         // For now, store the passwordHash as the password in a raw format
         this.passwordHash = password;
-        this.petList = new ArrayList<>();
         this.contactInfo = new ContactInfo();
         this.contactInfo.setEmail(email);
         this.biography = "";
@@ -87,16 +82,12 @@ public abstract class User {
         return this.contactInfo;
     }
 
-    public List<Integer> getPetList(){
-        return this.petList;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setBiography(String biography){

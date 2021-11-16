@@ -39,7 +39,7 @@ public class UserPetsFetcher implements UserPetsFetcherInputBoundary {
             }
 
             // Convert integers to strings
-            List<String> stringPetIds = user.getPetList().stream().
+            List<String> stringPetIds = userRepository.fetchUserPets(id).stream().
                     map(String::valueOf).
                     collect(Collectors.toList());
 

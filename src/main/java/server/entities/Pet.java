@@ -1,8 +1,5 @@
 package server.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class Pet {
 
     private int userId;
@@ -11,7 +8,6 @@ public abstract class Pet {
     private String biography;
     private String breed;
     private int id;
-    private List<Integer> swipedOn, matches, rejected;
 
     public Pet(int userId, String name, int age, String breed, String biography) {
         this.userId = userId;
@@ -19,9 +15,6 @@ public abstract class Pet {
         this.age = age;
         this.biography = biography;
         this.breed = breed;
-        this.swipedOn = new ArrayList<>();
-        this.matches = new ArrayList<>();
-        this.rejected = new ArrayList<>();
     }
 
     public boolean isNameValid() {
@@ -58,18 +51,6 @@ public abstract class Pet {
 
     public int getId() {
         return id;
-    }
-
-    public List<Integer> getSwipedOn() {
-        return this.swipedOn;
-    }
-
-    public List<Integer> getMatches() {
-        return this.matches;
-    }
-
-    public List<Integer> getRejected() {
-        return this.rejected;
     }
 
     public void setBiography(String biography) {

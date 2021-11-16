@@ -2,7 +2,6 @@ package server.use_cases;
 
 import server.entities.Pet;
 import server.use_cases.repo_abstracts.IPetRepository;
-import server.use_cases.repo_abstracts.IRelationRepository;
 import server.use_cases.repo_abstracts.PetNotFoundException;
 import server.use_cases.repo_abstracts.ResponseModel;
 
@@ -12,11 +11,9 @@ import server.use_cases.repo_abstracts.ResponseModel;
 public class PetSwiper implements PetSwiperInputBoundary {
 
     private final IPetRepository petRepository;
-    private final IRelationRepository relationRepository;
 
-    public PetSwiper(IRelationRepository relationRepository, IPetRepository petRepository) {
+    public PetSwiper(IPetRepository petRepository) {
         this.petRepository = petRepository;
-        this.relationRepository = relationRepository;
     }
 
     @Override
@@ -32,34 +29,34 @@ public class PetSwiper implements PetSwiperInputBoundary {
         }
 
         try {
-            Pet pet = petRepository.fetchPet(pet1Id);
-            Pet pet2 = petRepository.fetchPet(pet2Id);
-            request.setUserId(String.valueOf(pet.getUserId()));
+            Pet pet1 = petRepository.fetchPet(pet1Id);
+
+            // Check if pet2 exists too
+            petRepository.fetchPet(pet2Id);
+
+            request.setUserId(String.valueOf(pet1.getUserId()));
 
             if (!request.isRequestAuthorized()) {
                 return new ResponseModel(false, "You are not authorized to make this request.");
             }
 
-            final String swipeRelationType = "SWIPE";
-            final String matchRelationType = "MATCH";
-
             // If the first pet already swiped on the second pet, do nothing.
-            if (this.relationRepository.hasRelation(request.getFirstPetId(), request.getSecondPetId(), swipeRelationType)) {
+            if (petRepository.fetchSwipedOn(pet1Id).contains(pet2Id)) {
                 return new ResponseModel(false, "The first pet is already matched with the second pet.");
             }
 
             // If the second pet already swiped on the first pet,
             // remove the first pet from the second pet's swiped list and match both of them
-            if (this.relationRepository.hasRelation(request.getSecondPetId(), request.getFirstPetId(), swipeRelationType)) {
-                this.relationRepository.removeRelation(request.getSecondPetId(), request.getFirstPetId(), swipeRelationType);
-                this.relationRepository.addRelation(request.getFirstPetId(), request.getSecondPetId(), matchRelationType);
-                this.relationRepository.addRelation(request.getSecondPetId(), request.getFirstPetId(), matchRelationType);
+            if (petRepository.fetchSwipedOn(pet2Id).contains(pet1.getId())) {
+                this.petRepository.unswipePets(pet1Id, pet2Id);
+                this.petRepository.unswipePets(pet2Id, pet1Id);
+                this.petRepository.matchPets(pet1Id, pet2Id);
                 return new ResponseModel(true, "Successfully swiped and matched both pets.");
             }
 
             // If neither pet swiped on each other,
             // add the second pet to the first pet's swiped list
-            this.relationRepository.addRelation(request.getFirstPetId(), request.getSecondPetId(), swipeRelationType);
+            this.petRepository.swipePets(pet1Id, pet2Id);
             return new ResponseModel(true, "Successfully swiped pet2 from pet1.");
         } catch (PetNotFoundException e) {
             // Pet not found

@@ -2,7 +2,6 @@ package server.use_cases;
 
 import server.entities.Pet;
 import server.use_cases.repo_abstracts.IPetRepository;
-import server.use_cases.repo_abstracts.IRelationRepository;
 import server.use_cases.repo_abstracts.PetNotFoundException;
 import server.use_cases.repo_abstracts.ResponseModel;
 
@@ -12,11 +11,9 @@ import server.use_cases.repo_abstracts.ResponseModel;
 public class PetUnswiper implements PetUnswiperInputBoundary {
 
     private final IPetRepository petRepository;
-    private final IRelationRepository relationRepository;
 
-    public PetUnswiper(IRelationRepository relationRepository, IPetRepository petRepository) {
+    public PetUnswiper(IPetRepository petRepository) {
         this.petRepository = petRepository;
-        this.relationRepository = relationRepository;
     }
 
     @Override
@@ -32,19 +29,20 @@ public class PetUnswiper implements PetUnswiperInputBoundary {
         }
 
         try {
-            Pet pet = petRepository.fetchPet(pet1Id);
-            Pet pet2 = petRepository.fetchPet(pet2Id);
-            request.setUserId(String.valueOf(pet.getUserId()));
+            Pet pet1 = petRepository.fetchPet(pet1Id);
+
+            // Check if pet2 exists
+            petRepository.fetchPet(pet2Id);
+
+            request.setUserId(String.valueOf(pet1.getUserId()));
 
             if (!request.isRequestAuthorized()) {
                 return new ResponseModel(false, "You are not authorized to make this request.");
             }
 
-            final String relationType = "SWIPE";
-
             // If the first pet already swiped on the second pet, remove the second pet from the first pet's swiped list
-            if (this.relationRepository.hasRelation(pet.getId(), pet2.getId(), relationType)) {
-                this.relationRepository.removeRelation(pet.getId(), pet2.getId(), relationType);
+            if (this.petRepository.fetchSwipedOn(pet1Id).contains(pet2Id)) {
+                this.petRepository.unswipePets(pet1Id, pet2Id);
                 return new ResponseModel(true, "Successfully removed pet2 from pet1's swiped list.");
             }
 

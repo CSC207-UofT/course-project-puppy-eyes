@@ -39,7 +39,7 @@ public class PetSwipesFetcher implements PetSwipesFetcherInputBoundary {
                 return new ResponseModel(false, "You are not authorized to make this request.");
             }
 
-            List<String> stringPetIds = pet.getSwipedOn().stream().
+            List<String> stringPetIds = petRepository.fetchSwipedOn(id).stream().
                     map(String::valueOf).
                     collect(Collectors.toList());
 

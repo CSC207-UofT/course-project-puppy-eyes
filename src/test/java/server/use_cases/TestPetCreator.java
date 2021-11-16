@@ -15,8 +15,7 @@ public class TestPetCreator {
     @BeforeEach
     public void setUp() {
         DummyUserRepository userRepository = new DummyUserRepository();
-        DummyRelationRepository relationRepository = new DummyRelationRepository();
-        DummyPetRepository petRepository = new DummyPetRepository(userRepository, relationRepository);
+        DummyPetRepository petRepository = new DummyPetRepository(userRepository);
 
         userCreator = new UserCreator(userRepository);
         petCreator = new PetCreator(petRepository, userRepository);

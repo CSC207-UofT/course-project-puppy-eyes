@@ -23,14 +23,13 @@ public class TestPetSwiper {
 
     @BeforeEach
     public void setUp() {
-        DummyRelationRepository relationRepository = new DummyRelationRepository();
         userRepository = new DummyUserRepository();
-        petRepository = new DummyPetRepository(userRepository, relationRepository);
-        petSwiper = new PetSwiper(relationRepository, petRepository);
+        petRepository = new DummyPetRepository(userRepository);
+        petSwiper = new PetSwiper(petRepository);
     }
 
     @Test
-    public void TestSuccessPetSwiperNoMatch() {
+    public void TestSuccessPetSwiperNoMatch() throws PetNotFoundException {
         int user1Id = userRepository.createUser("John", "Appleseed", "123 Addy", "Toronto", "123456", "john.appleseed@gmail.com");
         int user2Id = userRepository.createUser("Lig", "Mother", "42 Main St", "Toronto", "!password!11", "lig.ma@email.com");
         int pet1Id = petRepository.createPet(user1Id, "Nugget", 1, "Golden Shepherd", "A golden boy.");
@@ -38,22 +37,16 @@ public class TestPetSwiper {
 
         ResponseModel response = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id, pet2Id));
 
-        Pet pet1 = null;
-
-        try {
-            pet1 = petRepository.fetchPet(pet1Id);
-        } catch (PetNotFoundException e) { }
-
         // Check for the pet's swiped list
         List<Integer> expected = Arrays.asList(1);
-        List<Integer> actual = pet1.getSwipedOn();
+        List<Integer> actual = petRepository.fetchSwipedOn(pet1Id);
 
         assertTrue(response.isSuccess());
         assertEquals(expected, actual);
     }
 
     @Test
-    public void TestSuccessPetSwiperMatch() {
+    public void TestSuccessPetSwiperMatch() throws PetNotFoundException {
         int user1Id = userRepository.createUser("John", "Appleseed", "123 Addy", "Toronto", "123456", "john.appleseed@gmail.com");
         int user2Id = userRepository.createUser("Lig", "Mother", "42 Main St", "Toronto", "!password!11", "lig.ma@email.com");
         int pet1Id = petRepository.createPet(user1Id, "Nugget", 1, "Golden Shepherd", "A golden boy.");
@@ -62,28 +55,26 @@ public class TestPetSwiper {
         ResponseModel responseA = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id, pet2Id));
         ResponseModel responseB = petSwiper.swipe(new PetSwiperRequestModel(user2Id + "", pet2Id, pet1Id));
 
-        Pet pet1 = null;
-        Pet pet2 = null;
-
-        try {
-            pet1 = petRepository.fetchPet(pet1Id);
-            pet2 = petRepository.fetchPet(pet2Id);
-        } catch (PetNotFoundException e) { }
-
         // Check for the pet's swiped list
         List<Integer> expectedPetSwipesList = new ArrayList<>();
-        List<Integer> expectedPet1MatchesList = pet1.getMatches();
-        List<Integer> expectedPet2MatchesList = pet1.getMatches();
+        List<Integer> expectedPet1MatchesList = Arrays.asList(1);
+        List<Integer> expectedPet2MatchesList = Arrays.asList(0);
+
+        List<Integer> actualPet1SwipesList = petRepository.fetchSwipedOn(pet1Id);
+        List<Integer> actualPet2SwipesList = petRepository.fetchSwipedOn(pet2Id);
+
+        List<Integer> actualPet1MatchesList = petRepository.fetchMatches(pet1Id);
+        List<Integer> actualPet2MatchesList = petRepository.fetchMatches(pet2Id);
 
         assertTrue(responseA.isSuccess() && responseB.isSuccess());
-        assertEquals(pet1.getSwipedOn(), expectedPetSwipesList);
-        assertEquals(pet2.getSwipedOn(), expectedPetSwipesList);
-        assertEquals(pet1.getMatches(), expectedPet1MatchesList);
-        assertEquals(pet2.getMatches(), expectedPet2MatchesList);
+        assertEquals(expectedPetSwipesList, actualPet1SwipesList);
+        assertEquals(expectedPetSwipesList, actualPet2SwipesList);
+        assertEquals(expectedPet1MatchesList, actualPet1MatchesList);
+        assertEquals(expectedPet2MatchesList, actualPet2MatchesList);
     }
 
     @Test
-    public void TestFailPetSwiperAlreadySwiped() {
+    public void TestFailPetSwiperAlreadySwiped() throws PetNotFoundException {
         int user1Id = userRepository.createUser("John", "Appleseed", "123 Addy", "Toronto", "123456", "john.appleseed@gmail.com");
         int user2Id = userRepository.createUser("Lig", "Mother", "42 Main St", "Toronto", "!password!11", "lig.ma@email.com");
         int pet1Id = petRepository.createPet(user1Id, "Nugget", 1, "Golden Shepherd", "A golden boy.");
@@ -92,16 +83,13 @@ public class TestPetSwiper {
         ResponseModel responseA = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id, pet2Id));
         ResponseModel responseB = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id, pet2Id));
 
-        Pet pet1 = null;
-
-        try {
-            pet1 = petRepository.fetchPet(pet1Id);
-        } catch (PetNotFoundException e) { }
-
         // Check for the pet's swiped list
         List<Integer> expectedPet1SwipesList = Arrays.asList(1);
+
+        List<Integer> actualPet1SwipesList = petRepository.fetchSwipedOn(pet1Id);
+
         assertTrue(responseA.isSuccess() && !responseB.isSuccess());
-        assertEquals(pet1.getSwipedOn(), expectedPet1SwipesList);
+        assertEquals(expectedPet1SwipesList, actualPet1SwipesList);
     }
 
 }

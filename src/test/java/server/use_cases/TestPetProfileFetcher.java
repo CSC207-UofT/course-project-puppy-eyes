@@ -18,7 +18,7 @@ public class TestPetProfileFetcher {
     public void setUp() {
         DummyUserRepository userRepository = new DummyUserRepository();
         userCreator = new UserCreator(userRepository);
-        dummyPetRepository = new DummyPetRepository(userRepository, new DummyRelationRepository());
+        dummyPetRepository = new DummyPetRepository(userRepository);
         petProfileFetcher = new PetProfileFetcher(dummyPetRepository);
     }
 

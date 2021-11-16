@@ -1,13 +1,11 @@
 package server.use_cases;
 import server.drivers.IGeocoderService;
-import server.drivers.LatLng;
 import server.entities.Pet;
 import server.entities.User;
 import server.use_cases.repo_abstracts.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A use case responsible for generating a list of matches for a given pet.
@@ -16,12 +14,12 @@ public class PetMatchesGenerator implements PetMatchesGeneratorInputBoundary {
 
     private final IUserRepository userRepository;
     private final IPetRepository petRepository;
-    //private final IGeocoderService geocoderService;
+//    private final IGeocoderService geocoderService;
 
-    public PetMatchesGenerator(IUserRepository userRepository, IPetRepository petRepository) {
+    public PetMatchesGenerator(IUserRepository userRepository, IPetRepository petRepository/*, IGeocoderService geocoderService*/) {
         this.userRepository = userRepository;
         this.petRepository = petRepository;
-        //this.geocoderService = geocoderService;
+//        this.geocoderService = geocoderService;
     }
 
     @Override
@@ -57,17 +55,22 @@ public class PetMatchesGenerator implements PetMatchesGeneratorInputBoundary {
             // - are not on the pet's reject list
 
             List<User> users = this.userRepository.fetchAllUsers();
+            List<Integer> rejectedPets = this.petRepository.fetchRejected(id);
 
             for (User user : users) {
                 if (user.getId() == currentUser.getId())
                     continue;
 
-                for (int petId : user.getPetList()) {
-                    if (pet.getRejected().contains(petId))
-                        continue;
+                try {
+                    List<Integer> petIds = this.userRepository.fetchUserPets(user.getId());
 
-                    potentialMatches.add(String.valueOf(petId));
-                }
+                    for (int petId : petIds) {
+                        if (rejectedPets.contains(petId))
+                            continue;
+
+                        potentialMatches.add(String.valueOf(petId));
+                    }
+                } catch (UserNotFoundException e) {}
             }
 
             // TODO geocoding... in Phase 2

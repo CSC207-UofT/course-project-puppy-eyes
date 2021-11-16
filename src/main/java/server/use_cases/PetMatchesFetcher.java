@@ -39,7 +39,7 @@ public class PetMatchesFetcher implements PetMatchesFetcherInputBoundary {
                 return new ResponseModel(false, "You are not authorized to make this request.");
             }
 
-            List<String> stringPetIds = pet.getMatches().stream().
+            List<String> stringPetIds = petRepository.fetchMatches(id).stream().
                     map(String::valueOf).
                     collect(Collectors.toList());
 

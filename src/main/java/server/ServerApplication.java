@@ -12,7 +12,6 @@ import server.drivers.http.AuthFilter;
 import server.drivers.JwtService;
 import server.drivers.cmd.CmdLineIOSystem;
 import server.drivers.cmd.IOSystem;
-import server.drivers.repository.RelationRepository;
 import server.drivers.repository.UserRepository;
 import server.drivers.repository.PetRepository;
 import server.use_cases.*;
@@ -66,20 +65,20 @@ class BeanHolder {
 
     @Autowired
     @Bean
-    PetSwiperInputBoundary petSwiperBean(RelationRepository relationRepository, PetRepository petRepository) {
-        return new PetSwiper(relationRepository, petRepository);
+    PetSwiperInputBoundary petSwiperBean(PetRepository petRepository) {
+        return new PetSwiper(petRepository);
     }
 
     @Autowired
     @Bean
-    PetUnswiperInputBoundary petUnswiperBean(RelationRepository relationRepository, PetRepository petRepository) {
-        return new PetUnswiper(relationRepository, petRepository);
+    PetUnswiperInputBoundary petUnswiperBean(PetRepository petRepository) {
+        return new PetUnswiper(petRepository);
     }
 
     @Autowired
     @Bean
-    PetRejectorInputBoundary petRejectorBean(RelationRepository relationRepository, PetRepository petRepository) {
-        return new PetRejector(relationRepository, petRepository);
+    PetRejectorInputBoundary petRejectorBean(PetRepository petRepository) {
+        return new PetRejector(petRepository);
     }
 
     @Autowired
@@ -140,14 +139,14 @@ class BeanHolder {
 
     @Autowired
     @Bean
-    IPetController petControllerBean(RelationRepository relationRepository, PetRepository petRepository, UserRepository userRepository) {
+    IPetController petControllerBean(PetRepository petRepository, UserRepository userRepository) {
         return new PetController(
                 petCreatorBean(petRepository, userRepository),
-                petSwiperBean(relationRepository, petRepository),
+                petSwiperBean(petRepository),
                 petProfileFetcherBean(petRepository),
                 petEditorBean(petRepository),
-                petRejectorBean(relationRepository, petRepository),
-                petUnswiperBean(relationRepository, petRepository),
+                petRejectorBean(petRepository),
+                petUnswiperBean(petRepository),
                 petSwipesFetcherBean(petRepository),
                 petMatchesFetcherBean(petRepository),
                 petMatchesGeneratorBean(userRepository, petRepository),

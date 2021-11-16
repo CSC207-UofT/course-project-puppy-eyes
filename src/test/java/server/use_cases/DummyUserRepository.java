@@ -178,24 +178,12 @@ public class DummyUserRepository implements IUserRepository {
             user.getContactInfo().setFacebook(dbUser.getContactInfo().getFacebook());
             user.getContactInfo().setEmail(dbUser.getContactInfo().getEmail());
             user.setBiography(dbUser.getBiography());
-            user.getPetList().addAll(dbUser.getPets());
             user.setId(dbUser.getId());
             return user;
         } else {
             throw new UserNotFoundException("User with ID: " + userId + " not found.");
         }
     }
-
-//    @Override
-//    public UserRepositoryUserAccountFetcherResponse fetchUserAccount(int userId) throws UserNotFoundException {
-//        if (userId >= 0 && userId <= currentMaxId){
-//            DummyUserRepositoryEntity user = users.get(userId);
-//            return new UserRepositoryUserAccountFetcherResponse(user.getFirstName(), user.getLastName(),
-//                    user.getCurrentAddress(), user.getCurrentCity(), user.getContactInfo().getEmail());
-//        } else {
-//            throw new UserNotFoundException("User with ID: " + userId + " not found.");
-//        }
-//    }
 
     @Override
     public boolean validateCredentials(String email, String password) {
@@ -223,7 +211,6 @@ public class DummyUserRepository implements IUserRepository {
             user.getContactInfo().setEmail(dbUser.getContactInfo().getEmail());
             user.setBiography(dbUser.getBiography());
             user.setId(dbUser.getId());
-            user.getPetList().addAll(dbUser.getPets());
             users.add(user);
         }
 
@@ -244,19 +231,6 @@ public class DummyUserRepository implements IUserRepository {
             return true;
         } else return false;
     }
-
-//    @Override
-//    public UserRepositoryUserProfileFetcherResponse fetchUserProfile(int userId) throws UserNotFoundException {
-//        if (userId >= 0 && userId <= currentMaxId){
-//            DummyUserRepositoryEntity user = users.get(userId);
-//            DummyContactInfoRepositoryEntity contactInfo = user.getContactInfo();
-//            return new UserRepositoryUserProfileFetcherResponse(user.getFirstName(), user.getLastName(),
-//                    user.getBiography(), contactInfo.getPhoneNumber(), contactInfo.getEmail(),
-//                    contactInfo.getInstagram(), contactInfo.getFacebook());
-//        } else {
-//            throw new UserNotFoundException("User with ID: " + userId + " not found.");
-//        }
-//    }
 
     @Override
     public boolean editUserProfile(int userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook) {
@@ -281,6 +255,17 @@ public class DummyUserRepository implements IUserRepository {
         }
 
         return -1;
+    }
+
+    @Override
+    public List<Integer> fetchUserPets(int userId) throws UserNotFoundException {
+        DummyUserRepositoryEntity dbUser = users.stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
+
+        if (dbUser == null) {
+            throw new UserNotFoundException("User with ID: " + userId + " not found.");
+        };
+
+        return dbUser.getPets();
     }
 
     public void addPet(int userId, int petId) {
