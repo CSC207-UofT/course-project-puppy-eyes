@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import server.ServerApplication;
-import server.controllers.JSONPresenter;
 import server.drivers.APIGateway;
 import server.drivers.IGeocoderService;
 
@@ -44,12 +43,10 @@ public class CmdLineRunner implements CommandLineRunner {
     private static Logger logger = LoggerFactory.getLogger(ServerApplication.class);
     private final APIGateway gateway;
     private final IOSystem ioSystem;
-    private final IGeocoderService geocoderService;
 
     public CmdLineRunner(APIGateway gateway, IOSystem ioSystem, IGeocoderService geocoderService) {
         this.gateway = gateway;
         this.ioSystem = ioSystem;
-        this.geocoderService = geocoderService;
     }
 
     /**
@@ -332,11 +329,11 @@ public class CmdLineRunner implements CommandLineRunner {
             case "generatePotentialMatches":
                 inputs = getFetchPetProfileInputs();
                 return gateway.generatePotentialMatches(true, "", Integer.parseInt(inputs.get("petId")));
-
-            case "geocoder":
-                inputs = getGeocoderInputs();
-                JSONPresenter jsonPresenter = new JSONPresenter();
-                return jsonPresenter.toJSON(geocoderService.getLatLng(inputs.get("query")));
+//
+//            case "geocoder":
+//                inputs = getGeocoderInputs();
+//                JSONPresenter jsonPresenter = new JSONPresenter();
+//                return jsonPresenter.toJSON(geocoderService.getLatLng(inputs.get("query")));
 
             default:
                 return "Command not found.";

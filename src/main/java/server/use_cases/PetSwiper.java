@@ -25,7 +25,7 @@ public class PetSwiper implements PetSwiperInputBoundary {
 
         try {
             pet1Id = request.getFirstPetId();
-            pet2Id = request.getFirstPetId();
+            pet2Id = request.getSecondPetId();
         } catch (NumberFormatException e) {
             // Invalid pet id
             return new ResponseModel(false, "ID must be an integer.");
@@ -45,7 +45,7 @@ public class PetSwiper implements PetSwiperInputBoundary {
 
             // If the first pet already swiped on the second pet, do nothing.
             if (this.relationRepository.hasRelation(request.getFirstPetId(), request.getSecondPetId(), swipeRelationType)) {
-                new ResponseModel(false, "The first pet is already matched with the second pet.");
+                return new ResponseModel(false, "The first pet is already matched with the second pet.");
             }
 
             // If the second pet already swiped on the first pet,
@@ -54,18 +54,16 @@ public class PetSwiper implements PetSwiperInputBoundary {
                 this.relationRepository.removeRelation(request.getSecondPetId(), request.getFirstPetId(), swipeRelationType);
                 this.relationRepository.addRelation(request.getFirstPetId(), request.getSecondPetId(), matchRelationType);
                 this.relationRepository.addRelation(request.getSecondPetId(), request.getFirstPetId(), matchRelationType);
-                new ResponseModel(true, "Successfully swiped and matched both pets.");
+                return new ResponseModel(true, "Successfully swiped and matched both pets.");
             }
 
             // If neither pet swiped on each other,
             // add the second pet to the first pet's swiped list
             this.relationRepository.addRelation(request.getFirstPetId(), request.getSecondPetId(), swipeRelationType);
-            new ResponseModel(true, "Successfully swiped pet2 from pet1.");
+            return new ResponseModel(true, "Successfully swiped pet2 from pet1.");
         } catch (PetNotFoundException e) {
             // Pet not found
             return new ResponseModel(false, "Pet with ID: " + request.getFirstPetId() + " does not exist.");
         }
-
-        return new ResponseModel(false, "An unexpected error occurred.");
     }
 }
