@@ -90,9 +90,11 @@ public class DummyPetRepository implements IPetRepository {
     private final ArrayList<DummyPetRepositoryEntity> pets;
     private int currentMaxId;
     private DummyUserRepository dummyUserRepository;
+    private DummyRelationRepository dummyRelationRepository;
 
-    public DummyPetRepository(DummyUserRepository dummyUserRepository) {
+    public DummyPetRepository(DummyUserRepository dummyUserRepository, DummyRelationRepository dummyRelationRepository) {
         this.dummyUserRepository = dummyUserRepository;
+        this.dummyRelationRepository = dummyRelationRepository;
         pets = new ArrayList<>();
         currentMaxId = -1;
     }
@@ -130,9 +132,19 @@ public class DummyPetRepository implements IPetRepository {
 
         if (petId >= 0 && petId <= currentMaxId && dbPet != null) {
             Pet pet = new Pet(dbPet.getUserId(), dbPet.getName(), dbPet.getAge(), dbPet.getBreed(), dbPet.getBiography()) {};
-            pet.getSwipedOn().addAll(dbPet.getSwipedOn());
-            pet.getMatches().addAll(dbPet.getMatches());
-            pet.getRejected().addAll(dbPet.getRejected());
+            pet.setId(dbPet.getId());
+
+            for (DummyRelationRepository.Relation relation : dummyRelationRepository.getRelations()) {
+                if (relation.getFromId() == pet.getId() && relation.getRelationType().equals("SWIPE")) {
+                    pet.getSwipedOn().add(relation.getToId());
+                }
+                if (relation.getFromId() == pet.getId() && relation.getRelationType().equals("REJECT")) {
+                    pet.getMatches().add(relation.getToId());
+                }
+                if (relation.getFromId() == pet.getId() && relation.getRelationType().equals("MATCH")) {
+                    pet.getRejected().add(relation.getToId());
+                }
+            }
             return pet;
         } else {
             throw new PetNotFoundException("Pet with ID: " + petId + " not found.");

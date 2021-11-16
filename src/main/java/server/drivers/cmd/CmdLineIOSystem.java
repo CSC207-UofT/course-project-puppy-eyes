@@ -14,7 +14,7 @@ public class CmdLineIOSystem implements IOSystem {
 
     @Override
     public String getInput() {
-        return scanner.next();
+        return scanner.nextLine();
     }
 
     @Override

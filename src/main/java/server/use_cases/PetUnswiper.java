@@ -25,7 +25,7 @@ public class PetUnswiper implements PetUnswiperInputBoundary {
 
         try {
             pet1Id = request.getFirstPetId();
-            pet2Id = request.getFirstPetId();
+            pet2Id = request.getSecondPetId();
         } catch (NumberFormatException e) {
             // Invalid pet id
             return new ResponseModel(false, "ID must be an integer.");
@@ -45,13 +45,14 @@ public class PetUnswiper implements PetUnswiperInputBoundary {
             // If the first pet already swiped on the second pet, remove the second pet from the first pet's swiped list
             if (this.relationRepository.hasRelation(pet.getId(), pet2.getId(), relationType)) {
                 this.relationRepository.removeRelation(pet.getId(), pet2.getId(), relationType);
+                return new ResponseModel(true, "Successfully removed pet2 from pet1's swiped list.");
             }
+
+            return new ResponseModel(false, "Pet2 is not in pet1's swiped list.");
         } catch (PetNotFoundException e) {
             // Pet not found
             return new ResponseModel(false, "Pet with ID: " + request.getFirstPetId() + " does not exist.");
         }
-
-        return new ResponseModel(false, "An unexpected error occurred.");
     }
 
 }

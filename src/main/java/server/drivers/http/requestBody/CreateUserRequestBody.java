@@ -13,14 +13,15 @@ public class CreateUserRequestBody {
     private final String emailAddress;
 
     public CreateUserRequestBody(String firstName, String lastName, String email, String currentAddress,
-                                 String currentCity, String pass) {
+                                 String currentCity, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.emailAddress = email;
         this.currentAddress = currentAddress;
         this.currentCity = currentCity;
-        this.password = pass;
+        this.password = password;
+        this.emailAddress = email;
     }
+
     public String getFirstName() {
         return this.firstName;
     }
