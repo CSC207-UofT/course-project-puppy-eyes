@@ -21,7 +21,7 @@ public class TestPetMatchesGenerator {
     public void setUp() {
         DummyUserRepository userRepository = new DummyUserRepository();
         userCreator = new UserCreator(userRepository);
-        DummyPetRepository petRepository = new DummyPetRepository(userRepository);
+        DummyPetRepository petRepository = new DummyPetRepository(userRepository, new DummyRelationRepository());
         petCreator = new PetCreator(petRepository, userRepository);
 
         petMatchesGenerator = new PetMatchesGenerator(userRepository, petRepository);
