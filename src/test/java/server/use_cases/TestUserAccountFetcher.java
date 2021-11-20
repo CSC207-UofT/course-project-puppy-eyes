@@ -3,6 +3,7 @@ package server.use_cases;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import server.drivers.BCryptService;
 import server.use_cases.repo_abstracts.ResponseModel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,12 +13,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestUserAccountFetcher {
 
     private UserAccountFetcher userAccountFetcher;
-    private DummyUserRepository dummyUserRepository;
 
     @BeforeEach
     public void setUp() {
-        dummyUserRepository = new DummyUserRepository();
-        userAccountFetcher = new UserAccountFetcher(dummyUserRepository);
+        BCryptService bcryptService = new BCryptService();
+        DummyUserRepository userRepository = new DummyUserRepository();
+        userAccountFetcher = new UserAccountFetcher(userRepository);
+        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
+
+        // Fill the repository with some dummy users
+        userCreator.createUser(new UserCreatorRequestModel("andrew", "qiu", "1234 home st",
+                "Toronto", "Password123", "andrew@email.com"));
+        userCreator.createUser(new UserCreatorRequestModel("asd", "last", "12345 tom st",
+                "Toronto", "Password123", "asd@e.com"));
+        userCreator.createUser(new UserCreatorRequestModel("gm", "qw", "45 test st",
+                "Toronto", "Password123", "8888@1234.com"));
     }
 
     /**
@@ -25,14 +35,6 @@ public class TestUserAccountFetcher {
      */
     @Test()
     public void TestSuccessFetchUser() {
-        // Fill the repository with some dummy users
-        dummyUserRepository.createUser("andrew", "qiu", "12345", "1234 home st",
-                "Toronto", "andrew@email.com");
-        dummyUserRepository.createUser("asd", "last", "65432", "12345 tom st",
-                "Toronto", "asd@e.com");
-        dummyUserRepository.createUser("gm", "qw", "7777", "45 test st",
-                "Toronto", "8888@1234.com");
-
         UserAccountFetcherResponseModel expected = new UserAccountFetcherResponseModel("asd",
                 "last", "12345 tom st", "Toronto", "asd@e.com");
 
@@ -49,14 +51,6 @@ public class TestUserAccountFetcher {
      */
     @Test()
     public void TestFailFetchUser() {
-        // Fill the repository with some dummy users
-        dummyUserRepository.createUser("andrew", "qiu", "12345", "1234 home st",
-                "Toronto", "andrew@email.com");
-        dummyUserRepository.createUser("asd", "last", "65432", "12345 tom st",
-                "Toronto", "asd@e.com");
-        dummyUserRepository.createUser("gm", "qw", "7777", "45 test st",
-                "Toronto", "8888@1234.com");
-
         ResponseModel responseModel = userAccountFetcher.fetchUserAccount(
                 new UserAccountFetcherRequestModel("3", "3"));
 

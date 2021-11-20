@@ -3,6 +3,7 @@ package server.use_cases;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import server.drivers.BCryptService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,18 +15,23 @@ public class TestPetCreator {
 
     @BeforeEach
     public void setUp() {
+        BCryptService bcryptService = new BCryptService();
         DummyUserRepository userRepository = new DummyUserRepository();
         DummyPetRepository petRepository = new DummyPetRepository(userRepository);
 
-        userCreator = new UserCreator(userRepository);
+        userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
         petCreator = new PetCreator(petRepository, userRepository);
     }
 
     @Test
     public void TestSuccessCreatePet() {
         // Create some users
-        UserCreatorResponseModel userCreatorResponse = (UserCreatorResponseModel) userCreator.createUser(new UserCreatorRequestModel("John", "Appleseed", "20 St George Street",
-                "Toronto", "123456", "john.appleseed@gmail.com")).getResponseData();
+        UserCreatorResponseModel userCreatorResponse = (UserCreatorResponseModel) userCreator.createUser(
+                new UserCreatorRequestModel(
+                    "John", "Appleseed", "20 St George Street",
+                    "Toronto", "Password123", "john.appleseed@gmail.com"
+                )
+        ).getResponseData();
 
         String userId = userCreatorResponse.getUserId();
 

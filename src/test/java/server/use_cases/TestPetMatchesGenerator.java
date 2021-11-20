@@ -3,6 +3,7 @@ package server.use_cases;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import server.drivers.BCryptService;
 import server.use_cases.repo_abstracts.ResponseModel;
 
 import java.util.Arrays;
@@ -13,18 +14,32 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class TestPetMatchesGenerator {
 
-    private UserCreator userCreator;
-    private PetCreator petCreator;
     private PetMatchesGenerator petMatchesGenerator;
+
+    String user1Id, user2Id, pet1Id, pet2Id;
 
     @BeforeEach
     public void setUp() {
+        BCryptService bcryptService = new BCryptService();
         DummyUserRepository userRepository = new DummyUserRepository();
-        userCreator = new UserCreator(userRepository);
+        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
         DummyPetRepository petRepository = new DummyPetRepository(userRepository);
-        petCreator = new PetCreator(petRepository, userRepository);
+        PetCreator petCreator = new PetCreator(petRepository, userRepository);
 
         petMatchesGenerator = new PetMatchesGenerator(userRepository, petRepository);
+
+        // Create users
+        user1Id = ((UserCreatorResponseModel) userCreator.createUser(new UserCreatorRequestModel("John",
+                "Appleseed", "20 St George Street", "Toronto",
+                "Password123", "john.appleseed@email.com")).getResponseData()).getUserId();
+        user2Id = ((UserCreatorResponseModel) userCreator.createUser(new UserCreatorRequestModel("Mike",
+                "Hunter", "21 St George Street", "Toronto", "Password123",
+                "mike.the.hunter@email.com")).getResponseData()).getUserId();
+        // Create pets
+        pet1Id = ((PetCreatorResponseModel) petCreator.createPet(new PetCreatorRequestModel(user1Id, user1Id, "Pocky", 5,
+                "Golden Retriever", "The happiest dog in the world!")).getResponseData()).getPetId();
+        pet2Id = ((PetCreatorResponseModel) petCreator.createPet(new PetCreatorRequestModel(user2Id, user2Id, "Jack", 3,
+                "German Shepherd", "Certified Good Boy TM.")).getResponseData()).getPetId();
     }
 
     /**
@@ -32,19 +47,6 @@ public class TestPetMatchesGenerator {
      */
     @Test()
     public void TestSuccessPetMatchesGenerator() {
-        // Create users
-        String user1Id = ((UserCreatorResponseModel) userCreator.createUser(new UserCreatorRequestModel("John",
-                "Appleseed", "20 St George Street", "Toronto",
-            "123456", "john.appleseed@email.com")).getResponseData()).getUserId();
-        String user2Id = ((UserCreatorResponseModel) userCreator.createUser(new UserCreatorRequestModel("Mike",
-                "Hunter", "21 St George Street", "Toronto", "123456",
-                "mike.the.hunter@email.com")).getResponseData()).getUserId();
-        // Create pets
-        String pet1Id = ((PetCreatorResponseModel) petCreator.createPet(new PetCreatorRequestModel(user1Id, user1Id, "Pocky", 5,
-                "Golden Retriever", "The happiest dog in the world!")).getResponseData()).getPetId();
-        String pet2Id = ((PetCreatorResponseModel) petCreator.createPet(new PetCreatorRequestModel(user2Id, user2Id, "Jack", 3,
-                "German Shepherd", "Certified Good Boy TM.")).getResponseData()).getPetId();
-
         ResponseModel responseModel = petMatchesGenerator.generatePotentialMatches(new
                 PetMatchesGeneratorRequestModel(user1Id, pet1Id));
         List<String> expected = Arrays.asList("1");

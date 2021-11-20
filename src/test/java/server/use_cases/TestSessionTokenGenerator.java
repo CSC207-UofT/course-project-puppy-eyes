@@ -3,6 +3,7 @@ package server.use_cases;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import server.drivers.BCryptService;
 import server.drivers.JwtService;
 import server.use_cases.repo_abstracts.ResponseModel;
 
@@ -12,15 +13,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestSessionTokenGenerator {
 
     private SessionTokenGenerator sessionTokenGenerator;
-    private UserCreator userCreator;
     private JwtService jwtService;
+
+    private String userId;
 
     @BeforeEach
     public void setUp() {
+        BCryptService bcryptService = new BCryptService();
         DummyUserRepository userRepository = new DummyUserRepository();
-        userCreator = new UserCreator(userRepository);
-        jwtService = new JwtService();
-        sessionTokenGenerator = new SessionTokenGenerator(userRepository, jwtService);
+        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
+        jwtService = new JwtService(true);
+        sessionTokenGenerator = new SessionTokenGenerator(userRepository, jwtService, bcryptService);
+
+        // Generate some users
+        userId = ((UserCreatorResponseModel) userCreator.createUser(
+                new UserCreatorRequestModel(
+                        "John", "Appleseed", "123 Addy", "Toronto",
+                        "Password123", "john.appleseed@gmail.com"
+                )
+        ).getResponseData()).getUserId();
     }
 
     /**
@@ -28,19 +39,18 @@ public class TestSessionTokenGenerator {
      */
     @Test()
     public void TestSuccessSessionTokenGenerator() {
-        String email = "john.appleseed@email.com";
-
-        UserCreatorResponseModel userCreatorResponse = (UserCreatorResponseModel) userCreator.createUser(new UserCreatorRequestModel("John",
-                "Appleseed", "20 St George Street", "Toronto", "123456", email)).getResponseData();
+        String email = "john.appleseed@gmail.com";
 
         ResponseModel response = sessionTokenGenerator.generateSessionToken(
-                new SessionTokenGeneratorRequestModel(email, "123456")
+                new SessionTokenGeneratorRequestModel(email, "Password123")
         );
+
+        System.out.println(response.getMessage());
 
         SessionTokenGeneratorResponseModel responseData = (SessionTokenGeneratorResponseModel) response.getResponseData();
 
         assertTrue(response.isSuccess());
-        assertTrue(jwtService.validateToken(responseData.getJwt(), userCreatorResponse.getUserId()));
+        assertTrue(jwtService.validateToken(responseData.getJwt(), userId));
     }
 
     /**
@@ -63,11 +73,8 @@ public class TestSessionTokenGenerator {
      */
     @Test()
     public void TestFailIncorrectCredentialsSessionTokenGenerator() {
-        userCreator.createUser(new UserCreatorRequestModel("John", "Appleseed",
-                "20 St George Street", "Toronto", "123456", "john.appleseed@email.com"));
-
         ResponseModel response = sessionTokenGenerator.generateSessionToken(
-                new SessionTokenGeneratorRequestModel("john.appleseed@gmail.com", "654321")
+                new SessionTokenGeneratorRequestModel("john.appleseed@gmail.com", "WrongPassword123")
         );
         SessionTokenGeneratorResponseModel responseData = (SessionTokenGeneratorResponseModel) response.getResponseData();
 
