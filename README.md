@@ -473,7 +473,7 @@ N/A
 ## Fetch User's Pets
 - **URL**:
 
-/pets/fetchswipes?petId=[petId]
+/users/fetchpets?petId=[petId]
 
 - **Requires Authenication**
 
