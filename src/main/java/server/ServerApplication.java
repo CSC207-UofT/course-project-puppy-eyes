@@ -14,6 +14,8 @@ import server.drivers.cmd.IOSystem;
 import server.drivers.repository.UserRepository;
 import server.drivers.repository.PetRepository;
 import server.use_cases.*;
+import server.use_cases.repo_abstracts.ResponsePresenter;
+import server.use_cases.repo_abstracts.UseCaseOutputBoundary;
 
 /**
  * Class that holds all the dependencies used in the application at the moment.
@@ -61,10 +63,15 @@ class BeanHolder {
         return new UserProfileEditor(userRepository);
     }
 
+    @Bean
+    PetProfileValidatorInputBoundary petProfileValidatorBean() {
+        return new PetProfileValidator();
+    }
+
     @Autowired
     @Bean
     PetCreatorInputBoundary petCreatorBean(PetRepository petRepository, UserRepository userRepository) {
-        return new PetCreator(petRepository, userRepository);
+        return new PetCreator(petRepository, userRepository, petProfileValidatorBean());
     }
 
     @Autowired
@@ -118,7 +125,7 @@ class BeanHolder {
     @Autowired
     @Bean
     PetEditorInputBoundary petEditorBean(PetRepository petRepository) {
-        return new PetEditor(petRepository);
+        return new PetEditor(petRepository, petProfileValidatorBean());
     }
 
     @Autowired
@@ -161,7 +168,7 @@ class BeanHolder {
     @Autowired
     @Bean
     ISessionController sessionControllerBean(UserRepository userRepository) {
-        return new SessionController(sessionTokenGeneratorBean(userRepository), jsonPresenterBean());
+        return new SessionController(sessionTokenGeneratorBean(userRepository));
     }
 
     // Utils/Services
@@ -173,6 +180,11 @@ class BeanHolder {
     @Bean
     IJSONPresenter jsonPresenterBean() {
         return new JSONPresenter();
+    }
+
+    @Bean
+    UseCaseOutputBoundary responsePresenterBean() {
+        return new ResponsePresenter(jsonPresenterBean());
     }
 
     @Bean
