@@ -1,22 +1,41 @@
 package server.drivers;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class JwtService {
+@Component
+public class JwtService implements IJwtService {
 
-    private String SECRET_KEY = "secret";
+    @Value("${jwt.secret.key}")
+    private String SECRET_KEY;
 
+    private boolean useTestKey;
+
+    public JwtService() { }
+
+    public JwtService(boolean useTestKey) {
+        this.useTestKey = useTestKey;
+    }
+
+    private String getSecretKey() {
+        return useTestKey ? "test" : SECRET_KEY;
+    }
+
+    @Override
     public String extractSubject(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
+    @Override
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
@@ -27,21 +46,23 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(getSecretKey()).parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
+    @Override
     public String createToken(String subject) {
         Map<String, Object> claims = new HashMap<>();
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+                .signWith(SignatureAlgorithm.HS256, getSecretKey()).compact();
     }
 
+    @Override
     public boolean validateToken(String token, String subject) {
         String tokenSubject = extractSubject(token);
         return (tokenSubject.equals(subject) && !isTokenExpired(token));
