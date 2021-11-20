@@ -32,8 +32,10 @@ public class UserProfileEditor implements UserProfileEditorInputBoundary {
             return new ResponseModel(false, "ID must be an integer.");
         }
 
+        User user;
+
         try {
-            userRepository.fetchUser(id);
+            user = userRepository.fetchUser(id);
         } catch (UserNotFoundException exception) {
             return new ResponseModel(false, "User with ID: " + request.getUserId() + " does not exist.");
         }
@@ -42,24 +44,30 @@ public class UserProfileEditor implements UserProfileEditorInputBoundary {
             return new ResponseModel(false, "You are not authorized to make this request.");
         }
 
+        // Do not modify null fields
+        String newBio = request.getNewBiography() == null ? user.getBiography() : request.getNewBiography();
+        String newPhoneNum = request.getNewPhoneNumber() == null ? user.getContactInfo().getPhoneNumber() : request.getNewPhoneNumber();
+        String newInstagram = request.getNewInstagram() == null ? user.getContactInfo().getInstagram() : request.getNewInstagram();
+        String newFacebook = request.getNewFacebook() == null ? user.getContactInfo().getFacebook() : request.getNewFacebook();
+
         boolean isSuccess = userRepository.editUserProfile(
             id,
-            request.getNewBiography(),
-            request.getNewPhoneNumber(),
-            request.getNewInstagram(),
-            request.getNewFacebook()
+            newBio,
+            newPhoneNum,
+            newInstagram,
+            newFacebook
         );
 
         if (isSuccess) {
             return new ResponseModel(
                 true,
-                "Successfully edited user account.",
+                "Successfully edited user profile.",
                 new UserProfileEditorResponseModel(
                     request.getUserId(),
-                    request.getNewBiography(),
-                    request.getNewPhoneNumber(),
-                    request.getNewInstagram(),
-                    request.getNewFacebook()
+                    newBio,
+                    newPhoneNum,
+                    newInstagram,
+                    newFacebook
                 )
             );
         }

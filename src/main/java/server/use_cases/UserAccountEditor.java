@@ -1,5 +1,6 @@
 package server.use_cases;
 
+import server.drivers.IPasswordEncryptor;
 import server.entities.User;
 import server.use_cases.repo_abstracts.IUserRepository;
 import server.use_cases.repo_abstracts.ResponseModel;
@@ -10,9 +11,14 @@ import server.use_cases.repo_abstracts.UserNotFoundException;
  */
 public class UserAccountEditor implements UserAccountEditorInputBoundary {
     IUserRepository userRepository;
+    IPasswordEncryptor passwordEncryptor;
+    UserAccountValidatorInputBoundary userAccountValidator;
 
-    public UserAccountEditor(IUserRepository userRepository) {
+    public UserAccountEditor(IUserRepository userRepository, IPasswordEncryptor passwordEncryptor,
+                             UserAccountValidatorInputBoundary userAccountValidator) {
         this.userRepository = userRepository;
+        this.passwordEncryptor = passwordEncryptor;
+        this.userAccountValidator = userAccountValidator;
     }
 
     /**
@@ -32,8 +38,10 @@ public class UserAccountEditor implements UserAccountEditorInputBoundary {
             return new ResponseModel(false, "ID must be an integer.");
         }
 
+        User user;
+
         try {
-            userRepository.fetchUser(id);
+            user = userRepository.fetchUser(id);
         } catch (UserNotFoundException exception) {
             return new ResponseModel(false, "User with ID: " + request.getUserId() + " does not exist.");
         }
@@ -42,14 +50,35 @@ public class UserAccountEditor implements UserAccountEditorInputBoundary {
             return new ResponseModel(false, "You are not authorized to make this request.");
         }
 
+        // Do not modify null fields
+        String newFirstName = request.getNewFirstName() == null ? user.getBiography() : request.getNewFirstName();
+        String newLastName = request.getNewLastName() == null ? user.getLastName() : request.getNewLastName();
+        String newPassword = request.getNewPassword() == null ? user.getPasswordHash() : request.getNewPassword();
+        String newAddress = request.getNewAddress() == null ? user.getCurrentAddress() : request.getNewAddress();
+        String newCity = request.getNewCity() == null ? user.getCurrentCity() : request.getNewCity();
+        String newEmail = request.getNewEmail() == null ? user.getContactInfo().getEmail() : request.getNewEmail();
+
+        if (userRepository.fetchIdFromEmail(request.getNewEmail()) >= 0) {
+            return new ResponseModel(false, "This email is already taken.");
+        }
+
+        // Check inputs
+        ResponseModel verifyInputsResponse = userAccountValidator.validateAccount(new UserAccountValidatorRequestModel(
+           newFirstName, newLastName, newCity, newPassword, newEmail
+        ));
+
+        if (!verifyInputsResponse.isSuccess()) {
+            return verifyInputsResponse;
+        }
+
         boolean isSuccess = userRepository.editUserAccount(
             id,
-            request.getNewFirstName(),
-            request.getNewLastName(),
-            request.getNewAddress(),
-            request.getNewCity(),
-            request.getNewPassword(),
-            request.getNewEmail()
+            newFirstName,
+            newLastName,
+            newAddress,
+            newCity,
+            passwordEncryptor.encryptPassword(newPassword),
+            newEmail
         );
 
         if (isSuccess) {
@@ -58,12 +87,12 @@ public class UserAccountEditor implements UserAccountEditorInputBoundary {
                 "Successfully edited user account.",
                 new UserAccountEditorResponseModel(
                     request.getUserId(),
-                    request.getNewFirstName(),
-                    request.getNewLastName(),
-                    request.getNewAddress(),
-                    request.getNewCity(),
-                    request.getNewPassword(),
-                    request.getNewEmail()
+                    newFirstName,
+                    newLastName,
+                    newAddress,
+                    newCity,
+                    newPassword,
+                    newEmail
                 )
             );
         }

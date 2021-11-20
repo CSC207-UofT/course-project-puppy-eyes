@@ -7,9 +7,8 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import server.controllers.*;
-import server.drivers.GeocoderService;
+import server.drivers.*;
 import server.drivers.http.AuthFilter;
-import server.drivers.JwtService;
 import server.drivers.cmd.CmdLineIOSystem;
 import server.drivers.cmd.IOSystem;
 import server.drivers.repository.UserRepository;
@@ -27,10 +26,15 @@ import server.use_cases.*;
 class BeanHolder {
 
     // Use Cases
+    @Bean
+    UserAccountValidatorInputBoundary userCredentialsValidatorBean() {
+        return new UserAccountValidator();
+    }
+
     @Autowired
     @Bean()
     UserCreatorInputBoundary userCreatorBean(UserRepository userRepository) {
-        return new UserCreator(userRepository);
+        return new UserCreator(userRepository, passwordEncryptorBean(), userCredentialsValidatorBean());
     }
 
     @Autowired
@@ -42,7 +46,7 @@ class BeanHolder {
     @Autowired
     @Bean
     UserAccountEditorInputBoundary userAccountEditorBean(UserRepository userRepository) {
-        return new UserAccountEditor(userRepository);
+        return new UserAccountEditor(userRepository, passwordEncryptorBean(), userCredentialsValidatorBean());
     }
 
     @Autowired
@@ -120,7 +124,7 @@ class BeanHolder {
     @Autowired
     @Bean
     SessionTokenGeneratorInputBoundary sessionTokenGeneratorBean(UserRepository userRepository) {
-        return new SessionTokenGenerator(userRepository, jwtServiceBean());
+        return new SessionTokenGenerator(userRepository, jwtServiceBean(), passwordEncryptorBean());
     }
 
     // Controllers
@@ -172,13 +176,18 @@ class BeanHolder {
     }
 
     @Bean
-    JwtService jwtServiceBean() {
+    IJwtService jwtServiceBean() {
         return new JwtService();
     }
 
     @Bean
     GeocoderService geocoderServiceBean() {
         return new GeocoderService();
+    }
+
+    @Bean
+    IPasswordEncryptor passwordEncryptorBean() {
+        return new BCryptService();
     }
 
     @Bean
