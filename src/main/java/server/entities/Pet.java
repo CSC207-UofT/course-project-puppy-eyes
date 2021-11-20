@@ -17,18 +17,6 @@ public abstract class Pet {
         this.breed = breed;
     }
 
-    public boolean isNameValid() {
-        return this.name.trim().length() >= 3;
-    }
-
-    public boolean isAgeValid() {
-        return this.age >= 0;
-    }
-
-    public boolean isBreedValid() {
-        return this.breed.trim().length() >= 3;
-    }
-
     public int getUserId() {
         return this.userId;
     }
@@ -76,6 +64,11 @@ public abstract class Pet {
         }
 
         return ((Pet) other).getId() == this.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id;
     }
 
     public void setId(int id) {

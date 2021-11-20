@@ -95,4 +95,19 @@ public abstract class User {
         this.currentCity = currentCity;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof User))
+            return false;
+
+        User other = (User) o;
+
+        return other.getId() == this.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id;
+    }
+
 }
