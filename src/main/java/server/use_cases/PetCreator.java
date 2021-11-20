@@ -4,17 +4,22 @@ import server.entities.Pet;
 import server.entities.User;
 import server.use_cases.repo_abstracts.*;
 
+import java.util.regex.Pattern;
+
 /**
  * A use case responsible for creating new Pet.
  */
 public class PetCreator implements PetCreatorInputBoundary {
 
-    IPetRepository petRepository;
-    IUserRepository userRepository;
+    private final IPetRepository petRepository;
+    private final IUserRepository userRepository;
+    private final PetProfileValidatorInputBoundary petProfileValidator;
 
-    public PetCreator(IPetRepository petRepository, IUserRepository userRepository) {
+    public PetCreator(IPetRepository petRepository, IUserRepository userRepository,
+                      PetProfileValidatorInputBoundary petProfileValidator) {
         this.petRepository = petRepository;
         this.userRepository = userRepository;
+        this.petProfileValidator = petProfileValidator;
     }
 
     /**
@@ -24,19 +29,37 @@ public class PetCreator implements PetCreatorInputBoundary {
      * @return a PetCreatorResponseModel that contains the created pet's basic information.
      */
     public ResponseModel createPet(PetCreatorRequestModel request) {
-        int userId;
-        try {
-            userId = Integer.parseInt(request.getUserId());
-        } catch (NumberFormatException e) {
-            // Invalid user id
+        String intRegex = "/^[-+]?\\d+$/";
+        Pattern intPattern = Pattern.compile(intRegex);
+
+        // null checks
+        if (request.getUserId() == null || request.getName() == null || request.getBreed() == null || request.getAge() == null ) {
+            return new ResponseModel(false, "Missing required fields.");
+        }
+
+        // Check if the request fields are in the valid datatype
+        if (!intPattern.matcher(request.getUserId()).matches() || !intPattern.matcher(request.getHeaderUserId()).matches()) {
             return new ResponseModel(false, "ID must be an integer.");
         }
 
-        User user;
+        if (request.getAge() != null && !intPattern.matcher(request.getAge()).matches()) {
+            return new ResponseModel(false, "Age must be an integer.");
+        }
+
+        // Check if the request fields pass logic checks
+        ResponseModel verifyInputsResponse = petProfileValidator.validateProfile(new PetProfileValidatorRequestModel(
+                request.getName(), request.getAge(), request.getBreed(), request.getBiography()
+        ));
+
+        if (!verifyInputsResponse.isSuccess()) {
+            return verifyInputsResponse;
+        }
+        int userId = Integer.parseInt(request.getUserId());
+        int intAge = Integer.parseInt(request.getAge());
 
         // Check if user exists
         try {
-            user = userRepository.fetchUser(userId);
+            userRepository.fetchUser(userId);
         } catch (UserNotFoundException exception) {
             return new ResponseModel(false, "User with ID: " + userId + " does not exist.");
         }
@@ -45,28 +68,15 @@ public class PetCreator implements PetCreatorInputBoundary {
             return new ResponseModel(false, "You are not authorized to make this request.");
         }
 
-        Pet newPet = new Pet(userId, request.getName(), request.getAge(), request.getBreed(), request.getBiography()) {};
+        Pet newPet = new Pet(userId, request.getName(), intAge, request.getBreed(), request.getBiography() == null ? "" : request.getBiography()) {};
 
-        // Check for valid inputs
-        if (!newPet.isNameValid()) {
-            return new ResponseModel(false, "Please enter a name of at least 3 characters.");
-        }
-
-        if (!newPet.isAgeValid()) {
-            return new ResponseModel(false, "Please enter a non-negative age.");
-        }
-
-        if (!newPet.isBreedValid()) {
-            return new ResponseModel(false, "Please enter a breed of at least 3 characters.");
-        }
-
-        int id = petRepository.createPet(userId, newPet.getName(), newPet.getAge(), newPet.getBreed(), newPet.getBiography());
-        newPet.setId(id);
+        int petId = petRepository.createPet(userId, newPet.getName(), newPet.getAge(), newPet.getBreed(), newPet.getBiography());
+        newPet.setId(petId);
 
         return new ResponseModel(true, "Pet created successfully.",
                 new PetCreatorResponseModel(
-                        String.valueOf(newPet.getId()),
-                        String.valueOf(userId),
+                        String.valueOf(petId),
+                        request.getUserId(),
                         newPet.getName(),
                         String.valueOf(newPet.getAge()),
                         newPet.getBreed(),

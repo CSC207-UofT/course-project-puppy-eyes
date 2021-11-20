@@ -5,14 +5,19 @@ import server.use_cases.repo_abstracts.IPetRepository;
 import server.use_cases.repo_abstracts.PetNotFoundException;
 import server.use_cases.repo_abstracts.ResponseModel;
 
+import java.util.regex.Pattern;
+
 /**
  * A use case responsible for editing a pet.
  */
 public class PetEditor implements PetEditorInputBoundary {
-    IPetRepository petRepository;
 
-    public PetEditor(IPetRepository petRepository) {
+    private IPetRepository petRepository;
+    private PetProfileValidatorInputBoundary petProfileValidator;
+
+    public PetEditor(IPetRepository petRepository, PetProfileValidatorInputBoundary petProfileValidator) {
         this.petRepository = petRepository;
+        this.petProfileValidator = petProfileValidator;
     }
 
     /**
@@ -23,14 +28,26 @@ public class PetEditor implements PetEditorInputBoundary {
      */
     @Override
     public ResponseModel editPet(PetEditorRequestModel request) {
-        int petId;
+        String intRegex = "/^[-+]?\\d+$/";
+        Pattern intPattern = Pattern.compile(intRegex);
 
-        try {
-            petId = Integer.parseInt(request.getPetId());
-        } catch (NumberFormatException e) {
-            // Invalid pet id
+        // null checks
+        if (request.getPetId() == null || request.getUserId() == null) {
+            return new ResponseModel(false, "Missing required fields.");
+        }
+
+        // Check if the request fields are in the valid datatype
+        if (!intPattern.matcher(request.getPetId()).matches()
+                || !intPattern.matcher(request.getUserId()).matches()
+                || !intPattern.matcher(request.getHeaderUserId()).matches()) {
             return new ResponseModel(false, "ID must be an integer.");
         }
+
+        if (request.getNewAge() != null && !intPattern.matcher(request.getNewAge()).matches()) {
+            return new ResponseModel(false, "Age must be an integer.");
+        }
+
+        int petId = Integer.parseInt(request.getPetId());
 
         Pet pet;
 
@@ -40,29 +57,32 @@ public class PetEditor implements PetEditorInputBoundary {
             return new ResponseModel(false, "Pet with ID: " + request.getPetId() + " does not exist.");
         }
 
-        pet.setName(request.getNewName());
-        pet.setAge(request.getNewAge());
-        pet.setBiography(request.getNewBiography());
+        // Do not modify null fields
+        String newName = request.getNewName() == null ? pet.getName() : request.getNewName();
+        String newAge = request.getNewAge() == null ? pet.getAge() + "" : request.getNewAge();
+        String newBreed = request.getNewBreed() == null ? pet.getBreed() : request.getNewBreed();
+        String newBiography = request.getNewBiography() == null ? pet.getBiography() : request.getNewBiography();
 
         // Check for valid inputs
-        if (!pet.isNameValid()) {
-            return new ResponseModel(false, "Please enter a name of at least 3 characters.");
+        ResponseModel verifyInputsResponse = petProfileValidator.validateProfile(new PetProfileValidatorRequestModel(
+            newName, newAge, newBreed, newBiography
+        ));
+
+        if (!verifyInputsResponse.isSuccess()) {
+            return verifyInputsResponse;
         }
 
-        if (!pet.isAgeValid()) {
-            return new ResponseModel(false, "Please enter a non-negative age.");
-        }
-
-        if (!pet.isBreedValid()) {
-            return new ResponseModel(false, "Please enter a breed of at least 3 characters.");
-        }
+        pet.setName(newName);
+        pet.setAge(Integer.parseInt(newAge));
+        pet.setBreed(newBreed);
+        pet.setBiography(newBiography);
 
         boolean isSuccess = petRepository.editPet(
-                petId,
-                request.getNewName(),
-                request.getNewAge(),
-                request.getNewBreed(),
-                request.getNewBiography()
+            petId,
+            newName,
+            Integer.parseInt(newAge),
+            newBreed,
+            newBiography
         );
 
         if (!isSuccess) {
@@ -73,11 +93,11 @@ public class PetEditor implements PetEditorInputBoundary {
             true,
             "Successfully edited pet.",
             new PetEditorResponseModel(
-                request.getNewName(),
-                request.getNewAge(),
-                request.getNewBreed(),
-                request.getNewBiography(),
-                String.valueOf(request.getPetId())
+                newName,
+                Integer.parseInt(newAge),
+                newBreed,
+                newBiography,
+                request.getPetId()
             )
         );
     }
