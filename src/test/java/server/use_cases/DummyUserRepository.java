@@ -1,6 +1,5 @@
 package server.use_cases;
 
-import server.drivers.IPasswordEncryptor;
 import server.entities.User;
 import server.entities.UserFactory;
 import server.entities.UserType;
@@ -180,7 +179,7 @@ public class DummyUserRepository implements IUserRepository {
     public User fetchUser(int userId) throws UserNotFoundException {
         DummyUserRepositoryEntity dbUser = users.stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
 
-        if (userId >= 0 && userId <= currentMaxId && dbUser != null) {
+        if (dbUser != null) {
             UserFactory userFactory = new UserFactory();
 
             User user = userFactory.createUser(dbUser.getType(), dbUser.getFirstName(), dbUser.getLastName(), dbUser.getCurrentAddress(),
@@ -223,7 +222,7 @@ public class DummyUserRepository implements IUserRepository {
     public boolean editUserAccount(int userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail) {
         DummyUserRepositoryEntity dbUser = users.stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
 
-        if (userId >= 0 && userId <= currentMaxId && dbUser != null) {
+        if (dbUser != null) {
             dbUser.setFirstName(newFirstName);
             dbUser.setLastName(newLastName);
             dbUser.setCurrentAddress(newAddress);
@@ -238,7 +237,7 @@ public class DummyUserRepository implements IUserRepository {
     public boolean editUserProfile(int userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook) {
         DummyUserRepositoryEntity dbUser = users.stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
 
-        if (userId >= 0 && userId <= currentMaxId && dbUser != null) {
+        if (dbUser != null) {
             DummyContactInfoRepositoryEntity contactInfo = dbUser.getContactInfo();
             dbUser.setBiography(newBiography);
             contactInfo.setPhoneNumber(newPhoneNumber);
@@ -273,7 +272,7 @@ public class DummyUserRepository implements IUserRepository {
     public void addPet(int userId, int petId) {
         DummyUserRepositoryEntity dbUser = users.stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
 
-        if (userId >= 0 && userId <= currentMaxId && dbUser != null) {
+        if (dbUser != null) {
             dbUser.getPets().add(petId);
         }
     }
