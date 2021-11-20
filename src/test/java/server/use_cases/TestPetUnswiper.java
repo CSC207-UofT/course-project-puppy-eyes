@@ -4,8 +4,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import server.drivers.BCryptService;
+import server.use_cases.pet_swiper.PetSwiper;
+import server.use_cases.pet_swiper.PetSwiperRequestModel;
+import server.use_cases.pet_unswiper.PetUnswiper;
+import server.use_cases.pet_unswiper.PetUnswiperRequestModel;
 import server.use_cases.repo_abstracts.PetNotFoundException;
 import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.user_account_validator.UserAccountValidator;
+import server.use_cases.user_creator.UserCreator;
+import server.use_cases.user_creator.UserCreatorRequestModel;
+import server.use_cases.user_creator.UserCreatorResponseModel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package server.controllers;
 
-import server.use_cases.SessionTokenGeneratorInputBoundary;
-import server.use_cases.SessionTokenGeneratorRequestModel;
+import server.use_cases.session_token_generator.SessionTokenGeneratorInputBoundary;
+import server.use_cases.session_token_generator.SessionTokenGeneratorRequestModel;
 import server.use_cases.repo_abstracts.ResponseModel;
 
 public class SessionController implements ISessionController {

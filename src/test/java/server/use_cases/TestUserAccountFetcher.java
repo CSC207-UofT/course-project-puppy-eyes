@@ -5,6 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import server.drivers.BCryptService;
 import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.user_account_fetcher.UserAccountFetcher;
+import server.use_cases.user_account_fetcher.UserAccountFetcherRequestModel;
+import server.use_cases.user_account_fetcher.UserAccountFetcherResponseModel;
+import server.use_cases.user_account_validator.UserAccountValidator;
+import server.use_cases.user_creator.UserCreator;
+import server.use_cases.user_creator.UserCreatorRequestModel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

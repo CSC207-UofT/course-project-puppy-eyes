@@ -1,9 +1,20 @@
 package server.controllers;
 
-import server.use_cases.*;
 import server.use_cases.repo_abstracts.ResponseModel;
 import server.use_cases.repo_abstracts.ResponsePresenter;
 import server.use_cases.repo_abstracts.UseCaseOutputBoundary;
+import server.use_cases.user_account_editor.UserAccountEditorInputBoundary;
+import server.use_cases.user_account_editor.UserAccountEditorRequestModel;
+import server.use_cases.user_account_fetcher.UserAccountFetcherInputBoundary;
+import server.use_cases.user_account_fetcher.UserAccountFetcherRequestModel;
+import server.use_cases.user_creator.UserCreatorInputBoundary;
+import server.use_cases.user_creator.UserCreatorRequestModel;
+import server.use_cases.user_pets_fetcher.UserPetsFetcherInputBoundary;
+import server.use_cases.user_pets_fetcher.UserPetsFetcherRequestModel;
+import server.use_cases.user_profile_editor.UserProfileEditorInputBoundary;
+import server.use_cases.user_profile_editor.UserProfileEditorRequestModel;
+import server.use_cases.user_profile_fetcher.UserProfileFetcherInputBoundary;
+import server.use_cases.user_profile_fetcher.UserProfileFetcherRequestModel;
 
 /**
  * A controller that handles all functions relating to user data.

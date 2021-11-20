@@ -1,6 +1,23 @@
 package server.controllers;
 
-import server.use_cases.*;
+import server.use_cases.pet_creator.PetCreatorInputBoundary;
+import server.use_cases.pet_creator.PetCreatorRequestModel;
+import server.use_cases.pet_editor.PetEditorInputBoundary;
+import server.use_cases.pet_editor.PetEditorRequestModel;
+import server.use_cases.pet_matches_fetcher.PetMatchesFetcherInputBoundary;
+import server.use_cases.pet_matches_fetcher.PetMatchesFetcherRequestModel;
+import server.use_cases.pet_matches_generator.PetMatchesGeneratorInputBoundary;
+import server.use_cases.pet_matches_generator.PetMatchesGeneratorRequestModel;
+import server.use_cases.pet_profile_fetcher.PetProfileFetcherInputBoundary;
+import server.use_cases.pet_profile_fetcher.PetProfileFetcherRequestModel;
+import server.use_cases.pet_rejector.PetRejectorInputBoundary;
+import server.use_cases.pet_rejector.PetRejectorRequestModel;
+import server.use_cases.pet_swiper.PetSwiperInputBoundary;
+import server.use_cases.pet_swiper.PetSwiperRequestModel;
+import server.use_cases.pet_swipes_fetcher.PetSwipesFetcherInputBoundary;
+import server.use_cases.pet_swipes_fetcher.PetSwipesFetcherRequestModel;
+import server.use_cases.pet_unswiper.PetUnswiperInputBoundary;
+import server.use_cases.pet_unswiper.PetUnswiperRequestModel;
 import server.use_cases.repo_abstracts.ResponseModel;
 import server.use_cases.repo_abstracts.ResponsePresenter;
 import server.use_cases.repo_abstracts.UseCaseOutputBoundary;
