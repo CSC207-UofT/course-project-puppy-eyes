@@ -1,5 +1,7 @@
 package server.controllers;
 
+import server.use_cases.repo_abstracts.ResponseModel;
+
 /**
  * An interface representing a controller that handles all
  * functions relating to user data.
@@ -14,9 +16,10 @@ public interface IUserController {
      * @param currentCity       user's current city
      * @param password          user's password
      * @param email             user's email
+     * @return A ResponseModel containing the response data
      */
-    String createUser(String firstName, String lastName, String currentAddress, String currentCity,
-                      String password, String email);
+    ResponseModel createUser(String firstName, String lastName, String currentAddress, String currentCity,
+                             String password, String email);
 
     /**
      * Fetch a user's account details (firstName, lastName, currentAddress, currentCity, email)
@@ -27,9 +30,9 @@ public interface IUserController {
      * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
      *                      is true, this field does nothing.
      * @param userId
-     * @return a JSON structure
+     * @return A ResponseModel containing the response data
      */
-    String fetchUserAccount(boolean fromTerminal, String headerUserId, String userId);
+    ResponseModel fetchUserAccount(boolean fromTerminal, String headerUserId, String userId);
 
     /**
      * Return a list of pet ids that belong to the user
@@ -38,9 +41,9 @@ public interface IUserController {
      * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
      *                      is true, this field does nothing.
      * @param userId
-     * @return a JSON structure
+     * @return A ResponseModel containing the response data
      */
-    String fetchUserPets(boolean fromTerminal, String headerUserId, int userId);
+    ResponseModel fetchUserPets(boolean fromTerminal, String headerUserId, String userId);
 
     /**
      * Edit a user's account details given their user id and new information.
@@ -56,9 +59,9 @@ public interface IUserController {
      * @param newCity       the user's new current city
      * @param newPassword   the user's new password
      * @param newEmail      the user's new email
-     * @return a JSON structure
+     * @return A ResponseModel containing the response data
      */
-    String editUserAccount(boolean fromTerminal, String headerUserId, String userId, String newFirstName, String newLastName,
+    ResponseModel editUserAccount(boolean fromTerminal, String headerUserId, String userId, String newFirstName, String newLastName,
                            String newAddress, String newCity, String newPassword, String newEmail);
 
     /**
@@ -66,9 +69,9 @@ public interface IUserController {
      * given their user id. The returned response is in the form of a JSON object.
      *
      * @param userId    the user's id
-     * @return a JSON structure
+     * @return A ResponseModel containing the response data
      */
-    String fetchUserProfile(String userId);
+    ResponseModel fetchUserProfile(String userId);
 
     /**
      * Edit a user's profile details given their user id and new information.
@@ -81,8 +84,8 @@ public interface IUserController {
      * @param newPhoneNumber    the user's new phone number
      * @param newInstagram      the user's new Instagram
      * @param newFacebook       the user's new Facebook
-     * @return A JSON structure
+     * @return A ResponseModel containing the response data
      */
-    String editUserProfile(boolean fromTerminal, String headerUserId, String userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook);
+    ResponseModel editUserProfile(boolean fromTerminal, String headerUserId, String userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook);
 
 }

@@ -60,10 +60,10 @@ public class UserController implements IUserController {
      * @return The JSON response
      */
     @Override
-    public String createUser(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
+    public ResponseModel createUser(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
         UserCreatorRequestModel request = new UserCreatorRequestModel(firstName, lastName, currentAddress, currentCity, password, email);
         ResponseModel response = userCreator.createUser(request);
-        return responsePresenter.formatResponse(response);
+        return response;
     }
 
     /**
@@ -89,11 +89,11 @@ public class UserController implements IUserController {
      *    }
      */
     @Override
-    public String fetchUserAccount(boolean fromTerminal, String headerUserId, String userId) {
+    public ResponseModel fetchUserAccount(boolean fromTerminal, String headerUserId, String userId) {
         UserAccountFetcherRequestModel request = new UserAccountFetcherRequestModel(headerUserId, userId);
         request.setFromTerminal(true);
         ResponseModel response = accountFetcher.fetchUserAccount(request);
-        return responsePresenter.formatResponse(response);
+        return response;
     }
 
     /**
@@ -115,11 +115,11 @@ public class UserController implements IUserController {
      *      }
      */
     @Override
-    public String fetchUserPets(boolean fromTerminal, String headerUserId, int userId) {
-        UserPetsFetcherRequestModel request = new UserPetsFetcherRequestModel(headerUserId, String.valueOf(userId));
+    public ResponseModel fetchUserPets(boolean fromTerminal, String headerUserId, String userId) {
+        UserPetsFetcherRequestModel request = new UserPetsFetcherRequestModel(headerUserId, userId);
         request.setFromTerminal(true);
         ResponseModel response = userPetsFetcher.fetchUserPets(request);
-        return responsePresenter.formatResponse(response);
+        return response;
     }
 
     /**
@@ -152,13 +152,13 @@ public class UserController implements IUserController {
      *    }
      */
     @Override
-    public String editUserAccount(boolean fromTerminal, String headerUserId, String userId, String newFirstName, String newLastName,
+    public ResponseModel editUserAccount(boolean fromTerminal, String headerUserId, String userId, String newFirstName, String newLastName,
                                   String newAddress, String newCity, String newPassword, String newEmail) {
         UserAccountEditorRequestModel request = new UserAccountEditorRequestModel(headerUserId, userId, newFirstName,
                 newLastName, newAddress, newCity, newPassword, newEmail);
         request.setFromTerminal(true);
         ResponseModel response = accountEditor.editUserAccount(request);
-        return responsePresenter.formatResponse(response);
+        return response;
     }
 
     /**
@@ -184,10 +184,10 @@ public class UserController implements IUserController {
      *    }
      */
     @Override
-    public String fetchUserProfile(String userId) {
+    public ResponseModel fetchUserProfile(String userId) {
         UserProfileFetcherRequestModel request = new UserProfileFetcherRequestModel(userId);
         ResponseModel response = profileFetcher.fetchUserProfile(request);
-        return responsePresenter.formatResponse(response);
+        return response;
     }
 
     /**
@@ -218,11 +218,11 @@ public class UserController implements IUserController {
      *    }
      */
     @Override
-    public String editUserProfile(boolean fromTerminal, String headerUserId, String userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook) {
+    public ResponseModel editUserProfile(boolean fromTerminal, String headerUserId, String userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook) {
         UserProfileEditorRequestModel request = new UserProfileEditorRequestModel(headerUserId, userId, newBiography,
                 newPhoneNumber, newInstagram, newFacebook);
         ResponseModel response = profileEditor.editUserProfile(request);
-        return responsePresenter.formatResponse(response);
+        return response;
     }
 
 }

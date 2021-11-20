@@ -1,5 +1,7 @@
 package server.controllers;
 
+import server.use_cases.repo_abstracts.ResponseModel;
+
 /**
  * An interface representing a controller that handles all
  * functions relating to pet data.
@@ -18,10 +20,10 @@ public interface IPetController {
      * @param age       the pet's age
      * @param breed     the pet's breed
      * @param biography the pet's biography
-     * @return A JSON structure
+     * @return A ResponseModel containing the response data
      */
 
-    String createPet(boolean fromTerminal, String headerUserId, String userId, String name, int age, String breed, String biography);
+    ResponseModel createPet(boolean fromTerminal, String headerUserId, String userId, String name, String age, String breed, String biography);
 
     /**
      * Fetch a pet by given id.
@@ -31,9 +33,9 @@ public interface IPetController {
      * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
      *                      is true, this field does nothing.
      * @param petId     user entered pet id
-     * @return A JSON structure
+     * @return A ResponseModel containing the response data
      */
-    String fetchPetProfile(boolean fromTerminal, String headerUserId, String petId);
+    ResponseModel fetchPetProfile(boolean fromTerminal, String headerUserId, String petId);
 
     /**
      * Edit a pet.
@@ -46,9 +48,9 @@ public interface IPetController {
      * @param newAge        user entered pet's new age
      * @param newBreed      user entered pet's new breed
      * @param newBiography  user entered pet's new biography
-     * @return A JSON structure
+     * @return A ResponseModel containing the response data
      */
-    String editPet(boolean fromTerminal, String headerUserId, String petId, String newName, int newAge, String newBreed, String newBiography);
+    ResponseModel editPet(boolean fromTerminal, String headerUserId, String petId, String newName, String newAge, String newBreed, String newBiography);
 
     /**
      * Add the Pet with id pet2Id to the Pet with id pet1Id's rejection list
@@ -58,9 +60,9 @@ public interface IPetController {
      *                      is true, this field does nothing.
      * @param pet1Id
      * @param pet2Id
-     * @return a String of "true" or "false whether the rejection successfully occurred
+     * @return A ResponseModel containing the response data
      */
-    String rejectPets(boolean fromTerminal, String headerUserId, int pet1Id, int pet2Id);
+    ResponseModel rejectPets(boolean fromTerminal, String headerUserId, String pet1Id, String pet2Id);
 
     /**
      * Return a list of pet ids that the pet may potentially want to match with
@@ -71,7 +73,7 @@ public interface IPetController {
      * @param petId
      * @return a JSON structure
      */
-    public String generatePotentialMatches(boolean fromTerminal, String headerUserId, String petId);
+    ResponseModel generatePotentialMatches(boolean fromTerminal, String headerUserId, String petId);
 
     /**
      * Add the Pet with id pet2Id to the Pet with id pet1Id's swiped list.
@@ -81,9 +83,9 @@ public interface IPetController {
      *                      is true, this field does nothing.
      * @param pet1Id
      * @param pet2Id
-     * @return a String of "true" or "false whether the swipe successfully occurred
+     * @return A ResponseModel containing the response data
      */
-    String swipePets(boolean fromTerminal, String headerUserId, int pet1Id, int pet2Id);
+    ResponseModel swipePets(boolean fromTerminal, String headerUserId, String pet1Id, String pet2Id);
 
     /**
      * Remove the Pet with id pet2Id to the Pet with id pet1Id's swiped list.
@@ -94,9 +96,9 @@ public interface IPetController {
      *                      is true, this field does nothing.
      * @param pet1Id
      * @param pet2Id
-     * @return a String of "true" or "false whether the unswipe successfully occurred
+     * @return A ResponseModel containing the response data
      */
-    String unswipePets(boolean fromTerminal, String headerUserId, int pet1Id, int pet2Id);
+    ResponseModel unswipePets(boolean fromTerminal, String headerUserId, String pet1Id, String pet2Id);
 
     /**
      * Return a list of pet ids that the given pet has swiped on
@@ -105,9 +107,9 @@ public interface IPetController {
      * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
      *                      is true, this field does nothing.
      * @param petId
-     * @return a JSON structure
+     * @return A ResponseModel containing the response data
      */
-    String fetchPetSwipes(boolean fromTerminal, String headerUserId, int petId);
+    ResponseModel fetchPetSwipes(boolean fromTerminal, String headerUserId, String petId);
 
     /**
      * Return a list of pet ids that the given pet has matched with
@@ -116,8 +118,8 @@ public interface IPetController {
      * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
      *                      is true, this field does nothing.
      * @param petId
-     * @return a JSON structure
+     * @return A ResponseModel containing the response data
      */
-    String fetchPetMatches(boolean fromTerminal, String headerUserId, int petId);
+    ResponseModel fetchPetMatches(boolean fromTerminal, String headerUserId, String petId);
 
 }
