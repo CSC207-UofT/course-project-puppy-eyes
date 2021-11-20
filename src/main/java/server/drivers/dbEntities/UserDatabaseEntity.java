@@ -1,5 +1,7 @@
 package server.drivers.dbEntities;
 
+import server.entities.UserType;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -33,6 +35,10 @@ public class UserDatabaseEntity {
     @Column(name = "biography")
     private String biography;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    private UserType type;
+
     @OneToOne(cascade = CascadeType.ALL)
     private ContactInfoDatabaseEntity contactInfo;
 
@@ -40,7 +46,7 @@ public class UserDatabaseEntity {
     private List<PetDatabaseEntity> pets;
 
     public UserDatabaseEntity(String firstName, String lastName, String password, String currentAddress,
-                              String currentCity, Double matchingDistanceCap, String biography,
+                              String currentCity, Double matchingDistanceCap, String biography, UserType type,
                               ContactInfoDatabaseEntity contactInfo) {
         super();
         this.firstName = firstName;
@@ -50,6 +56,7 @@ public class UserDatabaseEntity {
         this.currentCity = currentCity;
         this.matchingDistanceCap = matchingDistanceCap;
         this.biography = biography;
+        this.type = type;
         this.contactInfo = contactInfo;
     }
 
@@ -77,29 +84,19 @@ public class UserDatabaseEntity {
         return currentCity;
     }
 
+    public UserType getType() {
+        return type;
+    }
+
     public List<PetDatabaseEntity> getPets() {
         return this.pets;
-    }
-
-    public void addPet(PetDatabaseEntity pet) {
-        this.pets.add(pet);
-        pet.setUser(this);
-    }
-
-    public void removePet(PetDatabaseEntity pet) {
-        if (!this.pets.contains(pet)) {
-            return;
-        }
-
-        this.pets.remove(pet);
-        pet.setUser(null);
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public Double getMatchingDistanceCap() {
+    public double getMatchingDistanceCap() {
         return matchingDistanceCap;
     }
 

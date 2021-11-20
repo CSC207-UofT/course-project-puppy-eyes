@@ -6,10 +6,7 @@ public abstract class User {
     private String currentAddress;
     private String currentCity;
     private double matchingDistanceCap;
-    /* A hash of the user's password. */
-    // In a security perspective, it is unwise to store the user's password
-    // as raw plaintext.
-    private String passwordHash;
+    private String password;
     private final ContactInfo contactInfo;
     private String biography;
     private int id;
@@ -24,34 +21,16 @@ public abstract class User {
      * @param password          the user's password
      * @param email             the user's email
      */
-    public User(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
+    protected User(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.currentAddress = currentAddress;
         this.currentCity = currentCity;
         this.matchingDistanceCap = 20;
-        // TODO: Convert the password into a hash.
-        // For now, store the passwordHash as the password in a raw format
-        this.passwordHash = password;
+        this.password = password;
         this.contactInfo = new ContactInfo();
         this.contactInfo.setEmail(email);
         this.biography = "";
-    }
-
-    public boolean isFirstNameValid() {
-        return this.firstName.length() >= 3;
-    }
-
-    public boolean isLastNameValid() {
-        return this.lastName.length() >= 3;
-    }
-
-    public boolean isCurrentCityValid() {
-        return this.currentCity.length() >= 3;
-    }
-
-    public boolean isPasswordValid() {
-        return this.passwordHash.length() >= 6;
     }
 
     public String getFirstName() {return this.firstName;}
@@ -71,7 +50,7 @@ public abstract class User {
     }
 
     public String getPasswordHash(){
-        return this.passwordHash;
+        return this.password;
     }
 
     public String getBiography(){
@@ -81,6 +60,8 @@ public abstract class User {
     public ContactInfo getContactInfo(){
         return this.contactInfo;
     }
+
+    public abstract UserType getType();
 
     public void setId(int id) {
         this.id = id;
@@ -113,4 +94,5 @@ public abstract class User {
     public void setCurrentCity(String currentCity) {
         this.currentCity = currentCity;
     }
+
 }
