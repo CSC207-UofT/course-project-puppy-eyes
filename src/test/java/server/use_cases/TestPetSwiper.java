@@ -52,7 +52,7 @@ public class TestPetSwiper {
 
     @Test
     public void TestSuccessPetSwiperNoMatch() throws PetNotFoundException {
-        ResponseModel response = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id, pet2Id));
+        ResponseModel response = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id + "", pet2Id + ""));
 
         // Check for the pet's swiped list
         List<Integer> expected = Arrays.asList(1);
@@ -64,8 +64,8 @@ public class TestPetSwiper {
 
     @Test
     public void TestSuccessPetSwiperMatch() throws PetNotFoundException {
-        ResponseModel responseA = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id, pet2Id));
-        ResponseModel responseB = petSwiper.swipe(new PetSwiperRequestModel(user2Id + "", pet2Id, pet1Id));
+        ResponseModel responseA = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id + "", pet2Id + ""));
+        ResponseModel responseB = petSwiper.swipe(new PetSwiperRequestModel(user2Id + "", pet2Id + "", pet1Id + ""));
 
         // Check for the pet's swiped list
         List<Integer> expectedPetSwipesList = new ArrayList<>();
@@ -87,8 +87,8 @@ public class TestPetSwiper {
 
     @Test
     public void TestFailPetSwiperAlreadySwiped() throws PetNotFoundException {
-        ResponseModel responseA = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id, pet2Id));
-        ResponseModel responseB = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id, pet2Id));
+        ResponseModel responseA = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id + "", pet2Id + ""));
+        ResponseModel responseB = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id + "", pet2Id + ""));
 
         // Check for the pet's swiped list
         List<Integer> expectedPet1SwipesList = Arrays.asList(1);

@@ -52,8 +52,8 @@ public class TestPetUnswiper {
 
     @Test
     public void TestSuccessPetUnswiper() throws PetNotFoundException {
-        ResponseModel responseA = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id, pet2Id));
-        ResponseModel responseB = petUnswiper.unswipePets(new PetUnswiperRequestModel(user1Id + "", pet1Id, pet2Id));
+        ResponseModel responseA = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id + "", pet2Id + ""));
+        ResponseModel responseB = petUnswiper.unswipePets(new PetUnswiperRequestModel(user1Id + "", pet1Id + "", pet2Id + ""));
 
         // Check for the pet's swiped list
         List<Integer> expectedPet1SwipesList = new ArrayList<>();
@@ -65,7 +65,7 @@ public class TestPetUnswiper {
 
     @Test
     public void TestFailPetUnswiper() throws PetNotFoundException {
-        ResponseModel response = petUnswiper.unswipePets(new PetUnswiperRequestModel(user1Id + "", pet1Id, pet2Id));
+        ResponseModel response = petUnswiper.unswipePets(new PetUnswiperRequestModel(user1Id + "", pet1Id + "", pet2Id + ""));
 
         // Check for the pet's swiped list
         List<Integer> expectedPet1SwipesList = new ArrayList<>();

@@ -24,7 +24,7 @@ public class TestPetMatchesGenerator {
         DummyUserRepository userRepository = new DummyUserRepository();
         UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
         DummyPetRepository petRepository = new DummyPetRepository(userRepository);
-        PetCreator petCreator = new PetCreator(petRepository, userRepository);
+        PetCreator petCreator = new PetCreator(petRepository, userRepository, new PetProfileValidator());
 
         petMatchesGenerator = new PetMatchesGenerator(userRepository, petRepository);
 
@@ -36,9 +36,9 @@ public class TestPetMatchesGenerator {
                 "Hunter", "21 St George Street", "Toronto", "Password123",
                 "mike.the.hunter@email.com")).getResponseData()).getUserId();
         // Create pets
-        pet1Id = ((PetCreatorResponseModel) petCreator.createPet(new PetCreatorRequestModel(user1Id, user1Id, "Pocky", 5,
+        pet1Id = ((PetCreatorResponseModel) petCreator.createPet(new PetCreatorRequestModel(user1Id, user1Id, "Pocky", "5",
                 "Golden Retriever", "The happiest dog in the world!")).getResponseData()).getPetId();
-        pet2Id = ((PetCreatorResponseModel) petCreator.createPet(new PetCreatorRequestModel(user2Id, user2Id, "Jack", 3,
+        pet2Id = ((PetCreatorResponseModel) petCreator.createPet(new PetCreatorRequestModel(user2Id, user2Id, "Jack", "3",
                 "German Shepherd", "Certified Good Boy TM.")).getResponseData()).getPetId();
     }
 

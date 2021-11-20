@@ -20,7 +20,7 @@ public class TestPetCreator {
         DummyPetRepository petRepository = new DummyPetRepository(userRepository);
 
         userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
-        petCreator = new PetCreator(petRepository, userRepository);
+        petCreator = new PetCreator(petRepository, userRepository, new PetProfileValidator());
     }
 
     @Test
@@ -38,7 +38,7 @@ public class TestPetCreator {
         PetCreatorResponseModel expected = new PetCreatorResponseModel("0", userId, "Koko", "3",
                 "Dog", "Nice");
 
-        PetCreatorResponseModel actual = (PetCreatorResponseModel) petCreator.createPet(new PetCreatorRequestModel(userId, userId, "Koko", 3,
+        PetCreatorResponseModel actual = (PetCreatorResponseModel) petCreator.createPet(new PetCreatorRequestModel(userId, userId, "Koko", "3",
                 "Dog", "Nice")).getResponseData();
 
         assertEquals(expected, actual);

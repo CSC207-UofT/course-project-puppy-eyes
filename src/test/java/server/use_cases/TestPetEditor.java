@@ -24,7 +24,7 @@ public class TestPetEditor {
         dummyPetRepository = new DummyPetRepository(userRepository);
 
         userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
-        petEditor = new PetEditor(dummyPetRepository);
+        petEditor = new PetEditor(dummyPetRepository, new PetProfileValidator());
 
         // Create some users
         UserCreatorResponseModel userCreatorResponse = (UserCreatorResponseModel) userCreator.createUser(
@@ -47,7 +47,7 @@ public class TestPetEditor {
         PetEditorResponseModel expected = new PetEditorResponseModel("Koko", 5,
                 "Bird", "Hello", "2");
         PetEditorResponseModel actual = (PetEditorResponseModel) petEditor.editPet(new PetEditorRequestModel(String.valueOf(userId),"2", "Koko",
-                5, "Bird", "Hello")).getResponseData();
+                "5", "Bird", "Hello")).getResponseData();
 
         assertEquals(expected, actual);
     }
@@ -55,7 +55,7 @@ public class TestPetEditor {
     @Test void TestEditPetWithoutValidId() {
         ResponseModel expected = new ResponseModel(false, "Pet with ID: 3 does not exist.");
         ResponseModel actual = petEditor.editPet(new PetEditorRequestModel(String.valueOf(userId),
-                "3", "Koko", 5, "Bird", "Hello"));
+                "3", "Koko", "5", "Bird", "Hello"));
 
         assertEquals(expected, actual);
         assertTrue(!actual.isSuccess());
