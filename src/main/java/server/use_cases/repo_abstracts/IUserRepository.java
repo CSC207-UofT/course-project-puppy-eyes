@@ -13,16 +13,11 @@ public interface IUserRepository {
     /**
      * Create and save a new user to the database.
      *
-     * @param firstName         the user's first name
-     * @param lastName          the user's last name
-     * @param currentAddress    the user's current address
-     * @param currentCity       the user's current city
-     * @param password          the user's password
-     * @param email             the user's email
+     * @param user  the user object to save to database
      *
      * @return The id of the new user
      */
-    public int createUser(String firstName, String lastName, String password, String currentAddress, String currentCity, String email);
+    public int createUser(User user);
 
     /**
      * Fetch a User object given a user id.
@@ -59,15 +54,6 @@ public interface IUserRepository {
      * @return if the editing is successfully done or not
      */
     public boolean editUserProfile(int userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook);
-
-    /**
-     * Return whether an email-password pair exist as credentials in the database.
-     *
-     * @param email
-     * @param password
-     * @return true if credentials exist, false otherwise
-     */
-    public boolean validateCredentials(String email, String password);
 
     /**
      * Return a list of all users from the database

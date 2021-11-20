@@ -1,8 +1,11 @@
 package server.drivers.repository;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
+import server.drivers.IPasswordEncryptor;
 import server.drivers.dbEntities.PetDatabaseEntity;
 import server.entities.User;
+import server.entities.UserFactory;
 import server.use_cases.repo_abstracts.IUserRepository;
 import server.use_cases.repo_abstracts.UserNotFoundException;
 import server.drivers.dbEntities.ContactInfoDatabaseEntity;
@@ -28,19 +31,29 @@ public class UserRepository implements IUserRepository {
     /**
      * Create and save a new user to the database.
      *
-     * @param firstName         the user's first name
-     * @param lastName          the user's last name
-     * @param currentAddress    the user's current address
-     * @param currentCity       the user's current city
-     * @param password          the user's password
-     * @param email             the user's email
+     * @param user  the user
      *
      * @return The id of the new user.
      */
     @Override
-    public int createUser(String firstName, String lastName, String password, String currentAddress, String currentCity, String email) {
-        ContactInfoDatabaseEntity contactInfoDbEntity = new ContactInfoDatabaseEntity("", email, "", "");
-        UserDatabaseEntity userDbEntity = new UserDatabaseEntity(firstName, lastName, password, currentAddress, currentCity, 10.0, "", contactInfoDbEntity);
+    public int createUser(User user) {
+        ContactInfoDatabaseEntity contactInfoDbEntity = new ContactInfoDatabaseEntity(
+                user.getContactInfo().getPhoneNumber(),
+                user.getContactInfo().getEmail(),
+                user.getContactInfo().getInstagram(),
+                user.getContactInfo().getFacebook()
+        );
+        UserDatabaseEntity userDbEntity = new UserDatabaseEntity(
+                user.getFirstName(),
+                user.getLastName(),
+                user.getPasswordHash(),
+                user.getCurrentAddress(),
+                user.getCurrentCity(),
+                user.getMatchingDistanceCap(),
+                user.getBiography(),
+                user.getType(),
+                contactInfoDbEntity
+        );
         repository.save(userDbEntity);
 
         return userDbEntity.getId();
@@ -53,11 +66,21 @@ public class UserRepository implements IUserRepository {
         if (searchResult.isPresent()) {
             UserDatabaseEntity dbUser = searchResult.get();
 
-            // TODO factory
-            User user = new User(dbUser.getFirstName(), dbUser.getLastName(), dbUser.getCurrentAddress(),
-                    dbUser.getCurrentCity(), dbUser.getPassword(), dbUser.getContactInfo().getEmail()) {};
+            UserFactory userFactory = new UserFactory();
+            User user = userFactory.createUser(
+                dbUser.getType(),
+                dbUser.getFirstName(),
+                dbUser.getLastName(),
+                dbUser.getCurrentAddress(),
+                dbUser.getCurrentCity(),
+                dbUser.getPassword(),
+                dbUser.getContactInfo().getEmail()
+            );
             user.setId(dbUser.getId());
             user.setBiography(dbUser.getBiography());
+            user.getContactInfo().setPhoneNumber(dbUser.getContactInfo().getPhoneNumber());
+            user.getContactInfo().setFacebook(dbUser.getContactInfo().getFacebook());
+            user.getContactInfo().setInstagram(dbUser.getContactInfo().getInstagram());
             return user;
         } else {
             throw new UserNotFoundException("User of ID: " + userId + " not found");
@@ -80,7 +103,6 @@ public class UserRepository implements IUserRepository {
     @Override
     public boolean editUserAccount(int userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail) {
         Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
-
 
         if (searchResult.isPresent()) {
             UserDatabaseEntity user = searchResult.get();
@@ -137,27 +159,6 @@ public class UserRepository implements IUserRepository {
     }
 
     /**
-     * Return whether an email-password pair exist as credentials in the database.
-     *
-     * @param email
-     * @param password
-     * @return true if credentials exist, false otherwise
-     */
-    @Override
-    public boolean validateCredentials(String email, String password) {
-        Optional<UserDatabaseEntity> searchResult = Optional.ofNullable(repository.findByContactInfo_email(email));
-
-        if (searchResult.isPresent()) {
-            UserDatabaseEntity user = searchResult.get();
-
-            // TODO password encryption & decryption
-            return user.getContactInfo().getEmail().equals(email) && user.getPassword().equals(password);
-        }
-
-        return false;
-    }
-
-    /**
      * Return a list of all users from the database
      * @return a list of all users from the database
      */
@@ -168,11 +169,18 @@ public class UserRepository implements IUserRepository {
         List<User> users = new ArrayList<>();
 
         for (UserDatabaseEntity dbUser : dbUsers) {
-            // TODO factory method
-            User user = new User(dbUser.getFirstName(), dbUser.getLastName(), dbUser.getCurrentAddress(),
-                    dbUser.getCurrentCity(), dbUser.getPassword(), dbUser.getContactInfo().getEmail()) {};
+            UserFactory userFactory = new UserFactory();
+            User user = userFactory.createUser(
+                dbUser.getType(),
+                dbUser.getFirstName(),
+                dbUser.getLastName(),
+                dbUser.getCurrentAddress(),
+                dbUser.getCurrentCity(),
+                dbUser.getPassword(),
+                dbUser.getContactInfo().getEmail()
+            );
+
             user.setId(dbUser.getId());
-            user.getContactInfo().setEmail(dbUser.getContactInfo().getEmail());
             user.getContactInfo().setFacebook(dbUser.getContactInfo().getFacebook());
             user.getContactInfo().setInstagram(dbUser.getContactInfo().getInstagram());
             user.getContactInfo().setPhoneNumber(dbUser.getContactInfo().getPhoneNumber());
