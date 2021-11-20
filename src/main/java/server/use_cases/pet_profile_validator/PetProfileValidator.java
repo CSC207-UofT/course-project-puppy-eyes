@@ -1,6 +1,6 @@
 package server.use_cases.pet_profile_validator;
 
-import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.ResponseModel;
 
 public class PetProfileValidator implements PetProfileValidatorInputBoundary {
 

@@ -1,4 +1,4 @@
-package server.use_cases.repo_abstracts;
+package server.use_cases.pet_profile_fetcher;
 
 /**
  * A class defining the structure of the IPetRepository response

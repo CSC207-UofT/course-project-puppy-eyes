@@ -3,7 +3,6 @@ package server.use_cases;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import server.use_cases.repo_abstracts.ResponseModel;
 import server.use_cases.user_account_validator.UserAccountValidator;
 import server.use_cases.user_account_validator.UserAccountValidatorRequestModel;
 

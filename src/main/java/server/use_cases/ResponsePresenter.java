@@ -1,6 +1,7 @@
-package server.use_cases.repo_abstracts;
+package server.use_cases;
 
 import server.controllers.IJSONPresenter;
+import server.adapters.UseCaseOutputBoundary;
 
 import java.util.HashMap;
 

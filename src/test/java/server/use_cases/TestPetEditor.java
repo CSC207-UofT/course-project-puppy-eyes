@@ -8,7 +8,6 @@ import server.use_cases.pet_editor.PetEditor;
 import server.use_cases.pet_editor.PetEditorRequestModel;
 import server.use_cases.pet_editor.PetEditorResponseModel;
 import server.use_cases.pet_profile_validator.PetProfileValidator;
-import server.use_cases.repo_abstracts.ResponseModel;
 import server.use_cases.user_account_validator.UserAccountValidator;
 import server.use_cases.user_creator.UserCreator;
 import server.use_cases.user_creator.UserCreatorRequestModel;

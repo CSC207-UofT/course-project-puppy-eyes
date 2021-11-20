@@ -18,9 +18,9 @@ import server.use_cases.pet_swipes_fetcher.PetSwipesFetcherInputBoundary;
 import server.use_cases.pet_swipes_fetcher.PetSwipesFetcherRequestModel;
 import server.use_cases.pet_unswiper.PetUnswiperInputBoundary;
 import server.use_cases.pet_unswiper.PetUnswiperRequestModel;
-import server.use_cases.repo_abstracts.ResponseModel;
-import server.use_cases.repo_abstracts.ResponsePresenter;
-import server.use_cases.repo_abstracts.UseCaseOutputBoundary;
+import server.use_cases.ResponseModel;
+import server.use_cases.ResponsePresenter;
+import server.adapters.UseCaseOutputBoundary;
 
 /**
  * A controller that handles all functions relating to pet data.

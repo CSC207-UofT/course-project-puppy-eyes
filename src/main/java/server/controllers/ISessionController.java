@@ -1,6 +1,6 @@
 package server.controllers;
 
-import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.ResponseModel;
 
 public interface ISessionController {
 

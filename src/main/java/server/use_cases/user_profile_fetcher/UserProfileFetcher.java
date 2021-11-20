@@ -2,7 +2,7 @@ package server.use_cases.user_profile_fetcher;
 
 import server.entities.User;
 import server.use_cases.repo_abstracts.IUserRepository;
-import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.ResponseModel;
 import server.use_cases.repo_abstracts.UserNotFoundException;
 
 /**

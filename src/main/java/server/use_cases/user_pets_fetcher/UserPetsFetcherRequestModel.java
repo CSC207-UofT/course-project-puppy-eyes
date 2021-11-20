@@ -1,6 +1,6 @@
 package server.use_cases.user_pets_fetcher;
 
-import server.use_cases.repo_abstracts.AuthRequestModel;
+import server.use_cases.AuthRequestModel;
 
 /**
  * An object defining the request type for

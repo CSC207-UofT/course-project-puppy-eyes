@@ -4,8 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.controllers.IPetController;
 import server.drivers.http.requestBody.*;
-import server.use_cases.repo_abstracts.ResponseModel;
-import server.use_cases.repo_abstracts.UseCaseOutputBoundary;
+import server.use_cases.ResponseModel;
+import server.adapters.UseCaseOutputBoundary;
 
 import javax.servlet.http.HttpServletRequest;
 

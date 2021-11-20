@@ -1,8 +1,8 @@
 package server.controllers;
 
-import server.use_cases.repo_abstracts.ResponseModel;
-import server.use_cases.repo_abstracts.ResponsePresenter;
-import server.use_cases.repo_abstracts.UseCaseOutputBoundary;
+import server.use_cases.ResponseModel;
+import server.use_cases.ResponsePresenter;
+import server.adapters.UseCaseOutputBoundary;
 import server.use_cases.user_account_editor.UserAccountEditorInputBoundary;
 import server.use_cases.user_account_editor.UserAccountEditorRequestModel;
 import server.use_cases.user_account_fetcher.UserAccountFetcherInputBoundary;

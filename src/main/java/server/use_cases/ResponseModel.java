@@ -1,4 +1,4 @@
-package server.use_cases.repo_abstracts;
+package server.use_cases;
 
 public class ResponseModel {
 

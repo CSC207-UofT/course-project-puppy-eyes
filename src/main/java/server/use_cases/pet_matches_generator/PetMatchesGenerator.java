@@ -1,6 +1,7 @@
 package server.use_cases.pet_matches_generator;
 import server.entities.Pet;
 import server.entities.User;
+import server.use_cases.ResponseModel;
 import server.use_cases.repo_abstracts.*;
 
 import java.util.ArrayList;

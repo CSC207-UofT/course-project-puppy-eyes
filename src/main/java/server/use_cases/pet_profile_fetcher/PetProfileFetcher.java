@@ -3,7 +3,7 @@ package server.use_cases.pet_profile_fetcher;
 import server.entities.Pet;
 import server.use_cases.repo_abstracts.IPetRepository;
 import server.use_cases.repo_abstracts.PetNotFoundException;
-import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.ResponseModel;
 
 public class PetProfileFetcher implements PetProfileFetcherInputBoundary {
     private final IPetRepository petRepository;

@@ -3,7 +3,7 @@ package server.use_cases.pet_rejector;
 import server.entities.Pet;
 import server.use_cases.repo_abstracts.IPetRepository;
 import server.use_cases.repo_abstracts.PetNotFoundException;
-import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.ResponseModel;
 
 /**
  * A use case responsible for handling a pet "rejecting" another pet.

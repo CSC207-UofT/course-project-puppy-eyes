@@ -4,7 +4,7 @@ import server.entities.Pet;
 import server.use_cases.pet_matches_fetcher.PetMatchesFetcherResponseModel;
 import server.use_cases.repo_abstracts.IPetRepository;
 import server.use_cases.repo_abstracts.PetNotFoundException;
-import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.ResponseModel;
 
 import java.util.List;
 import java.util.stream.Collectors;

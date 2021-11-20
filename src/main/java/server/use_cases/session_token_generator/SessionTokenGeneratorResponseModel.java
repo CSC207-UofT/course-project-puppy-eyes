@@ -1,6 +1,6 @@
 package server.use_cases.session_token_generator;
 
-import server.use_cases.repo_abstracts.ResponseData;
+import server.use_cases.ResponseData;
 
 public class SessionTokenGeneratorResponseModel extends ResponseData {
 

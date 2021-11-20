@@ -5,7 +5,7 @@ import server.use_cases.pet_profile_validator.PetProfileValidatorInputBoundary;
 import server.use_cases.pet_profile_validator.PetProfileValidatorRequestModel;
 import server.use_cases.repo_abstracts.IPetRepository;
 import server.use_cases.repo_abstracts.PetNotFoundException;
-import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.ResponseModel;
 
 import java.util.regex.Pattern;
 

@@ -1,6 +1,6 @@
 package server.use_cases.pet_rejector;
 
-import server.use_cases.repo_abstracts.AuthRequestModel;
+import server.use_cases.AuthRequestModel;
 
 public class PetRejectorRequestModel extends AuthRequestModel {
 

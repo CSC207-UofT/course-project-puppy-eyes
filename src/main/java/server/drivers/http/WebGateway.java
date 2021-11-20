@@ -1,8 +1,8 @@
 package server.drivers.http;
 
 import org.springframework.http.ResponseEntity;
-import server.use_cases.repo_abstracts.ResponseModel;
-import server.use_cases.repo_abstracts.UseCaseOutputBoundary;
+import server.use_cases.ResponseModel;
+import server.adapters.UseCaseOutputBoundary;
 
 public abstract class WebGateway {
 

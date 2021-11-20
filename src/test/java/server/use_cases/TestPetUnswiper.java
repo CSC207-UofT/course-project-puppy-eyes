@@ -9,7 +9,6 @@ import server.use_cases.pet_swiper.PetSwiperRequestModel;
 import server.use_cases.pet_unswiper.PetUnswiper;
 import server.use_cases.pet_unswiper.PetUnswiperRequestModel;
 import server.use_cases.repo_abstracts.PetNotFoundException;
-import server.use_cases.repo_abstracts.ResponseModel;
 import server.use_cases.user_account_validator.UserAccountValidator;
 import server.use_cases.user_creator.UserCreator;
 import server.use_cases.user_creator.UserCreatorRequestModel;

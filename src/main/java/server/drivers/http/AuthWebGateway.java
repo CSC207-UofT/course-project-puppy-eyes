@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import server.controllers.ISessionController;
 import server.drivers.http.requestBody.LoginRequestBody;
-import server.use_cases.repo_abstracts.ResponseModel;
-import server.use_cases.repo_abstracts.UseCaseOutputBoundary;
+import server.use_cases.ResponseModel;
+import server.adapters.UseCaseOutputBoundary;
 
 @RestController
 @RequestMapping("/auth")

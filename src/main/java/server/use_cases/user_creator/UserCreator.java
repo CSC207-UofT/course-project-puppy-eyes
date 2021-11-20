@@ -5,7 +5,7 @@ import server.entities.UserFactory;
 import server.entities.User;
 import server.entities.UserType;
 import server.use_cases.repo_abstracts.IUserRepository;
-import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.ResponseModel;
 import server.use_cases.user_account_validator.UserAccountValidatorInputBoundary;
 import server.use_cases.user_account_validator.UserAccountValidatorRequestModel;
 

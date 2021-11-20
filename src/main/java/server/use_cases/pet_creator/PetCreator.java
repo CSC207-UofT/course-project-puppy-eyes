@@ -1,6 +1,7 @@
 package server.use_cases.pet_creator;
 
 import server.entities.Pet;
+import server.use_cases.ResponseModel;
 import server.use_cases.pet_profile_validator.PetProfileValidatorInputBoundary;
 import server.use_cases.pet_profile_validator.PetProfileValidatorRequestModel;
 import server.use_cases.repo_abstracts.*;

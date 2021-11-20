@@ -1,6 +1,6 @@
 package server.use_cases.user_pets_fetcher;
 
-import server.use_cases.repo_abstracts.ResponseData;
+import server.use_cases.ResponseData;
 
 import java.util.List;
 

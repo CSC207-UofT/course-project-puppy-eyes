@@ -4,7 +4,7 @@ import server.drivers.IJwtService;
 import server.drivers.IPasswordEncryptor;
 import server.entities.User;
 import server.use_cases.repo_abstracts.IUserRepository;
-import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.ResponseModel;
 import server.use_cases.repo_abstracts.UserNotFoundException;
 
 /**

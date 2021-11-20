@@ -1,6 +1,6 @@
 package server.use_cases.pet_swiper;
 
-import server.use_cases.repo_abstracts.AuthRequestModel;
+import server.use_cases.AuthRequestModel;
 
 public class PetSwiperRequestModel extends AuthRequestModel {
 

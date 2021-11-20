@@ -1,6 +1,6 @@
 package server.use_cases.user_account_validator;
 
-import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.ResponseModel;
 
 import java.util.regex.Pattern;
 

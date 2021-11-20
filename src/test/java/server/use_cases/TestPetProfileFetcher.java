@@ -7,7 +7,6 @@ import server.drivers.BCryptService;
 import server.use_cases.pet_profile_fetcher.PetProfileFetcher;
 import server.use_cases.pet_profile_fetcher.PetProfileFetcherRequestModel;
 import server.use_cases.pet_profile_fetcher.PetProfileFetcherResponseModel;
-import server.use_cases.repo_abstracts.ResponseModel;
 import server.use_cases.user_account_validator.UserAccountValidator;
 import server.use_cases.user_creator.UserCreator;
 import server.use_cases.user_creator.UserCreatorRequestModel;

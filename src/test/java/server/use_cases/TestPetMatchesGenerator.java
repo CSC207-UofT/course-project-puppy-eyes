@@ -11,7 +11,6 @@ import server.use_cases.pet_matches_generator.PetMatchesGenerator;
 import server.use_cases.pet_matches_generator.PetMatchesGeneratorRequestModel;
 import server.use_cases.pet_matches_generator.PetMatchesGeneratorResponseModel;
 import server.use_cases.pet_profile_validator.PetProfileValidator;
-import server.use_cases.repo_abstracts.ResponseModel;
 import server.use_cases.user_account_validator.UserAccountValidator;
 import server.use_cases.user_creator.UserCreator;
 import server.use_cases.user_creator.UserCreatorRequestModel;

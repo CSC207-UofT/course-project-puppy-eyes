@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import server.drivers.BCryptService;
 import server.drivers.JwtService;
-import server.use_cases.repo_abstracts.ResponseModel;
 import server.use_cases.session_token_generator.SessionTokenGenerator;
 import server.use_cases.session_token_generator.SessionTokenGeneratorRequestModel;
 import server.use_cases.session_token_generator.SessionTokenGeneratorResponseModel;

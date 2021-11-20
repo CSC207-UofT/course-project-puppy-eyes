@@ -1,6 +1,6 @@
 package server.use_cases.pet_creator;
 
-import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.ResponseModel;
 
 /**
  * An input boundary for the "create pet" use case.

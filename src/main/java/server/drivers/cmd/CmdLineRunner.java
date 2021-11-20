@@ -9,7 +9,6 @@ import server.controllers.IJSONPresenter;
 import server.controllers.IPetController;
 import server.controllers.IUserController;
 import server.drivers.IGeocoderService;
-import server.use_cases.repo_abstracts.ResponseModel;
 
 import java.util.HashMap;
 import java.util.Map;
