@@ -8,12 +8,12 @@ import server.use_cases.repo_abstracts.AuthRequestModel;
 public class PetEditorRequestModel extends AuthRequestModel {
 
     private final String newName;
-    private final int newAge;
-    private String newBreed;
-    private String newBiography;
-    private String petId;
+    private final String newAge;
+    private final String newBreed;
+    private final String newBiography;
+    private final String petId;
 
-    public PetEditorRequestModel(String headerUserId, String petId, String newName, int newAge, String newBreed, String newBiography) {
+    public PetEditorRequestModel(String headerUserId, String petId, String newName, String newAge, String newBreed, String newBiography) {
         super(headerUserId);
         this.petId = petId;
         this.newName = newName;
@@ -30,7 +30,7 @@ public class PetEditorRequestModel extends AuthRequestModel {
         return newName;
     }
 
-    public int getNewAge() {
+    public String getNewAge() {
         return newAge;
     }
 

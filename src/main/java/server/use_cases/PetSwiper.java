@@ -21,8 +21,8 @@ public class PetSwiper implements PetSwiperInputBoundary {
         int pet1Id, pet2Id;
 
         try {
-            pet1Id = request.getFirstPetId();
-            pet2Id = request.getSecondPetId();
+            pet1Id = Integer.parseInt(request.getFirstPetId());
+            pet2Id = Integer.parseInt(request.getFirstPetId());
         } catch (NumberFormatException e) {
             // Invalid pet id
             return new ResponseModel(false, "ID must be an integer.");

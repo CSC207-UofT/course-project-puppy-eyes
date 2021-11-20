@@ -8,11 +8,11 @@ import server.use_cases.repo_abstracts.AuthRequestModel;
 public class PetCreatorRequestModel extends AuthRequestModel {
 
     private final String name;
-    private final int age;
+    private final String age;
     private final String breed;
     private final String biography;
 
-    public PetCreatorRequestModel(String headerUserId, String userId, String name, int age, String breed, String biography) {
+    public PetCreatorRequestModel(String headerUserId, String userId, String name, String age, String breed, String biography) {
         super(headerUserId, userId);
         this.name = name;
         this.age = age;
@@ -24,7 +24,7 @@ public class PetCreatorRequestModel extends AuthRequestModel {
         return name;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 

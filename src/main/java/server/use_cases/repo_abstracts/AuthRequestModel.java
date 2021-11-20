@@ -15,10 +15,22 @@ public class AuthRequestModel {
         this.headerUserId = headerUserId;
     }
 
+    /**
+     * Return the userId that is attached to the request header.
+     * This value should never be null since any requests missing a userId in its header will
+     * be denied by AuthFilter. This value is compared to userId to determine whether
+     * the request should be authorized.
+     * @return the userId attached to the request *header*
+     */
     public String getHeaderUserId() {
         return this.headerUserId;
     }
 
+    /**
+     * Return the userId that this action is trying to perform on.
+     * This value differs from headerUserId in that this value is specified in the request body.
+     * @return the userId attached to the request *body*
+     */
     public String getUserId() {
         return this.userId;
     }
