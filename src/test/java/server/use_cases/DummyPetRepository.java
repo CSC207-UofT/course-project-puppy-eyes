@@ -128,7 +128,7 @@ public class DummyPetRepository implements IPetRepository {
     public Pet fetchPet(int petId) throws PetNotFoundException {
         DummyPetRepositoryEntity dbPet = pets.stream().filter(pet -> pet.getId() == petId).findFirst().orElse(null);
 
-        if (petId >= 0 && petId <= currentMaxId && dbPet != null) {
+        if (dbPet != null) {
             Pet pet = new Pet(dbPet.getUserId(), dbPet.getName(), dbPet.getAge(), dbPet.getBreed(), dbPet.getBiography()) {};
             pet.setId(dbPet.getId());
             return pet;
@@ -151,7 +151,7 @@ public class DummyPetRepository implements IPetRepository {
     public boolean editPet(int petId, String newName, int newAge, String newBreed, String newBiography) {
         DummyPetRepositoryEntity dbPet = pets.stream().filter(pet -> pet.getId() == petId).findFirst().orElse(null);
 
-        if (petId >= 0 && petId <= currentMaxId && dbPet != null) {
+        if (dbPet != null) {
             dbPet.setName(newName);
             dbPet.setAge(newAge);
             dbPet.setBreed(newBreed);
