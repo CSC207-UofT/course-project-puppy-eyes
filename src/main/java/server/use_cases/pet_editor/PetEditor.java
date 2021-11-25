@@ -30,18 +30,17 @@ public class PetEditor implements PetEditorInputBoundary {
      */
     @Override
     public ResponseModel editPet(PetEditorRequestModel request) {
-        String intRegex = "/^[-+]?\\d+$/";
+        String intRegex = "-?[0-9]+";
         Pattern intPattern = Pattern.compile(intRegex);
 
         // null checks
-        if (request.getPetId() == null || request.getUserId() == null) {
+        if (request.getPetId() == null || request.getHeaderUserId() == null) {
             return new ResponseModel(false, "Missing required fields.");
         }
 
         // Check if the request fields are in the valid datatype
-        if (!intPattern.matcher(request.getPetId()).matches()
-                || !intPattern.matcher(request.getUserId()).matches()
-                || !intPattern.matcher(request.getHeaderUserId()).matches()) {
+        if (!intPattern.matcher(request.getPetId()).matches() ||
+                !intPattern.matcher(request.getHeaderUserId()).matches()) {
             return new ResponseModel(false, "ID must be an integer.");
         }
 
@@ -57,6 +56,13 @@ public class PetEditor implements PetEditorInputBoundary {
             pet = petRepository.fetchPet(petId);
         } catch (PetNotFoundException exception) {
             return new ResponseModel(false, "Pet with ID: " + request.getPetId() + " does not exist.");
+        }
+
+        // Set the userId in the request object to allow for checking authorization
+        request.setUserId(String.valueOf(pet.getUserId()));
+
+        if (!request.isRequestAuthorized()) {
+            return new ResponseModel(false, "You are not authorized to make this request.");
         }
 
         // Do not modify null fields
