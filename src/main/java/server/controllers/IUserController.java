@@ -88,4 +88,12 @@ public interface IUserController {
      */
     ResponseModel editUserProfile(boolean fromTerminal, String headerUserId, String userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook);
 
+    /**
+     * Set's a user's profile picture to the image represented by the Base64 encoding.
+     * @param headerUserId
+     * @param base64Encoded
+     * @return a ResponseModel containing the response data
+     */
+    ResponseModel setUserProfile(String headerUserId, String base64Encoded);
+
 }

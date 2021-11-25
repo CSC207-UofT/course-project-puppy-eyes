@@ -1,6 +1,7 @@
 package server;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -11,18 +12,25 @@ import server.drivers.*;
 import server.drivers.http.AuthFilter;
 import server.drivers.cmd.CmdLineIOSystem;
 import server.drivers.cmd.IOSystem;
+import server.drivers.repository.ImageRepository;
 import server.drivers.repository.UserRepository;
 import server.drivers.repository.PetRepository;
 import server.use_cases.pet_creator.PetCreator;
 import server.use_cases.pet_creator.PetCreatorInputBoundary;
 import server.use_cases.pet_editor.PetEditor;
 import server.use_cases.pet_editor.PetEditorInputBoundary;
+import server.use_cases.pet_image_adder.PetImageAdder;
+import server.use_cases.pet_image_adder.PetImageAdderInputBoundary;
+import server.use_cases.pet_image_remover.PetImageRemover;
+import server.use_cases.pet_image_remover.PetImageRemoverInputBoundary;
 import server.use_cases.pet_matches_fetcher.PetMatchesFetcher;
 import server.use_cases.pet_matches_fetcher.PetMatchesFetcherInputBoundary;
 import server.use_cases.pet_matches_generator.PetMatchesGenerator;
 import server.use_cases.pet_matches_generator.PetMatchesGeneratorInputBoundary;
 import server.use_cases.pet_profile_fetcher.PetProfileFetcher;
 import server.use_cases.pet_profile_fetcher.PetProfileFetcherInputBoundary;
+import server.use_cases.pet_profile_image_changer.PetProfileImageChanger;
+import server.use_cases.pet_profile_image_changer.PetProfileImageChangerInputBoundary;
 import server.use_cases.pet_profile_validator.PetProfileValidator;
 import server.use_cases.pet_profile_validator.PetProfileValidatorInputBoundary;
 import server.use_cases.pet_rejector.PetRejector;
@@ -51,6 +59,10 @@ import server.use_cases.user_profile_editor.UserProfileEditor;
 import server.use_cases.user_profile_editor.UserProfileEditorInputBoundary;
 import server.use_cases.user_profile_fetcher.UserProfileFetcher;
 import server.use_cases.user_profile_fetcher.UserProfileFetcherInputBoundary;
+import server.use_cases.user_profile_image_changer.UserProfileImageChanger;
+import server.use_cases.user_profile_image_changer.UserProfileImageChangerInputBoundary;
+
+import java.awt.*;
 
 /**
  * Class that holds all the dependencies used in the application at the moment.
@@ -66,6 +78,12 @@ class BeanHolder {
     @Bean
     UserAccountValidatorInputBoundary userCredentialsValidatorBean() {
         return new UserAccountValidator();
+    }
+
+    @Autowired
+    @Bean
+    UserProfileImageChangerInputBoundary userProfileImageChangerBean(ImageRepository imageRepository) {
+        return new UserProfileImageChanger(imageRepository, imageServiceBean());
     }
 
     @Autowired
@@ -96,6 +114,24 @@ class BeanHolder {
     @Bean
     UserProfileEditorInputBoundary userProfileEditorBean(UserRepository userRepository) {
         return new UserProfileEditor(userRepository);
+    }
+
+    @Autowired
+    @Bean
+    PetProfileImageChangerInputBoundary petProfileImageChangerBean(ImageRepository imageRepository, PetRepository petRepository) {
+        return new PetProfileImageChanger(imageRepository, petRepository, imageServiceBean());
+    }
+
+    @Autowired
+    @Bean
+    PetImageAdderInputBoundary petImageAdderBean(ImageRepository imageRepository, PetRepository petRepository) {
+        return new PetImageAdder(imageRepository, petRepository, imageServiceBean());
+    }
+
+    @Autowired
+    @Bean
+    PetImageRemoverInputBoundary petImageRemoverBean(ImageRepository imageRepository, PetRepository petRepository) {
+        return new PetImageRemover(imageRepository, petRepository, imageServiceBean());
     }
 
     @Bean
@@ -172,7 +208,7 @@ class BeanHolder {
     // Controllers
     @Autowired
     @Bean
-    IUserController userControllerBean(UserRepository userRepository) {
+    IUserController userControllerBean(UserRepository userRepository, ImageRepository imageRepository) {
         return new UserController(
                 userCreatorBean(userRepository),
                 userAccountFetcherBean(userRepository),
@@ -180,12 +216,14 @@ class BeanHolder {
                 userProfileFetcherBean(userRepository),
                 userProfileEditorBean(userRepository),
                 userPetsFetcherBean(userRepository),
-                jsonPresenterBean());
+                userProfileImageChangerBean(imageRepository),
+                responsePresenterBean()
+        );
     }
 
     @Autowired
     @Bean
-    IPetController petControllerBean(PetRepository petRepository, UserRepository userRepository) {
+    IPetController petControllerBean(PetRepository petRepository, UserRepository userRepository, ImageRepository imageRepository) {
         return new PetController(
                 petCreatorBean(petRepository, userRepository),
                 petSwiperBean(petRepository),
@@ -196,7 +234,10 @@ class BeanHolder {
                 petSwipesFetcherBean(petRepository),
                 petMatchesFetcherBean(petRepository),
                 petMatchesGeneratorBean(userRepository, petRepository),
-                jsonPresenterBean()
+                petProfileImageChangerBean(imageRepository, petRepository),
+                petImageAdderBean(imageRepository, petRepository),
+                petImageRemoverBean(imageRepository, petRepository),
+                responsePresenterBean()
         );
     }
 
@@ -237,6 +278,11 @@ class BeanHolder {
         return new BCryptService();
     }
 
+    @Bean(name = "imageService")
+    IImageService imageServiceBean() {
+        return new CloudinaryService();
+    }
+
     @Bean
     public FilterRegistrationBean<AuthFilter> authFilter() {
         FilterRegistrationBean<AuthFilter> authBean = new FilterRegistrationBean<>();
@@ -247,6 +293,7 @@ class BeanHolder {
         authBean.addUrlPatterns("/users/account");
         authBean.addUrlPatterns("/users/editaccount");
         authBean.addUrlPatterns("/users/editprofile");
+        authBean.addUrlPatterns("/users/setprofileimage");
 
         return authBean;
     }
