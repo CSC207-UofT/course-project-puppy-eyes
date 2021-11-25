@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import server.ServerApplication;
-import server.drivers.APIGateway;
+import server.controllers.IJSONPresenter;
+import server.controllers.IPetController;
+import server.controllers.IUserController;
 import server.drivers.IGeocoderService;
 
 import java.util.HashMap;
@@ -41,11 +43,16 @@ class PromptAndInputNameTuple {
 public class CmdLineRunner implements CommandLineRunner {
 
     private static Logger logger = LoggerFactory.getLogger(ServerApplication.class);
-    private final APIGateway gateway;
+    private final IUserController userController;
+    private final IPetController petController;
     private final IOSystem ioSystem;
+    private final IJSONPresenter jsonPresenter;
 
-    public CmdLineRunner(APIGateway gateway, IOSystem ioSystem, IGeocoderService geocoderService) {
-        this.gateway = gateway;
+    public CmdLineRunner(IUserController userController, IPetController petController, IOSystem ioSystem,
+                         IJSONPresenter jsonPresenter, IGeocoderService geocoderService) {
+        this.userController = userController;
+        this.petController = petController;
+        this.jsonPresenter = jsonPresenter;
         this.ioSystem = ioSystem;
     }
 
@@ -265,70 +272,116 @@ public class CmdLineRunner implements CommandLineRunner {
         switch (command) {
             case "createUser":
                 inputs = getCreateUserAccountInputs();
-                return gateway.createUser(inputs.get("firstName"), inputs.get("lastName"),
-                        inputs.get("currentAddress"), inputs.get("currentCity"), inputs.get("password"),
-                        inputs.get("email"));
+                return jsonPresenter.toJSON(
+                        userController.createUser(
+                            inputs.get("firstName"),
+                            inputs.get("lastName"),
+                            inputs.get("currentAddress"),
+                            inputs.get("currentCity"),
+                            inputs.get("password"),
+                            inputs.get("email")
+                        )
+                );
 
             case "fetchUserAccount":
                 inputs = getFetchUserAccountInputs();
-                return gateway.fetchUserAccount(true, "", inputs.get("userId"));
+                return jsonPresenter.toJSON(
+                        userController.fetchUserAccount(true, "", inputs.get("userId"))
+                );
 
             case "editUserAccount":
                 inputs = getEditUserAccountInputs();
-                return gateway.editUserAccount(true, "", inputs.get("userId"), inputs.get("newFirstName"),
-                        inputs.get("newLastName"), inputs.get("newAddress"), inputs.get("newCity"),
-                        inputs.get("newPassword"), inputs.get("newEmail"));
+                return jsonPresenter.toJSON(
+                    userController.editUserAccount(
+                        true,
+                        "",
+                        inputs.get("userId"),
+                        inputs.get("newFirstName"),
+                        inputs.get("newLastName"),
+                        inputs.get("newAddress"),
+                        inputs.get("newCity"),
+                        inputs.get("newPassword"),
+                        inputs.get("newEmail")
+                    )
+                );
 
             case "fetchUserProfile":
                 inputs = getFetchUserProfileInputs();
-                return gateway.fetchUserProfile(inputs.get("userId"));
+                return jsonPresenter.toJSON(userController.fetchUserProfile(inputs.get("userId")));
 
             case "editUserProfile":
                 inputs = getEditUserProfileInputs();
-                return gateway.editUserProfile(true, "", inputs.get("userId"), inputs.get("newBiography"),
-                        inputs.get("newPhoneNumber"), inputs.get("newInstagram"), inputs.get("newFacebook"));
+                return jsonPresenter.toJSON(
+                    userController.editUserProfile(
+                        true,
+                        "",
+                        inputs.get("userId"),
+                        inputs.get("newBiography"),
+                        inputs.get("newPhoneNumber"),
+                        inputs.get("newInstagram"),
+                        inputs.get("newFacebook")
+                    )
+                );
 
             case "createPet":
                 inputs = getCreatePetInputs();
-                return gateway.createPet(true, "", inputs.get("userId"), inputs.get("name"),
-                        Integer.parseInt(inputs.get("age")), inputs.get("breed"), inputs.get("biography"));
+                return jsonPresenter.toJSON(
+                    petController.createPet(
+                        true,
+                        "",
+                        inputs.get("userId"),
+                        inputs.get("name"),
+                        inputs.get("age"),
+                        inputs.get("breed"),
+                        inputs.get("biography")
+                    )
+                );
 
             case "swipePets":
                 inputs = getPetSwiperInputs();
-                return gateway.swipePets(true, "", Integer.parseInt(inputs.get("pet1Id")), Integer.parseInt(inputs.get("pet2Id")));
+                return jsonPresenter.toJSON(petController.swipePets(true, "", inputs.get("pet1Id"), inputs.get("pet2Id")));
 
             case "unswipePets":
                 inputs = getPetSwiperInputs();
-                return gateway.unswipePets(true, "", Integer.parseInt(inputs.get("pet1Id")), Integer.parseInt(inputs.get("pet2Id")));
+                return jsonPresenter.toJSON(petController.unswipePets(true, "", inputs.get("pet1Id"), inputs.get("pet2Id")));
 
             case "rejectPets":
                 inputs = getPetSwiperInputs();
-                return gateway.rejectPets(true, "", Integer.parseInt(inputs.get("pet1Id")), Integer.parseInt(inputs.get("pet2Id")));
+                return jsonPresenter.toJSON(petController.rejectPets(true, "", inputs.get("pet1Id"), inputs.get("pet2Id")));
 
             case "fetchPetProfile":
                 inputs = getFetchPetProfileInputs();
-                return gateway.fetchPetProfile(true, "", inputs.get("petId"));
+                return jsonPresenter.toJSON(petController.fetchPetProfile(true, "", inputs.get("petId")));
 
             case "editPet":
                 inputs = getEditPetInputs();
-                return gateway.editPet(true, "", inputs.get("petId"), inputs.get("newName"),
-                        Integer.parseInt(inputs.get("newAge")), inputs.get("newBreed"), inputs.get("newBiography"));
+                return jsonPresenter.toJSON(
+                    petController.editPet(
+                        true,
+                        "",
+                        inputs.get("petId"),
+                        inputs.get("newName"),
+                        inputs.get("newAge"),
+                        inputs.get("newBreed"),
+                        inputs.get("newBiography")
+                    )
+                );
 
             case "fetchPetSwipes":
                 inputs = getFetchPetProfileInputs();
-                return gateway.fetchPetSwipes(true, "", Integer.parseInt(inputs.get("petId")));
+                return jsonPresenter.toJSON(petController.fetchPetSwipes(true, "", inputs.get("petId")));
 
             case "fetchPetMatches":
                 inputs = getFetchPetProfileInputs();
-                return gateway.fetchPetMatches(true, "", Integer.parseInt(inputs.get("petId")));
+                return jsonPresenter.toJSON(petController.fetchPetMatches(true, "", inputs.get("petId")));
 
             case "fetchUserPets":
                 inputs = getFetchUserAccountInputs();
-                return gateway.fetchUserPets(true, "", Integer.parseInt(inputs.get("userId")));
+                return jsonPresenter.toJSON(userController.fetchUserPets(true, "", inputs.get("petId")));
 
             case "generatePotentialMatches":
                 inputs = getFetchPetProfileInputs();
-                return gateway.generatePotentialMatches(true, "", Integer.parseInt(inputs.get("petId")));
+                return jsonPresenter.toJSON(petController.generatePotentialMatches(true, "", inputs.get("petId")));
 //
 //            case "geocoder":
 //                inputs = getGeocoderInputs();

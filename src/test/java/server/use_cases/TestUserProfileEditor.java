@@ -3,7 +3,13 @@ package server.use_cases;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import server.use_cases.repo_abstracts.ResponseModel;
+import server.drivers.BCryptService;
+import server.use_cases.user_account_validator.UserAccountValidator;
+import server.use_cases.user_creator.UserCreator;
+import server.use_cases.user_creator.UserCreatorRequestModel;
+import server.use_cases.user_profile_editor.UserProfileEditor;
+import server.use_cases.user_profile_editor.UserProfileEditorRequestModel;
+import server.use_cases.user_profile_editor.UserProfileEditorResponseModel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,17 +17,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class TestUserProfileEditor {
 
-    private DummyUserRepository dummyUserRepository;
     private UserProfileEditor profileEditor;
-    private UserCreator userCreator;
 
     @BeforeEach
     public void setUp() {
+        BCryptService bcryptService = new BCryptService();
         DummyUserRepository userRepository = new DummyUserRepository();
-        dummyUserRepository = new DummyUserRepository();
+        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
 
-        userCreator = new UserCreator(userRepository);
-        profileEditor = new UserProfileEditor(dummyUserRepository);
+        profileEditor = new UserProfileEditor(userRepository);
+
+        // Fill the repository with some dummy users
+        userCreator.createUser(new UserCreatorRequestModel("andrew", "qiu", "1234 home st",
+                "Toronto", "Password123", "andrew@email.com"));
+        userCreator.createUser(new UserCreatorRequestModel("asd", "last", "12345 tom st",
+                "Toronto", "Password123", "asd@e.com"));
+        userCreator.createUser(new UserCreatorRequestModel("gm", "qw", "45 test st",
+                "Toronto", "Password123", "8888@1234.com"));
     }
 
     /**
@@ -29,17 +41,11 @@ public class TestUserProfileEditor {
      */
     @Test
     public void TestEditUserProfileWithValidId() {
-        dummyUserRepository.createUser("andrew", "qiu", "12345", "1234 home st",
-                "Toronto", "andrew@email.com");
-        dummyUserRepository.createUser("asd", "last", "65432", "12345 tom st",
-                "Toronto", "asd@e.com");
-        dummyUserRepository.createUser("gm", "qw", "7777", "45 test st",
-                "Toronto", "8888@1234.com");
-
         UserProfileEditorResponseModel expected = new UserProfileEditorResponseModel("1", "Hello", "1231231234", "asd@gmail.com", "asdfacebook");
 
         ResponseModel responseModel = profileEditor.editUserProfile(
-                new UserProfileEditorRequestModel("1", "1", "Hello", "1231231234", "asd@gmail.com", "asdfacebook"));
+                new UserProfileEditorRequestModel("1", "1", "Hello",
+                        "1231231234", "asd@gmail.com", "asdfacebook"));
 
         assertTrue(responseModel.isSuccess());
         assertEquals(expected, responseModel.getResponseData());
@@ -50,17 +56,11 @@ public class TestUserProfileEditor {
      */
     @Test
     public void TestEditUserProfileWithoutValidId() {
-        dummyUserRepository.createUser("andrew", "qiu", "12345", "1234 home st",
-                "Toronto", "andrew@email.com");
-        dummyUserRepository.createUser("asd", "last", "65432", "12345 tom st",
-                "Toronto", "asd@e.com");
-        dummyUserRepository.createUser("gm", "qw", "7777", "45 test st",
-                "Toronto", "8888@1234.com");
-
         ResponseModel expected = new ResponseModel(false, "User with ID: 3 does not exist.");
 
         ResponseModel actual = profileEditor.editUserProfile(
-                new UserProfileEditorRequestModel("3", "3","Hello", "1231231234", "asd@gmail.com", "asdfacebook"));
+                new UserProfileEditorRequestModel("3", "3","Hello",
+                        "1231231234", "asd@gmail.com", "asdfacebook"));
 
         assertTrue(!actual.isSuccess());
         assertEquals(expected, actual);

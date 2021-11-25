@@ -7,15 +7,50 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import server.controllers.*;
-import server.drivers.GeocoderService;
+import server.drivers.*;
 import server.drivers.http.AuthFilter;
-import server.drivers.JwtService;
 import server.drivers.cmd.CmdLineIOSystem;
 import server.drivers.cmd.IOSystem;
-import server.drivers.repository.RelationRepository;
 import server.drivers.repository.UserRepository;
 import server.drivers.repository.PetRepository;
-import server.use_cases.*;
+import server.use_cases.pet_creator.PetCreator;
+import server.use_cases.pet_creator.PetCreatorInputBoundary;
+import server.use_cases.pet_editor.PetEditor;
+import server.use_cases.pet_editor.PetEditorInputBoundary;
+import server.use_cases.pet_matches_fetcher.PetMatchesFetcher;
+import server.use_cases.pet_matches_fetcher.PetMatchesFetcherInputBoundary;
+import server.use_cases.pet_matches_generator.PetMatchesGenerator;
+import server.use_cases.pet_matches_generator.PetMatchesGeneratorInputBoundary;
+import server.use_cases.pet_profile_fetcher.PetProfileFetcher;
+import server.use_cases.pet_profile_fetcher.PetProfileFetcherInputBoundary;
+import server.use_cases.pet_profile_validator.PetProfileValidator;
+import server.use_cases.pet_profile_validator.PetProfileValidatorInputBoundary;
+import server.use_cases.pet_rejector.PetRejector;
+import server.use_cases.pet_rejector.PetRejectorInputBoundary;
+import server.use_cases.pet_swiper.PetSwiper;
+import server.use_cases.pet_swiper.PetSwiperInputBoundary;
+import server.use_cases.pet_swipes_fetcher.PetSwipesFetcher;
+import server.use_cases.pet_swipes_fetcher.PetSwipesFetcherInputBoundary;
+import server.use_cases.pet_unswiper.PetUnswiper;
+import server.use_cases.pet_unswiper.PetUnswiperInputBoundary;
+import server.use_cases.ResponsePresenter;
+import server.adapters.UseCaseOutputBoundary;
+import server.use_cases.session_token_generator.SessionTokenGenerator;
+import server.use_cases.session_token_generator.SessionTokenGeneratorInputBoundary;
+import server.use_cases.user_account_editor.UserAccountEditor;
+import server.use_cases.user_account_editor.UserAccountEditorInputBoundary;
+import server.use_cases.user_account_fetcher.UserAccountFetcher;
+import server.use_cases.user_account_fetcher.UserAccountFetcherInputBoundary;
+import server.use_cases.user_account_validator.UserAccountValidator;
+import server.use_cases.user_account_validator.UserAccountValidatorInputBoundary;
+import server.use_cases.user_creator.UserCreator;
+import server.use_cases.user_creator.UserCreatorInputBoundary;
+import server.use_cases.user_pets_fetcher.UserPetsFetcher;
+import server.use_cases.user_pets_fetcher.UserPetsFetcherInputBoundary;
+import server.use_cases.user_profile_editor.UserProfileEditor;
+import server.use_cases.user_profile_editor.UserProfileEditorInputBoundary;
+import server.use_cases.user_profile_fetcher.UserProfileFetcher;
+import server.use_cases.user_profile_fetcher.UserProfileFetcherInputBoundary;
 
 /**
  * Class that holds all the dependencies used in the application at the moment.
@@ -28,10 +63,15 @@ import server.use_cases.*;
 class BeanHolder {
 
     // Use Cases
+    @Bean
+    UserAccountValidatorInputBoundary userCredentialsValidatorBean() {
+        return new UserAccountValidator();
+    }
+
     @Autowired
     @Bean()
     UserCreatorInputBoundary userCreatorBean(UserRepository userRepository) {
-        return new UserCreator(userRepository);
+        return new UserCreator(userRepository, passwordEncryptorBean(), userCredentialsValidatorBean());
     }
 
     @Autowired
@@ -43,7 +83,7 @@ class BeanHolder {
     @Autowired
     @Bean
     UserAccountEditorInputBoundary userAccountEditorBean(UserRepository userRepository) {
-        return new UserAccountEditor(userRepository);
+        return new UserAccountEditor(userRepository, passwordEncryptorBean(), userCredentialsValidatorBean());
     }
 
     @Autowired
@@ -58,28 +98,33 @@ class BeanHolder {
         return new UserProfileEditor(userRepository);
     }
 
+    @Bean
+    PetProfileValidatorInputBoundary petProfileValidatorBean() {
+        return new PetProfileValidator();
+    }
+
     @Autowired
     @Bean
     PetCreatorInputBoundary petCreatorBean(PetRepository petRepository, UserRepository userRepository) {
-        return new PetCreator(petRepository, userRepository);
+        return new PetCreator(petRepository, userRepository, petProfileValidatorBean());
     }
 
     @Autowired
     @Bean
-    PetSwiperInputBoundary petSwiperBean(RelationRepository relationRepository, PetRepository petRepository) {
-        return new PetSwiper(relationRepository, petRepository);
+    PetSwiperInputBoundary petSwiperBean(PetRepository petRepository) {
+        return new PetSwiper(petRepository);
     }
 
     @Autowired
     @Bean
-    PetUnswiperInputBoundary petUnswiperBean(RelationRepository relationRepository, PetRepository petRepository) {
-        return new PetUnswiper(relationRepository, petRepository);
+    PetUnswiperInputBoundary petUnswiperBean(PetRepository petRepository) {
+        return new PetUnswiper(petRepository);
     }
 
     @Autowired
     @Bean
-    PetRejectorInputBoundary petRejectorBean(RelationRepository relationRepository, PetRepository petRepository) {
-        return new PetRejector(relationRepository, petRepository);
+    PetRejectorInputBoundary petRejectorBean(PetRepository petRepository) {
+        return new PetRejector(petRepository);
     }
 
     @Autowired
@@ -115,13 +160,13 @@ class BeanHolder {
     @Autowired
     @Bean
     PetEditorInputBoundary petEditorBean(PetRepository petRepository) {
-        return new PetEditor(petRepository);
+        return new PetEditor(petRepository, petProfileValidatorBean());
     }
 
     @Autowired
     @Bean
     SessionTokenGeneratorInputBoundary sessionTokenGeneratorBean(UserRepository userRepository) {
-        return new SessionTokenGenerator(userRepository, jwtServiceBean());
+        return new SessionTokenGenerator(userRepository, jwtServiceBean(), passwordEncryptorBean());
     }
 
     // Controllers
@@ -140,14 +185,14 @@ class BeanHolder {
 
     @Autowired
     @Bean
-    IPetController petControllerBean(RelationRepository relationRepository, PetRepository petRepository, UserRepository userRepository) {
+    IPetController petControllerBean(PetRepository petRepository, UserRepository userRepository) {
         return new PetController(
                 petCreatorBean(petRepository, userRepository),
-                petSwiperBean(relationRepository, petRepository),
+                petSwiperBean(petRepository),
                 petProfileFetcherBean(petRepository),
                 petEditorBean(petRepository),
-                petRejectorBean(relationRepository, petRepository),
-                petUnswiperBean(relationRepository, petRepository),
+                petRejectorBean(petRepository),
+                petUnswiperBean(petRepository),
                 petSwipesFetcherBean(petRepository),
                 petMatchesFetcherBean(petRepository),
                 petMatchesGeneratorBean(userRepository, petRepository),
@@ -158,7 +203,7 @@ class BeanHolder {
     @Autowired
     @Bean
     ISessionController sessionControllerBean(UserRepository userRepository) {
-        return new SessionController(sessionTokenGeneratorBean(userRepository), jsonPresenterBean());
+        return new SessionController(sessionTokenGeneratorBean(userRepository));
     }
 
     // Utils/Services
@@ -173,13 +218,23 @@ class BeanHolder {
     }
 
     @Bean
-    JwtService jwtServiceBean() {
+    UseCaseOutputBoundary responsePresenterBean() {
+        return new ResponsePresenter(jsonPresenterBean());
+    }
+
+    @Bean
+    IJwtService jwtServiceBean() {
         return new JwtService();
     }
 
     @Bean
     GeocoderService geocoderServiceBean() {
         return new GeocoderService();
+    }
+
+    @Bean
+    IPasswordEncryptor passwordEncryptorBean() {
+        return new BCryptService();
     }
 
     @Bean

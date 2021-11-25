@@ -23,17 +23,6 @@ public interface IPetRepository {
      */
     public int createPet(int userId, String name, int age, String breed, String biography);
 
-//    /**
-//     * Fetch a pet's profile information by a given pet id.
-//     *
-//     * @param petId     the pet's id;
-//     *
-//     * @return PetRepositoryPetProfileFetcherResponse
-//     *
-//     * @throws PetNotFoundException
-//     */
-//    public PetRepositoryPetProfileFetcherResponse fetchPetProfile(int petId) throws PetNotFoundException;
-
     /**
      * Fetch a Pet from the database.
      * @param petId
@@ -55,18 +44,57 @@ public interface IPetRepository {
      */
     public boolean editPet(int petId, String newName, int newAge, String newBreed, String newBiography);
 
-//    /**
-//     * Return a list of pet ids that the given pet has swiped on
-//     * @param petId
-//     * @return a list of pet ids that the given pet has swiped on
-//     */
-//    public List<Integer> fetchPetSwipes(int petId) throws PetNotFoundException;
-//
-//    /**
-//     * Return a list of pet ids that the given pet has matched with
-//     * @param petId
-//     * @return a list of pet ids that the given pet has matched with
-//     */
-//    public List<Integer> fetchPetMatches(int petId) throws PetNotFoundException;
+    /**
+     * Add pet2 to pet1's swiped list
+     * @param pet1Id
+     * @param pet2Id
+     * @return whether the swipe was successful
+     */
+    public boolean swipePets(int pet1Id, int pet2Id) throws PetNotFoundException;
+
+    /**
+     * Add pet1 and pet2 to each other's matched list.
+     * @param pet1Id
+     * @param pet2Id
+     * @return whether the swipe was successful
+     */
+    public boolean matchPets(int pet1Id, int pet2Id) throws PetNotFoundException;
+
+    /**
+     * Remove pet2 from pet1's swiped list
+     * @param pet1Id
+     * @param pet2Id
+     * @return whether the swipe was successful
+     */
+    public boolean unswipePets(int pet1Id, int pet2Id) throws PetNotFoundException;
+
+    /**
+     * Add pet2 to pet1's rejected list
+     * @param pet1Id
+     * @param pet2Id
+     * @return whether the rejection was successful
+     */
+    public boolean rejectPets(int pet1Id, int pet2Id) throws PetNotFoundException;
+
+    /**
+     * Return a list of pet ids that the given pet has swiped on
+     * @param petId
+     * @return a list of pet ids that the given pet has swiped on
+     */
+    public List<Integer> fetchSwipedOn(int petId) throws PetNotFoundException;
+
+    /**
+     * Return a list of pet ids that the given pet has rejected
+     * @param petId
+     * @return a list of pet ids that the given pet has rejected
+     */
+    public List<Integer> fetchRejected(int petId) throws PetNotFoundException;
+
+    /**
+     * Return a list of pet ids that the given pet has matched with
+     * @param petId
+     * @return a list of pet ids that the given pet has matched with
+     */
+    public List<Integer> fetchMatches(int petId) throws PetNotFoundException;
 
 }

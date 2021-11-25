@@ -3,9 +3,16 @@ package server.use_cases;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import server.entities.Pet;
+import server.drivers.BCryptService;
+import server.use_cases.pet_swiper.PetSwiper;
+import server.use_cases.pet_swiper.PetSwiperRequestModel;
+import server.use_cases.pet_unswiper.PetUnswiper;
+import server.use_cases.pet_unswiper.PetUnswiperRequestModel;
 import server.use_cases.repo_abstracts.PetNotFoundException;
-import server.use_cases.repo_abstracts.ResponseModel;
+import server.use_cases.user_account_validator.UserAccountValidator;
+import server.use_cases.user_creator.UserCreator;
+import server.use_cases.user_creator.UserCreatorRequestModel;
+import server.use_cases.user_creator.UserCreatorResponseModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,64 +23,61 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class TestPetUnswiper {
 
-    DummyRelationRepository relationRepository;
     private DummyUserRepository userRepository;
     private DummyPetRepository petRepository;
     private PetSwiper petSwiper;
     private PetUnswiper petUnswiper;
 
+    int user1Id, user2Id, pet1Id, pet2Id;
+
     @BeforeEach
     public void setUp() {
-        relationRepository = new DummyRelationRepository();
+        BCryptService bcryptService = new BCryptService();
         userRepository = new DummyUserRepository();
-        petRepository = new DummyPetRepository(userRepository, relationRepository);
-        petSwiper = new PetSwiper(relationRepository, petRepository);
-        petUnswiper = new PetUnswiper(relationRepository, petRepository);
+        petRepository = new DummyPetRepository(userRepository);
+        petSwiper = new PetSwiper(petRepository);
+        petUnswiper = new PetUnswiper(petRepository);
+        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
+
+        user1Id = Integer.parseInt(((UserCreatorResponseModel) userCreator.createUser(
+                new UserCreatorRequestModel(
+                        "John", "Appleseed", "123 Addy", "Toronto",
+                        "Password123", "john.appleseed@gmail.com"
+                )
+        ).getResponseData()).getUserId());
+
+        user2Id = Integer.parseInt(((UserCreatorResponseModel) userCreator.createUser(
+                new UserCreatorRequestModel(
+                        "Lig", "Mother", "42 Main St", "Toronto",
+                        "Password123", "lig.ma@email.com"
+                )
+        ).getResponseData()).getUserId());
+
+        pet1Id = petRepository.createPet(user1Id, "Nugget", 1, "Golden Shepherd", "A golden boy.");
+        pet2Id = petRepository.createPet(user2Id, "Jack", 2, "Husky", "Certified Good Boy.");
     }
 
     @Test
-    public void TestSuccessPetUnswiper() {
-        int user1Id = userRepository.createUser("John", "Appleseed", "123 Addy", "Toronto", "123456", "john.appleseed@gmail.com");
-        int user2Id = userRepository.createUser("Lig", "Mother", "42 Main St", "Toronto", "!password!11", "lig.ma@email.com");
-        int pet1Id = petRepository.createPet(user1Id, "Nugget", 1, "Golden Shepherd", "A golden boy.");
-        int pet2Id = petRepository.createPet(user2Id, "Jack", 2, "Husky", "Certified Good Boy.");
-
-        ResponseModel responseA = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id, pet2Id));
-        ResponseModel responseB = petUnswiper.unswipePets(new PetUnswiperRequestModel(user1Id + "", pet1Id, pet2Id));
-
-        Pet pet1 = null;
-
-        try {
-            pet1 = petRepository.fetchPet(pet1Id);
-        } catch (PetNotFoundException e) { }
+    public void TestSuccessPetUnswiper() throws PetNotFoundException {
+        ResponseModel responseA = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id + "", pet2Id + ""));
+        ResponseModel responseB = petUnswiper.unswipePets(new PetUnswiperRequestModel(user1Id + "", pet1Id + "", pet2Id + ""));
 
         // Check for the pet's swiped list
         List<Integer> expectedPet1SwipesList = new ArrayList<>();
-        List<Integer> actual = pet1.getSwipedOn();
+        List<Integer> actual = petRepository.fetchSwipedOn(pet1Id);
 
         assertTrue(responseA.isSuccess() && responseB.isSuccess());
         assertEquals(expectedPet1SwipesList, actual);
     }
 
     @Test
-    public void TestFailPetUnswiper() {
-        int user1Id = userRepository.createUser("John", "Appleseed", "123 Addy", "Toronto", "123456", "john.appleseed@gmail.com");
-        int user2Id = userRepository.createUser("Lig", "Mother", "42 Main St", "Toronto", "!password!11", "lig.ma@email.com");
-        int pet1Id = petRepository.createPet(user1Id, "Nugget", 1, "Golden Shepherd", "A golden boy.");
-        int pet2Id = petRepository.createPet(user2Id, "Jack", 2, "Husky", "Certified Good Boy.");
-
-        ResponseModel response = petUnswiper.unswipePets(new PetUnswiperRequestModel(user1Id + "", pet1Id, pet2Id));
-
-        Pet pet1 = null;
-
-        try {
-            pet1 = petRepository.fetchPet(pet1Id);
-        } catch (PetNotFoundException e) { }
+    public void TestFailPetUnswiper() throws PetNotFoundException {
+        ResponseModel response = petUnswiper.unswipePets(new PetUnswiperRequestModel(user1Id + "", pet1Id + "", pet2Id + ""));
 
         // Check for the pet's swiped list
         List<Integer> expectedPet1SwipesList = new ArrayList<>();
         assertTrue(!response.isSuccess());
-        assertEquals(pet1.getSwipedOn(), expectedPet1SwipesList);
+        assertEquals(petRepository.fetchSwipedOn(pet1Id), expectedPet1SwipesList);
     }
 
 }

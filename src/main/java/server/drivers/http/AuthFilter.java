@@ -2,6 +2,7 @@ package server.drivers.http;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.OncePerRequestFilter;
+import server.drivers.IJwtService;
 import server.drivers.JwtService;
 
 import javax.servlet.FilterChain;
@@ -17,9 +18,9 @@ import java.io.IOException;
  */
 public class AuthFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
+    private final IJwtService jwtService;
 
-    public AuthFilter(JwtService jwtService) {
+    public AuthFilter(IJwtService jwtService) {
         this.jwtService = jwtService;
     }
 

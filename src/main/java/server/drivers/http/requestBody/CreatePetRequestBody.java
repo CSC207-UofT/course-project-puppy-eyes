@@ -5,12 +5,12 @@ package server.drivers.http.requestBody;
  */
 public class CreatePetRequestBody {
     private final String name;
-    private final int age;
+    private final String age;
     private final String userId;
     private final String breed;
     private final String biography;
 
-    public CreatePetRequestBody(String userId, String name, int age, String breed, String biography) {
+    public CreatePetRequestBody(String userId, String name, String age, String breed, String biography) {
         this.userId = userId;
         this.name = name;
         this.age = age;
@@ -26,7 +26,7 @@ public class CreatePetRequestBody {
         return name;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 

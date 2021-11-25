@@ -1,11 +1,26 @@
 package server.controllers;
 
-import server.use_cases.*;
-import server.use_cases.repo_abstracts.ResponseModel;
-import server.use_cases.repo_abstracts.ResponsePresenter;
-import server.use_cases.repo_abstracts.UseCaseOutputBoundary;
-
-import java.util.HashMap;
+import server.use_cases.pet_creator.PetCreatorInputBoundary;
+import server.use_cases.pet_creator.PetCreatorRequestModel;
+import server.use_cases.pet_editor.PetEditorInputBoundary;
+import server.use_cases.pet_editor.PetEditorRequestModel;
+import server.use_cases.pet_matches_fetcher.PetMatchesFetcherInputBoundary;
+import server.use_cases.pet_matches_fetcher.PetMatchesFetcherRequestModel;
+import server.use_cases.pet_matches_generator.PetMatchesGeneratorInputBoundary;
+import server.use_cases.pet_matches_generator.PetMatchesGeneratorRequestModel;
+import server.use_cases.pet_profile_fetcher.PetProfileFetcherInputBoundary;
+import server.use_cases.pet_profile_fetcher.PetProfileFetcherRequestModel;
+import server.use_cases.pet_rejector.PetRejectorInputBoundary;
+import server.use_cases.pet_rejector.PetRejectorRequestModel;
+import server.use_cases.pet_swiper.PetSwiperInputBoundary;
+import server.use_cases.pet_swiper.PetSwiperRequestModel;
+import server.use_cases.pet_swipes_fetcher.PetSwipesFetcherInputBoundary;
+import server.use_cases.pet_swipes_fetcher.PetSwipesFetcherRequestModel;
+import server.use_cases.pet_unswiper.PetUnswiperInputBoundary;
+import server.use_cases.pet_unswiper.PetUnswiperRequestModel;
+import server.use_cases.ResponseModel;
+import server.use_cases.ResponsePresenter;
+import server.adapters.UseCaseOutputBoundary;
 
 /**
  * A controller that handles all functions relating to pet data.
@@ -49,7 +64,7 @@ public class PetController implements IPetController {
      * @param age           the pet's age
      * @param breed         the pet's breed
      * @param biography     the pet's biography
-     * @return a JSON structure containing:
+     * @return a ResponseModel containing:
      *      {
      *          isSuccess: "true"/"false",
      *          // if successful:
@@ -66,11 +81,10 @@ public class PetController implements IPetController {
      *      }
      */
     @Override
-    public String createPet(boolean fromTerminal, String headerUserId, String userId, String name, int age, String breed, String biography) {
+    public ResponseModel createPet(boolean fromTerminal, String headerUserId, String userId, String name, String age, String breed, String biography) {
         PetCreatorRequestModel request = new PetCreatorRequestModel(headerUserId, userId, name, age, breed, biography);
         request.setFromTerminal(fromTerminal);
-        ResponseModel response = petCreator.createPet(request);
-        return responsePresenter.formatResponse(response);
+        return petCreator.createPet(request);
     }
 
     /**
@@ -80,7 +94,7 @@ public class PetController implements IPetController {
      * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
      *                      is true, this field does nothing.
      * @param petId         the pet's id
-     * @return a JSON structure containing:
+     * @return a ResponseModel containing:
      *      {
      *          isSuccess: "true"/"false",
      *          // if successful:
@@ -95,11 +109,10 @@ public class PetController implements IPetController {
      *      }
      */
     @Override
-    public String fetchPetProfile(boolean fromTerminal, String headerUserId, String petId) {
+    public ResponseModel fetchPetProfile(boolean fromTerminal, String headerUserId, String petId) {
         PetProfileFetcherRequestModel request = new PetProfileFetcherRequestModel(headerUserId, petId);
         request.setFromTerminal(fromTerminal);
-        ResponseModel response = profileFetcher.fetchPetProfile(request);
-        return responsePresenter.formatResponse(response);
+        return profileFetcher.fetchPetProfile(request);
     }
 
     /**
@@ -110,18 +123,17 @@ public class PetController implements IPetController {
      *                      is true, this field does nothing.
      * @param pet1Id
      * @param pet2Id
-     * @return a JSON structure containing:
+     * @return a ResponseModel containing:
      *      {
      *          isSuccess: "true"/"false",
      *          message: The response message
      *      }
      */
     @Override
-    public String rejectPets(boolean fromTerminal, String headerUserId, int pet1Id, int pet2Id) {
+    public ResponseModel rejectPets(boolean fromTerminal, String headerUserId, String pet1Id, String pet2Id) {
         PetRejectorRequestModel request = new PetRejectorRequestModel(headerUserId, pet1Id, pet2Id);
         request.setFromTerminal(fromTerminal);
-        ResponseModel response = petRejector.rejectPets(request);
-        return responsePresenter.formatResponse(response);
+        return petRejector.rejectPets(request);
     }
 
     /**
@@ -131,7 +143,7 @@ public class PetController implements IPetController {
      * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
      *                      is true, this field does nothing.
      * @param petId
-     * @return a JSON structure containing:
+     * @return a ResponseModel containing:
      *      {
      *          isSuccess: "true"/"false",
      *          // if successful:
@@ -143,11 +155,10 @@ public class PetController implements IPetController {
      *      }
      */
     @Override
-    public String generatePotentialMatches(boolean fromTerminal, String headerUserId, String petId) {
+    public ResponseModel generatePotentialMatches(boolean fromTerminal, String headerUserId, String petId) {
         PetMatchesGeneratorRequestModel request = new PetMatchesGeneratorRequestModel(headerUserId, petId);
         request.setFromTerminal(fromTerminal);
-        ResponseModel response = petMatchesGenerator.generatePotentialMatches(request);
-        return responsePresenter.formatResponse(response);
+        return petMatchesGenerator.generatePotentialMatches(request);
     }
 
     /**
@@ -158,18 +169,17 @@ public class PetController implements IPetController {
      *                      is true, this field does nothing.
      * @param pet1Id
      * @param pet2Id
-     * @return a JSON structure containing:
+     * @return a ResponseModel containing:
      *      {
      *          isSuccess: "true"/"false",
      *          message: The response message
      *      }
      */
     @Override
-    public String swipePets(boolean fromTerminal, String headerUserId, int pet1Id, int pet2Id) {
+    public ResponseModel swipePets(boolean fromTerminal, String headerUserId, String pet1Id, String pet2Id) {
         PetSwiperRequestModel request = new PetSwiperRequestModel(headerUserId, pet1Id, pet2Id);
         request.setFromTerminal(fromTerminal);
-        ResponseModel response = petSwiper.swipe(request);
-        return responsePresenter.formatResponse(response);
+        return petSwiper.swipe(request);
     }
 
     /**
@@ -180,18 +190,17 @@ public class PetController implements IPetController {
      *                      is true, this field does nothing.
      * @param pet1Id
      * @param pet2Id
-     * @return a JSON structure containing:
+     * @return a ResponseModel containing:
      *      {
      *          isSuccess: "true"/"false",
      *          message: The response message
      *      }
      */
     @Override
-    public String unswipePets(boolean fromTerminal, String headerUserId, int pet1Id, int pet2Id) {
+    public ResponseModel unswipePets(boolean fromTerminal, String headerUserId, String pet1Id, String pet2Id) {
         PetUnswiperRequestModel request = new PetUnswiperRequestModel(headerUserId, pet1Id, pet2Id);
         request.setFromTerminal(fromTerminal);
-        ResponseModel response = petUnswiper.unswipePets(request);
-        return responsePresenter.formatResponse(response);
+        return petUnswiper.unswipePets(request);
     }
 
     /**
@@ -201,7 +210,7 @@ public class PetController implements IPetController {
      * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
      *                      is true, this field does nothing.
      * @param petId
-     * @return a JSON structure containing:
+     * @return a ResponseModel containing:
      *      {
      *          isSuccess: "true"/"false",
      *          // if successful:
@@ -213,11 +222,10 @@ public class PetController implements IPetController {
      *      }
      */
     @Override
-    public String fetchPetSwipes(boolean fromTerminal, String headerUserId, int petId) {
-        PetSwipesFetcherRequestModel request = new PetSwipesFetcherRequestModel(String.valueOf(headerUserId), String.valueOf(petId));
+    public ResponseModel fetchPetSwipes(boolean fromTerminal, String headerUserId, String petId) {
+        PetSwipesFetcherRequestModel request = new PetSwipesFetcherRequestModel(headerUserId, petId);
         request.setFromTerminal(fromTerminal);
-        ResponseModel response = petSwipesFetcher.fetchPetSwipes(request);
-        return responsePresenter.formatResponse(response);
+        return petSwipesFetcher.fetchPetSwipes(request);
     }
 
     /**
@@ -227,7 +235,7 @@ public class PetController implements IPetController {
      * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
      *                      is true, this field does nothing.
      * @param petId
-     * @return a JSON structure containing:
+     * @return a ResponseModel containing:
      *      {
      *          isSuccess: "true"/"false",
      *          // if successful:
@@ -239,11 +247,10 @@ public class PetController implements IPetController {
      *      }
      */
     @Override
-    public String fetchPetMatches(boolean fromTerminal, String headerUserId, int petId) {
-        PetMatchesFetcherRequestModel request = new PetMatchesFetcherRequestModel(headerUserId, String.valueOf(petId));
+    public ResponseModel fetchPetMatches(boolean fromTerminal, String headerUserId, String petId) {
+        PetMatchesFetcherRequestModel request = new PetMatchesFetcherRequestModel(headerUserId, petId);
         request.setFromTerminal(fromTerminal);
-        ResponseModel response = petMatchesFetcher.fetchPetMatches(request);
-        return responsePresenter.formatResponse(response);
+        return petMatchesFetcher.fetchPetMatches(request);
     }
 
     /**
@@ -257,7 +264,7 @@ public class PetController implements IPetController {
      * @param newAge        user entered pet's new age
      * @param newBreed      user entered pet's new breed
      * @param newBiography  user entered pet's new biography
-     * @return a JSON structure containing:
+     * @return a ResponseModel containing:
      * {
      *       isSuccess: "true"/"false"
      *       // If successful, then include:
@@ -270,10 +277,9 @@ public class PetController implements IPetController {
      *       }
      *  }
      */
-    public String editPet(boolean fromTerminal, String headerUserId, String petId, String newName, int newAge, String newBreed, String newBiography) {
+    public ResponseModel editPet(boolean fromTerminal, String headerUserId, String petId, String newName, String newAge, String newBreed, String newBiography) {
         PetEditorRequestModel request = new PetEditorRequestModel(headerUserId, petId, newName, newAge, newBreed, newBiography);
         request.setFromTerminal(fromTerminal);
-        ResponseModel response = petEditor.editPet(request);
-        return responsePresenter.formatResponse(response);
+        return petEditor.editPet(request);
     }
 }

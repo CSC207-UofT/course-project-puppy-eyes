@@ -1,5 +1,7 @@
 package server.controllers;
 
+import server.use_cases.ResponseModel;
+
 public interface ISessionController {
 
     /**
@@ -7,8 +9,8 @@ public interface ISessionController {
      *
      * @param email
      * @param password
-     * @return a JWT token as a String
+     * @return a JWT token within a ResponseModel
      */
-    public String generateJwt(String email, String password);
+    public ResponseModel generateJwt(String email, String password);
 
 }

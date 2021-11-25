@@ -5,7 +5,16 @@ package server.use_cases.repo_abstracts;
  * but is not found in the repository.
  */
 public class PetNotFoundException extends Exception {
-    public PetNotFoundException(String message) {
+
+    public int id;
+
+    public PetNotFoundException(String message, int id) {
         super(message);
+        this.id = id;
     }
+
+    public int getId() {
+        return this.id;
+    }
+
 }

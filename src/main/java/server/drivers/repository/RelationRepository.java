@@ -2,12 +2,11 @@ package server.drivers.repository;
 
 import org.springframework.stereotype.Repository;
 import server.drivers.dbEntities.RelationDatabaseEntity;
-import server.use_cases.repo_abstracts.IRelationRepository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
-public class RelationRepository implements IRelationRepository {
+public class RelationRepository {
 
     private final JpaRelationRepository repository;
 
@@ -15,60 +14,12 @@ public class RelationRepository implements IRelationRepository {
         this.repository = repository;
     }
 
-    /**
-     * Add a relationship between two ids.
-     *
-     * @param fromId
-     * @param toId
-     * @param relationType
-     */
-    @Override
-    public void addRelation(int fromId, int toId, String relationType) {
-        RelationDatabaseEntity relation = new RelationDatabaseEntity(fromId, toId, relationType);
-        this.repository.save(relation);
+    public JpaRelationRepository getRepository() {
+        return this.repository;
     }
 
-    /**
-     * Remove a relationship between two ids.
-     *
-     * @param fromId
-     * @param toId
-     * @param relationType
-     */
-    @Override
-    public void removeRelation(int fromId, int toId, String relationType) {
-        Optional<RelationDatabaseEntity> relation = Optional.ofNullable(this.repository.
-                findRelationDatabaseEntityByFromIdAndToId(fromId, toId));
-
-        if (!relation.isPresent()) {
-            return;
-        }
-
-        this.repository.delete(relation.get());
+    public List<RelationDatabaseEntity> getRelations(int fromId, String relationType) {
+        return repository.findAllByFromIdAndRelationType(fromId, relationType);
     }
-
-    /**
-     * Return whether fromId has a relation to toId with type relationType.
-     *
-     * @param fromId
-     * @param toId
-     * @param relationType
-     * @return whether fromId has a relation to toId with type relationType
-     */
-    @Override
-    public boolean hasRelation(int fromId, int toId, String relationType) {
-        return this.repository.existsByFromIdAndToIdAndRelationType(fromId, toId, relationType);
-    }
-
-//    /**
-//     * Return
-//     * @param fromId
-//     * @param relationType
-//     * @return
-//     */
-//    @Override
-//    public List<String> getRelations(int fromId, String relationType) {
-//
-//    }
 
 }

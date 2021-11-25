@@ -4,7 +4,6 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "pets")
@@ -86,16 +85,16 @@ public class PetDatabaseEntity {
         return biography;
     }
 
-    public List<Integer> getSwipedOn() {
-        return this.swipedOn.stream().map(swiped -> swiped.getToId()).collect(Collectors.toList());
+    public List<RelationDatabaseEntity> getSwipedOn() {
+        return this.getSwipedOn();
     }
 
-    public List<Integer> getMatches() {
-        return this.matches.stream().map(match -> match.getToId()).collect(Collectors.toList());
+    public List<RelationDatabaseEntity> getMatches() {
+        return this.getMatches();
     }
 
-    public List<Integer> getRejected() {
-        return this.rejected.stream().map(rejected -> rejected.getToId()).collect(Collectors.toList());
+    public List<RelationDatabaseEntity> getRejected() {
+        return this.getRejected();
     }
 
     public void setName(String name) {
