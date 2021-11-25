@@ -56,6 +56,7 @@ public class PetCreator implements PetCreatorInputBoundary {
         if (!verifyInputsResponse.isSuccess()) {
             return verifyInputsResponse;
         }
+
         int userId = Integer.parseInt(request.getUserId());
         int intAge = Integer.parseInt(request.getAge());
 
