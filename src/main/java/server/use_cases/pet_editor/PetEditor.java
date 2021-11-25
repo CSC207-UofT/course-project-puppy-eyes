@@ -30,18 +30,16 @@ public class PetEditor implements PetEditorInputBoundary {
      */
     @Override
     public ResponseModel editPet(PetEditorRequestModel request) {
-        String intRegex = "/^[-+]?\\d+$/";
+        String intRegex = "-?[0-9]+";
         Pattern intPattern = Pattern.compile(intRegex);
 
         // null checks
-        if (request.getPetId() == null || request.getUserId() == null) {
+        if (request.getPetId() == null || request.getHeaderUserId() == null) {
             return new ResponseModel(false, "Missing required fields.");
         }
 
         // Check if the request fields are in the valid datatype
-        if (!intPattern.matcher(request.getPetId()).matches()
-                || !intPattern.matcher(request.getUserId()).matches()
-                || !intPattern.matcher(request.getHeaderUserId()).matches()) {
+        if (!intPattern.matcher(request.getPetId()).matches() || !intPattern.matcher(request.getHeaderUserId()).matches()) {
             return new ResponseModel(false, "ID must be an integer.");
         }
 
