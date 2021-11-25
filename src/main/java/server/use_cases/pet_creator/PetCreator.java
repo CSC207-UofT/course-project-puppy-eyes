@@ -31,7 +31,7 @@ public class PetCreator implements PetCreatorInputBoundary {
      * @return a PetCreatorResponseModel that contains the created pet's basic information.
      */
     public ResponseModel createPet(PetCreatorRequestModel request) {
-        String intRegex = "/^[-+]?\\d+$/";
+        String intRegex = "-?[0-9]+";
         Pattern intPattern = Pattern.compile(intRegex);
 
         // null checks
@@ -40,7 +40,7 @@ public class PetCreator implements PetCreatorInputBoundary {
         }
 
         // Check if the request fields are in the valid datatype
-        if (!intPattern.matcher(request.getUserId()).matches() || !intPattern.matcher(request.getHeaderUserId()).matches()) {
+        if (!intPattern.matcher(request.getUserId()).matches()) {
             return new ResponseModel(false, "ID must be an integer.");
         }
 

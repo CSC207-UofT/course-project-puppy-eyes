@@ -31,7 +31,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
         // If header does not exist or is in wrong format, return
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.sendError(HttpStatus.FORBIDDEN.value(), "You are not authorized to make this request.");
             return;
         }
 
@@ -40,7 +40,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
         // If the JWT was not validated
         if (!jwtService.validateToken(token, userId)) {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.sendError(HttpStatus.FORBIDDEN.value(), "You are not authorized to make this request.");
             return;
         }
 

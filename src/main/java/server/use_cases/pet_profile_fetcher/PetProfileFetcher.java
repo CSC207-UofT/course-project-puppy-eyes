@@ -40,6 +40,7 @@ public class PetProfileFetcher implements PetProfileFetcherInputBoundary {
                 true,
                 "Successfully fetched pet profile.",
                 new PetProfileFetcherResponseModel(
+                    pet.getUserId(),
                     pet.getName(),
                     pet.getAge(),
                     pet.getBreed(),

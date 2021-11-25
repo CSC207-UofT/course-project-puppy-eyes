@@ -10,16 +10,22 @@ import java.util.Objects;
  */
 public class PetProfileFetcherResponseModel extends ResponseData {
 
+    private final int userId;
     private final String name;
     private final int age;
     private String breed;
     private String biography;
 
-    public PetProfileFetcherResponseModel(String name, int age, String breed, String biography) {
+    public PetProfileFetcherResponseModel(int userId, String name, int age, String breed, String biography) {
+        this.userId = userId;
         this.name = name;
         this.age = age;
         this.breed = breed;
         this.biography = biography;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     public String getName() {

@@ -14,17 +14,15 @@ public class UserAccountEditorResponseModel extends ResponseData {
     private final String newLastName;
     private final String newCurrentAddress;
     private final String newCurrentCity;
-    private final String newPassword;
     private final String newEmail;
 
     public UserAccountEditorResponseModel(String userId, String newFirstName, String newLastName, String newCurrentAddress,
-                                          String newCurrentCity, String newPassword, String newEmail) {
+                                          String newCurrentCity, String newEmail) {
         this.userId = userId;
         this.newFirstName = newFirstName;
         this.newLastName = newLastName;
         this.newCurrentAddress = newCurrentAddress;
         this.newCurrentCity = newCurrentCity;
-        this.newPassword = newPassword;
         this.newEmail = newEmail;
     }
 
@@ -48,10 +46,6 @@ public class UserAccountEditorResponseModel extends ResponseData {
         return newCurrentCity;
     }
 
-    public String getNewPassword() {
-        return newPassword;
-    }
-
     public String getNewEmail() {
         return newEmail;
     }
@@ -66,7 +60,6 @@ public class UserAccountEditorResponseModel extends ResponseData {
                 && Objects.equals(newLastName, that.newLastName)
                 && Objects.equals(newCurrentAddress, that.newCurrentAddress)
                 && Objects.equals(newCurrentCity, that.newCurrentCity)
-                && Objects.equals(newPassword, that.newPassword)
                 && Objects.equals(newEmail, that.newEmail);
     }
 }

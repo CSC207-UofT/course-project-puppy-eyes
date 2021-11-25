@@ -44,8 +44,7 @@ public class TestUserAccountEditor {
     @Test
     public void TestEditUserAccountWithValidId() {
         UserAccountEditorResponseModel expected = new UserAccountEditorResponseModel("1",
-                "Bob", "Boy", "111 Main St", "New York",
-                "NewPassword123", "b.b@gmail,com");
+                "Bob", "Boy", "111 Main St", "New York", "b.b@gmail,com");
 
         ResponseModel responseModel = accountEditor.editUserAccount(
                 new UserAccountEditorRequestModel("1", "1", "Bob", "Boy",

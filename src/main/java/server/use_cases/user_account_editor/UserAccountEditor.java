@@ -93,7 +93,6 @@ public class UserAccountEditor implements UserAccountEditorInputBoundary {
                     newLastName,
                     newAddress,
                     newCity,
-                    newPassword,
                     newEmail
                 )
             );
