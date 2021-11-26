@@ -8,37 +8,31 @@ import server.use_cases.pet_image_adder.PetImageAdderInputBoundary;
 import server.use_cases.pet_image_adder.PetImageAdderRequestModel;
 import server.use_cases.pet_image_remover.PetImageRemoverInputBoundary;
 import server.use_cases.pet_image_remover.PetImageRemoverRequestModel;
+import server.use_cases.pet_interactor.PetInteractionType;
 import server.use_cases.pet_matches_fetcher.PetMatchesFetcherInputBoundary;
 import server.use_cases.pet_matches_fetcher.PetMatchesFetcherRequestModel;
 import server.use_cases.pet_matches_generator.PetMatchesGeneratorInputBoundary;
 import server.use_cases.pet_matches_generator.PetMatchesGeneratorRequestModel;
 import server.use_cases.pet_profile_fetcher.PetProfileFetcherInputBoundary;
 import server.use_cases.pet_profile_fetcher.PetProfileFetcherRequestModel;
-import server.use_cases.pet_profile_image_changer.PetProfileImageChanger;
 import server.use_cases.pet_profile_image_changer.PetProfileImageChangerInputBoundary;
 import server.use_cases.pet_profile_image_changer.PetProfileImageChangerRequestModel;
-import server.use_cases.pet_rejector.PetRejectorInputBoundary;
-import server.use_cases.pet_rejector.PetRejectorRequestModel;
-import server.use_cases.pet_swiper.PetSwiperInputBoundary;
-import server.use_cases.pet_swiper.PetSwiperRequestModel;
+import server.use_cases.pet_interactor.PetInteractorInputBoundary;
+import server.use_cases.pet_interactor.PetInteractorRequestModel;
 import server.use_cases.pet_swipes_fetcher.PetSwipesFetcherInputBoundary;
 import server.use_cases.pet_swipes_fetcher.PetSwipesFetcherRequestModel;
-import server.use_cases.pet_unswiper.PetUnswiperInputBoundary;
-import server.use_cases.pet_unswiper.PetUnswiperRequestModel;
 import server.use_cases.ResponseModel;
-import server.use_cases.ResponsePresenter;
 import server.adapters.UseCaseOutputBoundary;
 
 /**
  * A controller that handles all functions relating to pet data.
  */
 public class PetController implements IPetController {
+
     PetCreatorInputBoundary petCreator;
     PetProfileFetcherInputBoundary profileFetcher;
     PetEditorInputBoundary petEditor;
-    PetSwiperInputBoundary petSwiper;
-    PetUnswiperInputBoundary petUnswiper;
-    PetRejectorInputBoundary petRejector;
+    PetInteractorInputBoundary petInteractor;
     PetSwipesFetcherInputBoundary petSwipesFetcher;
     PetMatchesFetcherInputBoundary petMatchesFetcher;
     PetMatchesGeneratorInputBoundary petMatchesGenerator;
@@ -48,11 +42,9 @@ public class PetController implements IPetController {
     UseCaseOutputBoundary responsePresenter;
 
     public PetController(PetCreatorInputBoundary petCreator,
-                         PetSwiperInputBoundary petSwiper,
                          PetProfileFetcherInputBoundary profileFetcher,
                          PetEditorInputBoundary petEditor,
-                         PetRejectorInputBoundary petRejector,
-                         PetUnswiperInputBoundary petUnswiper,
+                         PetInteractorInputBoundary petInteractor,
                          PetSwipesFetcherInputBoundary petSwipesFetcher,
                          PetMatchesFetcherInputBoundary petMatchesFetcher,
                          PetMatchesGeneratorInputBoundary petMatchesGenerator,
@@ -63,11 +55,9 @@ public class PetController implements IPetController {
         this.petCreator = petCreator;
         this.profileFetcher = profileFetcher;
         this.petEditor = petEditor;
-        this.petSwiper = petSwiper;
         this.petSwipesFetcher = petSwipesFetcher;
         this.petMatchesFetcher = petMatchesFetcher;
-        this.petRejector = petRejector;
-        this.petUnswiper = petUnswiper;
+        this.petInteractor = petInteractor;
         this.petMatchesGenerator = petMatchesGenerator;
         this.petProfileImageChanger = petProfileImageChanger;
         this.petImageAdder = petImageAdder;
@@ -155,9 +145,9 @@ public class PetController implements IPetController {
      */
     @Override
     public ResponseModel rejectPets(boolean fromTerminal, String headerUserId, String pet1Id, String pet2Id) {
-        PetRejectorRequestModel request = new PetRejectorRequestModel(headerUserId, pet1Id, pet2Id);
+        PetInteractorRequestModel request = new PetInteractorRequestModel(headerUserId, pet1Id, pet2Id, PetInteractionType.REJECT);
         request.setFromTerminal(fromTerminal);
-        return petRejector.rejectPets(request);
+        return petInteractor.interact(request);
     }
 
     /**
@@ -202,9 +192,9 @@ public class PetController implements IPetController {
      */
     @Override
     public ResponseModel swipePets(boolean fromTerminal, String headerUserId, String pet1Id, String pet2Id) {
-        PetSwiperRequestModel request = new PetSwiperRequestModel(headerUserId, pet1Id, pet2Id);
+        PetInteractorRequestModel request = new PetInteractorRequestModel(headerUserId, pet1Id, pet2Id, PetInteractionType.SWIPE);
         request.setFromTerminal(fromTerminal);
-        return petSwiper.swipe(request);
+        return petInteractor.interact(request);
     }
 
     /**
@@ -223,9 +213,30 @@ public class PetController implements IPetController {
      */
     @Override
     public ResponseModel unswipePets(boolean fromTerminal, String headerUserId, String pet1Id, String pet2Id) {
-        PetUnswiperRequestModel request = new PetUnswiperRequestModel(headerUserId, pet1Id, pet2Id);
+        PetInteractorRequestModel request = new PetInteractorRequestModel(headerUserId, pet1Id, pet2Id, PetInteractionType.UNSWIPE);
         request.setFromTerminal(fromTerminal);
-        return petUnswiper.unswipePets(request);
+        return petInteractor.interact(request);
+    }
+
+    /**
+     * Remove the pets from each other's matched list
+     *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
+     * @param pet1Id
+     * @param pet2Id
+     * @return a ResponseModel containing:
+     *      {
+     *          isSuccess: "true"/"false"
+     *          message: The response message
+     *      }
+     */
+    @Override
+    public ResponseModel unmatchPets(boolean fromTerminal, String headerUserId, String pet1Id, String pet2Id) {
+        PetInteractorRequestModel request = new PetInteractorRequestModel(headerUserId, pet1Id, pet2Id, PetInteractionType.UNMATCH);
+        request.setFromTerminal(fromTerminal);
+        return petInteractor.interact(request);
     }
 
     /**

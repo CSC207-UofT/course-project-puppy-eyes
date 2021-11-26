@@ -5,7 +5,6 @@ import server.drivers.dbEntities.PetDatabaseEntity;
 import server.drivers.dbEntities.RelationDatabaseEntity;
 import server.entities.Pet;
 import server.use_cases.repo_abstracts.IPetRepository;
-import server.use_cases.repo_abstracts.PetNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +43,7 @@ public class PetRepository implements IPetRepository {
     }
 
     @Override
-    public Pet fetchPet(int petId) throws PetNotFoundException {
+    public Pet fetchPet(int petId) {
         Optional<PetDatabaseEntity> searchResult = repository.findById(petId);
 
         // Todo factory to create pet from db pet
@@ -53,9 +52,9 @@ public class PetRepository implements IPetRepository {
             Pet pet = new Pet(dbPet.getUser().getId(), dbPet.getName(), dbPet.getAge(), dbPet.getBreed(), dbPet.getBiography()) {};
             pet.setId(dbPet.getId());
             return pet;
-        } else {
-            throw new PetNotFoundException("Pet of ID: " + petId + " not found", petId);
         }
+
+        return null;
     }
 
     /**
@@ -93,13 +92,9 @@ public class PetRepository implements IPetRepository {
      * @return whether the swipe was successful
      */
     @Override
-    public boolean swipePets(int pet1Id, int pet2Id) throws PetNotFoundException {
-        if (!repository.existsById(pet1Id)) {
-            throw new PetNotFoundException("Pet of ID: " + pet1Id + " not found", pet1Id);
-        }
-
-        if (!repository.existsById(pet2Id)) {
-            throw new PetNotFoundException("Pet of ID: " + pet2Id + " not found", pet2Id);
+    public boolean swipePets(int pet1Id, int pet2Id) {
+        if (!repository.existsById(pet1Id) || !repository.existsById(pet2Id)) {
+            return false;
         }
 
         RelationDatabaseEntity matchRelation = new RelationDatabaseEntity(pet1Id, pet2Id, "SWIPE");
@@ -114,13 +109,9 @@ public class PetRepository implements IPetRepository {
      * @return whether the swipe was successful
      */
     @Override
-    public boolean matchPets(int pet1Id, int pet2Id) throws PetNotFoundException {
-        if (!repository.existsById(pet1Id)) {
-            throw new PetNotFoundException("Pet of ID: " + pet1Id + " not found", pet1Id);
-        }
-
-        if (!repository.existsById(pet2Id)) {
-            throw new PetNotFoundException("Pet of ID: " + pet2Id + " not found", pet2Id);
+    public boolean matchPets(int pet1Id, int pet2Id) {
+        if (!repository.existsById(pet1Id) || !repository.existsById(pet2Id)) {
+            return false;
         }
 
         RelationDatabaseEntity matchRelation = new RelationDatabaseEntity(pet1Id, pet2Id, "MATCH");
@@ -135,13 +126,9 @@ public class PetRepository implements IPetRepository {
      * @return whether the swipe was successful
      */
     @Override
-    public boolean unswipePets(int pet1Id, int pet2Id) throws PetNotFoundException {
-        if (!repository.existsById(pet1Id)) {
-            throw new PetNotFoundException("Pet of ID: " + pet1Id + " not found", pet1Id);
-        }
-
-        if (!repository.existsById(pet2Id)) {
-            throw new PetNotFoundException("Pet of ID: " + pet2Id + " not found", pet2Id);
+    public boolean unswipePets(int pet1Id, int pet2Id) {
+        if (!repository.existsById(pet1Id) || !repository.existsById(pet2Id)) {
+            return false;
         }
 
         relationRepository.getRepository().delete(new RelationDatabaseEntity(pet1Id, pet2Id, "SWIPE"));
@@ -155,17 +142,30 @@ public class PetRepository implements IPetRepository {
      * @return whether the rejection was successful
      */
     @Override
-    public boolean rejectPets(int pet1Id, int pet2Id) throws PetNotFoundException {
-        if (!repository.existsById(pet1Id)) {
-            throw new PetNotFoundException("Pet of ID: " + pet1Id + " not found", pet1Id);
-        }
-
-        if (!repository.existsById(pet2Id)) {
-            throw new PetNotFoundException("Pet of ID: " + pet2Id + " not found", pet2Id);
+    public boolean rejectPets(int pet1Id, int pet2Id) {
+        if (!repository.existsById(pet1Id) || !repository.existsById(pet2Id)) {
+            return false;
         }
 
         RelationDatabaseEntity matchRelation = new RelationDatabaseEntity(pet1Id, pet2Id, "REJECT");
         relationRepository.getRepository().save(matchRelation);
+        return true;
+    }
+
+    /**
+     * Remove pet1 and pet2 from each other's matched list
+     * @param pet1Id
+     * @param pet2Id
+     * @return whether the unmatch was successful
+     */
+    @Override
+    public boolean unmatchPets(int pet1Id, int pet2Id) {
+        if (!repository.existsById(pet1Id) || !repository.existsById(pet2Id)) {
+            return false;
+        }
+
+        relationRepository.getRepository().delete(new RelationDatabaseEntity(pet1Id, pet2Id, "MATCH"));
+        relationRepository.getRepository().delete(new RelationDatabaseEntity(pet2Id, pet1Id, "MATCH"));
         return true;
     }
 
@@ -175,25 +175,30 @@ public class PetRepository implements IPetRepository {
      * @return a list of pet ids that the given pet has swiped on
      */
     @Override
-    public List<Integer> fetchSwipedOn(int petId) throws PetNotFoundException {
+    public List<Integer> fetchSwipedOn(int petId) {
         Optional<PetDatabaseEntity> searchResult = repository.findById(petId);
 
         if (searchResult.isPresent()) {
-            return relationRepository.getRepository().findAllByFromIdAndRelationType(petId, "SWIPE").stream().map(RelationDatabaseEntity::getToId).collect(Collectors.toList());
+            return relationRepository.getRepository().findAllByFromIdAndRelationType(petId, "SWIPE").
+                    stream().
+                    map(RelationDatabaseEntity::getToId).
+                    collect(Collectors.toList());
         } else {
-            throw new PetNotFoundException("Pet of ID: " + petId + " not found", petId);
+            return null;
         }
     }
 
     @Override
-    public List<Integer> fetchRejected(int petId) throws PetNotFoundException {
+    public List<Integer> fetchRejected(int petId) {
         Optional<PetDatabaseEntity> searchResult = repository.findById(petId);
 
         if (searchResult.isPresent()) {
-            PetDatabaseEntity pet = searchResult.get();
-            return relationRepository.getRepository().findAllByFromIdAndRelationType(petId, "REJECT").stream().map(RelationDatabaseEntity::getToId).collect(Collectors.toList());
+            return relationRepository.getRepository().findAllByFromIdAndRelationType(petId, "REJECT")
+                    .stream().
+                    map(RelationDatabaseEntity::getToId).
+                    collect(Collectors.toList());
         } else {
-            throw new PetNotFoundException("Pet of ID: " + petId + " not found", petId);
+            return null;
         }
     }
 
@@ -203,14 +208,16 @@ public class PetRepository implements IPetRepository {
      * @return a list of pet ids that the given pet has matched with
      */
     @Override
-    public List<Integer> fetchMatches(int petId) throws PetNotFoundException {
+    public List<Integer> fetchMatches(int petId) {
         Optional<PetDatabaseEntity> searchResult = repository.findById(petId);
 
         if (searchResult.isPresent()) {
-            PetDatabaseEntity pet = searchResult.get();
-            return relationRepository.getRepository().findAllByFromIdAndRelationType(petId, "MATCH").stream().map(RelationDatabaseEntity::getToId).collect(Collectors.toList());
+            return relationRepository.getRepository().findAllByFromIdAndRelationType(petId, "MATCH")
+                    .stream()
+                    .map(RelationDatabaseEntity::getToId)
+                    .collect(Collectors.toList());
         } else {
-            throw new PetNotFoundException("Pet of ID: " + petId + " not found", petId);
+            return null;
         }
     }
 

@@ -73,8 +73,8 @@ public class UserWebGateway extends WebGateway {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity getUserProfile(@RequestParam String userId) {
-        ResponseModel response = userController.fetchUserProfile(userId);
+    public ResponseEntity getUserProfile(HttpServletRequest req, @RequestParam String userId) {
+        ResponseModel response = userController.fetchUserProfile(false, req.getHeader("userId"), userId);
         return getResponseEntity(response);
     }
 

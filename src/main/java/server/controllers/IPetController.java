@@ -149,4 +149,16 @@ public interface IPetController {
      */
     ResponseModel removePetImage(String headerUserId, String petId, String assetId);
 
+    /**
+     * Remove the pet with pet2Id to the pet with pet1Id's swiped list
+     *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
+     * @param pet1Id
+     * @param pet2Id
+     * @return a ResponseModel containing the response data
+     */
+    ResponseModel unmatchPets(boolean fromTerminal, String headerUserId, String pet1Id, String pet2Id);
+
 }

@@ -57,4 +57,12 @@ public class AuthRequestModel {
         return this.fromTerminal || (this.userId != null && this.headerUserId.equals(userId));
     }
 
+    /**
+     * Return whether this request came from the command line or not.
+     * @return
+     */
+    public boolean isFromTerminal() {
+        return this.fromTerminal;
+    }
+
 }

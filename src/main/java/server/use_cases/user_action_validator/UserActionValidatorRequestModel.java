@@ -4,8 +4,9 @@ import server.use_cases.AuthRequestModel;
 
 public class UserActionValidatorRequestModel extends AuthRequestModel {
 
-    public UserActionValidatorRequestModel(String headerUserId, String userId) {
+    public UserActionValidatorRequestModel(boolean fromTerminal, String headerUserId, String userId) {
         super(headerUserId, userId);
+        this.setFromTerminal(fromTerminal);
     }
 
 }

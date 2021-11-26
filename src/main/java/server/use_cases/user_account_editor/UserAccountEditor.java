@@ -38,7 +38,7 @@ public class UserAccountEditor implements UserAccountEditorInputBoundary {
     @Override
     public ResponseModel editUserAccount(UserAccountEditorRequestModel request) {
         ResponseModel validateActionResponse = userActionValidator.validateAction(new UserActionValidatorRequestModel(
-                request.getHeaderUserId(), request.getUserId()
+                request.isFromTerminal(), request.getHeaderUserId(), request.getUserId()
         ));
 
         // Check if the action is validated

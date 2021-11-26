@@ -1,6 +1,7 @@
 package server.use_cases.user_profile_fetcher;
 
 import server.entities.User;
+import server.use_cases.Util;
 import server.use_cases.repo_abstracts.IPetRepository;
 import server.use_cases.repo_abstracts.IUserRepository;
 import server.use_cases.ResponseModel;
@@ -34,36 +35,35 @@ public class UserProfileFetcher implements UserProfileFetcherInputBoundary {
     @Override
     public ResponseModel fetchUserProfile(UserProfileFetcherRequestModel request) {
         ResponseModel validateActionResponse = userActionValidator.validateAction(new UserActionValidatorRequestModel(
-            request.getHeaderUserId(), request.getUserId()
+            request.isFromTerminal(), request.getHeaderUserId(), request.getUserId()
         ));
 
         // Check if the action is validated
-        if (!validateActionResponse.isSuccess()) {
-            return validateActionResponse;
+        if (validateActionResponse.isSuccess() ||
+                // Check if user1 is allowed to view user2's profile
+                (request.getHeaderUserId() != null && request.getUserId() != null
+                        && Util.isInteger(request.getHeaderUserId())  && Util.isInteger(request.getUserId())
+                        && canUserView(Integer.parseInt(request.getHeaderUserId()), Integer.parseInt(request.getUserId())))) {
+            int userId = Integer.parseInt(request.getUserId());
+
+            User user = userRepository.fetchUser(userId);
+
+            return new ResponseModel(
+                    true,
+                    "Successfully fetched user profile.",
+                    new UserProfileFetcherResponseModel(
+                            user.getFirstName(),
+                            user.getLastName(),
+                            user.getBiography(),
+                            user.getContactInfo().getPhoneNumber(),
+                            user.getContactInfo().getEmail(),
+                            user.getContactInfo().getInstagram(),
+                            user.getContactInfo().getFacebook()
+                    )
+            );
         }
 
-        int user1Id = Integer.parseInt(request.getHeaderUserId());
-        int user2Id = Integer.parseInt(request.getUserId());
-
-        if (!canUserView(user1Id, user2Id)) {
-            return new ResponseModel();
-        }
-
-        User user = userRepository.fetchUser(user2Id);
-
-        return new ResponseModel(
-            true,
-            "Successfully fetched user profile.",
-            new UserProfileFetcherResponseModel(
-                user.getFirstName(),
-                user.getLastName(),
-                user.getBiography(),
-                user.getContactInfo().getPhoneNumber(),
-                user.getContactInfo().getEmail(),
-                user.getContactInfo().getInstagram(),
-                user.getContactInfo().getFacebook()
-            )
-        );
+        return validateActionResponse;
     }
 
     /**

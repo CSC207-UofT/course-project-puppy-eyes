@@ -24,7 +24,7 @@ public class PetProfileFetcher implements PetProfileFetcherInputBoundary {
     @Override
     public ResponseModel fetchPetProfile(PetProfileFetcherRequestModel request) {
         ResponseModel validateActionResponse = petActionValidator.validateAction(new PetActionValidatorRequestModel(
-                request.getHeaderUserId(), request.getPetId()
+                request.isFromTerminal(), request.getHeaderUserId(), request.getPetId()
         ));
 
         // Check if the action is validated

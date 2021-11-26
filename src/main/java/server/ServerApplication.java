@@ -1,7 +1,6 @@
 package server;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -15,6 +14,8 @@ import server.drivers.cmd.IOSystem;
 import server.drivers.repository.ImageRepository;
 import server.drivers.repository.UserRepository;
 import server.drivers.repository.PetRepository;
+import server.use_cases.pet_action_validator.PetActionValidator;
+import server.use_cases.pet_action_validator.PetActionValidatorInputBoundary;
 import server.use_cases.pet_creator.PetCreator;
 import server.use_cases.pet_creator.PetCreatorInputBoundary;
 import server.use_cases.pet_editor.PetEditor;
@@ -33,14 +34,10 @@ import server.use_cases.pet_profile_image_changer.PetProfileImageChanger;
 import server.use_cases.pet_profile_image_changer.PetProfileImageChangerInputBoundary;
 import server.use_cases.pet_profile_validator.PetProfileValidator;
 import server.use_cases.pet_profile_validator.PetProfileValidatorInputBoundary;
-import server.use_cases.pet_rejector.PetRejector;
-import server.use_cases.pet_rejector.PetRejectorInputBoundary;
-import server.use_cases.pet_swiper.PetSwiper;
-import server.use_cases.pet_swiper.PetSwiperInputBoundary;
+import server.use_cases.pet_interactor.PetInteractor;
+import server.use_cases.pet_interactor.PetInteractorInputBoundary;
 import server.use_cases.pet_swipes_fetcher.PetSwipesFetcher;
 import server.use_cases.pet_swipes_fetcher.PetSwipesFetcherInputBoundary;
-import server.use_cases.pet_unswiper.PetUnswiper;
-import server.use_cases.pet_unswiper.PetUnswiperInputBoundary;
 import server.use_cases.ResponsePresenter;
 import server.adapters.UseCaseOutputBoundary;
 import server.use_cases.session_token_generator.SessionTokenGenerator;
@@ -51,6 +48,8 @@ import server.use_cases.user_account_fetcher.UserAccountFetcher;
 import server.use_cases.user_account_fetcher.UserAccountFetcherInputBoundary;
 import server.use_cases.user_account_validator.UserAccountValidator;
 import server.use_cases.user_account_validator.UserAccountValidatorInputBoundary;
+import server.use_cases.user_action_validator.UserActionValidator;
+import server.use_cases.user_action_validator.UserActionValidatorInputBoundary;
 import server.use_cases.user_creator.UserCreator;
 import server.use_cases.user_creator.UserCreatorInputBoundary;
 import server.use_cases.user_pets_fetcher.UserPetsFetcher;
@@ -61,8 +60,6 @@ import server.use_cases.user_profile_fetcher.UserProfileFetcher;
 import server.use_cases.user_profile_fetcher.UserProfileFetcherInputBoundary;
 import server.use_cases.user_profile_image_changer.UserProfileImageChanger;
 import server.use_cases.user_profile_image_changer.UserProfileImageChangerInputBoundary;
-
-import java.awt.*;
 
 /**
  * Class that holds all the dependencies used in the application at the moment.
@@ -82,8 +79,20 @@ class BeanHolder {
 
     @Autowired
     @Bean
-    UserProfileImageChangerInputBoundary userProfileImageChangerBean(ImageRepository imageRepository) {
-        return new UserProfileImageChanger(imageRepository, imageServiceBean());
+    UserActionValidatorInputBoundary userActionValidatorBean(UserRepository userRepository) {
+        return new UserActionValidator(userRepository);
+    }
+
+    @Autowired
+    @Bean
+    PetActionValidatorInputBoundary petActionValidatorBean(PetRepository petRepository) {
+        return new PetActionValidator(petRepository);
+    }
+
+    @Autowired
+    @Bean
+    UserProfileImageChangerInputBoundary userProfileImageChangerBean(ImageRepository imageRepository, UserRepository userRepository) {
+        return new UserProfileImageChanger(imageRepository, imageServiceBean(), userActionValidatorBean(userRepository));
     }
 
     @Autowired
@@ -95,43 +104,43 @@ class BeanHolder {
     @Autowired
     @Bean
     UserAccountFetcherInputBoundary userAccountFetcherBean(UserRepository userRepository) {
-        return new UserAccountFetcher(userRepository);
+        return new UserAccountFetcher(userRepository, userActionValidatorBean(userRepository));
     }
 
     @Autowired
     @Bean
     UserAccountEditorInputBoundary userAccountEditorBean(UserRepository userRepository) {
-        return new UserAccountEditor(userRepository, passwordEncryptorBean(), userCredentialsValidatorBean());
+        return new UserAccountEditor(userRepository, passwordEncryptorBean(), userCredentialsValidatorBean(), userActionValidatorBean(userRepository));
     }
 
     @Autowired
     @Bean
-    UserProfileFetcherInputBoundary userProfileFetcherBean(UserRepository userRepository) {
-        return new UserProfileFetcher(userRepository);
+    UserProfileFetcherInputBoundary userProfileFetcherBean(UserRepository userRepository, PetRepository petRepository) {
+        return new UserProfileFetcher(userRepository, petRepository, userActionValidatorBean(userRepository));
     }
 
     @Autowired
     @Bean
     UserProfileEditorInputBoundary userProfileEditorBean(UserRepository userRepository) {
-        return new UserProfileEditor(userRepository);
+        return new UserProfileEditor(userRepository, userActionValidatorBean(userRepository));
     }
 
     @Autowired
     @Bean
     PetProfileImageChangerInputBoundary petProfileImageChangerBean(ImageRepository imageRepository, PetRepository petRepository) {
-        return new PetProfileImageChanger(imageRepository, petRepository, imageServiceBean());
+        return new PetProfileImageChanger(imageRepository, imageServiceBean(), petActionValidatorBean(petRepository));
     }
 
     @Autowired
     @Bean
     PetImageAdderInputBoundary petImageAdderBean(ImageRepository imageRepository, PetRepository petRepository) {
-        return new PetImageAdder(imageRepository, petRepository, imageServiceBean());
+        return new PetImageAdder(imageRepository, petRepository, imageServiceBean(), petActionValidatorBean(petRepository));
     }
 
     @Autowired
     @Bean
     PetImageRemoverInputBoundary petImageRemoverBean(ImageRepository imageRepository, PetRepository petRepository) {
-        return new PetImageRemover(imageRepository, petRepository, imageServiceBean());
+        return new PetImageRemover(imageRepository, petRepository, imageServiceBean(), petActionValidatorBean(petRepository));
     }
 
     @Bean
@@ -147,56 +156,44 @@ class BeanHolder {
 
     @Autowired
     @Bean
-    PetSwiperInputBoundary petSwiperBean(PetRepository petRepository) {
-        return new PetSwiper(petRepository);
-    }
-
-    @Autowired
-    @Bean
-    PetUnswiperInputBoundary petUnswiperBean(PetRepository petRepository) {
-        return new PetUnswiper(petRepository);
-    }
-
-    @Autowired
-    @Bean
-    PetRejectorInputBoundary petRejectorBean(PetRepository petRepository) {
-        return new PetRejector(petRepository);
+    PetInteractorInputBoundary petInteractorBean(PetRepository petRepository) {
+        return new PetInteractor(petRepository, petActionValidatorBean(petRepository));
     }
 
     @Autowired
     @Bean
     PetProfileFetcherInputBoundary petProfileFetcherBean(PetRepository petRepository) {
-        return new PetProfileFetcher(petRepository);
+        return new PetProfileFetcher(petRepository, petActionValidatorBean(petRepository));
     }
 
     @Autowired
     @Bean
     PetSwipesFetcherInputBoundary petSwipesFetcherBean(PetRepository petRepository) {
-        return new PetSwipesFetcher(petRepository);
+        return new PetSwipesFetcher(petRepository, petActionValidatorBean(petRepository));
     }
 
     @Autowired
     @Bean
     UserPetsFetcherInputBoundary userPetsFetcherBean(UserRepository userRepository) {
-        return new UserPetsFetcher(userRepository);
+        return new UserPetsFetcher(userRepository, userActionValidatorBean(userRepository));
     }
 
     @Autowired
     @Bean
     PetMatchesFetcherInputBoundary petMatchesFetcherBean(PetRepository petRepository) {
-        return new PetMatchesFetcher(petRepository);
+        return new PetMatchesFetcher(petRepository, petActionValidatorBean(petRepository));
     }
 
     @Autowired
     @Bean
     PetMatchesGeneratorInputBoundary petMatchesGeneratorBean(UserRepository userRepository, PetRepository petRepository) {
-        return new PetMatchesGenerator(userRepository, petRepository);
+        return new PetMatchesGenerator(userRepository, petRepository, petActionValidatorBean(petRepository));
     }
 
     @Autowired
     @Bean
     PetEditorInputBoundary petEditorBean(PetRepository petRepository) {
-        return new PetEditor(petRepository, petProfileValidatorBean());
+        return new PetEditor(petRepository, petProfileValidatorBean(), petActionValidatorBean(petRepository));
     }
 
     @Autowired
@@ -208,15 +205,15 @@ class BeanHolder {
     // Controllers
     @Autowired
     @Bean
-    IUserController userControllerBean(UserRepository userRepository, ImageRepository imageRepository) {
+    IUserController userControllerBean(UserRepository userRepository, PetRepository petRepository, ImageRepository imageRepository) {
         return new UserController(
                 userCreatorBean(userRepository),
                 userAccountFetcherBean(userRepository),
                 userAccountEditorBean(userRepository),
-                userProfileFetcherBean(userRepository),
+                userProfileFetcherBean(userRepository, petRepository),
                 userProfileEditorBean(userRepository),
                 userPetsFetcherBean(userRepository),
-                userProfileImageChangerBean(imageRepository),
+                userProfileImageChangerBean(imageRepository, userRepository),
                 responsePresenterBean()
         );
     }
@@ -226,11 +223,9 @@ class BeanHolder {
     IPetController petControllerBean(PetRepository petRepository, UserRepository userRepository, ImageRepository imageRepository) {
         return new PetController(
                 petCreatorBean(petRepository, userRepository),
-                petSwiperBean(petRepository),
                 petProfileFetcherBean(petRepository),
                 petEditorBean(petRepository),
-                petRejectorBean(petRepository),
-                petUnswiperBean(petRepository),
+                petInteractorBean(petRepository),
                 petSwipesFetcherBean(petRepository),
                 petMatchesFetcherBean(petRepository),
                 petMatchesGeneratorBean(userRepository, petRepository),
@@ -290,6 +285,7 @@ class BeanHolder {
         authBean.setFilter(new AuthFilter(jwtServiceBean()));
         authBean.addUrlPatterns("/authtest");
         authBean.addUrlPatterns("/pets/*");
+        authBean.addUrlPatterns("/users/profile");
         authBean.addUrlPatterns("/users/account");
         authBean.addUrlPatterns("/users/editaccount");
         authBean.addUrlPatterns("/users/editprofile");

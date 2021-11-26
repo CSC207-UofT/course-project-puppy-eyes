@@ -16,14 +16,14 @@ public class PetActionValidator implements PetActionValidatorInputBoundary {
     @Override
     public ResponseModel validateAction(PetActionValidatorRequestModel request) {
         // null checks
-        if (request.getPetId() == null || request.getHeaderUserId() == null) {
+        if (request.getPetId() == null || (!request.isFromTerminal() && request.getHeaderUserId() == null)) {
             return new ResponseModel(false, "Missing required fields.");
         }
 
         // Check if the request fields are in the valid datatype
         if (!Util.isInteger(request.getPetId())
-                || !Util.isInteger(request.getHeaderUserId())
-                || (request.getSecondPetId() != null) && !Util.isInteger(request.getSecondPetId())) {
+                || (!request.isFromTerminal() && !Util.isInteger(request.getHeaderUserId()))
+                || (request.getSecondPetId() != null && !Util.isInteger(request.getSecondPetId()))) {
             return new ResponseModel(false, "ID must be an integer.");
         }
 

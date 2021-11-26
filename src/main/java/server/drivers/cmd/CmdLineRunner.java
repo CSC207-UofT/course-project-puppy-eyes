@@ -235,12 +235,12 @@ public class CmdLineRunner implements CommandLineRunner {
 
     /**
      * Return a mapping containing the necessary inputs for the
-     * swipePets command. The mapping is of the form:
+     * swipePets, unswipePets, rejectPets, and unmatchPets command. The mapping is of the form:
      *
      *  pet1id -> pet1's id
      *  pet2id -> pet2's id
      */
-    public Map<String, String> getPetSwiperInputs() {
+    public Map<String, String> getPetInteractorInputs() {
         PromptAndInputNameTuple[] inputPrompts = {
                 new PromptAndInputNameTuple("Enter pet1's id: ", "pet1Id"),
                 new PromptAndInputNameTuple("Enter pet2's id: ", "pet2Id"),
@@ -287,7 +287,7 @@ public class CmdLineRunner implements CommandLineRunner {
             case "fetchUserAccount":
                 inputs = getFetchUserAccountInputs();
                 return responsePresenter.formatResponse(
-                        userController.fetchUserAccount(true, "", inputs.get("userId"))
+                        userController.fetchUserAccount(true, null, inputs.get("userId"))
                 );
 
             case "editUserAccount":
@@ -295,7 +295,7 @@ public class CmdLineRunner implements CommandLineRunner {
                 return responsePresenter.formatResponse(
                     userController.editUserAccount(
                         true,
-                        "",
+                        null,
                         inputs.get("userId"),
                         inputs.get("newFirstName"),
                         inputs.get("newLastName"),
@@ -308,14 +308,16 @@ public class CmdLineRunner implements CommandLineRunner {
 
             case "fetchUserProfile":
                 inputs = getFetchUserProfileInputs();
-                return responsePresenter.formatResponse(userController.fetchUserProfile(inputs.get("userId")));
+                return responsePresenter.formatResponse(
+                        userController.fetchUserProfile(true, null, inputs.get("userId"))
+                );
 
             case "editUserProfile":
                 inputs = getEditUserProfileInputs();
                 return responsePresenter.formatResponse(
                     userController.editUserProfile(
                         true,
-                        "",
+                        null,
                         inputs.get("userId"),
                         inputs.get("newBiography"),
                         inputs.get("newPhoneNumber"),
@@ -329,7 +331,7 @@ public class CmdLineRunner implements CommandLineRunner {
                 return responsePresenter.formatResponse(
                     petController.createPet(
                         true,
-                        "",
+                        null,
                         inputs.get("userId"),
                         inputs.get("name"),
                         inputs.get("age"),
@@ -339,27 +341,31 @@ public class CmdLineRunner implements CommandLineRunner {
                 );
 
             case "swipePets":
-                inputs = getPetSwiperInputs();
-                return responsePresenter.formatResponse(petController.swipePets(true, "", inputs.get("pet1Id"), inputs.get("pet2Id")));
+                inputs = getPetInteractorInputs();
+                return responsePresenter.formatResponse(petController.swipePets(true, null, inputs.get("pet1Id"), inputs.get("pet2Id")));
 
             case "unswipePets":
-                inputs = getPetSwiperInputs();
-                return responsePresenter.formatResponse(petController.unswipePets(true, "", inputs.get("pet1Id"), inputs.get("pet2Id")));
+                inputs = getPetInteractorInputs();
+                return responsePresenter.formatResponse(petController.unswipePets(true, null, inputs.get("pet1Id"), inputs.get("pet2Id")));
 
             case "rejectPets":
-                inputs = getPetSwiperInputs();
-                return responsePresenter.formatResponse(petController.rejectPets(true, "", inputs.get("pet1Id"), inputs.get("pet2Id")));
+                inputs = getPetInteractorInputs();
+                return responsePresenter.formatResponse(petController.rejectPets(true, null, inputs.get("pet1Id"), inputs.get("pet2Id")));
+
+            case "unmatchPets":
+                inputs = getPetInteractorInputs();
+                return responsePresenter.formatResponse(petController.unmatchPets(true, null, inputs.get("pet1Id"), inputs.get("pet2Id")));
 
             case "fetchPetProfile":
                 inputs = getFetchPetProfileInputs();
-                return responsePresenter.formatResponse(petController.fetchPetProfile(true, "", inputs.get("petId")));
+                return responsePresenter.formatResponse(petController.fetchPetProfile(true, null, inputs.get("petId")));
 
             case "editPet":
                 inputs = getEditPetInputs();
                 return responsePresenter.formatResponse(
                     petController.editPet(
                         true,
-                        "",
+                        null,
                         inputs.get("petId"),
                         inputs.get("newName"),
                         inputs.get("newAge"),
@@ -370,19 +376,19 @@ public class CmdLineRunner implements CommandLineRunner {
 
             case "fetchPetSwipes":
                 inputs = getFetchPetProfileInputs();
-                return responsePresenter.formatResponse(petController.fetchPetSwipes(true, "", inputs.get("petId")));
+                return responsePresenter.formatResponse(petController.fetchPetSwipes(true, null, inputs.get("petId")));
 
             case "fetchPetMatches":
                 inputs = getFetchPetProfileInputs();
-                return responsePresenter.formatResponse(petController.fetchPetMatches(true, "", inputs.get("petId")));
+                return responsePresenter.formatResponse(petController.fetchPetMatches(true, null, inputs.get("petId")));
 
             case "fetchUserPets":
                 inputs = getFetchUserAccountInputs();
-                return responsePresenter.formatResponse(userController.fetchUserPets(true, "", inputs.get("petId")));
+                return responsePresenter.formatResponse(userController.fetchUserPets(true, null, inputs.get("petId")));
 
             case "generatePotentialMatches":
                 inputs = getFetchPetProfileInputs();
-                return responsePresenter.formatResponse(petController.generatePotentialMatches(true, "", inputs.get("petId")));
+                return responsePresenter.formatResponse(petController.generatePotentialMatches(true, null, inputs.get("petId")));
 //
 //            case "geocoder":
 //                inputs = getGeocoderInputs();
@@ -399,21 +405,9 @@ public class CmdLineRunner implements CommandLineRunner {
      */
     public void showCommands() {
         ioSystem.showOutput("== COMMANDS ==");
-        ioSystem.showOutput("- createUser");
-        ioSystem.showOutput("- createPet");
-        ioSystem.showOutput("- fetchUserAccount");
-        ioSystem.showOutput("- fetchPetProfile");
-        ioSystem.showOutput("- editPet");
-        ioSystem.showOutput("- wipePets");
-        ioSystem.showOutput("- unswipePets");
-        ioSystem.showOutput("- rejectPets");
-        ioSystem.showOutput("- fetchPetMatches");
-        ioSystem.showOutput("- fetchPetSwipes");
-        ioSystem.showOutput("- fetchUserPets");
-        ioSystem.showOutput("- editUserProfile");
-        ioSystem.showOutput("- fetchUserProfile");
-        ioSystem.showOutput("- generatePotentialMatches");
-        ioSystem.showOutput("- exit");
+        ioSystem.showOutput("- createUser, createPet, fetchUserAccount, fetchPetProfile, editPet, swipePets," +
+                " unswipePets, rejectPets, unmatchPets, fetchPetMatches, fetPetSwipes, fetchUserPets, editUserProfile," +
+                " fetchUserProfile, generatePotentialMatches, exit");
     }
 
     /**

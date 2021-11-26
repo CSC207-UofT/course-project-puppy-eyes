@@ -29,7 +29,7 @@ public class PetImageAdder implements PetImageAdderInputBoundary {
     @Override
     public ResponseModel addImage(PetImageAdderRequestModel request) {
         ResponseModel validateActionResponse = petActionValidator.validateAction(new PetActionValidatorRequestModel(
-                request.getHeaderUserId(), request.getPetId()
+                request.isFromTerminal(), request.getHeaderUserId(), request.getPetId()
         ));
 
         // Check if the action is validated

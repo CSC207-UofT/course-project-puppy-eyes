@@ -21,7 +21,7 @@ public class PetInteractor implements PetInteractorInputBoundary {
     @Override
     public ResponseModel interact(PetInteractorRequestModel request) {
         ResponseModel validateActionResponse = petActionValidator.validateAction(new PetActionValidatorRequestModel(
-                request.getHeaderUserId(), request.getFirstPetId(), request.getSecondPetId()
+                request.isFromTerminal(), request.getHeaderUserId(), request.getFirstPetId(), request.getSecondPetId()
         ));
 
         // Check if the action is validated

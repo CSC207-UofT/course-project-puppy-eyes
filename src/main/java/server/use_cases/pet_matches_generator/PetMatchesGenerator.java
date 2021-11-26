@@ -31,7 +31,7 @@ public class PetMatchesGenerator implements PetMatchesGeneratorInputBoundary {
     @Override
     public ResponseModel generatePotentialMatches(PetMatchesGeneratorRequestModel request) {
         ResponseModel validateActionResponse = petActionValidator.validateAction(new PetActionValidatorRequestModel(
-                request.getHeaderUserId(), request.getPetId()
+                request.isFromTerminal(), request.getHeaderUserId(), request.getPetId()
         ));
 
         // Check if the action is validated

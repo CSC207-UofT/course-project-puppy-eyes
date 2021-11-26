@@ -146,13 +146,13 @@ public class UserController implements IUserController {
      * @param fromTerminal  whether this action is being run from command line prompt
      * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
      *                      is true, this field does nothing.
-     * @param userId       the user's id
-     * @param newFirstName the user's new first name
-     * @param newLastName  the user's new last name
-     * @param newAddress   the user's new current address
-     * @param newCity      the user's new current city
-     * @param newPassword  the user's new password
-     * @param newEmail     the user's new email
+     * @param userId        the user's id
+     * @param newFirstName  the user's new first name
+     * @param newLastName   the user's new last name
+     * @param newAddress    the user's new current address
+     * @param newCity       the user's new current city
+     * @param newPassword   the user's new password
+     * @param newEmail      the user's new email
      * @return a JSON structure containing:
      *    {
      *       isSuccess: "true"/"false"
@@ -174,7 +174,7 @@ public class UserController implements IUserController {
                                   String newAddress, String newCity, String newPassword, String newEmail) {
         UserAccountEditorRequestModel request = new UserAccountEditorRequestModel(headerUserId, userId, newFirstName,
                 newLastName, newAddress, newCity, newPassword, newEmail);
-        request.setFromTerminal(true);
+        request.setFromTerminal(fromTerminal);
         ResponseModel response = accountEditor.editUserAccount(request);
         return response;
     }
@@ -183,6 +183,7 @@ public class UserController implements IUserController {
      * Fetch a user's profile details (first name, last name, biography, phone number, email, Instagram, Facebook)
      * given their user id. The returned response is in the form of a JSON object.
      *
+     * @param headerUserId
      * @param userId    the user's id
      * @return a JSON structure containing:
      *    {
@@ -202,8 +203,9 @@ public class UserController implements IUserController {
      *    }
      */
     @Override
-    public ResponseModel fetchUserProfile(String userId) {
-        UserProfileFetcherRequestModel request = new UserProfileFetcherRequestModel(userId);
+    public ResponseModel fetchUserProfile(boolean fromTerminal, String headerUserId, String userId) {
+        UserProfileFetcherRequestModel request = new UserProfileFetcherRequestModel(headerUserId, userId);
+        request.setFromTerminal(fromTerminal);
         ResponseModel response = profileFetcher.fetchUserProfile(request);
         return response;
     }
@@ -239,6 +241,7 @@ public class UserController implements IUserController {
     public ResponseModel editUserProfile(boolean fromTerminal, String headerUserId, String userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook) {
         UserProfileEditorRequestModel request = new UserProfileEditorRequestModel(headerUserId, userId, newBiography,
                 newPhoneNumber, newInstagram, newFacebook);
+        request.setFromTerminal(fromTerminal);
         ResponseModel response = profileEditor.editUserProfile(request);
         return response;
     }

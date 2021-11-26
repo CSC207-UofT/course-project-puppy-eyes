@@ -15,12 +15,12 @@ public class UserActionValidator implements UserActionValidatorInputBoundary {
     @Override
     public ResponseModel validateAction(UserActionValidatorRequestModel request) {
         // null checks
-        if (request.getUserId() == null || request.getHeaderUserId() == null) {
+        if (request.getUserId() == null || (!request.isFromTerminal() && request.getHeaderUserId() == null)) {
             return new ResponseModel(false, "Missing required fields.");
         }
 
         // Check if the request fields are in the valid datatype
-        if (!Util.isInteger(request.getUserId()) || !Util.isInteger(request.getHeaderUserId())) {
+        if (!Util.isInteger(request.getUserId()) || (!request.isFromTerminal() && !Util.isInteger(request.getHeaderUserId()))) {
             return new ResponseModel(false, "ID must be an integer.");
         }
 

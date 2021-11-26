@@ -68,10 +68,13 @@ public interface IUserController {
      * Fetch a user's profile details (first name, last name, biography, phone number, email, Instagram, Facebook)
      * given their user id. The returned response is in the form of a JSON object.
      *
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
      * @param userId    the user's id
      * @return A ResponseModel containing the response data
      */
-    ResponseModel fetchUserProfile(String userId);
+    ResponseModel fetchUserProfile(boolean fromTerminal, String headerUserId, String userId);
 
     /**
      * Edit a user's profile details given their user id and new information.
