@@ -1,4 +1,4 @@
-package server.use_cases.pet_rejector;
+package server.use_cases.pet_interactor;
 
 import server.use_cases.ResponseModel;
 
