@@ -416,6 +416,35 @@ POST
 }`
 
 
+
+## Unmatch Pets
+- **URL**:
+
+/pets/unmatch
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+POST
+
+- **Request Body Format**
+
+`{
+    pet1Id: <Integer>,
+	pet2Id: <Integer>
+ }`
+
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>
+}`
+
+
 ## Fetch Pet Swipes
 - **URL**:
 
