@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import server.drivers.BCryptService;
+import server.use_cases.pet_action_validator.PetActionValidator;
 import server.use_cases.pet_editor.PetEditor;
 import server.use_cases.pet_editor.PetEditorRequestModel;
 import server.use_cases.pet_editor.PetEditorResponseModel;
@@ -31,7 +32,7 @@ public class TestPetEditor {
         dummyPetRepository = new DummyPetRepository(userRepository);
 
         userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
-        petEditor = new PetEditor(dummyPetRepository, new PetProfileValidator());
+        petEditor = new PetEditor(dummyPetRepository, new PetProfileValidator(), new PetActionValidator(dummyPetRepository));
 
         // Create some users
         UserCreatorResponseModel userCreatorResponse = (UserCreatorResponseModel) userCreator.createUser(

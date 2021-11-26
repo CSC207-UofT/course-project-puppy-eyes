@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import server.drivers.BCryptService;
+import server.use_cases.pet_action_validator.PetActionValidator;
 import server.use_cases.pet_profile_fetcher.PetProfileFetcher;
 import server.use_cases.pet_profile_fetcher.PetProfileFetcherRequestModel;
 import server.use_cases.pet_profile_fetcher.PetProfileFetcherResponseModel;
@@ -28,7 +29,7 @@ public class TestPetProfileFetcher {
         DummyUserRepository userRepository = new DummyUserRepository();
         UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
         dummyPetRepository = new DummyPetRepository(userRepository);
-        petProfileFetcher = new PetProfileFetcher(dummyPetRepository);
+        petProfileFetcher = new PetProfileFetcher(dummyPetRepository, new PetActionValidator(dummyPetRepository));
 
         // Create some users
         UserCreatorResponseModel userCreatorResponse = (UserCreatorResponseModel) userCreator.createUser(

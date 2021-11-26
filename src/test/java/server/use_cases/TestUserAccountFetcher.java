@@ -8,6 +8,7 @@ import server.use_cases.user_account_fetcher.UserAccountFetcher;
 import server.use_cases.user_account_fetcher.UserAccountFetcherRequestModel;
 import server.use_cases.user_account_fetcher.UserAccountFetcherResponseModel;
 import server.use_cases.user_account_validator.UserAccountValidator;
+import server.use_cases.user_action_validator.UserActionValidator;
 import server.use_cases.user_creator.UserCreator;
 import server.use_cases.user_creator.UserCreatorRequestModel;
 
@@ -23,7 +24,7 @@ public class TestUserAccountFetcher {
     public void setUp() {
         BCryptService bcryptService = new BCryptService();
         DummyUserRepository userRepository = new DummyUserRepository();
-        userAccountFetcher = new UserAccountFetcher(userRepository);
+        userAccountFetcher = new UserAccountFetcher(userRepository, new UserActionValidator(userRepository));
         UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
 
         // Fill the repository with some dummy users
