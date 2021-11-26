@@ -2,8 +2,8 @@ package server.use_cases.pet_interactor;
 
 import server.use_cases.ResponseModel;
 
-public interface PetRejectorInputBoundary {
+public interface PetInteractorInputBoundary {
 
-    public ResponseModel rejectPets(PetRejectorRequestModel request);
+    public ResponseModel interact(PetInteractorRequestModel request);
 
 }
