@@ -93,6 +93,18 @@ public class PetWebGateway extends WebGateway {
         return getResponseEntity(response);
     }
 
+    @PostMapping("/pets/unmatch")
+    public ResponseEntity unmatchPets(HttpServletRequest req, @RequestBody UnmatchPetsRequestBody requestBody) {
+        ResponseModel response = petController.unmatchPets(
+                false,
+                req.getHeader("userId"),
+                requestBody.getFirstPetId(),
+                requestBody.getSecondPetId()
+        );
+
+        return getResponseEntity(response);
+    }
+
     @GetMapping("/pets/fetchswipes")
     public ResponseEntity fetchPetSwipes(HttpServletRequest req, @RequestParam String petId) {
         ResponseModel response = petController.fetchPetSwipes(false, req.getHeader("userId"), petId);
