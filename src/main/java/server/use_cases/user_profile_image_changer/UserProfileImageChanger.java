@@ -4,22 +4,33 @@ import server.drivers.IImageService;
 import server.drivers.ImageUploadResponse;
 import server.use_cases.ResponseModel;
 import server.use_cases.repo_abstracts.IImageRepository;
-
-import java.util.Map;
+import server.use_cases.user_action_validator.UserActionValidatorInputBoundary;
+import server.use_cases.user_action_validator.UserActionValidatorRequestModel;
 
 public class UserProfileImageChanger implements UserProfileImageChangerInputBoundary {
 
     private final IImageService imageService;
     private final IImageRepository imageRepository;
+    private final UserActionValidatorInputBoundary userActionValidator;
 
-    public UserProfileImageChanger(IImageRepository imageRepository, IImageService imageService) {
+    public UserProfileImageChanger(IImageRepository imageRepository, IImageService imageService,
+                              UserActionValidatorInputBoundary userActionValidator) {
         this.imageRepository = imageRepository;
         this.imageService = imageService;
+        this.userActionValidator = userActionValidator;
     }
 
     @Override
     public ResponseModel changeProfileImage(UserProfileImageChangerRequestModel request) {
-        // since the userId is coming from the request header, we can safely assume it is a correct integer
+        ResponseModel validateActionResponse = userActionValidator.validateAction(new UserActionValidatorRequestModel(
+                request.getHeaderUserId(), request.getUserId()
+        ));
+
+        // Check if the action is validated
+        if (!validateActionResponse.isSuccess()) {
+            return validateActionResponse;
+        }
+
         int userId = Integer.parseInt(request.getHeaderUserId());
 
         // Fetch the response from uploading the base64 image
@@ -36,7 +47,7 @@ public class UserProfileImageChanger implements UserProfileImageChangerInputBoun
 
         return new ResponseModel(
                 true,
-                "Successfuly changed the user's profile image.",
+                "Successfully changed the user's profile image.",
                 new UserProfileImageChangerResponseModel(assetId, url)
         );
     }

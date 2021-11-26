@@ -2,11 +2,10 @@ package server.use_cases.pet_creator;
 
 import server.entities.Pet;
 import server.use_cases.ResponseModel;
+import server.use_cases.Util;
 import server.use_cases.pet_profile_validator.PetProfileValidatorInputBoundary;
 import server.use_cases.pet_profile_validator.PetProfileValidatorRequestModel;
 import server.use_cases.repo_abstracts.*;
-
-import java.util.regex.Pattern;
 
 /**
  * A use case responsible for creating new Pet.
@@ -31,26 +30,23 @@ public class PetCreator implements PetCreatorInputBoundary {
      * @return a PetCreatorResponseModel that contains the created pet's basic information.
      */
     public ResponseModel createPet(PetCreatorRequestModel request) {
-        String intRegex = "-?[0-9]+";
-        Pattern intPattern = Pattern.compile(intRegex);
-
-        // null checks
+        // Null checks
         if (request.getUserId() == null || request.getName() == null || request.getBreed() == null || request.getAge() == null ) {
             return new ResponseModel(false, "Missing required fields.");
         }
 
         // Check if the request fields are in the valid datatype
-        if (!intPattern.matcher(request.getUserId()).matches()) {
+        if (!Util.isInteger(request.getUserId())) {
             return new ResponseModel(false, "ID must be an integer.");
         }
 
-        if (request.getAge() != null && !intPattern.matcher(request.getAge()).matches()) {
+        if (request.getAge() != null && !Util.isInteger(request.getAge())) {
             return new ResponseModel(false, "Age must be an integer.");
         }
 
         // Check if the request fields pass logic checks
         ResponseModel verifyInputsResponse = petProfileValidator.validateProfile(new PetProfileValidatorRequestModel(
-                request.getName(), request.getAge(), request.getBreed(), request.getBiography()
+            request.getName(), request.getAge(), request.getBreed(), request.getBiography()
         ));
 
         if (!verifyInputsResponse.isSuccess()) {
@@ -61,16 +57,17 @@ public class PetCreator implements PetCreatorInputBoundary {
         int intAge = Integer.parseInt(request.getAge());
 
         // Check if user exists
-        try {
-            userRepository.fetchUser(userId);
-        } catch (UserNotFoundException exception) {
+        if (userRepository.fetchUser(userId) == null) {
             return new ResponseModel(false, "User with ID: " + userId + " does not exist.");
         }
+
+        request.setUserId(userId + "");
 
         if (!request.isRequestAuthorized()) {
             return new ResponseModel(false, "You are not authorized to make this request.");
         }
 
+        // TODO factory method
         Pet newPet = new Pet(userId, request.getName(), intAge, request.getBreed(), request.getBiography() == null ? "" : request.getBiography()) {};
 
         int petId = petRepository.createPet(userId, newPet.getName(), newPet.getAge(), newPet.getBreed(), newPet.getBiography());

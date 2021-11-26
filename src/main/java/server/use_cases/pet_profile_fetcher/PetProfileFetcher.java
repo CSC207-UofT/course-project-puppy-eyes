@@ -1,15 +1,18 @@
 package server.use_cases.pet_profile_fetcher;
 
 import server.entities.Pet;
+import server.use_cases.pet_action_validator.PetActionValidatorInputBoundary;
+import server.use_cases.pet_action_validator.PetActionValidatorRequestModel;
 import server.use_cases.repo_abstracts.IPetRepository;
-import server.use_cases.repo_abstracts.PetNotFoundException;
 import server.use_cases.ResponseModel;
 
 public class PetProfileFetcher implements PetProfileFetcherInputBoundary {
     private final IPetRepository petRepository;
+    private final PetActionValidatorInputBoundary petActionValidator;
 
-    public PetProfileFetcher(IPetRepository petRepository) {
+    public PetProfileFetcher(IPetRepository petRepository, PetActionValidatorInputBoundary petActionValidator) {
         this.petRepository = petRepository;
+        this.petActionValidator = petActionValidator;
     }
 
     /**
@@ -20,37 +23,29 @@ public class PetProfileFetcher implements PetProfileFetcherInputBoundary {
      */
     @Override
     public ResponseModel fetchPetProfile(PetProfileFetcherRequestModel request) {
-        int id;
-        try {
-            id = Integer.parseInt(request.getPetId());
-        } catch (NumberFormatException e) {
-            // Invalid pet id
-            return new ResponseModel(false, "ID must be an integer.");
+        ResponseModel validateActionResponse = petActionValidator.validateAction(new PetActionValidatorRequestModel(
+                request.getHeaderUserId(), request.getPetId()
+        ));
+
+        // Check if the action is validated
+        if (!validateActionResponse.isSuccess()) {
+            return validateActionResponse;
         }
 
-        try {
-            Pet pet = petRepository.fetchPet(id);
-            request.setUserId(String.valueOf(pet.getUserId()));
+        int petId = Integer.parseInt(request.getPetId());
+        Pet pet = petRepository.fetchPet(petId);
 
-            if (!request.isRequestAuthorized()) {
-                return new ResponseModel(false, "You are not authorized to make this request.");
-            }
-
-            return new ResponseModel(
-                true,
-                "Successfully fetched pet profile.",
-                new PetProfileFetcherResponseModel(
-                    pet.getUserId(),
-                    pet.getName(),
-                    pet.getAge(),
-                    pet.getBreed(),
-                    pet.getBiography()
-                )
-            );
-        } catch (PetNotFoundException e) {
-            // Pet not found
-            return new ResponseModel(false, "Pet with ID: " + request.getPetId() + " does not exist.");
-        }
+        return new ResponseModel(
+            true,
+            "Successfully fetched pet profile.",
+            new PetProfileFetcherResponseModel(
+                pet.getUserId(),
+                pet.getName(),
+                pet.getAge(),
+                pet.getBreed(),
+                pet.getBiography()
+            )
+        );
     }
 
 }

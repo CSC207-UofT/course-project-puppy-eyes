@@ -1,13 +1,13 @@
 package server.use_cases.pet_editor;
 
 import server.entities.Pet;
+import server.use_cases.Util;
+import server.use_cases.pet_action_validator.PetActionValidatorInputBoundary;
+import server.use_cases.pet_action_validator.PetActionValidatorRequestModel;
 import server.use_cases.pet_profile_validator.PetProfileValidatorInputBoundary;
 import server.use_cases.pet_profile_validator.PetProfileValidatorRequestModel;
 import server.use_cases.repo_abstracts.IPetRepository;
-import server.use_cases.repo_abstracts.PetNotFoundException;
 import server.use_cases.ResponseModel;
-
-import java.util.regex.Pattern;
 
 /**
  * A use case responsible for editing a pet.
@@ -16,10 +16,14 @@ public class PetEditor implements PetEditorInputBoundary {
 
     private IPetRepository petRepository;
     private PetProfileValidatorInputBoundary petProfileValidator;
+    private PetActionValidatorInputBoundary petActionValidator;
 
-    public PetEditor(IPetRepository petRepository, PetProfileValidatorInputBoundary petProfileValidator) {
+    public PetEditor(IPetRepository petRepository,
+                     PetProfileValidatorInputBoundary petProfileValidator,
+                     PetActionValidatorInputBoundary petActionValidator) {
         this.petRepository = petRepository;
         this.petProfileValidator = petProfileValidator;
+        this.petActionValidator = petActionValidator;
     }
 
     /**
@@ -30,40 +34,22 @@ public class PetEditor implements PetEditorInputBoundary {
      */
     @Override
     public ResponseModel editPet(PetEditorRequestModel request) {
-        String intRegex = "-?[0-9]+";
-        Pattern intPattern = Pattern.compile(intRegex);
+        ResponseModel validateActionResponse = petActionValidator.validateAction(new PetActionValidatorRequestModel(
+            request.getHeaderUserId(), request.getPetId()
+        ));
 
-        // null checks
-        if (request.getPetId() == null || request.getHeaderUserId() == null) {
-            return new ResponseModel(false, "Missing required fields.");
+        // Check if the action is validated
+        if (!validateActionResponse.isSuccess()) {
+            return validateActionResponse;
         }
 
-        // Check if the request fields are in the valid datatype
-        if (!intPattern.matcher(request.getPetId()).matches() ||
-                !intPattern.matcher(request.getHeaderUserId()).matches()) {
-            return new ResponseModel(false, "ID must be an integer.");
-        }
-
-        if (request.getNewAge() != null && !intPattern.matcher(request.getNewAge()).matches()) {
+        // Check if use case inputs are in valid form
+        if (request.getNewAge() != null && !Util.isInteger(request.getNewAge())) {
             return new ResponseModel(false, "Age must be an integer.");
         }
 
         int petId = Integer.parseInt(request.getPetId());
-
-        Pet pet;
-
-        try {
-            pet = petRepository.fetchPet(petId);
-        } catch (PetNotFoundException exception) {
-            return new ResponseModel(false, "Pet with ID: " + request.getPetId() + " does not exist.");
-        }
-
-        // Set the userId in the request object to allow for checking authorization
-        request.setUserId(String.valueOf(pet.getUserId()));
-
-        if (!request.isRequestAuthorized()) {
-            return new ResponseModel(false, "You are not authorized to make this request.");
-        }
+        Pet pet = petRepository.fetchPet(petId);
 
         // Do not modify null fields
         String newName = request.getNewName() == null ? pet.getName() : request.getNewName();

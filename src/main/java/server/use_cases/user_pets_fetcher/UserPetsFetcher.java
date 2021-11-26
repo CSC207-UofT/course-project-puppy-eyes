@@ -1,8 +1,9 @@
 package server.use_cases.user_pets_fetcher;
 
-import server.entities.User;
 import server.use_cases.ResponseModel;
 import server.use_cases.repo_abstracts.*;
+import server.use_cases.user_action_validator.UserActionValidatorInputBoundary;
+import server.use_cases.user_action_validator.UserActionValidatorRequestModel;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,9 +11,11 @@ import java.util.stream.Collectors;
 public class UserPetsFetcher implements UserPetsFetcherInputBoundary {
 
     private final IUserRepository userRepository;
+    private final UserActionValidatorInputBoundary userActionValidator;
 
-    public UserPetsFetcher(IUserRepository userRepository) {
+    public UserPetsFetcher(IUserRepository userRepository, UserActionValidatorInputBoundary userActionValidator) {
         this.userRepository = userRepository;
+        this.userActionValidator = userActionValidator;
     }
 
     /**
@@ -23,34 +26,27 @@ public class UserPetsFetcher implements UserPetsFetcherInputBoundary {
      */
     @Override
     public ResponseModel fetchUserPets(UserPetsFetcherRequestModel request)  {
-        int id;
-        try {
-            id = Integer.parseInt(request.getUserId());
-        } catch (NumberFormatException e) {
-            // Invalid user id
-            return new ResponseModel(false, "ID must be an integer.");
+        ResponseModel validateActionResponse = userActionValidator.validateAction(new UserActionValidatorRequestModel(
+                request.getHeaderUserId(), request.getUserId()
+        ));
+
+        // Check if the action is validated
+        if (!validateActionResponse.isSuccess()) {
+            return validateActionResponse;
         }
 
-        try {
-            User user = userRepository.fetchUser(id);
+        int userId = Integer.parseInt(request.getUserId());
 
-            if (!request.isRequestAuthorized()) {
-                return new ResponseModel(false, "You are not authorized to make this request.");
-            }
+        // Convert integers to strings
+        List<String> stringPetIds = userRepository.fetchUserPets(userId).stream().
+                map(String::valueOf).
+                collect(Collectors.toList());
 
-            // Convert integers to strings
-            List<String> stringPetIds = userRepository.fetchUserPets(id).stream().
-                    map(String::valueOf).
-                    collect(Collectors.toList());
-
-            return new ResponseModel(
-                true,
-                "Successfully fetched user pets.",
-                new UserPetsFetcherResponseModel(stringPetIds)
-            );
-        } catch (UserNotFoundException exception) {
-            return new ResponseModel(false, "User with ID: " + id + " does not exist.");
-        }
+        return new ResponseModel(
+            true,
+            "Successfully fetched user pets.",
+            new UserPetsFetcherResponseModel(stringPetIds)
+        );
     }
 
 }

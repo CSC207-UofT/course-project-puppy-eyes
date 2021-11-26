@@ -6,20 +6,25 @@ import server.use_cases.user_account_validator.UserAccountValidatorInputBoundary
 import server.use_cases.user_account_validator.UserAccountValidatorRequestModel;
 import server.use_cases.repo_abstracts.IUserRepository;
 import server.use_cases.ResponseModel;
-import server.use_cases.repo_abstracts.UserNotFoundException;
+import server.use_cases.user_action_validator.UserActionValidatorInputBoundary;
+import server.use_cases.user_action_validator.UserActionValidatorRequestModel;
 
 /**
  * A use case responsible for editing a user's account.
  */
 public class UserAccountEditor implements UserAccountEditorInputBoundary {
-    IUserRepository userRepository;
-    IPasswordEncryptor passwordEncryptor;
-    UserAccountValidatorInputBoundary userAccountValidator;
+
+    private final IUserRepository userRepository;
+    private final IPasswordEncryptor passwordEncryptor;
+    private final UserActionValidatorInputBoundary userActionValidator;
+    private final UserAccountValidatorInputBoundary userAccountValidator;
 
     public UserAccountEditor(IUserRepository userRepository, IPasswordEncryptor passwordEncryptor,
-                             UserAccountValidatorInputBoundary userAccountValidator) {
+                             UserAccountValidatorInputBoundary userAccountValidator,
+                             UserActionValidatorInputBoundary userActionValidator) {
         this.userRepository = userRepository;
         this.passwordEncryptor = passwordEncryptor;
+        this.userActionValidator = userActionValidator;
         this.userAccountValidator = userAccountValidator;
     }
 
@@ -32,25 +37,17 @@ public class UserAccountEditor implements UserAccountEditorInputBoundary {
      */
     @Override
     public ResponseModel editUserAccount(UserAccountEditorRequestModel request) {
-        int id;
-        try {
-            id = Integer.parseInt(request.getUserId());
-        } catch (NumberFormatException e) {
-            // Invalid user id
-            return new ResponseModel(false, "ID must be an integer.");
+        ResponseModel validateActionResponse = userActionValidator.validateAction(new UserActionValidatorRequestModel(
+                request.getHeaderUserId(), request.getUserId()
+        ));
+
+        // Check if the action is validated
+        if (!validateActionResponse.isSuccess()) {
+            return validateActionResponse;
         }
 
-        User user;
-
-        try {
-            user = userRepository.fetchUser(id);
-        } catch (UserNotFoundException exception) {
-            return new ResponseModel(false, "User with ID: " + request.getUserId() + " does not exist.");
-        }
-
-        if (!request.isRequestAuthorized()) {
-            return new ResponseModel(false, "You are not authorized to make this request.");
-        }
+        int id = Integer.parseInt(request.getUserId());
+        User user = userRepository.fetchUser(id);
 
         // Do not modify null fields
         String newFirstName = request.getNewFirstName() == null ? user.getBiography() : request.getNewFirstName();

@@ -1,7 +1,8 @@
 package server.use_cases.pet_matches_generator;
-import server.entities.Pet;
 import server.entities.User;
 import server.use_cases.ResponseModel;
+import server.use_cases.pet_action_validator.PetActionValidatorInputBoundary;
+import server.use_cases.pet_action_validator.PetActionValidatorRequestModel;
 import server.use_cases.repo_abstracts.*;
 
 import java.util.ArrayList;
@@ -14,66 +15,58 @@ public class PetMatchesGenerator implements PetMatchesGeneratorInputBoundary {
 
     private final IUserRepository userRepository;
     private final IPetRepository petRepository;
+    private final PetActionValidatorInputBoundary petActionValidator;
 //    private final IGeocoderService geocoderService;
 
-    public PetMatchesGenerator(IUserRepository userRepository, IPetRepository petRepository/*, IGeocoderService geocoderService*/) {
+    public PetMatchesGenerator(IUserRepository userRepository,
+                               IPetRepository petRepository,
+                               PetActionValidatorInputBoundary petActionValidator
+                                /*,IGeocoderService geocoderService*/) {
         this.userRepository = userRepository;
         this.petRepository = petRepository;
+        this.petActionValidator = petActionValidator;
 //        this.geocoderService = geocoderService;
     }
 
     @Override
     public ResponseModel generatePotentialMatches(PetMatchesGeneratorRequestModel request) {
-        int id;
-        try {
-            id = Integer.parseInt(request.getPetId());
-        } catch (NumberFormatException e) {
-            // Invalid pet id
-            return new ResponseModel(false, "ID must be an integer.");
+        ResponseModel validateActionResponse = petActionValidator.validateAction(new PetActionValidatorRequestModel(
+                request.getHeaderUserId(), request.getPetId()
+        ));
+
+        // Check if the action is validated
+        if (!validateActionResponse.isSuccess()) {
+            return validateActionResponse;
         }
 
-        try {
-            Pet pet = petRepository.fetchPet(id);
-            request.setUserId(String.valueOf(pet.getUserId()));
+        int petId = Integer.parseInt(request.getPetId());
 
-            if (!request.isRequestAuthorized()) {
-                return new ResponseModel(false, "You are not authorized to make this request.");
-            }
+        List<String> potentialMatches = new ArrayList<>();
 
-            List<String> potentialMatches = new ArrayList<>();
+        User currentUser = userRepository.fetchUser(petId);
 
-            User currentUser;
+        // For now, return ALL pets that both
+        // - don't belong to the pet's user
+        // - are not on the pet's reject list
 
-            try {
-                currentUser = userRepository.fetchUser(pet.getUserId());
-            } catch (UserNotFoundException exception) {
-                return new ResponseModel(false, "User with ID: " + pet.getUserId() + " does not exist.");
-            }
+        List<User> users = this.userRepository.fetchAllUsers();
+        List<Integer> rejectedPets = this.petRepository.fetchRejected(petId);
 
-            // For now, return ALL pets that both
-            // - don't belong to the pet's user
-            // - are not on the pet's reject list
+        for (User user : users) {
+            if (user.getId() == currentUser.getId())
+                continue;
 
-            List<User> users = this.userRepository.fetchAllUsers();
-            List<Integer> rejectedPets = this.petRepository.fetchRejected(id);
+            List<Integer> petIds = this.userRepository.fetchUserPets(user.getId());
 
-            for (User user : users) {
-                if (user.getId() == currentUser.getId())
+            for (int id : petIds) {
+                if (rejectedPets.contains(id))
                     continue;
 
-                try {
-                    List<Integer> petIds = this.userRepository.fetchUserPets(user.getId());
-
-                    for (int petId : petIds) {
-                        if (rejectedPets.contains(petId))
-                            continue;
-
-                        potentialMatches.add(String.valueOf(petId));
-                    }
-                } catch (UserNotFoundException e) {}
+                potentialMatches.add(String.valueOf(id));
             }
+        }
 
-            // TODO geocoding... in Phase 2
+        // TODO geocoding... in Phase 2
 //            // GeocoderService.getLatLng returns a List of LatLng objects, but here we are assuming that the current user's
 //            // current address and city are sufficiently specific to return a unique latitude-longitude tuple
 //            LatLng currentUserLatLng = this.geocoderService.getLatLng(currentUser.getCurrentAddress() + ", " + currentUser.getCurrentCity()).get(0);
@@ -97,14 +90,10 @@ public class PetMatchesGenerator implements PetMatchesGeneratorInputBoundary {
 //                }
 //            }
 
-            return new ResponseModel(
-                    true,
-                    "Successfully generated pet potential matches.",
-                    new PetMatchesGeneratorResponseModel(potentialMatches)
-            );
-        } catch (PetNotFoundException e) {
-            // Pet not found
-            return new ResponseModel(false, "Pet with ID: " + request.getPetId() + " does not exist.");
-        }
+        return new ResponseModel(
+                true,
+                "Successfully generated pet potential matches.",
+                new PetMatchesGeneratorResponseModel(potentialMatches)
+        );
     }
 }

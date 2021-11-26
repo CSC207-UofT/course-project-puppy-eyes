@@ -5,7 +5,6 @@ import server.drivers.IPasswordEncryptor;
 import server.entities.User;
 import server.use_cases.repo_abstracts.IUserRepository;
 import server.use_cases.ResponseModel;
-import server.use_cases.repo_abstracts.UserNotFoundException;
 
 /**
  * A use case responsible for generating a JWT token for a given user
@@ -25,11 +24,9 @@ public class SessionTokenGenerator implements SessionTokenGeneratorInputBoundary
 
     @Override
     public ResponseModel generateSessionToken(SessionTokenGeneratorRequestModel request) {
-        User user;
+        User user = userRepository.fetchUser(userRepository.fetchIdFromEmail(request.getEmail()));
 
-        try {
-            user = userRepository.fetchUser(userRepository.fetchIdFromEmail(request.getEmail()));
-        } catch (UserNotFoundException exception) {
+        if (user == null) {
             return new ResponseModel(false, "No account with this email exists.");
         }
 

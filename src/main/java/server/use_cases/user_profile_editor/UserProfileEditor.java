@@ -3,17 +3,20 @@ package server.use_cases.user_profile_editor;
 import server.entities.User;
 import server.use_cases.repo_abstracts.IUserRepository;
 import server.use_cases.ResponseModel;
-import server.use_cases.repo_abstracts.UserNotFoundException;
+import server.use_cases.user_action_validator.UserActionValidatorInputBoundary;
+import server.use_cases.user_action_validator.UserActionValidatorRequestModel;
 
 /**
  * A use case responsible for editing a user's profile.
  */
 public class UserProfileEditor implements UserProfileEditorInputBoundary {
 
-    IUserRepository userRepository;
+    private final IUserRepository userRepository;
+    private final UserActionValidatorInputBoundary userActionValidator;
 
-    public UserProfileEditor(IUserRepository userRepository) {
+    public UserProfileEditor(IUserRepository userRepository, UserActionValidatorInputBoundary userActionValidator) {
         this.userRepository = userRepository;
+        this.userActionValidator = userActionValidator;
     }
 
     /**
@@ -24,25 +27,17 @@ public class UserProfileEditor implements UserProfileEditorInputBoundary {
      */
     @Override
     public ResponseModel editUserProfile(UserProfileEditorRequestModel request) {
-        int id;
-        try {
-            id = Integer.parseInt(request.getUserId());
-        } catch (NumberFormatException e) {
-            // Invalid user id
-            return new ResponseModel(false, "ID must be an integer.");
+        ResponseModel validateActionResponse = userActionValidator.validateAction(new UserActionValidatorRequestModel(
+                request.getHeaderUserId(), request.getUserId()
+        ));
+
+        // Check if the action is validated
+        if (!validateActionResponse.isSuccess()) {
+            return validateActionResponse;
         }
 
-        User user;
-
-        try {
-            user = userRepository.fetchUser(id);
-        } catch (UserNotFoundException exception) {
-            return new ResponseModel(false, "User with ID: " + request.getUserId() + " does not exist.");
-        }
-
-        if (!request.isRequestAuthorized()) {
-            return new ResponseModel(false, "You are not authorized to make this request.");
-        }
+        int userId = Integer.parseInt(request.getUserId());
+        User user = userRepository.fetchUser(userId);
 
         // Do not modify null fields
         String newBio = request.getNewBiography() == null ? user.getBiography() : request.getNewBiography();
@@ -51,7 +46,7 @@ public class UserProfileEditor implements UserProfileEditorInputBoundary {
         String newFacebook = request.getNewFacebook() == null ? user.getContactInfo().getFacebook() : request.getNewFacebook();
 
         boolean isSuccess = userRepository.editUserProfile(
-            id,
+            userId,
             newBio,
             newPhoneNum,
             newInstagram,
