@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import server.ServerApplication;
+import server.adapters.UseCaseOutputBoundary;
 import server.controllers.IJSONPresenter;
 import server.controllers.IPetController;
 import server.controllers.IUserController;
@@ -46,13 +47,13 @@ public class CmdLineRunner implements CommandLineRunner {
     private final IUserController userController;
     private final IPetController petController;
     private final IOSystem ioSystem;
-    private final IJSONPresenter jsonPresenter;
+    private final UseCaseOutputBoundary responsePresenter;
 
     public CmdLineRunner(IUserController userController, IPetController petController, IOSystem ioSystem,
-                         IJSONPresenter jsonPresenter, IGeocoderService geocoderService) {
+                         UseCaseOutputBoundary responsePresenter, IGeocoderService geocoderService) {
         this.userController = userController;
         this.petController = petController;
-        this.jsonPresenter = jsonPresenter;
+        this.responsePresenter = responsePresenter;
         this.ioSystem = ioSystem;
     }
 
@@ -272,7 +273,7 @@ public class CmdLineRunner implements CommandLineRunner {
         switch (command) {
             case "createUser":
                 inputs = getCreateUserAccountInputs();
-                return jsonPresenter.toJSON(
+                return responsePresenter.formatResponse(
                         userController.createUser(
                             inputs.get("firstName"),
                             inputs.get("lastName"),
@@ -285,13 +286,13 @@ public class CmdLineRunner implements CommandLineRunner {
 
             case "fetchUserAccount":
                 inputs = getFetchUserAccountInputs();
-                return jsonPresenter.toJSON(
+                return responsePresenter.formatResponse(
                         userController.fetchUserAccount(true, "", inputs.get("userId"))
                 );
 
             case "editUserAccount":
                 inputs = getEditUserAccountInputs();
-                return jsonPresenter.toJSON(
+                return responsePresenter.formatResponse(
                     userController.editUserAccount(
                         true,
                         "",
@@ -307,11 +308,11 @@ public class CmdLineRunner implements CommandLineRunner {
 
             case "fetchUserProfile":
                 inputs = getFetchUserProfileInputs();
-                return jsonPresenter.toJSON(userController.fetchUserProfile(inputs.get("userId")));
+                return responsePresenter.formatResponse(userController.fetchUserProfile(inputs.get("userId")));
 
             case "editUserProfile":
                 inputs = getEditUserProfileInputs();
-                return jsonPresenter.toJSON(
+                return responsePresenter.formatResponse(
                     userController.editUserProfile(
                         true,
                         "",
@@ -325,7 +326,7 @@ public class CmdLineRunner implements CommandLineRunner {
 
             case "createPet":
                 inputs = getCreatePetInputs();
-                return jsonPresenter.toJSON(
+                return responsePresenter.formatResponse(
                     petController.createPet(
                         true,
                         "",
@@ -339,23 +340,23 @@ public class CmdLineRunner implements CommandLineRunner {
 
             case "swipePets":
                 inputs = getPetSwiperInputs();
-                return jsonPresenter.toJSON(petController.swipePets(true, "", inputs.get("pet1Id"), inputs.get("pet2Id")));
+                return responsePresenter.formatResponse(petController.swipePets(true, "", inputs.get("pet1Id"), inputs.get("pet2Id")));
 
             case "unswipePets":
                 inputs = getPetSwiperInputs();
-                return jsonPresenter.toJSON(petController.unswipePets(true, "", inputs.get("pet1Id"), inputs.get("pet2Id")));
+                return responsePresenter.formatResponse(petController.unswipePets(true, "", inputs.get("pet1Id"), inputs.get("pet2Id")));
 
             case "rejectPets":
                 inputs = getPetSwiperInputs();
-                return jsonPresenter.toJSON(petController.rejectPets(true, "", inputs.get("pet1Id"), inputs.get("pet2Id")));
+                return responsePresenter.formatResponse(petController.rejectPets(true, "", inputs.get("pet1Id"), inputs.get("pet2Id")));
 
             case "fetchPetProfile":
                 inputs = getFetchPetProfileInputs();
-                return jsonPresenter.toJSON(petController.fetchPetProfile(true, "", inputs.get("petId")));
+                return responsePresenter.formatResponse(petController.fetchPetProfile(true, "", inputs.get("petId")));
 
             case "editPet":
                 inputs = getEditPetInputs();
-                return jsonPresenter.toJSON(
+                return responsePresenter.formatResponse(
                     petController.editPet(
                         true,
                         "",
@@ -369,24 +370,24 @@ public class CmdLineRunner implements CommandLineRunner {
 
             case "fetchPetSwipes":
                 inputs = getFetchPetProfileInputs();
-                return jsonPresenter.toJSON(petController.fetchPetSwipes(true, "", inputs.get("petId")));
+                return responsePresenter.formatResponse(petController.fetchPetSwipes(true, "", inputs.get("petId")));
 
             case "fetchPetMatches":
                 inputs = getFetchPetProfileInputs();
-                return jsonPresenter.toJSON(petController.fetchPetMatches(true, "", inputs.get("petId")));
+                return responsePresenter.formatResponse(petController.fetchPetMatches(true, "", inputs.get("petId")));
 
             case "fetchUserPets":
                 inputs = getFetchUserAccountInputs();
-                return jsonPresenter.toJSON(userController.fetchUserPets(true, "", inputs.get("petId")));
+                return responsePresenter.formatResponse(userController.fetchUserPets(true, "", inputs.get("petId")));
 
             case "generatePotentialMatches":
                 inputs = getFetchPetProfileInputs();
-                return jsonPresenter.toJSON(petController.generatePotentialMatches(true, "", inputs.get("petId")));
+                return responsePresenter.formatResponse(petController.generatePotentialMatches(true, "", inputs.get("petId")));
 //
 //            case "geocoder":
 //                inputs = getGeocoderInputs();
 //                JSONPresenter jsonPresenter = new JSONPresenter();
-//                return jsonPresenter.toJSON(geocoderService.getLatLng(inputs.get("query")));
+//                return responsePresenter.formatResponse(geocoderService.getLatLng(inputs.get("query")));
 
             default:
                 return "Command not found.";

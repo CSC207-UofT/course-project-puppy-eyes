@@ -66,10 +66,15 @@ public class UserWebGateway extends WebGateway {
         return getResponseEntity(response);
     }
 
+    @PostMapping("/setprofileimage")
+    public ResponseEntity editProfileImage(HttpServletRequest req, @RequestBody SetUserProfileImageRequestBody requestBody) {
+        ResponseModel response = userController.setUserProfile(req.getHeader("userId"), requestBody.getBase64Encoded());
+        return getResponseEntity(response);
+    }
+
     @GetMapping("/profile")
     public ResponseEntity getUserProfile(@RequestParam String userId) {
         ResponseModel response = userController.fetchUserProfile(userId);
-
         return getResponseEntity(response);
     }
 
@@ -94,4 +99,5 @@ public class UserWebGateway extends WebGateway {
 
         return getResponseEntity(response);
     }
+
 }

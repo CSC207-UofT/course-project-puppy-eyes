@@ -48,7 +48,7 @@ public class TestPetProfileFetcher {
 
     @Test
     public void TestFetchPetWithValidId() {
-        PetProfileFetcherResponseModel expected = new PetProfileFetcherResponseModel("Cindy",
+        PetProfileFetcherResponseModel expected = new PetProfileFetcherResponseModel(userId, "Cindy",
                 7, "Cat", "Meow");
         ResponseModel responseModel = petProfileFetcher.fetchPetProfile(
                 new PetProfileFetcherRequestModel(String.valueOf(userId), "2")

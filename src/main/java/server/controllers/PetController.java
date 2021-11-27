@@ -4,12 +4,19 @@ import server.use_cases.pet_creator.PetCreatorInputBoundary;
 import server.use_cases.pet_creator.PetCreatorRequestModel;
 import server.use_cases.pet_editor.PetEditorInputBoundary;
 import server.use_cases.pet_editor.PetEditorRequestModel;
+import server.use_cases.pet_image_adder.PetImageAdderInputBoundary;
+import server.use_cases.pet_image_adder.PetImageAdderRequestModel;
+import server.use_cases.pet_image_remover.PetImageRemoverInputBoundary;
+import server.use_cases.pet_image_remover.PetImageRemoverRequestModel;
 import server.use_cases.pet_matches_fetcher.PetMatchesFetcherInputBoundary;
 import server.use_cases.pet_matches_fetcher.PetMatchesFetcherRequestModel;
 import server.use_cases.pet_matches_generator.PetMatchesGeneratorInputBoundary;
 import server.use_cases.pet_matches_generator.PetMatchesGeneratorRequestModel;
 import server.use_cases.pet_profile_fetcher.PetProfileFetcherInputBoundary;
 import server.use_cases.pet_profile_fetcher.PetProfileFetcherRequestModel;
+import server.use_cases.pet_profile_image_changer.PetProfileImageChanger;
+import server.use_cases.pet_profile_image_changer.PetProfileImageChangerInputBoundary;
+import server.use_cases.pet_profile_image_changer.PetProfileImageChangerRequestModel;
 import server.use_cases.pet_rejector.PetRejectorInputBoundary;
 import server.use_cases.pet_rejector.PetRejectorRequestModel;
 import server.use_cases.pet_swiper.PetSwiperInputBoundary;
@@ -35,12 +42,24 @@ public class PetController implements IPetController {
     PetSwipesFetcherInputBoundary petSwipesFetcher;
     PetMatchesFetcherInputBoundary petMatchesFetcher;
     PetMatchesGeneratorInputBoundary petMatchesGenerator;
+    PetProfileImageChangerInputBoundary petProfileImageChanger;
+    PetImageAdderInputBoundary petImageAdder;
+    PetImageRemoverInputBoundary petImageRemover;
     UseCaseOutputBoundary responsePresenter;
 
-    public PetController(PetCreatorInputBoundary petCreator, PetSwiperInputBoundary petSwiper, PetProfileFetcherInputBoundary profileFetcher,
-                         PetEditorInputBoundary petEditor, PetRejectorInputBoundary petRejector, PetUnswiperInputBoundary petUnswiper,
-                         PetSwipesFetcherInputBoundary petSwipesFetcher, PetMatchesFetcherInputBoundary petMatchesFetcher,
-                         PetMatchesGeneratorInputBoundary petMatchesGenerator, IJSONPresenter jsonPresenter) {
+    public PetController(PetCreatorInputBoundary petCreator,
+                         PetSwiperInputBoundary petSwiper,
+                         PetProfileFetcherInputBoundary profileFetcher,
+                         PetEditorInputBoundary petEditor,
+                         PetRejectorInputBoundary petRejector,
+                         PetUnswiperInputBoundary petUnswiper,
+                         PetSwipesFetcherInputBoundary petSwipesFetcher,
+                         PetMatchesFetcherInputBoundary petMatchesFetcher,
+                         PetMatchesGeneratorInputBoundary petMatchesGenerator,
+                         PetProfileImageChangerInputBoundary petProfileImageChanger,
+                         PetImageAdderInputBoundary petImageAdder,
+                         PetImageRemoverInputBoundary petImageRemover,
+                         UseCaseOutputBoundary responsePresenter) {
         this.petCreator = petCreator;
         this.profileFetcher = profileFetcher;
         this.petEditor = petEditor;
@@ -50,7 +69,10 @@ public class PetController implements IPetController {
         this.petRejector = petRejector;
         this.petUnswiper = petUnswiper;
         this.petMatchesGenerator = petMatchesGenerator;
-        this.responsePresenter = new ResponsePresenter(jsonPresenter);
+        this.petProfileImageChanger = petProfileImageChanger;
+        this.petImageAdder = petImageAdder;
+        this.petImageRemover = petImageRemover;
+        this.responsePresenter = responsePresenter;
     }
 
     /**
@@ -66,7 +88,8 @@ public class PetController implements IPetController {
      * @param biography     the pet's biography
      * @return a ResponseModel containing:
      *      {
-     *          isSuccess: "true"/"false",
+     *          isSuccess: "true"/"false"
+     *          message: The response message
      *          // if successful:
      *          data: {
      *              userId: the id of the pet's owner
@@ -96,7 +119,8 @@ public class PetController implements IPetController {
      * @param petId         the pet's id
      * @return a ResponseModel containing:
      *      {
-     *          isSuccess: "true"/"false",
+     *          isSuccess: "true"/"false"
+     *          message: The response message
      *          // if successful:
      *          data: {
      *              name: the pet's name
@@ -125,7 +149,7 @@ public class PetController implements IPetController {
      * @param pet2Id
      * @return a ResponseModel containing:
      *      {
-     *          isSuccess: "true"/"false",
+     *          isSuccess: "true"/"false"
      *          message: The response message
      *      }
      */
@@ -145,7 +169,8 @@ public class PetController implements IPetController {
      * @param petId
      * @return a ResponseModel containing:
      *      {
-     *          isSuccess: "true"/"false",
+     *          isSuccess: "true"/"false"
+     *          message: The response message
      *          // if successful:
      *          data: {
      *              petIds: [pet_id_1, pet_id_2, ..., pet_id_n]
@@ -171,7 +196,7 @@ public class PetController implements IPetController {
      * @param pet2Id
      * @return a ResponseModel containing:
      *      {
-     *          isSuccess: "true"/"false",
+     *          isSuccess: "true"/"false"
      *          message: The response message
      *      }
      */
@@ -192,7 +217,7 @@ public class PetController implements IPetController {
      * @param pet2Id
      * @return a ResponseModel containing:
      *      {
-     *          isSuccess: "true"/"false",
+     *          isSuccess: "true"/"false"
      *          message: The response message
      *      }
      */
@@ -212,7 +237,8 @@ public class PetController implements IPetController {
      * @param petId
      * @return a ResponseModel containing:
      *      {
-     *          isSuccess: "true"/"false",
+     *          isSuccess: "true"/"false"
+     *          message: The response message
      *          // if successful:
      *          data: {
      *              petIds: [pet_id_1, pet_id_2, ..., pet_id_n]
@@ -237,7 +263,8 @@ public class PetController implements IPetController {
      * @param petId
      * @return a ResponseModel containing:
      *      {
-     *          isSuccess: "true"/"false",
+     *          isSuccess: "true"/"false"
+     *          message: The response message,
      *          // if successful:
      *          data: {
      *              petIds: [pet_id_1, pet_id_2, ..., pet_id_n]
@@ -254,6 +281,73 @@ public class PetController implements IPetController {
     }
 
     /**
+     * Set's the pet profile to the image represented by the Base64 encoding.
+     * @param headerUserId
+     * @param petId
+     * @param base64Encoded
+     * @return a ResponseModel containing:
+     *      {
+     *          isSuccess: "true"/"false"
+     *          message: "The response message,
+     *          // if successful:
+     *         data: {
+     *              url: the url to the image
+     *              assetId: the id of the asset
+     *         }
+     *          // else,
+     *          data: null
+     *      }
+     */
+    @Override
+    public ResponseModel setPetProfile(String headerUserId, String petId, String base64Encoded) {
+        PetProfileImageChangerRequestModel request = new PetProfileImageChangerRequestModel(headerUserId, petId, base64Encoded);
+        ResponseModel response = petProfileImageChanger.changeProfileImage(request);
+        return response;
+    }
+
+    /**
+     * Add to a pet's image gallery the image represented by the Base64 encoding.
+     * @param headerUserId
+     * @param petId
+     * @param base64Encoded
+     * @return a ResponseModel containing:
+     *      {
+     *          isSuccess: "true"/"false"
+     *          // if successful:
+     *          message: The response message,
+     *          data: {
+     *              url: the url to the image
+     *              assetId: the id of the asset
+     *          }
+     *          // else,
+     *          data: null
+     *      }
+     */
+    @Override
+    public ResponseModel addPetImage(String headerUserId, String petId, String base64Encoded) {
+        PetImageAdderRequestModel request = new PetImageAdderRequestModel(headerUserId, petId, base64Encoded);
+        ResponseModel response = petImageAdder.addImage(request);
+        return response;
+    }
+    /**
+     * Remove a pet's image gallery the image represented by the asset id.
+     * @param headerUserId
+     * @param petId
+     * @param assetId
+     * @return a ResponseModel containing:
+     *      {
+     *          isSuccess: "true"/"false"
+     *          message: The response message
+     *      }
+     */
+    @Override
+    public ResponseModel removePetImage(String headerUserId, String petId, String assetId) {
+        PetImageRemoverRequestModel request = new PetImageRemoverRequestModel(headerUserId, petId, assetId);
+        ResponseModel response = petImageRemover.removeImage(request);
+        return response;
+    }
+
+    /**
      * Given new information, edit a pet's information in the database.
      *
      * @param fromTerminal  whether this action is being run from command line prompt
@@ -267,6 +361,7 @@ public class PetController implements IPetController {
      * @return a ResponseModel containing:
      * {
      *       isSuccess: "true"/"false"
+     *       message: The response message
      *       // If successful, then include:
      *       data: {
      *          petId: the id of pet

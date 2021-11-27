@@ -40,7 +40,7 @@ public class PetCreator implements PetCreatorInputBoundary {
         }
 
         // Check if the request fields are in the valid datatype
-        if (!intPattern.matcher(request.getUserId()).matches() || !intPattern.matcher(request.getHeaderUserId()).matches()) {
+        if (!intPattern.matcher(request.getUserId()).matches()) {
             return new ResponseModel(false, "ID must be an integer.");
         }
 

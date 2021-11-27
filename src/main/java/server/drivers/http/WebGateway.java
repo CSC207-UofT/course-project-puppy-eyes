@@ -1,5 +1,6 @@
 package server.drivers.http;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import server.use_cases.ResponseModel;
 import server.adapters.UseCaseOutputBoundary;
@@ -19,6 +20,10 @@ public abstract class WebGateway {
      */
     public ResponseEntity getResponseEntity(ResponseModel response) {
         String formattedData = presenter.formatResponse(response);
+
+        if (response.isForbidden()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(formattedData);
+        }
 
         if (!response.isSuccess()) {
             return ResponseEntity.badRequest().body(formattedData);

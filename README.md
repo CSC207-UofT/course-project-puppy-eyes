@@ -168,8 +168,8 @@ Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
 	userId: <Integer>,
 	newFirstName: <String>,
 	newLastName: <String>,
-	newCurrentAddress: <String>,
-	newCurrentCity: <String>,
+	newAddress: <String>,
+	newCity: <String>,
 	newPassword: <String>,
 	newEmail: <String>
 }`
@@ -522,3 +522,145 @@ N/A
 	petIds: [<Integer>]
   }
 }`
+
+
+## Set User Profile Image
+- **URL**:
+
+/users/setprofileimage
+
+- **Requires Authentiction**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+POST
+
+- **Request Body Format**
+
+`
+{
+	base64Encoded: <String>
+}
+`
+
+- **Response**
+
+`
+{
+	isSuccess: <boolean>,
+	message: <String>,
+	data: {
+		url: <String>
+	}
+}
+`
+
+
+## Set Pet Profile Image
+- **URL**:
+
+/pets/setprofileimage
+
+- **Requires Authentiction**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+POST
+
+- **Request Body Format**
+
+`
+{
+	petId: <String>,
+	base64Encoded: <String>
+}
+`
+
+- **Response**
+
+`
+{
+	isSuccess: <boolean>,
+	message: <String>,
+	data: {
+		url: <String>,
+		assetId: <String>
+	}
+}
+`
+
+
+## Add To Pet Image Gallery
+- **URL**:
+
+/pets/addimage
+
+- **Requires Authentiction**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+POST
+
+- **Request Body Format**
+
+`
+{
+	petId: <String>,
+	base64Encoded: <String>
+}
+`
+
+- **Response**
+
+`
+{
+	isSuccess: <boolean>,
+	message: <String>,
+	data: {
+		url: <String>,
+		assetId: <String>
+	}
+}
+`
+
+
+## Remove From Pet Image Gallery
+- **URL**:
+
+/pets/removeimage
+
+- **Requires Authentiction**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+POST
+
+- **Request Body Format**
+
+`
+{
+	petId: <String>,
+	assetId: <String>
+}
+`
+
+- **Response**
+
+`
+{
+	isSuccess: <boolean>,
+	message: <String>,
+	data: {
+		url: <String>,
+		assetId: <String>
+	}
+}
+`

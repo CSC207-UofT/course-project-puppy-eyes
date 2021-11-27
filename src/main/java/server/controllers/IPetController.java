@@ -122,4 +122,31 @@ public interface IPetController {
      */
     ResponseModel fetchPetMatches(boolean fromTerminal, String headerUserId, String petId);
 
+    /**
+     * Set's a pet's profile picture to the image represented by the Base64 encoding.
+     * @param headerUserId
+     * @param petId
+     * @param base64Encoded
+     * @return a ResponseModel containing the response data
+     */
+    ResponseModel setPetProfile(String headerUserId, String petId, String base64Encoded);
+
+    /**
+     * Add to a pet's image gallery the image represented by the Base64 encoding.
+     * @param headerUserId
+     * @param petId
+     * @param base64Encoded
+     * @return a ResponseModel containing the response data
+     */
+    ResponseModel addPetImage(String headerUserId, String petId, String base64Encoded);
+
+    /**
+     * Remove from a pet's image gallery the image with the asset id.
+     * @param headerUserId
+     * @param petId
+     * @param assetId
+     * @return a ResponseModel containing the response data
+     */
+    ResponseModel removePetImage(String headerUserId, String petId, String assetId);
+
 }

@@ -23,7 +23,7 @@ public class PetProfileFetcherResponseModel extends ResponseData {
     }
 
     public int getUserId() {
-        return this.userId;
+        return userId;
     }
 
     public String getName() {

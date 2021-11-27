@@ -15,17 +15,22 @@ import server.use_cases.user_profile_editor.UserProfileEditorInputBoundary;
 import server.use_cases.user_profile_editor.UserProfileEditorRequestModel;
 import server.use_cases.user_profile_fetcher.UserProfileFetcherInputBoundary;
 import server.use_cases.user_profile_fetcher.UserProfileFetcherRequestModel;
+import server.use_cases.user_profile_image_changer.UserProfileImageChanger;
+import server.use_cases.user_profile_image_changer.UserProfileImageChangerInputBoundary;
+import server.use_cases.user_profile_image_changer.UserProfileImageChangerRequestModel;
 
 /**
  * A controller that handles all functions relating to user data.
  */
 public class UserController implements IUserController {
+
     UserCreatorInputBoundary userCreator;
     UserAccountFetcherInputBoundary accountFetcher;
     UserAccountEditorInputBoundary accountEditor;
     UserProfileFetcherInputBoundary profileFetcher;
     UserProfileEditorInputBoundary profileEditor;
     UserPetsFetcherInputBoundary userPetsFetcher;
+    UserProfileImageChangerInputBoundary userProfileImageChanger;
     UseCaseOutputBoundary responsePresenter;
 
     public UserController(UserCreatorInputBoundary userCreator,
@@ -34,14 +39,16 @@ public class UserController implements IUserController {
                           UserProfileFetcherInputBoundary profileFetcher,
                           UserProfileEditorInputBoundary profileEditor,
                           UserPetsFetcherInputBoundary userPetsFetcher,
-                          IJSONPresenter jsonPresenter) {
+                          UserProfileImageChangerInputBoundary userProfileImageChanger,
+                          UseCaseOutputBoundary responsePresenter) {
         this.userCreator = userCreator;
         this.accountFetcher = accountFetcher;
         this.accountEditor = accountEditor;
         this.profileFetcher = profileFetcher;
         this.profileEditor = profileEditor;
         this.userPetsFetcher = userPetsFetcher;
-        this.responsePresenter = new ResponsePresenter(jsonPresenter);
+        this.userProfileImageChanger = userProfileImageChanger;
+        this.responsePresenter = responsePresenter;
     }
 
     /**
@@ -233,6 +240,30 @@ public class UserController implements IUserController {
         UserProfileEditorRequestModel request = new UserProfileEditorRequestModel(headerUserId, userId, newBiography,
                 newPhoneNumber, newInstagram, newFacebook);
         ResponseModel response = profileEditor.editUserProfile(request);
+        return response;
+    }
+
+    /**
+     * Set's the user profile to the image represented by the Base64 encoding.
+     * @param headerUserId
+     * @param base64Encoded
+     * @return a ResponseModel containing:
+     *      {
+     *          isSuccess: "true"/"false"
+     *          message: "The response message,
+     *          // if successful:
+     *         data: {
+     *              url: the url to the image
+     *              assetId: the id of the asset
+     *         }
+     *          // else,
+     *          data: null
+     *      }
+     */
+    @Override
+    public ResponseModel setUserProfile(String headerUserId, String base64Encoded) {
+        UserProfileImageChangerRequestModel request = new UserProfileImageChangerRequestModel(headerUserId, base64Encoded);
+        ResponseModel response = userProfileImageChanger.changeProfileImage(request);
         return response;
     }
 

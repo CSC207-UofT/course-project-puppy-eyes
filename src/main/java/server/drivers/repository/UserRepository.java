@@ -1,8 +1,6 @@
 package server.drivers.repository;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
-import server.drivers.IPasswordEncryptor;
 import server.drivers.dbEntities.PetDatabaseEntity;
 import server.entities.User;
 import server.entities.UserFactory;

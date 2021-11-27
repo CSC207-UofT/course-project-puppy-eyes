@@ -111,4 +111,21 @@ public class PetWebGateway extends WebGateway {
         return getResponseEntity(response);
     }
 
+    @PostMapping("/setprofileimage")
+    public ResponseEntity editProfileImage(HttpServletRequest req, @RequestBody SetPetProfileImageRequestBody requestBody) {
+        ResponseModel response = petController.setPetProfile(req.getHeader("userId"), requestBody.getPetId(), requestBody.getBase64Encoded());
+        return getResponseEntity(response);
+    }
+
+    @PostMapping("/addimage")
+    public ResponseEntity editProfileImage(HttpServletRequest req, @RequestBody AddPetImageRequestBody requestBody) {
+        ResponseModel response = petController.addPetImage(req.getHeader("userId"), requestBody.getPetId(), requestBody.getBase64Encoded());
+        return getResponseEntity(response);
+    }
+
+    @PostMapping("/removeimage")
+    public ResponseEntity editProfileImage(HttpServletRequest req, @RequestBody RemovePetImageRequestBody requestBody) {
+        ResponseModel response = petController.removePetImage(req.getHeader("userId"), requestBody.getPetId(), requestBody.getAssetId());
+        return getResponseEntity(response);
+    }
 }

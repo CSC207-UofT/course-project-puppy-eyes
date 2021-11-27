@@ -22,7 +22,7 @@ public class PetRejector implements PetRejectorInputBoundary {
 
         try {
             pet1Id = Integer.parseInt(request.getFirstPetId());
-            pet2Id = Integer.parseInt(request.getFirstPetId());
+            pet2Id = Integer.parseInt(request.getSecondPetId());
         } catch (NumberFormatException e) {
             // Invalid pet id
             return new ResponseModel(false, "ID must be an integer.");
