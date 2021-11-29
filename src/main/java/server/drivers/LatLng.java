@@ -29,14 +29,17 @@ public class LatLng {
     public double calculateDistance(LatLng other) {
         final double earthRadius = 6371;
         double dLat = Math.toRadians(other.lat - this.lat);
-        double dLng = Math.toRadians(other.lng - this.lat);
+        double dLon = Math.toRadians(other.lng - this.lng);
+        double lat1 = Math.toRadians(this.lat);
+        double lat2 = Math.toRadians(other.lat);
 
-        double a = Math.pow(Math.sin(dLat / 2), 2)
-                + Math.pow(Math.sin(dLng / 2), 2)
-                * Math.cos(Math.toRadians(this.lat))
-                * Math.cos(Math.toRadians(other.lat));
+        double a = Math.sin(dLat / 2) *
+                Math.sin(dLat / 2) +
+                Math.sin(dLon / 2) *
+                Math.sin(dLon / 2) *
+                Math.cos(lat1) *
+                Math.cos(lat2);
         double c = 2 * Math.asin(Math.sqrt(a));
-
         return earthRadius * c;
     }
 
