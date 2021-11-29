@@ -2,6 +2,8 @@ package server.controllers;
 
 import server.use_cases.ResponseModel;
 import server.adapters.UseCaseOutputBoundary;
+import server.use_cases.profile_image_fetcher.ProfileImageFetcherInputBoundary;
+import server.use_cases.profile_image_fetcher.ProfileImageFetcherRequestModel;
 import server.use_cases.user_use_cases.user_account_editor.UserAccountEditorInputBoundary;
 import server.use_cases.user_use_cases.user_account_editor.UserAccountEditorRequestModel;
 import server.use_cases.user_use_cases.user_account_fetcher.UserAccountFetcherInputBoundary;
@@ -29,6 +31,7 @@ public class UserController implements IUserController {
     UserProfileEditorInputBoundary profileEditor;
     UserPetsFetcherInputBoundary userPetsFetcher;
     UserProfileImageChangerInputBoundary userProfileImageChanger;
+    ProfileImageFetcherInputBoundary profileImageFetcher;
     UseCaseOutputBoundary responsePresenter;
 
     public UserController(UserCreatorInputBoundary userCreator,
@@ -38,6 +41,7 @@ public class UserController implements IUserController {
                           UserProfileEditorInputBoundary profileEditor,
                           UserPetsFetcherInputBoundary userPetsFetcher,
                           UserProfileImageChangerInputBoundary userProfileImageChanger,
+                          ProfileImageFetcherInputBoundary profileImageFetcher,
                           UseCaseOutputBoundary responsePresenter) {
         this.userCreator = userCreator;
         this.accountFetcher = accountFetcher;
@@ -46,6 +50,7 @@ public class UserController implements IUserController {
         this.profileEditor = profileEditor;
         this.userPetsFetcher = userPetsFetcher;
         this.userProfileImageChanger = userProfileImageChanger;
+        this.profileImageFetcher = profileImageFetcher;
         this.responsePresenter = responsePresenter;
     }
 
@@ -107,7 +112,7 @@ public class UserController implements IUserController {
     @Override
     public ResponseModel fetchUserAccount(boolean fromTerminal, String headerUserId, String userId) {
         UserAccountFetcherRequestModel request = new UserAccountFetcherRequestModel(headerUserId, userId);
-        request.setFromTerminal(true);
+        request.setFromTerminal(fromTerminal);
         ResponseModel response = accountFetcher.fetchUserAccount(request);
         return response;
     }
@@ -133,7 +138,7 @@ public class UserController implements IUserController {
     @Override
     public ResponseModel fetchUserPets(boolean fromTerminal, String headerUserId, String userId) {
         UserPetsFetcherRequestModel request = new UserPetsFetcherRequestModel(headerUserId, userId);
-        request.setFromTerminal(true);
+        request.setFromTerminal(fromTerminal);
         ResponseModel response = userPetsFetcher.fetchUserPets(request);
         return response;
     }
@@ -266,6 +271,28 @@ public class UserController implements IUserController {
         UserProfileImageChangerRequestModel request = new UserProfileImageChangerRequestModel(headerUserId, base64Encoded);
         ResponseModel response = userProfileImageChanger.changeProfileImage(request);
         return response;
+    }
+
+    /**
+     * Return a URL containing this user's profile image
+     * @param fromTerminal  whether this action is being run from command line prompt
+     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                      is true, this field does nothing.
+     * @param userId        the user's id
+     * @return a ResponseModel containing:
+     * {
+     *       isSuccess: "true"/"false"
+     *       message: The response message
+     *       // If successful, then include:
+     *       data: {
+     *          url: the url of the image
+     *       }
+     *  }
+     */
+    public ResponseModel fetchUserProfileImage(boolean fromTerminal, String headerUserId, String userId) {
+        ProfileImageFetcherRequestModel request = new ProfileImageFetcherRequestModel(headerUserId, userId, true);
+        request.setFromTerminal(fromTerminal);
+        return profileImageFetcher.fetchProfileImage(request);
     }
 
 }

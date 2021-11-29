@@ -20,7 +20,7 @@ public class PetWebGateway extends WebGateway {
         this.petController = petController;
     }
 
-    @PostMapping("/pets/create")
+    @PostMapping("/create")
     public ResponseEntity createPet(HttpServletRequest req, @RequestBody CreatePetRequestBody requestBody) {
         ResponseModel response = petController.createPet(
             false,
@@ -35,14 +35,14 @@ public class PetWebGateway extends WebGateway {
         return getResponseEntity(response);
     }
 
-    @GetMapping("/pets/profile")
+    @GetMapping("/profile")
     public ResponseEntity getPetProfile(HttpServletRequest req, @RequestParam String petId) {
         ResponseModel response = petController.fetchPetProfile(false, req.getHeader("userId"), petId);
 
         return getResponseEntity(response);
     }
 
-    @PostMapping("/pets/editprofile")
+    @PostMapping("/editprofile")
     public ResponseEntity editPet(HttpServletRequest req, @RequestBody EditPetRequestBody requestBody) {
         ResponseModel response = petController.editPet(
             false,
@@ -57,7 +57,7 @@ public class PetWebGateway extends WebGateway {
         return getResponseEntity(response);
     }
 
-    @PostMapping("/pets/swipe")
+    @PostMapping("/swipe")
     public ResponseEntity swipePets(HttpServletRequest req, @RequestBody SwipePetsRequestBody requestBody) {
         ResponseModel response = petController.swipePets(
             false,
@@ -69,7 +69,7 @@ public class PetWebGateway extends WebGateway {
         return getResponseEntity(response);
     }
 
-    @PostMapping("/pets/unswipe")
+    @PostMapping("/unswipe")
     public ResponseEntity unswipePets(HttpServletRequest req, @RequestBody UnswipePetsRequestBody requestBody) {
         ResponseModel response = petController.unswipePets(
             false,
@@ -81,7 +81,7 @@ public class PetWebGateway extends WebGateway {
         return getResponseEntity(response);
     }
 
-    @PostMapping("/pets/reject")
+    @PostMapping("/reject")
     public ResponseEntity rejectPets(HttpServletRequest req, @RequestBody RejectPetsRequestBody requestBody) {
         ResponseModel response = petController.rejectPets(
             false,
@@ -93,7 +93,7 @@ public class PetWebGateway extends WebGateway {
         return getResponseEntity(response);
     }
 
-    @PostMapping("/pets/unmatch")
+    @PostMapping("/unmatch")
     public ResponseEntity unmatchPets(HttpServletRequest req, @RequestBody UnmatchPetsRequestBody requestBody) {
         ResponseModel response = petController.unmatchPets(
                 false,
@@ -105,13 +105,13 @@ public class PetWebGateway extends WebGateway {
         return getResponseEntity(response);
     }
 
-    @GetMapping("/pets/fetchswipes")
+    @GetMapping("/fetchswipes")
     public ResponseEntity fetchPetSwipes(HttpServletRequest req, @RequestParam String petId) {
         ResponseModel response = petController.fetchPetSwipes(false, req.getHeader("userId"), petId);
         return getResponseEntity(response);
     }
 
-    @GetMapping("/pets/fetchmatches")
+    @GetMapping("/fetchmatches")
     public ResponseEntity fetchPetMatches(HttpServletRequest req, @RequestParam String petId) {
         ResponseModel response = petController.fetchPetMatches(false, req.getHeader("userId"), petId);
         return getResponseEntity(response);
@@ -140,4 +140,17 @@ public class PetWebGateway extends WebGateway {
         ResponseModel response = petController.removePetImage(req.getHeader("userId"), requestBody.getPetId(), requestBody.getAssetId());
         return getResponseEntity(response);
     }
+
+    @GetMapping("/fetchprofileimage")
+    public ResponseEntity fetchProfileImage(HttpServletRequest req, @RequestParam String petId) {
+        ResponseModel response = petController.fetchPetProfileImage(false, req.getHeader("userId"), petId);
+        return getResponseEntity(response);
+    }
+
+    @GetMapping("/fetchgalleryimages")
+    public ResponseEntity fetchGalleryImages(HttpServletRequest req, @RequestParam String petId) {
+        ResponseModel response = petController.fetchPetGalleryImages(false, req.getHeader("userId"), petId);
+        return getResponseEntity(response);
+    }
+
 }

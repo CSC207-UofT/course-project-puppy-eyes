@@ -20,6 +20,8 @@ import server.use_cases.pet_use_cases.pet_creator.PetCreator;
 import server.use_cases.pet_use_cases.pet_creator.PetCreatorInputBoundary;
 import server.use_cases.pet_use_cases.pet_editor.PetEditor;
 import server.use_cases.pet_use_cases.pet_editor.PetEditorInputBoundary;
+import server.use_cases.pet_use_cases.pet_gallery_images_fetcher.PetGalleryImagesFetcher;
+import server.use_cases.pet_use_cases.pet_gallery_images_fetcher.PetGalleryImagesFetcherInputBoundary;
 import server.use_cases.pet_use_cases.pet_image_adder.PetImageAdder;
 import server.use_cases.pet_use_cases.pet_image_adder.PetImageAdderInputBoundary;
 import server.use_cases.pet_use_cases.pet_image_remover.PetImageRemover;
@@ -40,6 +42,8 @@ import server.use_cases.pet_use_cases.pet_swipes_fetcher.PetSwipesFetcher;
 import server.use_cases.pet_use_cases.pet_swipes_fetcher.PetSwipesFetcherInputBoundary;
 import server.use_cases.ResponsePresenter;
 import server.adapters.UseCaseOutputBoundary;
+import server.use_cases.profile_image_fetcher.ProfileImageFetcher;
+import server.use_cases.profile_image_fetcher.ProfileImageFetcherInputBoundary;
 import server.use_cases.user_use_cases.session_token_generator.SessionTokenGenerator;
 import server.use_cases.user_use_cases.session_token_generator.SessionTokenGeneratorInputBoundary;
 import server.use_cases.user_use_cases.user_account_editor.UserAccountEditor;
@@ -75,6 +79,18 @@ class BeanHolder {
     @Bean
     UserAccountValidatorInputBoundary userCredentialsValidatorBean() {
         return new UserAccountValidator();
+    }
+
+    @Autowired
+    @Bean
+    ProfileImageFetcherInputBoundary profileImageFetcherBean(ImageRepository imageRepository, UserRepository userRepository, PetRepository petRepository) {
+        return new ProfileImageFetcher(imageRepository, petActionValidatorBean(petRepository), userActionValidatorBean(userRepository));
+    }
+
+    @Autowired
+    @Bean
+    PetGalleryImagesFetcherInputBoundary petGalleryImagesFetcher(ImageRepository imageRepository, PetRepository petRepository) {
+        return new PetGalleryImagesFetcher(imageRepository, petActionValidatorBean(petRepository));
     }
 
     @Autowired
@@ -214,6 +230,7 @@ class BeanHolder {
                 userProfileEditorBean(userRepository),
                 userPetsFetcherBean(userRepository),
                 userProfileImageChangerBean(imageRepository, userRepository),
+                profileImageFetcherBean(imageRepository, userRepository, petRepository),
                 responsePresenterBean()
         );
     }
@@ -232,6 +249,8 @@ class BeanHolder {
                 petProfileImageChangerBean(imageRepository, petRepository),
                 petImageAdderBean(imageRepository, petRepository),
                 petImageRemoverBean(imageRepository, petRepository),
+                profileImageFetcherBean(imageRepository, userRepository, petRepository),
+                petGalleryImagesFetcher(imageRepository, petRepository),
                 responsePresenterBean()
         );
     }

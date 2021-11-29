@@ -384,7 +384,7 @@ public class CmdLineRunner implements CommandLineRunner {
 
             case "fetchUserPets":
                 inputs = getFetchUserAccountInputs();
-                return responsePresenter.formatResponse(userController.fetchUserPets(true, null, inputs.get("petId")));
+                return responsePresenter.formatResponse(userController.fetchUserPets(true, null, inputs.get("userId")));
 
             case "generatePotentialMatches":
                 inputs = getFetchPetProfileInputs();
