@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import server.drivers.BCryptService;
 import server.drivers.JwtService;
-import server.use_cases.session_token_generator.SessionTokenGenerator;
-import server.use_cases.session_token_generator.SessionTokenGeneratorRequestModel;
-import server.use_cases.session_token_generator.SessionTokenGeneratorResponseModel;
-import server.use_cases.user_account_validator.UserAccountValidator;
-import server.use_cases.user_creator.UserCreator;
-import server.use_cases.user_creator.UserCreatorRequestModel;
-import server.use_cases.user_creator.UserCreatorResponseModel;
+import server.use_cases.user_use_cases.session_token_generator.SessionTokenGenerator;
+import server.use_cases.user_use_cases.session_token_generator.SessionTokenGeneratorRequestModel;
+import server.use_cases.user_use_cases.session_token_generator.SessionTokenGeneratorResponseModel;
+import server.use_cases.user_use_cases.user_account_validator.UserAccountValidator;
+import server.use_cases.user_use_cases.user_creator.UserCreator;
+import server.use_cases.user_use_cases.user_creator.UserCreatorRequestModel;
+import server.use_cases.user_use_cases.user_creator.UserCreatorResponseModel;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

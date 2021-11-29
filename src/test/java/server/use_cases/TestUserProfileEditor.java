@@ -4,12 +4,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import server.drivers.BCryptService;
-import server.use_cases.user_account_validator.UserAccountValidator;
-import server.use_cases.user_creator.UserCreator;
-import server.use_cases.user_creator.UserCreatorRequestModel;
-import server.use_cases.user_profile_editor.UserProfileEditor;
-import server.use_cases.user_profile_editor.UserProfileEditorRequestModel;
-import server.use_cases.user_profile_editor.UserProfileEditorResponseModel;
+import server.use_cases.user_use_cases.user_account_validator.UserAccountValidator;
+import server.use_cases.user_use_cases.user_action_validator.UserActionValidator;
+import server.use_cases.user_use_cases.user_creator.UserCreator;
+import server.use_cases.user_use_cases.user_creator.UserCreatorRequestModel;
+import server.use_cases.user_use_cases.user_profile_editor.UserProfileEditor;
+import server.use_cases.user_use_cases.user_profile_editor.UserProfileEditorRequestModel;
+import server.use_cases.user_use_cases.user_profile_editor.UserProfileEditorResponseModel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,7 +26,7 @@ public class TestUserProfileEditor {
         DummyUserRepository userRepository = new DummyUserRepository();
         UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
 
-        profileEditor = new UserProfileEditor(userRepository);
+        profileEditor = new UserProfileEditor(userRepository, new UserActionValidator(userRepository));
 
         // Fill the repository with some dummy users
         userCreator.createUser(new UserCreatorRequestModel("andrew", "qiu", "1234 home st",

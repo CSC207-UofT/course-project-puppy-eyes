@@ -416,6 +416,35 @@ POST
 }`
 
 
+
+## Unmatch Pets
+- **URL**:
+
+/pets/unmatch
+
+- **Requires Authenication**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+POST
+
+- **Request Body Format**
+
+`{
+    pet1Id: <Integer>,
+	pet2Id: <Integer>
+ }`
+
+- **Response**
+
+`{ 
+  isSuccess: <boolean>,
+  message: <String>
+}`
+
+
 ## Fetch Pet Swipes
 - **URL**:
 
@@ -661,6 +690,94 @@ POST
 	data: {
 		url: <String>,
 		assetId: <String>
+	}
+}
+`
+
+
+## Fetch Pet Profile Image
+- **URL**:
+
+/pets/fetchprofileimage?petId=[petId]
+
+- **Requires Authentiction**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+POST
+
+- **Request Body Format**
+
+N/A
+
+- **Response**
+
+`
+{
+	isSuccess: <boolean>,
+	message: <String>,
+	data: {
+		url: <String>
+	}
+}
+`
+
+## Fetch User Profile Image
+- **URL**:
+
+/users/fetchprofileimage?petId=[petId]
+
+- **Requires Authentiction**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+POST
+
+- **Request Body Format**
+
+N/A
+
+- **Response**
+
+`
+{
+	isSuccess: <boolean>,
+	message: <String>,
+	data: {
+		url: <String>
+	}
+}
+`
+
+## Fetch Pet Gallery Images
+- **URL**:
+
+/pets/fetchgalleryimages?petId=[petId]
+
+- **Requires Authentiction**
+
+Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+
+- **Method**
+
+POST
+
+- **Request Body Format**
+
+N/A
+
+- **Response**
+
+`
+{
+	isSuccess: <boolean>,
+	message: <String>,
+	data: {
+		urls: <List<String>>
 	}
 }
 `

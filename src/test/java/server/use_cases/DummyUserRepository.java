@@ -176,7 +176,7 @@ public class DummyUserRepository implements IUserRepository {
     }
 
     @Override
-    public User fetchUser(int userId) throws UserNotFoundException {
+    public User fetchUser(int userId) {
         DummyUserRepositoryEntity dbUser = users.stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
 
         if (dbUser != null) {
@@ -192,7 +192,7 @@ public class DummyUserRepository implements IUserRepository {
             user.setId(dbUser.getId());
             return user;
         } else {
-            throw new UserNotFoundException("User with ID: " + userId + " not found.");
+            return null;
         }
     }
 
@@ -259,11 +259,11 @@ public class DummyUserRepository implements IUserRepository {
     }
 
     @Override
-    public List<Integer> fetchUserPets(int userId) throws UserNotFoundException {
+    public List<Integer> fetchUserPets(int userId) {
         DummyUserRepositoryEntity dbUser = users.stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
 
         if (dbUser == null) {
-            throw new UserNotFoundException("User with ID: " + userId + " not found.");
+            return null;
         };
 
         return dbUser.getPets();

@@ -5,7 +5,6 @@ import server.drivers.dbEntities.PetDatabaseEntity;
 import server.entities.User;
 import server.entities.UserFactory;
 import server.use_cases.repo_abstracts.IUserRepository;
-import server.use_cases.repo_abstracts.UserNotFoundException;
 import server.drivers.dbEntities.ContactInfoDatabaseEntity;
 import server.drivers.dbEntities.UserDatabaseEntity;
 
@@ -58,7 +57,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public User fetchUser(int userId) throws UserNotFoundException {
+    public User fetchUser(int userId) {
         Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
 
         if (searchResult.isPresent()) {
@@ -81,7 +80,7 @@ public class UserRepository implements IUserRepository {
             user.getContactInfo().setInstagram(dbUser.getContactInfo().getInstagram());
             return user;
         } else {
-            throw new UserNotFoundException("User of ID: " + userId + " not found");
+            return null;
         }
     }
 
@@ -206,7 +205,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public List<Integer> fetchUserPets(int userId) throws UserNotFoundException {
+    public List<Integer> fetchUserPets(int userId) {
         Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
 
         if (searchResult.isPresent()) {
@@ -215,7 +214,7 @@ public class UserRepository implements IUserRepository {
             List<Integer> petIds = user.getPets().stream().map(PetDatabaseEntity::getId).collect(Collectors.toList());
             return petIds;
         } else {
-            throw new UserNotFoundException("User of ID: " + userId + " not found");
+            return null;
         }
     }
 

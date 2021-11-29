@@ -73,8 +73,8 @@ public class UserWebGateway extends WebGateway {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity getUserProfile(@RequestParam String userId) {
-        ResponseModel response = userController.fetchUserProfile(userId);
+    public ResponseEntity getUserProfile(HttpServletRequest req, @RequestParam String userId) {
+        ResponseModel response = userController.fetchUserProfile(false, req.getHeader("userId"), userId);
         return getResponseEntity(response);
     }
 
@@ -97,6 +97,12 @@ public class UserWebGateway extends WebGateway {
     public ResponseEntity fetchUserPets(HttpServletRequest req, @RequestParam String userId) {
         ResponseModel response = userController.fetchUserPets(false, req.getHeader("userId"), userId);
 
+        return getResponseEntity(response);
+    }
+
+    @GetMapping("/fetchprofileimage")
+    public ResponseEntity fetchProfileImage(HttpServletRequest req, @RequestParam String userId) {
+        ResponseModel response = userController.fetchUserProfileImage(false, req.getHeader("userId"), userId);
         return getResponseEntity(response);
     }
 

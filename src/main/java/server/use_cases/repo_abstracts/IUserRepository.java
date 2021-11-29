@@ -23,9 +23,8 @@ public interface IUserRepository {
      * Fetch a User object given a user id.
      * @param userId
      * @return a User object
-     * @throws UserNotFoundException
      */
-    public User fetchUser(int userId) throws UserNotFoundException;
+    public User fetchUser(int userId);
 
     /**
      * Edit a user's Account given user id and new information.
@@ -73,7 +72,7 @@ public interface IUserRepository {
      * @param userId
      * @return a list of pet ids
      */
-    public List<Integer> fetchUserPets(int userId) throws UserNotFoundException;
+    public List<Integer> fetchUserPets(int userId);
 
 }
 

@@ -3,8 +3,8 @@ package server.use_cases;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import server.use_cases.user_account_validator.UserAccountValidator;
-import server.use_cases.user_account_validator.UserAccountValidatorRequestModel;
+import server.use_cases.user_use_cases.user_account_validator.UserAccountValidator;
+import server.use_cases.user_use_cases.user_account_validator.UserAccountValidatorRequestModel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

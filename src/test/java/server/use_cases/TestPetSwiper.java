@@ -4,13 +4,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import server.drivers.BCryptService;
-import server.use_cases.pet_swiper.PetSwiper;
-import server.use_cases.pet_swiper.PetSwiperRequestModel;
-import server.use_cases.repo_abstracts.PetNotFoundException;
-import server.use_cases.user_account_validator.UserAccountValidator;
-import server.use_cases.user_creator.UserCreator;
-import server.use_cases.user_creator.UserCreatorRequestModel;
-import server.use_cases.user_creator.UserCreatorResponseModel;
+import server.use_cases.pet_use_cases.pet_action_validator.PetActionValidator;
+import server.use_cases.pet_use_cases.pet_interactor.PetInteractionType;
+import server.use_cases.pet_use_cases.pet_interactor.PetInteractor;
+import server.use_cases.pet_use_cases.pet_interactor.PetInteractorRequestModel;
+import server.use_cases.user_use_cases.user_account_validator.UserAccountValidator;
+import server.use_cases.user_use_cases.user_creator.UserCreator;
+import server.use_cases.user_use_cases.user_creator.UserCreatorRequestModel;
+import server.use_cases.user_use_cases.user_creator.UserCreatorResponseModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +25,7 @@ public class TestPetSwiper {
 
     private DummyUserRepository userRepository;
     private DummyPetRepository petRepository;
-    private PetSwiper petSwiper;
+    private PetInteractor petInteractor;
 
     int user1Id, user2Id, pet1Id, pet2Id;
 
@@ -33,7 +34,7 @@ public class TestPetSwiper {
         BCryptService bcryptService = new BCryptService();
         userRepository = new DummyUserRepository();
         petRepository = new DummyPetRepository(userRepository);
-        petSwiper = new PetSwiper(petRepository);
+        petInteractor = new PetInteractor(petRepository, new PetActionValidator(petRepository));
         UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
 
         // Create some users and pets
@@ -56,8 +57,13 @@ public class TestPetSwiper {
     }
 
     @Test
-    public void TestSuccessPetSwiperNoMatch() throws PetNotFoundException {
-        ResponseModel response = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id + "", pet2Id + ""));
+    public void TestSuccessPetSwiperNoMatch() {
+        ResponseModel response = petInteractor.interact(new PetInteractorRequestModel(
+                user1Id + "",
+                pet1Id + "",
+                pet2Id + "",
+                PetInteractionType.SWIPE
+        ));
 
         // Check for the pet's swiped list
         List<Integer> expected = Arrays.asList(1);
@@ -68,9 +74,19 @@ public class TestPetSwiper {
     }
 
     @Test
-    public void TestSuccessPetSwiperMatch() throws PetNotFoundException {
-        ResponseModel responseA = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id + "", pet2Id + ""));
-        ResponseModel responseB = petSwiper.swipe(new PetSwiperRequestModel(user2Id + "", pet2Id + "", pet1Id + ""));
+    public void TestSuccessPetSwiperMatch() {
+        ResponseModel responseA = petInteractor.interact(new PetInteractorRequestModel(
+                user1Id + "",
+                pet1Id + "",
+                pet2Id + "",
+                PetInteractionType.SWIPE
+        ));
+        ResponseModel responseB = petInteractor.interact(new PetInteractorRequestModel(
+                user2Id + "",
+                pet2Id + "",
+                pet1Id + "",
+                PetInteractionType.SWIPE
+        ));
 
         // Check for the pet's swiped list
         List<Integer> expectedPetSwipesList = new ArrayList<>();
@@ -91,9 +107,19 @@ public class TestPetSwiper {
     }
 
     @Test
-    public void TestFailPetSwiperAlreadySwiped() throws PetNotFoundException {
-        ResponseModel responseA = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id + "", pet2Id + ""));
-        ResponseModel responseB = petSwiper.swipe(new PetSwiperRequestModel(user1Id + "", pet1Id + "", pet2Id + ""));
+    public void TestFailPetSwiperAlreadySwiped() {
+        ResponseModel responseA = petInteractor.interact(new PetInteractorRequestModel(
+                user1Id + "",
+                pet1Id + "",
+                pet2Id + "",
+                PetInteractionType.SWIPE
+        ));
+        ResponseModel responseB = petInteractor.interact(new PetInteractorRequestModel(
+                user1Id + "",
+                pet1Id + "",
+                pet2Id + "",
+                PetInteractionType.SWIPE
+        ));
 
         // Check for the pet's swiped list
         List<Integer> expectedPet1SwipesList = Arrays.asList(1);

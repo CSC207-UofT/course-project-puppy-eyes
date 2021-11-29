@@ -4,17 +4,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import server.drivers.BCryptService;
-import server.use_cases.pet_creator.PetCreator;
-import server.use_cases.pet_creator.PetCreatorRequestModel;
-import server.use_cases.pet_creator.PetCreatorResponseModel;
-import server.use_cases.pet_matches_generator.PetMatchesGenerator;
-import server.use_cases.pet_matches_generator.PetMatchesGeneratorRequestModel;
-import server.use_cases.pet_matches_generator.PetMatchesGeneratorResponseModel;
-import server.use_cases.pet_profile_validator.PetProfileValidator;
-import server.use_cases.user_account_validator.UserAccountValidator;
-import server.use_cases.user_creator.UserCreator;
-import server.use_cases.user_creator.UserCreatorRequestModel;
-import server.use_cases.user_creator.UserCreatorResponseModel;
+import server.use_cases.pet_use_cases.pet_action_validator.PetActionValidator;
+import server.use_cases.pet_use_cases.pet_creator.PetCreator;
+import server.use_cases.pet_use_cases.pet_creator.PetCreatorRequestModel;
+import server.use_cases.pet_use_cases.pet_creator.PetCreatorResponseModel;
+import server.use_cases.pet_use_cases.pet_matches_generator.PetMatchesGenerator;
+import server.use_cases.pet_use_cases.pet_matches_generator.PetMatchesGeneratorRequestModel;
+import server.use_cases.pet_use_cases.pet_matches_generator.PetMatchesGeneratorResponseModel;
+import server.use_cases.pet_use_cases.pet_profile_validator.PetProfileValidator;
+import server.use_cases.user_use_cases.user_account_validator.UserAccountValidator;
+import server.use_cases.user_use_cases.user_creator.UserCreator;
+import server.use_cases.user_use_cases.user_creator.UserCreatorRequestModel;
+import server.use_cases.user_use_cases.user_creator.UserCreatorResponseModel;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +37,7 @@ public class TestPetMatchesGenerator {
         DummyPetRepository petRepository = new DummyPetRepository(userRepository);
         PetCreator petCreator = new PetCreator(petRepository, userRepository, new PetProfileValidator());
 
-        petMatchesGenerator = new PetMatchesGenerator(userRepository, petRepository);
+        petMatchesGenerator = new PetMatchesGenerator(userRepository, petRepository, new PetActionValidator(petRepository));
 
         // Create users
         user1Id = ((UserCreatorResponseModel) userCreator.createUser(new UserCreatorRequestModel("John",
