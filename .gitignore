@@ -7,6 +7,7 @@ build/
 
 ### ENV ###
 /src/main/resources/application.properties
+/src/test/java/server/GeocodeApiKey.java
 
 ### STS ###
 .apt_generated

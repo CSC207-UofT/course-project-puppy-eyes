@@ -203,7 +203,7 @@ class BeanHolder {
     @Autowired
     @Bean
     PetMatchesGeneratorInputBoundary petMatchesGeneratorBean(UserRepository userRepository, PetRepository petRepository) {
-        return new PetMatchesGenerator(userRepository, petRepository, petActionValidatorBean(petRepository));
+        return new PetMatchesGenerator(userRepository, petRepository, petActionValidatorBean(petRepository), geocoderServiceBean());
     }
 
     @Autowired
