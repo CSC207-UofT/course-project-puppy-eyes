@@ -24,6 +24,12 @@ public class GeocoderService implements IGeocoderService {
         this.mapper = new ObjectMapper();
     }
 
+    public GeocoderService(String apiKey) {
+        this.restTemplate = new RestTemplate();
+        this.mapper = new ObjectMapper();
+        this.API_KEY = apiKey;
+    }
+
     private final String GEOCODING_RESOURCE = "https://geocode.search.hereapi.com/v1/geocode";
     @Value("${geocoder.key}")
     private String API_KEY;
