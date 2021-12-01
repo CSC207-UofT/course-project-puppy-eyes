@@ -3,7 +3,7 @@ package server.drivers.repository;
 import org.springframework.stereotype.Repository;
 import server.drivers.dbEntities.PetDatabaseEntity;
 import server.entities.User;
-import server.entities.UserFactory;
+import server.entities.UserBuilder;
 import server.use_cases.repo_abstracts.IUserRepository;
 import server.drivers.dbEntities.ContactInfoDatabaseEntity;
 import server.drivers.dbEntities.UserDatabaseEntity;
@@ -48,7 +48,6 @@ public class UserRepository implements IUserRepository {
                 user.getCurrentCity(),
                 user.getMatchingDistanceCap(),
                 user.getBiography(),
-                user.getType(),
                 contactInfoDbEntity
         );
         repository.save(userDbEntity);
@@ -63,21 +62,20 @@ public class UserRepository implements IUserRepository {
         if (searchResult.isPresent()) {
             UserDatabaseEntity dbUser = searchResult.get();
 
-            UserFactory userFactory = new UserFactory();
-            User user = userFactory.createUser(
-                dbUser.getType(),
+            User user = new UserBuilder(
                 dbUser.getFirstName(),
                 dbUser.getLastName(),
-                dbUser.getCurrentAddress(),
-                dbUser.getCurrentCity(),
                 dbUser.getPassword(),
+                dbUser.getCurrentCity(),
                 dbUser.getContactInfo().getEmail()
-            );
-            user.setId(dbUser.getId());
-            user.setBiography(dbUser.getBiography());
-            user.getContactInfo().setPhoneNumber(dbUser.getContactInfo().getPhoneNumber());
-            user.getContactInfo().setFacebook(dbUser.getContactInfo().getFacebook());
-            user.getContactInfo().setInstagram(dbUser.getContactInfo().getInstagram());
+            )
+            .currentAddress(dbUser.getCurrentAddress())
+            .biography(dbUser.getBiography())
+            .phoneNumber(dbUser.getContactInfo().getPhoneNumber())
+            .instagram(dbUser.getContactInfo().getInstagram())
+            .facebook(dbUser.getContactInfo().getFacebook())
+            .id(dbUser.getId())
+            .create();
             return user;
         } else {
             return null;
@@ -166,21 +164,20 @@ public class UserRepository implements IUserRepository {
         List<User> users = new ArrayList<>();
 
         for (UserDatabaseEntity dbUser : dbUsers) {
-            UserFactory userFactory = new UserFactory();
-            User user = userFactory.createUser(
-                dbUser.getType(),
+            User user = new UserBuilder(
                 dbUser.getFirstName(),
                 dbUser.getLastName(),
-                dbUser.getCurrentAddress(),
-                dbUser.getCurrentCity(),
                 dbUser.getPassword(),
+                dbUser.getCurrentCity(),
                 dbUser.getContactInfo().getEmail()
-            );
-
-            user.setId(dbUser.getId());
-            user.getContactInfo().setFacebook(dbUser.getContactInfo().getFacebook());
-            user.getContactInfo().setInstagram(dbUser.getContactInfo().getInstagram());
-            user.getContactInfo().setPhoneNumber(dbUser.getContactInfo().getPhoneNumber());
+            )
+            .currentAddress(dbUser.getCurrentAddress())
+            .biography(dbUser.getBiography())
+            .phoneNumber(dbUser.getContactInfo().getPhoneNumber())
+            .instagram(dbUser.getContactInfo().getInstagram())
+            .facebook(dbUser.getContactInfo().getFacebook())
+            .id(dbUser.getId())
+            .create();
             users.add(user);
         }
 

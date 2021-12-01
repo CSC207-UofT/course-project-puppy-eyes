@@ -1,6 +1,6 @@
 package server.entities;
 
-public abstract class User {
+public class User {
     private String firstName;
     private String lastName;
     private String currentAddress;
@@ -57,11 +57,9 @@ public abstract class User {
         return this.biography;
     }
 
-    public ContactInfo getContactInfo(){
+    public ContactInfo getContactInfo() {
         return this.contactInfo;
     }
-
-    public abstract UserType getType();
 
     public void setId(int id) {
         this.id = id;

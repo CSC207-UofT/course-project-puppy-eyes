@@ -1,9 +1,8 @@
 package server.use_cases.user_use_cases.user_creator;
 
 import server.drivers.IPasswordEncryptor;
-import server.entities.UserFactory;
 import server.entities.User;
-import server.entities.UserType;
+import server.entities.UserBuilder;
 import server.use_cases.repo_abstracts.IUserRepository;
 import server.use_cases.ResponseModel;
 import server.use_cases.user_use_cases.user_account_validator.UserAccountValidatorInputBoundary;
@@ -53,17 +52,15 @@ public class UserCreator implements UserCreatorInputBoundary {
             return verifyInputsResponse;
         }
 
-        UserFactory userFactory = new UserFactory();
-
-        User newUser = userFactory.createUser(
-            UserType.COMMON_USER,
-            request.getFirstName(),
-            request.getLastName(),
-            request.getCurrentAddress(),
-            request.getCurrentCity(),
-            passwordEncryptor.encryptPassword(request.getPassword()),
-            request.getEmail()
-        );
+        User newUser = new UserBuilder(
+                request.getFirstName(),
+                request.getLastName(),
+                passwordEncryptor.encryptPassword(request.getPassword()),
+                request.getCurrentCity(),
+                request.getEmail()
+        )
+        .currentAddress(request.getCurrentAddress())
+        .create();
 
         int id = userRepository.createUser(newUser);
 
