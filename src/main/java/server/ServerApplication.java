@@ -22,10 +22,6 @@ import server.use_cases.pet_use_cases.pet_editor.PetEditor;
 import server.use_cases.pet_use_cases.pet_editor.PetEditorInputBoundary;
 import server.use_cases.pet_use_cases.pet_gallery_images_fetcher.PetGalleryImagesFetcher;
 import server.use_cases.pet_use_cases.pet_gallery_images_fetcher.PetGalleryImagesFetcherInputBoundary;
-import server.use_cases.pet_use_cases.pet_image_adder.PetImageAdder;
-import server.use_cases.pet_use_cases.pet_image_adder.PetImageAdderInputBoundary;
-import server.use_cases.pet_use_cases.pet_image_remover.PetImageRemover;
-import server.use_cases.pet_use_cases.pet_image_remover.PetImageRemoverInputBoundary;
 import server.use_cases.pet_use_cases.pet_matches_fetcher.PetMatchesFetcher;
 import server.use_cases.pet_use_cases.pet_matches_fetcher.PetMatchesFetcherInputBoundary;
 import server.use_cases.pet_use_cases.pet_matches_generator.PetMatchesGenerator;
@@ -147,18 +143,6 @@ class BeanHolder {
         return new PetProfileImageChanger(imageRepository, imageServiceBean(), petActionValidatorBean(petRepository));
     }
 
-    @Autowired
-    @Bean
-    PetImageAdderInputBoundary petImageAdderBean(ImageRepository imageRepository, PetRepository petRepository) {
-        return new PetImageAdder(imageRepository, petRepository, imageServiceBean(), petActionValidatorBean(petRepository));
-    }
-
-    @Autowired
-    @Bean
-    PetImageRemoverInputBoundary petImageRemoverBean(ImageRepository imageRepository, PetRepository petRepository) {
-        return new PetImageRemover(imageRepository, petRepository, imageServiceBean(), petActionValidatorBean(petRepository));
-    }
-
     @Bean
     PetProfileValidatorInputBoundary petProfileValidatorBean() {
         return new PetProfileValidator();
@@ -247,8 +231,6 @@ class BeanHolder {
                 petMatchesFetcherBean(petRepository),
                 petMatchesGeneratorBean(userRepository, petRepository),
                 petProfileImageChangerBean(imageRepository, petRepository),
-                petImageAdderBean(imageRepository, petRepository),
-                petImageRemoverBean(imageRepository, petRepository),
                 profileImageFetcherBean(imageRepository, userRepository, petRepository),
                 petGalleryImagesFetcher(imageRepository, petRepository),
                 responsePresenterBean()
