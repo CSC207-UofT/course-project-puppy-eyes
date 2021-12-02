@@ -17,6 +17,7 @@ public class PetBuilder implements IPetBuilder {
     @Override
     public Pet create() {
         Pet pet = new Pet(userId, name, age, breed, biography);
+        pet.setId(id);
         return pet;
     }
 
