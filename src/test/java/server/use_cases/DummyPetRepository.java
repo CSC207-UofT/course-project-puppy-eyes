@@ -1,6 +1,7 @@
 package server.use_cases;
 
 import server.entities.Pet;
+import server.entities.PetBuilder;
 import server.use_cases.repo_abstracts.IPetRepository;
 
 import java.util.ArrayList;
@@ -127,8 +128,10 @@ public class DummyPetRepository implements IPetRepository {
         DummyPetRepositoryEntity dbPet = pets.stream().filter(pet -> pet.getId() == petId).findFirst().orElse(null);
 
         if (dbPet != null) {
-            Pet pet = new Pet(dbPet.getUserId(), dbPet.getName(), dbPet.getAge(), dbPet.getBreed(), dbPet.getBiography()) {};
-            pet.setId(dbPet.getId());
+            Pet pet = new PetBuilder(dbPet.getUserId(), dbPet.getName(), dbPet.getAge(), dbPet.getBreed()).
+                    biography(dbPet.getBiography()).
+                    id(dbPet.getId()).
+                    create();
             return pet;
         } else {
             return null;

@@ -1,6 +1,7 @@
 package server.use_cases.pet_use_cases.pet_creator;
 
 import server.entities.Pet;
+import server.entities.PetBuilder;
 import server.use_cases.ResponseModel;
 import server.use_cases.Util;
 import server.use_cases.pet_use_cases.pet_profile_validator.PetProfileValidatorInputBoundary;
@@ -67,8 +68,13 @@ public class PetCreator implements PetCreatorInputBoundary {
             return new ResponseModel(false, "You are not authorized to make this request.");
         }
 
-        // TODO factory method
-        Pet newPet = new Pet(userId, request.getName(), intAge, request.getBreed(), request.getBiography() == null ? "" : request.getBiography()) {};
+        PetBuilder petBuilder = new PetBuilder(userId, request.getName(), intAge, request.getBreed());
+
+        if (request.getBiography() != null) {
+            petBuilder.biography(request.getBiography());
+        }
+
+        Pet newPet = petBuilder.create();
 
         int petId = petRepository.createPet(userId, newPet.getName(), newPet.getAge(), newPet.getBreed(), newPet.getBiography());
         newPet.setId(petId);

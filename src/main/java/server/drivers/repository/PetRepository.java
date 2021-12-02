@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import server.drivers.dbEntities.PetDatabaseEntity;
 import server.drivers.dbEntities.RelationDatabaseEntity;
 import server.entities.Pet;
+import server.entities.PetBuilder;
 import server.use_cases.repo_abstracts.IPetRepository;
 
 import java.util.List;
@@ -46,11 +47,12 @@ public class PetRepository implements IPetRepository {
     public Pet fetchPet(int petId) {
         Optional<PetDatabaseEntity> searchResult = repository.findById(petId);
 
-        // Todo factory to create pet from db pet
         if (searchResult.isPresent()) {
             PetDatabaseEntity dbPet = searchResult.get();
-            Pet pet = new Pet(dbPet.getUser().getId(), dbPet.getName(), dbPet.getAge(), dbPet.getBreed(), dbPet.getBiography()) {};
-            pet.setId(dbPet.getId());
+            Pet pet = new PetBuilder(dbPet.getUser().getId(), dbPet.getName(), dbPet.getAge(), dbPet.getBreed()).
+                    biography(dbPet.getBiography()).
+                    id(dbPet.getId()).
+                    create();
             return pet;
         }
 
