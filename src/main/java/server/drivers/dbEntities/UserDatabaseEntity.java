@@ -1,7 +1,5 @@
 package server.drivers.dbEntities;
 
-import server.entities.UserType;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -35,10 +33,6 @@ public class UserDatabaseEntity {
     @Column(name = "biography")
     private String biography;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type")
-    private UserType type;
-
     @OneToOne(cascade = CascadeType.ALL)
     private ContactInfoDatabaseEntity contactInfo;
 
@@ -46,7 +40,7 @@ public class UserDatabaseEntity {
     private List<PetDatabaseEntity> pets;
 
     public UserDatabaseEntity(String firstName, String lastName, String password, String currentAddress,
-                              String currentCity, Double matchingDistanceCap, String biography, UserType type,
+                              String currentCity, Double matchingDistanceCap, String biography,
                               ContactInfoDatabaseEntity contactInfo) {
         super();
         this.firstName = firstName;
@@ -56,7 +50,6 @@ public class UserDatabaseEntity {
         this.currentCity = currentCity;
         this.matchingDistanceCap = matchingDistanceCap;
         this.biography = biography;
-        this.type = type;
         this.contactInfo = contactInfo;
     }
 
@@ -82,10 +75,6 @@ public class UserDatabaseEntity {
 
     public String getCurrentCity() {
         return currentCity;
-    }
-
-    public UserType getType() {
-        return type;
     }
 
     public List<PetDatabaseEntity> getPets() {

@@ -1,8 +1,7 @@
 package server.use_cases;
 
 import server.entities.User;
-import server.entities.UserFactory;
-import server.entities.UserType;
+import server.entities.UserBuilder;
 import server.use_cases.repo_abstracts.*;
 
 import java.util.ArrayList;
@@ -22,11 +21,9 @@ class DummyUserRepositoryEntity {
     private String biography;
     private List<Integer> petList;
     private DummyContactInfoRepositoryEntity contactInfo;
-    private UserType type;
 
-    public DummyUserRepositoryEntity(int id, UserType type, String firstName, String lastName, String currentAddress, String currentCity, String passwordHash, String email) {
+    public DummyUserRepositoryEntity(int id, String firstName, String lastName, String currentAddress, String currentCity, String passwordHash, String email) {
         this.id = id;
-        this.type = type;
         this.firstName = firstName;
         this.lastName = lastName;
         this.currentAddress = currentAddress;
@@ -40,10 +37,6 @@ class DummyUserRepositoryEntity {
 
     public int getId() {
         return this.id;
-    }
-
-    public UserType getType() {
-        return this.type;
     }
 
     public List<Integer> getPets() {
@@ -170,7 +163,7 @@ public class DummyUserRepository implements IUserRepository {
     public int createUser(User user) {
         currentMaxId++;
         int id = currentMaxId;
-        users.add(new DummyUserRepositoryEntity(id, user.getType(), user.getFirstName(), user.getLastName(), user.getCurrentAddress(),
+        users.add(new DummyUserRepositoryEntity(id, user.getFirstName(), user.getLastName(), user.getCurrentAddress(),
                 user.getCurrentCity(), user.getPasswordHash(), user.getContactInfo().getEmail()));
         return id;
     }
@@ -180,16 +173,21 @@ public class DummyUserRepository implements IUserRepository {
         DummyUserRepositoryEntity dbUser = users.stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
 
         if (dbUser != null) {
-            UserFactory userFactory = new UserFactory();
+            User user = new UserBuilder(
+                dbUser.getFirstName(),
+                dbUser.getLastName(),
+                dbUser.getPasswordHash(),
+                dbUser.getCurrentCity(),
+                dbUser.getContactInfo().getEmail()
+            )
+            .currentAddress(dbUser.getCurrentAddress())
+            .biography(dbUser.getBiography())
+            .phoneNumber(dbUser.getContactInfo().getPhoneNumber())
+            .instagram(dbUser.getContactInfo().getInstagram())
+            .facebook(dbUser.getContactInfo().getFacebook())
+            .id(dbUser.getId())
+            .create();
 
-            User user = userFactory.createUser(dbUser.getType(), dbUser.getFirstName(), dbUser.getLastName(), dbUser.getCurrentAddress(),
-                    dbUser.getCurrentCity(), dbUser.getPasswordHash(), dbUser.getContactInfo().getEmail());
-            user.getContactInfo().setPhoneNumber(dbUser.getContactInfo().getPhoneNumber());
-            user.getContactInfo().setInstagram(dbUser.getContactInfo().getInstagram());
-            user.getContactInfo().setFacebook(dbUser.getContactInfo().getFacebook());
-            user.getContactInfo().setEmail(dbUser.getContactInfo().getEmail());
-            user.setBiography(dbUser.getBiography());
-            user.setId(dbUser.getId());
             return user;
         } else {
             return null;
@@ -202,16 +200,20 @@ public class DummyUserRepository implements IUserRepository {
         List<User> users = new ArrayList<>();
 
         for (DummyUserRepositoryEntity dbUser : dbUsers) {
-            UserFactory userFactory = new UserFactory();
-
-            User user = userFactory.createUser(dbUser.getType(), dbUser.getFirstName(), dbUser.getLastName(), dbUser.getCurrentAddress(),
-                    dbUser.getCurrentCity(), dbUser.getPasswordHash(), dbUser.getContactInfo().getEmail());
-            user.getContactInfo().setPhoneNumber(dbUser.getContactInfo().getPhoneNumber());
-            user.getContactInfo().setInstagram(dbUser.getContactInfo().getInstagram());
-            user.getContactInfo().setFacebook(dbUser.getContactInfo().getFacebook());
-            user.getContactInfo().setEmail(dbUser.getContactInfo().getEmail());
-            user.setBiography(dbUser.getBiography());
-            user.setId(dbUser.getId());
+            User user = new UserBuilder(
+                dbUser.getFirstName(),
+                dbUser.getLastName(),
+                dbUser.getPasswordHash(),
+                dbUser.getCurrentCity(),
+                dbUser.getContactInfo().getEmail()
+            )
+            .currentAddress(dbUser.getCurrentAddress())
+            .biography(dbUser.getBiography())
+            .phoneNumber(dbUser.getContactInfo().getPhoneNumber())
+            .instagram(dbUser.getContactInfo().getInstagram())
+            .facebook(dbUser.getContactInfo().getFacebook())
+            .id(dbUser.getId())
+            .create();
             users.add(user);
         }
 

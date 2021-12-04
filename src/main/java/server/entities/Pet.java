@@ -1,6 +1,6 @@
 package server.entities;
 
-public abstract class Pet {
+public class Pet {
 
     private int userId;
     private String name;

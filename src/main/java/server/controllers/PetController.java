@@ -4,13 +4,8 @@ import server.use_cases.pet_use_cases.pet_creator.PetCreatorInputBoundary;
 import server.use_cases.pet_use_cases.pet_creator.PetCreatorRequestModel;
 import server.use_cases.pet_use_cases.pet_editor.PetEditorInputBoundary;
 import server.use_cases.pet_use_cases.pet_editor.PetEditorRequestModel;
-import server.use_cases.pet_use_cases.pet_gallery_images_fetcher.PetGalleryImagesFetcher;
 import server.use_cases.pet_use_cases.pet_gallery_images_fetcher.PetGalleryImagesFetcherInputBoundary;
 import server.use_cases.pet_use_cases.pet_gallery_images_fetcher.PetGalleryImagesFetcherRequestModel;
-import server.use_cases.pet_use_cases.pet_image_adder.PetImageAdderInputBoundary;
-import server.use_cases.pet_use_cases.pet_image_adder.PetImageAdderRequestModel;
-import server.use_cases.pet_use_cases.pet_image_remover.PetImageRemoverInputBoundary;
-import server.use_cases.pet_use_cases.pet_image_remover.PetImageRemoverRequestModel;
 import server.use_cases.pet_use_cases.pet_interactor.PetInteractionType;
 import server.use_cases.pet_use_cases.pet_matches_fetcher.PetMatchesFetcherInputBoundary;
 import server.use_cases.pet_use_cases.pet_matches_fetcher.PetMatchesFetcherRequestModel;
@@ -42,8 +37,6 @@ public class PetController implements IPetController {
     PetMatchesFetcherInputBoundary petMatchesFetcher;
     PetMatchesGeneratorInputBoundary petMatchesGenerator;
     PetProfileImageChangerInputBoundary petProfileImageChanger;
-    PetImageAdderInputBoundary petImageAdder;
-    PetImageRemoverInputBoundary petImageRemover;
     ProfileImageFetcherInputBoundary profileImageFetcher;
     PetGalleryImagesFetcherInputBoundary petGalleryImagesFetcher;
     UseCaseOutputBoundary responsePresenter;
@@ -56,8 +49,6 @@ public class PetController implements IPetController {
                          PetMatchesFetcherInputBoundary petMatchesFetcher,
                          PetMatchesGeneratorInputBoundary petMatchesGenerator,
                          PetProfileImageChangerInputBoundary petProfileImageChanger,
-                         PetImageAdderInputBoundary petImageAdder,
-                         PetImageRemoverInputBoundary petImageRemover,
                          ProfileImageFetcherInputBoundary profileImageFetcher,
                          PetGalleryImagesFetcherInputBoundary petGalleryImagesFetcher,
                          UseCaseOutputBoundary responsePresenter) {
@@ -69,8 +60,6 @@ public class PetController implements IPetController {
         this.petInteractor = petInteractor;
         this.petMatchesGenerator = petMatchesGenerator;
         this.petProfileImageChanger = petProfileImageChanger;
-        this.petImageAdder = petImageAdder;
-        this.petImageRemover = petImageRemover;
         this.profileImageFetcher = profileImageFetcher;
         this.petGalleryImagesFetcher = petGalleryImagesFetcher;
         this.responsePresenter = responsePresenter;
@@ -324,48 +313,6 @@ public class PetController implements IPetController {
     public ResponseModel setPetProfile(String headerUserId, String petId, String base64Encoded) {
         PetProfileImageChangerRequestModel request = new PetProfileImageChangerRequestModel(headerUserId, petId, base64Encoded);
         ResponseModel response = petProfileImageChanger.changeProfileImage(request);
-        return response;
-    }
-
-    /**
-     * Add to a pet's image gallery the image represented by the Base64 encoding.
-     * @param headerUserId
-     * @param petId
-     * @param base64Encoded
-     * @return a ResponseModel containing:
-     *      {
-     *          isSuccess: "true"/"false"
-     *          // if successful:
-     *          message: The response message,
-     *          data: {
-     *              url: the url to the image
-     *              assetId: the id of the asset
-     *          }
-     *          // else,
-     *          data: null
-     *      }
-     */
-    @Override
-    public ResponseModel addPetImage(String headerUserId, String petId, String base64Encoded) {
-        PetImageAdderRequestModel request = new PetImageAdderRequestModel(headerUserId, petId, base64Encoded);
-        ResponseModel response = petImageAdder.addImage(request);
-        return response;
-    }
-    /**
-     * Remove a pet's image gallery the image represented by the asset id.
-     * @param headerUserId
-     * @param petId
-     * @param assetId
-     * @return a ResponseModel containing:
-     *      {
-     *          isSuccess: "true"/"false"
-     *          message: The response message
-     *      }
-     */
-    @Override
-    public ResponseModel removePetImage(String headerUserId, String petId, String assetId) {
-        PetImageRemoverRequestModel request = new PetImageRemoverRequestModel(headerUserId, petId, assetId);
-        ResponseModel response = petImageRemover.removeImage(request);
         return response;
     }
 
