@@ -343,7 +343,7 @@ public class CmdLineRunner implements CommandLineRunner {
 
             case "fetchPetProfile":
                 inputs = getFetchPetProfileInputs();
-                return responsePresenter.formatResponse(petController.fetchPetProfile(true, null, inputs.get("petId")));
+                return responsePresenter.formatResponse(petController.fetchPetProfile(inputs.get("petId")));
 
             case "editPet":
                 inputs = getEditPetInputs();
