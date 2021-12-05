@@ -36,7 +36,7 @@ public class TestUserProfileFetcher {
         BCryptService bcryptService = new BCryptService();
         DummyUserRepository userRepository = new DummyUserRepository();
         DummyPetRepository petRepository = new DummyPetRepository(userRepository);
-        userProfileFetcher = new UserProfileFetcher(userRepository, petRepository, new UserActionValidator(userRepository));
+        userProfileFetcher = new UserProfileFetcher(userRepository, petRepository, new DummyImageRepository(), new UserActionValidator(userRepository));
 
         UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator(), new DummyGeocoderService());
         PetCreator petCreator = new PetCreator(petRepository, userRepository, new PetProfileValidator());
@@ -90,7 +90,7 @@ public class TestUserProfileFetcher {
      */
     @Test
     public void TestFetchUserProfileWithValidId() {
-        UserProfileFetcherResponseModel expected = new UserProfileFetcherResponseModel("John", "Appleseed", "John's Biography", "1234567890", "john.appleseed@gmail.com", "therealjohnappleseed", "johnappleseedofficial");
+        UserProfileFetcherResponseModel expected = new UserProfileFetcherResponseModel("John", "Appleseed", "John's Biography", "1234567890", "john.appleseed@gmail.com", "therealjohnappleseed", "johnappleseedofficial", "");
         ResponseModel responseModel = userProfileFetcher.fetchUserProfile(new UserProfileFetcherRequestModel(user1Id + "", user1Id + ""));
 
         UserProfileFetcherResponseModel actual = (UserProfileFetcherResponseModel) responseModel.getResponseData();
@@ -104,7 +104,7 @@ public class TestUserProfileFetcher {
      */
     @Test
     public void TestFetchUserProfileFromOtherAuthorized() {
-        UserProfileFetcherResponseModel expected = new UserProfileFetcherResponseModel("John", "Appleseed", "John's Biography", "1234567890", "john.appleseed@gmail.com", "therealjohnappleseed", "johnappleseedofficial");
+        UserProfileFetcherResponseModel expected = new UserProfileFetcherResponseModel("John", "Appleseed", "John's Biography", "1234567890", "john.appleseed@gmail.com", "therealjohnappleseed", "johnappleseedofficial", "");
         ResponseModel responseModel = userProfileFetcher.fetchUserProfile(new UserProfileFetcherRequestModel(user2Id + "", user1Id + ""));
 
         UserProfileFetcherResponseModel actual = (UserProfileFetcherResponseModel) responseModel.getResponseData();

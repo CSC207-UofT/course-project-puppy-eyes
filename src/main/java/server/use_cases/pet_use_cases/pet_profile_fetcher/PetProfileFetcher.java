@@ -25,6 +25,10 @@ public class PetProfileFetcher implements PetProfileFetcherInputBoundary {
         int petId = Integer.parseInt(request.getPetId());
         Pet pet = petRepository.fetchPet(petId);
 
+        if (pet == null) {
+            return new ResponseModel(false, "Pet with ID: " + petId + " does not exist.");
+        }
+
         String profileImgUrl = imageRepository.fetchPetProfileImageLink(petId);
 
         return new ResponseModel(

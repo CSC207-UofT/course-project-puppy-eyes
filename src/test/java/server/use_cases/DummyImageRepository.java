@@ -38,11 +38,19 @@ public class DummyImageRepository implements IImageRepository {
 
     @Override
     public String fetchUserProfileImageLink(int userId) {
+        if (!userUrls.containsKey(userId)) {
+            return null;
+        }
+
         return userUrls.get(userId).getUrl();
     }
 
     @Override
     public String fetchPetProfileImageLink(int petId) {
+        if (!petUrls.containsKey(petId)) {
+            return null;
+        }
+
         return petUrls.get(petId).getUrl();
     }
 
