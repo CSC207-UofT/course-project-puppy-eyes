@@ -100,10 +100,4 @@ public class UserWebGateway extends WebGateway {
         return getResponseEntity(response);
     }
 
-    @GetMapping("/fetchprofileimage")
-    public ResponseEntity fetchProfileImage(HttpServletRequest req, @RequestParam String userId) {
-        ResponseModel response = userController.fetchUserProfileImage(false, req.getHeader("userId"), userId);
-        return getResponseEntity(response);
-    }
-
 }
