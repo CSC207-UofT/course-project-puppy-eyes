@@ -60,7 +60,7 @@ class DummyPetRepositoryEntity {
     }
 
     public List<Integer> getRejected() {
-        return this.swipedOn;
+        return this.rejected;
     }
 
     public List<Integer> getMatches() {
@@ -216,7 +216,16 @@ public class DummyPetRepository implements IPetRepository {
 
     @Override
     public boolean unmatchPets(int pet1Id, int pet2Id) {
-        return false;
+        DummyPetRepositoryEntity dbPet1 = pets.stream().filter(pet -> pet.getId() == pet1Id).findFirst().orElse(null);
+        DummyPetRepositoryEntity dbPet2 = pets.stream().filter(pet -> pet.getId() == pet2Id).findFirst().orElse(null);
+
+        if (dbPet1 == null || dbPet2 == null) {
+            return false;
+        }
+
+        dbPet1.getMatches().remove(dbPet2.getId());
+        dbPet2.getMatches().remove(dbPet1.getId());
+        return true;
     }
 
     @Override

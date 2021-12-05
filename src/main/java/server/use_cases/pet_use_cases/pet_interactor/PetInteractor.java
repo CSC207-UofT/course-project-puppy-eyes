@@ -68,8 +68,8 @@ public class PetInteractor implements PetInteractorInputBoundary {
     }
 
     private ResponseModel reject(int pet1Id, int pet2Id) {
-        if (this.petRepository.fetchMatches(pet1Id).contains(pet2Id)) {
-            new ResponseModel(false, "Both pets are already matched with each other.");
+        if (this.petRepository.fetchMatches(pet1Id).contains(pet2Id) || this.petRepository.fetchMatches(pet2Id).contains(pet1Id)) {
+            return new ResponseModel(false, "Both pets are already matched with each other.");
         }
 
         // Remove both pets from each other's swiped list
@@ -78,7 +78,7 @@ public class PetInteractor implements PetInteractorInputBoundary {
 
         // Add the second pet to the first pet's rejected list
         this.petRepository.rejectPets(pet1Id, pet2Id);
-        return new ResponseModel(false, "Successfully rejected pet2 from pet1.");
+        return new ResponseModel(true, "Successfully rejected pet2 from pet1.");
     }
 
     private ResponseModel unswipe(int pet1Id, int pet2Id) {
@@ -94,7 +94,7 @@ public class PetInteractor implements PetInteractorInputBoundary {
     private ResponseModel unmatch(int pet1Id, int pet2Id) {
         if (this.petRepository.fetchMatches(pet1Id).contains(pet2Id) && this.petRepository.fetchMatches(pet2Id).contains(pet1Id)) {
             this.petRepository.unmatchPets(pet1Id, pet2Id);
-            return new ResponseModel(false, "Successfully unmatched pet1 and pet2.");
+            return new ResponseModel(true, "Successfully unmatched pet1 and pet2.");
         }
 
         return new ResponseModel(false, "These pets are not matched.");
