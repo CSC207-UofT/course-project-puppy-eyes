@@ -52,7 +52,7 @@ public class UserProfileFetcher implements UserProfileFetcherInputBoundary {
 
             User user = userRepository.fetchUser(userId);
 
-            String profileImgUrl = imageRepository.fetchPetProfileImageLink(userId);
+            String profileImgUrl = imageRepository.fetchUserProfileImageLink(userId);
 
             return new ResponseModel(
                     true,
