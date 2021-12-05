@@ -6,10 +6,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import server.ServerApplication;
 import server.adapters.UseCaseOutputBoundary;
-import server.controllers.IJSONPresenter;
 import server.controllers.IPetController;
 import server.controllers.IUserController;
-import server.drivers.IGeocoderService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +48,7 @@ public class CmdLineRunner implements CommandLineRunner {
     private final UseCaseOutputBoundary responsePresenter;
 
     public CmdLineRunner(IUserController userController, IPetController petController, IOSystem ioSystem,
-                         UseCaseOutputBoundary responsePresenter, IGeocoderService geocoderService) {
+                         UseCaseOutputBoundary responsePresenter) {
         this.userController = userController;
         this.petController = petController;
         this.responsePresenter = responsePresenter;
@@ -250,19 +248,6 @@ public class CmdLineRunner implements CommandLineRunner {
     }
 
     /**
-     * Return a mapping containing the necessary inputs for the
-     * geocoding command. The mapping is of the form:
-     *
-     *  query -> String query
-     */
-    public Map<String, String> getGeocoderInputs() {
-        PromptAndInputNameTuple[] inputPrompts = {
-                new PromptAndInputNameTuple("Enter a query: ", "query")
-        };
-
-        return getCommandInputs(inputPrompts);
-    }
-    /**
      * Given a string representation of a command name, if a corresponding
      * command exists, gather user inputs and run the command.
      *
@@ -402,7 +387,7 @@ public class CmdLineRunner implements CommandLineRunner {
         ioSystem.showOutput("== COMMANDS ==");
         ioSystem.showOutput("- createUser, createPet, fetchUserAccount, fetchPetProfile, editPet, swipePets," +
                 " unswipePets, rejectPets, unmatchPets, fetchPetMatches, fetPetSwipes, fetchUserPets, editUserProfile," +
-                " fetchUserProfile, generatePotentialMatches, exit");
+                " fetchUserProfile, generatePotentialMatches");
     }
 
     /**
@@ -411,17 +396,12 @@ public class CmdLineRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         logger.info("Starting command executor");
-        boolean isRunning = true;
 
-        while (isRunning) {
+        while (true) {
             showCommands();
             String command = ioSystem.getInput();
 
-            if (command.equals("exit")){
-                isRunning = false;
-            }else{
-                ioSystem.showOutput(selectAndRun(command));
-            }
+            ioSystem.showOutput(selectAndRun(command));
         }
     }
 }
