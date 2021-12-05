@@ -29,13 +29,10 @@ public interface IPetController {
      * Fetch a pet by given id.
      *
      *
-     * @param fromTerminal  whether this action is being run from command line prompt
-     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
-     *                      is true, this field does nothing.
      * @param petId     user entered pet id
      * @return A ResponseModel containing the response data
      */
-    ResponseModel fetchPetProfile(boolean fromTerminal, String headerUserId, String petId);
+    ResponseModel fetchPetProfile(String petId);
 
     /**
      * Edit a pet.
@@ -142,25 +139,5 @@ public interface IPetController {
      * @return a ResponseModel containing the response data
      */
     ResponseModel unmatchPets(boolean fromTerminal, String headerUserId, String pet1Id, String pet2Id);
-
-    /**
-     * Return a URL containing this pet's profile image
-     * @param fromTerminal  whether this action is being run from command line prompt
-     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
-     *                      is true, this field does nothing.
-     * @param petId         the pet's id
-     * @return a ResponseModel containing the response data
-     */
-    ResponseModel fetchPetProfileImage(boolean fromTerminal, String headerUserId, String petId);
-
-    /**
-     * Return a list of URL containing this pet's gallery images
-     * @param fromTerminal  whether this action is being run from command line prompt
-     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
-     *                      is true, this field does nothing.
-     * @param petId         the pet's id
-     * @return a ResponseModel containing the response data
-     */
-    ResponseModel fetchPetGalleryImages(boolean fromTerminal, String headerUserId, String petId);
 
 }

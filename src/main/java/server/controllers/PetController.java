@@ -21,8 +21,6 @@ import server.use_cases.pet_use_cases.pet_swipes_fetcher.PetSwipesFetcherInputBo
 import server.use_cases.pet_use_cases.pet_swipes_fetcher.PetSwipesFetcherRequestModel;
 import server.use_cases.ResponseModel;
 import server.adapters.UseCaseOutputBoundary;
-import server.use_cases.profile_image_fetcher.ProfileImageFetcherInputBoundary;
-import server.use_cases.profile_image_fetcher.ProfileImageFetcherRequestModel;
 
 /**
  * A controller that handles all functions relating to pet data.
@@ -37,7 +35,6 @@ public class PetController implements IPetController {
     PetMatchesFetcherInputBoundary petMatchesFetcher;
     PetMatchesGeneratorInputBoundary petMatchesGenerator;
     PetProfileImageChangerInputBoundary petProfileImageChanger;
-    ProfileImageFetcherInputBoundary profileImageFetcher;
     PetGalleryImagesFetcherInputBoundary petGalleryImagesFetcher;
     UseCaseOutputBoundary responsePresenter;
 
@@ -49,7 +46,6 @@ public class PetController implements IPetController {
                          PetMatchesFetcherInputBoundary petMatchesFetcher,
                          PetMatchesGeneratorInputBoundary petMatchesGenerator,
                          PetProfileImageChangerInputBoundary petProfileImageChanger,
-                         ProfileImageFetcherInputBoundary profileImageFetcher,
                          PetGalleryImagesFetcherInputBoundary petGalleryImagesFetcher,
                          UseCaseOutputBoundary responsePresenter) {
         this.petCreator = petCreator;
@@ -60,7 +56,6 @@ public class PetController implements IPetController {
         this.petInteractor = petInteractor;
         this.petMatchesGenerator = petMatchesGenerator;
         this.petProfileImageChanger = petProfileImageChanger;
-        this.profileImageFetcher = profileImageFetcher;
         this.petGalleryImagesFetcher = petGalleryImagesFetcher;
         this.responsePresenter = responsePresenter;
     }
@@ -103,9 +98,6 @@ public class PetController implements IPetController {
     /**
      * Given a pet id, fetch a pet's profile information.
      *
-     * @param fromTerminal  whether this action is being run from command line prompt
-     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
-     *                      is true, this field does nothing.
      * @param petId         the pet's id
      * @return a ResponseModel containing:
      *      {
@@ -123,9 +115,8 @@ public class PetController implements IPetController {
      *      }
      */
     @Override
-    public ResponseModel fetchPetProfile(boolean fromTerminal, String headerUserId, String petId) {
-        PetProfileFetcherRequestModel request = new PetProfileFetcherRequestModel(headerUserId, petId);
-        request.setFromTerminal(fromTerminal);
+    public ResponseModel fetchPetProfile(String petId) {
+        PetProfileFetcherRequestModel request = new PetProfileFetcherRequestModel(petId);
         return profileFetcher.fetchPetProfile(request);
     }
 
@@ -345,28 +336,6 @@ public class PetController implements IPetController {
         PetEditorRequestModel request = new PetEditorRequestModel(headerUserId, petId, newName, newAge, newBreed, newBiography);
         request.setFromTerminal(fromTerminal);
         return petEditor.editPet(request);
-    }
-
-    /**
-     * Return a URL containing this pet's profile image
-     * @param fromTerminal  whether this action is being run from command line prompt
-     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
-     *                      is true, this field does nothing.
-     * @param petId         the pet's id
-     * @return a ResponseModel containing:
-     * {
-     *       isSuccess: "true"/"false"
-     *       message: The response message
-     *       // If successful, then include:
-     *       data: {
-     *          url: the url of the image
-     *       }
-     *  }
-     */
-    public ResponseModel fetchPetProfileImage(boolean fromTerminal, String headerUserId, String petId) {
-        ProfileImageFetcherRequestModel request = new ProfileImageFetcherRequestModel(headerUserId, petId, false);
-        request.setFromTerminal(fromTerminal);
-        return profileImageFetcher.fetchProfileImage(request);
     }
 
     /**

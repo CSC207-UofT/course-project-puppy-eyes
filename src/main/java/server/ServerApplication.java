@@ -38,8 +38,6 @@ import server.use_cases.pet_use_cases.pet_swipes_fetcher.PetSwipesFetcher;
 import server.use_cases.pet_use_cases.pet_swipes_fetcher.PetSwipesFetcherInputBoundary;
 import server.use_cases.ResponsePresenter;
 import server.adapters.UseCaseOutputBoundary;
-import server.use_cases.profile_image_fetcher.ProfileImageFetcher;
-import server.use_cases.profile_image_fetcher.ProfileImageFetcherInputBoundary;
 import server.use_cases.user_use_cases.session_token_generator.SessionTokenGenerator;
 import server.use_cases.user_use_cases.session_token_generator.SessionTokenGeneratorInputBoundary;
 import server.use_cases.user_use_cases.user_account_editor.UserAccountEditor;
@@ -75,12 +73,6 @@ class BeanHolder {
     @Bean
     UserAccountValidatorInputBoundary userCredentialsValidatorBean() {
         return new UserAccountValidator();
-    }
-
-    @Autowired
-    @Bean
-    ProfileImageFetcherInputBoundary profileImageFetcherBean(ImageRepository imageRepository, UserRepository userRepository, PetRepository petRepository) {
-        return new ProfileImageFetcher(imageRepository, petActionValidatorBean(petRepository), userActionValidatorBean(userRepository));
     }
 
     @Autowired
@@ -127,8 +119,8 @@ class BeanHolder {
 
     @Autowired
     @Bean
-    UserProfileFetcherInputBoundary userProfileFetcherBean(UserRepository userRepository, PetRepository petRepository) {
-        return new UserProfileFetcher(userRepository, petRepository, userActionValidatorBean(userRepository));
+    UserProfileFetcherInputBoundary userProfileFetcherBean(UserRepository userRepository, PetRepository petRepository, ImageRepository imageRepository) {
+        return new UserProfileFetcher(userRepository, petRepository, imageRepository, userActionValidatorBean(userRepository));
     }
 
     @Autowired
@@ -162,8 +154,8 @@ class BeanHolder {
 
     @Autowired
     @Bean
-    PetProfileFetcherInputBoundary petProfileFetcherBean(PetRepository petRepository) {
-        return new PetProfileFetcher(petRepository, petActionValidatorBean(petRepository));
+    PetProfileFetcherInputBoundary petProfileFetcherBean(PetRepository petRepository, ImageRepository imageRepository) {
+        return new PetProfileFetcher(petRepository, imageRepository);
     }
 
     @Autowired
@@ -210,11 +202,10 @@ class BeanHolder {
                 userCreatorBean(userRepository),
                 userAccountFetcherBean(userRepository),
                 userAccountEditorBean(userRepository),
-                userProfileFetcherBean(userRepository, petRepository),
+                userProfileFetcherBean(userRepository, petRepository, imageRepository),
                 userProfileEditorBean(userRepository),
                 userPetsFetcherBean(userRepository),
                 userProfileImageChangerBean(imageRepository, userRepository),
-                profileImageFetcherBean(imageRepository, userRepository, petRepository),
                 responsePresenterBean()
         );
     }
@@ -224,14 +215,13 @@ class BeanHolder {
     IPetController petControllerBean(PetRepository petRepository, UserRepository userRepository, ImageRepository imageRepository) {
         return new PetController(
                 petCreatorBean(petRepository, userRepository),
-                petProfileFetcherBean(petRepository),
+                petProfileFetcherBean(petRepository, imageRepository),
                 petEditorBean(petRepository),
                 petInteractorBean(petRepository),
                 petSwipesFetcherBean(petRepository),
                 petMatchesFetcherBean(petRepository),
                 petMatchesGeneratorBean(userRepository, petRepository),
                 petProfileImageChangerBean(imageRepository, petRepository),
-                profileImageFetcherBean(imageRepository, userRepository, petRepository),
                 petGalleryImagesFetcher(imageRepository, petRepository),
                 responsePresenterBean()
         );
@@ -285,7 +275,16 @@ class BeanHolder {
 
         authBean.setFilter(new AuthFilter(jwtServiceBean()));
         authBean.addUrlPatterns("/authtest");
-        authBean.addUrlPatterns("/pets/*");
+        authBean.addUrlPatterns("/pets/create");
+        authBean.addUrlPatterns("/pets/editprofile");
+        authBean.addUrlPatterns("/pets/swipe");
+        authBean.addUrlPatterns("/pets/unswipe");
+        authBean.addUrlPatterns("/pets/reject");
+        authBean.addUrlPatterns("/pets/unmatch");
+        authBean.addUrlPatterns("/pets/fetchswipes");
+        authBean.addUrlPatterns("/pets/fetchmatches");
+        authBean.addUrlPatterns("/pets/generatepotentialmatches");
+        authBean.addUrlPatterns("/pets/setprofileimage");
         authBean.addUrlPatterns("/users/profile");
         authBean.addUrlPatterns("/users/account");
         authBean.addUrlPatterns("/users/editaccount");

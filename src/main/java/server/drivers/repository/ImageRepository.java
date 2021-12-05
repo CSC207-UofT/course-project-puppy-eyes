@@ -46,19 +46,6 @@ public class ImageRepository implements IImageRepository {
     }
 
     @Override
-    public List<String> fetchPetImagesLink(int petId) {
-        List<ImageDatabaseEntity> searchResult = repository.findAllByOwnerId(petId);
-
-        List<String> urls = searchResult.stream()
-                .filter(e -> e.getType().equalsIgnoreCase("GALLERY"))
-                .map(e -> e.getUrl())
-                .collect(Collectors.toList());
-
-        return urls;
-    }
-
-
-    @Override
     public boolean setPetProfileImage(int ownerId, String imageId, String url) {
         return setProfileImage(ownerId, imageId, url, "PET_PROFILE");
     }
@@ -84,28 +71,6 @@ public class ImageRepository implements IImageRepository {
         image.setUrl(url);
         image.setAssetId(imageId);
         repository.save(image);
-        return true;
-    }
-
-    @Override
-    public boolean addPetImage(int petId, String imageId, String url) {
-        ImageDatabaseEntity image = new ImageDatabaseEntity(imageId, petId, url, "GALLERY");
-        repository.save(image);
-        return true;
-    }
-
-    @Override
-    public boolean deletePetImage(int petId, String imageId) {
-        Optional<ImageDatabaseEntity> searchResult = repository.findById(imageId);
-
-        if (searchResult.isEmpty()) {
-            return false;
-        }
-
-        ImageDatabaseEntity image = searchResult.get();
-        // Delete the existing image from the image server
-        imageService.deleteImage(image.getAssetId());
-        repository.delete(image);
         return true;
     }
 
