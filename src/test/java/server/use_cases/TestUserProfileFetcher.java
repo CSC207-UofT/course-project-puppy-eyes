@@ -38,7 +38,7 @@ public class TestUserProfileFetcher {
         DummyPetRepository petRepository = new DummyPetRepository(userRepository);
         userProfileFetcher = new UserProfileFetcher(userRepository, petRepository, new UserActionValidator(userRepository));
 
-        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
+        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator(), new DummyGeocoderService());
         PetCreator petCreator = new PetCreator(petRepository, userRepository, new PetProfileValidator());
         PetInteractor petInteractor = new PetInteractor(petRepository, new PetActionValidator(petRepository));
 

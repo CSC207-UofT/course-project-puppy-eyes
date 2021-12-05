@@ -3,7 +3,7 @@ package server.entities;
 public class UserBuilder implements IUserBuilder {
 
     private final String firstName, lastName, password, currentCity, email;
-    private String currentAddress = "", phoneNumber = "", instagram = "", facebook = "", biography = "";
+    private String currentAddress = "", phoneNumber = "", instagram = "", facebook = "", biography = "", lat = "", lng = "";
     private int id = -1;
 
     public UserBuilder(String firstName, String lastName, String password, String currentCity, String email) {
@@ -22,6 +22,8 @@ public class UserBuilder implements IUserBuilder {
         user.getContactInfo().setInstagram(this.instagram);
         user.getContactInfo().setFacebook(this.facebook);
         user.setId(id);
+        user.setLat(this.lat);
+        user.setLng(this.lng);
 
         return user;
     }
@@ -68,6 +70,18 @@ public class UserBuilder implements IUserBuilder {
     @Override
     public IUserBuilder facebook(String facebook) {
         this.facebook = facebook;
+        return this;
+    }
+
+    @Override
+    public IUserBuilder lat(String lat) {
+        this.lat = lat;
+        return this;
+    }
+
+    @Override
+    public IUserBuilder lng(String lng) {
+        this.lng = lng;
         return this;
     }
 }

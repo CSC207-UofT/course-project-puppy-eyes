@@ -25,7 +25,7 @@ public class TestUserAccountFetcher {
         BCryptService bcryptService = new BCryptService();
         DummyUserRepository userRepository = new DummyUserRepository();
         userAccountFetcher = new UserAccountFetcher(userRepository, new UserActionValidator(userRepository));
-        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
+        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator(), new DummyGeocoderService());
 
         // Fill the repository with some dummy users
         userCreator.createUser(new UserCreatorRequestModel("andrew", "qiu", "1234 home st",

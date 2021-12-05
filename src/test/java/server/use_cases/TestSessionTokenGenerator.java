@@ -27,7 +27,7 @@ public class TestSessionTokenGenerator {
     public void setUp() {
         BCryptService bcryptService = new BCryptService();
         DummyUserRepository userRepository = new DummyUserRepository();
-        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
+        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator(), new DummyGeocoderService());
         jwtService = new JwtService(true);
         sessionTokenGenerator = new SessionTokenGenerator(userRepository, jwtService, bcryptService);
 

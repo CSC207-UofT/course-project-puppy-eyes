@@ -27,7 +27,7 @@ public class TestPetProfileFetcher {
     public void setUp() {
         BCryptService bcryptService = new BCryptService();
         DummyUserRepository userRepository = new DummyUserRepository();
-        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
+        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator(), new DummyGeocoderService());
         dummyPetRepository = new DummyPetRepository(userRepository);
         petProfileFetcher = new PetProfileFetcher(dummyPetRepository, new PetActionValidator(dummyPetRepository));
 

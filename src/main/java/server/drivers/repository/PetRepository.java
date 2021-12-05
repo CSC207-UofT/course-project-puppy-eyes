@@ -86,7 +86,6 @@ public class PetRepository implements IPetRepository {
         }
     }
 
-    // TODO fix this not working
     /**
      * Add pet2 to pet1's swiped list
      * @param pet1Id

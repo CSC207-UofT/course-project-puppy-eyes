@@ -27,8 +27,8 @@ public class TestUserAccountEditor {
         UserAccountValidator userAccountValidator = new UserAccountValidator();
 
         dummyUserRepository = new DummyUserRepository();
-        accountEditor = new UserAccountEditor(dummyUserRepository, bcryptService, userAccountValidator, new UserActionValidator(dummyUserRepository));
-        UserCreator userCreator = new UserCreator(dummyUserRepository, bcryptService, userAccountValidator);
+        accountEditor = new UserAccountEditor(dummyUserRepository, bcryptService, userAccountValidator, new UserActionValidator(dummyUserRepository), new DummyGeocoderService());
+        UserCreator userCreator = new UserCreator(dummyUserRepository, bcryptService, userAccountValidator, new DummyGeocoderService());
 
         // Create some users
         userCreator.createUser(new UserCreatorRequestModel("andrew", "qiu", "1234 home st",

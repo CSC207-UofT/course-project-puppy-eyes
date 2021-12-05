@@ -34,7 +34,7 @@ public class TestUserPetsFetcher {
         userRepository = new DummyUserRepository();
         petRepository = new DummyPetRepository(userRepository);
         userPetsFetcher = new UserPetsFetcher(userRepository, new UserActionValidator(userRepository));
-        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
+        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator(), new DummyGeocoderService());
 
         // Create some users and pets
         user1Id = Integer.parseInt(((UserCreatorResponseModel) userCreator.createUser(
