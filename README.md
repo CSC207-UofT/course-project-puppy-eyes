@@ -270,7 +270,7 @@ POST
 
 - **Requires Authenication**
 
-Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+No
 
 - **Method**
 
