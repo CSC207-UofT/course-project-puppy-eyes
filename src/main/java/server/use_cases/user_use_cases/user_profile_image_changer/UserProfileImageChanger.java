@@ -43,10 +43,10 @@ public class UserProfileImageChanger implements UserProfileImageChangerInputBoun
         String url = uploadResponse.getUrl();
         String assetId = uploadResponse.getAssetId();
 
-        imageRepository.setUserProfileImage(userId, assetId, url);
+        boolean isSuccess = imageRepository.setUserProfileImage(userId, assetId, url);
 
         return new ResponseModel(
-                true,
+                isSuccess,
                 "Successfully changed the user's profile image.",
                 new UserProfileImageChangerResponseModel(assetId, url)
         );
