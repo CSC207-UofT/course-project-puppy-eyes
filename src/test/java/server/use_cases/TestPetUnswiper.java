@@ -34,7 +34,7 @@ public class TestPetUnswiper {
         userRepository = new DummyUserRepository();
         petRepository = new DummyPetRepository(userRepository);
         petInteractor = new PetInteractor(petRepository, new PetActionValidator(petRepository));
-        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
+        UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator(), new DummyGeocoderService());
 
         user1Id = Integer.parseInt(((UserCreatorResponseModel) userCreator.createUser(
                 new UserCreatorRequestModel(

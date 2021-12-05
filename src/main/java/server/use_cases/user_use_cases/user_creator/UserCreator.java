@@ -1,6 +1,8 @@
 package server.use_cases.user_use_cases.user_creator;
 
+import server.drivers.IGeocoderService;
 import server.drivers.IPasswordEncryptor;
+import server.drivers.LatLng;
 import server.entities.User;
 import server.entities.UserBuilder;
 import server.use_cases.repo_abstracts.IUserRepository;
@@ -13,15 +15,17 @@ import server.use_cases.user_use_cases.user_account_validator.UserAccountValidat
  */
 public class UserCreator implements UserCreatorInputBoundary {
 
-    IUserRepository userRepository;
-    IPasswordEncryptor passwordEncryptor;
-    UserAccountValidatorInputBoundary userAccountValidator;
+    private final IUserRepository userRepository;
+    private final IPasswordEncryptor passwordEncryptor;
+    private final IGeocoderService geocoderService;
+    private final UserAccountValidatorInputBoundary userAccountValidator;
 
     public UserCreator(IUserRepository userRepository, IPasswordEncryptor passwordEncryptor,
-                       UserAccountValidatorInputBoundary userAccountValidator) {
+                       UserAccountValidatorInputBoundary userAccountValidator, IGeocoderService geocoderService) {
         this.userRepository = userRepository;
         this.passwordEncryptor = passwordEncryptor;
         this.userAccountValidator = userAccountValidator;
+        this.geocoderService = geocoderService;
     }
 
 
@@ -52,6 +56,11 @@ public class UserCreator implements UserCreatorInputBoundary {
             return verifyInputsResponse;
         }
 
+        // Ping geocoder API to calculate the lat lng
+        // GeocoderService.getLatLng returns a List of LatLng objects, but here we are assuming that the current user's
+        // current address and city are sufficiently specific to return a unique latitude-longitude tuple
+        LatLng latLng = this.geocoderService.getLatLng(request.getCurrentAddress() + ", " + request.getCurrentCity()).get(0);
+
         User newUser = new UserBuilder(
                 request.getFirstName(),
                 request.getLastName(),
@@ -60,6 +69,8 @@ public class UserCreator implements UserCreatorInputBoundary {
                 request.getEmail()
         )
         .currentAddress(request.getCurrentAddress())
+        .lat(String.valueOf(latLng.getLat()))
+        .lng(String.valueOf(latLng.getLng()))
         .create();
 
         int id = userRepository.createUser(newUser);

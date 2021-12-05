@@ -19,10 +19,11 @@ class DummyUserRepositoryEntity {
     private String currentCity;
     private String passwordHash;
     private String biography;
+    private String lat, lng;
     private List<Integer> petList;
     private DummyContactInfoRepositoryEntity contactInfo;
 
-    public DummyUserRepositoryEntity(int id, String firstName, String lastName, String currentAddress, String currentCity, String passwordHash, String email) {
+    public DummyUserRepositoryEntity(int id, String firstName, String lastName, String currentAddress, String currentCity, String passwordHash, String email, String lat, String lng) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -33,6 +34,8 @@ class DummyUserRepositoryEntity {
         this.contactInfo.setEmail(email);
         this.biography = "";
         this.petList = new ArrayList<>();
+        this.lat = lat;
+        this.lng = lng;
     }
 
     public int getId() {
@@ -67,6 +70,14 @@ class DummyUserRepositoryEntity {
         return biography;
     }
 
+    public String getLat() {
+        return this.lat;
+    }
+
+    public String getLng() {
+        return this.lng;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -89,6 +100,14 @@ class DummyUserRepositoryEntity {
 
     public void setBiography(String biography) {
         this.biography = biography;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
     public DummyContactInfoRepositoryEntity getContactInfo() {
@@ -164,7 +183,7 @@ public class DummyUserRepository implements IUserRepository {
         currentMaxId++;
         int id = currentMaxId;
         users.add(new DummyUserRepositoryEntity(id, user.getFirstName(), user.getLastName(), user.getCurrentAddress(),
-                user.getCurrentCity(), user.getPasswordHash(), user.getContactInfo().getEmail()));
+                user.getCurrentCity(), user.getPasswordHash(), user.getContactInfo().getEmail(), user.getLat(), user.getLng()));
         return id;
     }
 
@@ -186,6 +205,8 @@ public class DummyUserRepository implements IUserRepository {
             .instagram(dbUser.getContactInfo().getInstagram())
             .facebook(dbUser.getContactInfo().getFacebook())
             .id(dbUser.getId())
+            .lat(dbUser.getLat())
+            .lng(dbUser.getLng())
             .create();
 
             return user;
@@ -213,6 +234,8 @@ public class DummyUserRepository implements IUserRepository {
             .instagram(dbUser.getContactInfo().getInstagram())
             .facebook(dbUser.getContactInfo().getFacebook())
             .id(dbUser.getId())
+            .lat(dbUser.getLat())
+            .lng(dbUser.getLng())
             .create();
             users.add(user);
         }
@@ -221,7 +244,7 @@ public class DummyUserRepository implements IUserRepository {
     }
 
     @Override
-    public boolean editUserAccount(int userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail) {
+    public boolean editUserAccount(int userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail, String newLat, String newLng) {
         DummyUserRepositoryEntity dbUser = users.stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
 
         if (dbUser != null) {
@@ -231,6 +254,8 @@ public class DummyUserRepository implements IUserRepository {
             dbUser.setCurrentCity(newCity);
             dbUser.setPasswordHash(newPassword);
             dbUser.getContactInfo().setEmail(newEmail);
+            dbUser.setLat(newLat);
+            dbUser.setLng(newLng);
             return true;
         } else return false;
     }

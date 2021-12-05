@@ -36,10 +36,12 @@ public interface IUserRepository {
      * @param newCity       the user's new current city
      * @param newPassword   the user's new password
      * @param newEmail      the user's new email
+     * @param newLat        the user's new latitude
+     * @param newLng        the user's new longitude
      *
      * @return if the editing is successfully done or not
      */
-    public boolean editUserAccount(int userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail);
+    public boolean editUserAccount(int userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail, String newLat, String newLng);
 
     /**
      * Edit a user's profile given user id and new information.

@@ -48,7 +48,9 @@ public class UserRepository implements IUserRepository {
                 user.getCurrentCity(),
                 user.getMatchingDistanceCap(),
                 user.getBiography(),
-                contactInfoDbEntity
+                contactInfoDbEntity,
+                user.getLat(),
+                user.getLng()
         );
         repository.save(userDbEntity);
 
@@ -92,11 +94,13 @@ public class UserRepository implements IUserRepository {
      * @param newCity       the user's new current city
      * @param newPassword   the user's new password
      * @param newEmail      the user's new email
+     * @param newLat        the user's new latitude
+     * @param newLng        the user's new longitude
      *
      * @return if the editing is successfully done or not
      */
     @Override
-    public boolean editUserAccount(int userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail) {
+    public boolean editUserAccount(int userId, String newFirstName, String newLastName, String newAddress, String newCity, String newPassword, String newEmail, String newLat, String newLng) {
         Optional<UserDatabaseEntity> searchResult = repository.findById(userId);
 
         if (searchResult.isPresent()) {
@@ -108,6 +112,8 @@ public class UserRepository implements IUserRepository {
             user.setCurrentAddress(newAddress);
             user.setCurrentCity(newCity);
             user.setPassword(newPassword);
+            user.setLat(newLat);
+            user.setLng(newLng);
 
             userContactInfo.setEmail(newEmail);
 
@@ -177,6 +183,8 @@ public class UserRepository implements IUserRepository {
             .instagram(dbUser.getContactInfo().getInstagram())
             .facebook(dbUser.getContactInfo().getFacebook())
             .id(dbUser.getId())
+            .lat(dbUser.getLat())
+            .lng(dbUser.getLng())
             .create();
             users.add(user);
         }

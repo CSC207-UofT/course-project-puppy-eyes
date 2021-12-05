@@ -59,4 +59,18 @@ public interface IUserBuilder {
      */
     public IUserBuilder facebook(String facebook);
 
+    /**
+     * Set the lat field
+     * @param lat
+     * @return the current instance to allow chaining
+     */
+    public IUserBuilder lat(String lat);
+
+    /**
+     * Set the lng field
+     * @param lng
+     * @return the current instance to allow chaining
+     */
+    public IUserBuilder lng(String lng);
+
 }

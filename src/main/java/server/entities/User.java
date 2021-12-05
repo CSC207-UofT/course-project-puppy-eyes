@@ -1,14 +1,10 @@
 package server.entities;
 
 public class User {
-    private String firstName;
-    private String lastName;
-    private String currentAddress;
-    private String currentCity;
+    private String firstName, lastName, currentAddress, currentCity, biography = "", lat = "", lng = "";
     private double matchingDistanceCap;
     private String password;
     private final ContactInfo contactInfo;
-    private String biography;
     private int id;
 
     /**
@@ -30,7 +26,6 @@ public class User {
         this.password = password;
         this.contactInfo = new ContactInfo();
         this.contactInfo.setEmail(email);
-        this.biography = "";
     }
 
     public String getFirstName() {return this.firstName;}
@@ -51,6 +46,22 @@ public class User {
 
     public String getPasswordHash(){
         return this.password;
+    }
+
+    public String getLat(){
+        return this.lat;
+    }
+
+    public String getLng() {
+        return this.lng;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
     public String getBiography(){

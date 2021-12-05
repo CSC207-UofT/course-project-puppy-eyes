@@ -1,5 +1,4 @@
 package server.use_cases.pet_use_cases.pet_matches_generator;
-import server.drivers.IGeocoderService;
 import server.drivers.LatLng;
 import server.entities.User;
 import server.use_cases.ResponseModel;
@@ -18,16 +17,13 @@ public class PetMatchesGenerator implements PetMatchesGeneratorInputBoundary {
     private final IUserRepository userRepository;
     private final IPetRepository petRepository;
     private final PetActionValidatorInputBoundary petActionValidator;
-    private final IGeocoderService geocoderService;
 
     public PetMatchesGenerator(IUserRepository userRepository,
                                IPetRepository petRepository,
-                               PetActionValidatorInputBoundary petActionValidator,
-                               IGeocoderService geocoderService) {
+                               PetActionValidatorInputBoundary petActionValidator) {
         this.userRepository = userRepository;
         this.petRepository = petRepository;
         this.petActionValidator = petActionValidator;
-        this.geocoderService = geocoderService;
     }
 
     @Override
@@ -42,52 +38,35 @@ public class PetMatchesGenerator implements PetMatchesGeneratorInputBoundary {
         }
 
         int petId = Integer.parseInt(request.getPetId());
+        int userId = petRepository.fetchPet(petId).getUserId();
 
         List<String> potentialMatches = new ArrayList<>();
 
-        User currentUser = userRepository.fetchUser(petId);
-
         // Fetch all users from the database
         List<User> users = this.userRepository.fetchAllUsers();
+
+        // currentUser will not be null, or else the action validator would have failed
+        User currentUser = users.stream().filter(u -> u.getId() == userId).findFirst().orElse(null);
+
         List<Integer> rejectedPets = this.petRepository.fetchRejected(petId);
 
-        // backup code for if geocoding service is unavailable
-//        for (User user : users) {
-//            if (user.getId() == currentUser.getId())
-//                continue;
-//
-//            List<Integer> petIds = this.userRepository.fetchUserPets(user.getId());
-//
-//            for (int id : petIds) {
-//                // Only add the other user's pet if it's not on this pet's rejected list
-//                if (rejectedPets.contains(id))
-//                    continue;
-//
-//                potentialMatches.add(String.valueOf(id));
-//            }
-//        }
-
-        // GeocoderService.getLatLng returns a List of LatLng objects, but here we are assuming that the current user's
-        // current address and city are sufficiently specific to return a unique latitude-longitude tuple
-        LatLng currentUserLatLng = this.geocoderService.getLatLng(currentUser.getCurrentAddress() + ", " + currentUser.getCurrentCity()).get(0);
+        LatLng currUserLatLng = new LatLng(Double.valueOf(currentUser.getLat()), Double.valueOf(currentUser.getLng()));
 
         for (User otherUser : users) {
             // Do not fetch pets for the same user
             if (otherUser.getId() == currentUser.getId())
                 continue;
 
-            List<LatLng> otherLatLngs = geocoderService.getLatLng(otherUser.getCurrentAddress() + ", " + otherUser.getCurrentCity());
+            LatLng otherLatLng = new LatLng(Double.valueOf(otherUser.getLat()), Double.valueOf(otherUser.getLng()));
 
-            for (LatLng otherLatLng : otherLatLngs) {
-                // If the other user is within this user's matching distance
-                if (currentUserLatLng.calculateDistance(otherLatLng) <= currentUser.getMatchingDistanceCap()) {
-                    List<Integer> otherUserPets = userRepository.fetchUserPets(otherUser.getId());
+            // Check if the other user is within this user's matching distance
+            if (currUserLatLng.calculateDistance(otherLatLng) <= currentUser.getMatchingDistanceCap()) {
+                List<Integer> otherUserPets = userRepository.fetchUserPets(otherUser.getId());
 
-                    for (int otherPetId : otherUserPets) {
-                        // Only add the other user's pet if it's not on this pet's rejected list
-                        if (!rejectedPets.contains(otherPetId)) {
-                            potentialMatches.add(String.valueOf(otherPetId));
-                        }
+                for (int otherPetId : otherUserPets) {
+                    // Only add the other user's pet if it's not on this pet's rejected list
+                    if (!rejectedPets.contains(otherPetId)) {
+                        potentialMatches.add(String.valueOf(otherPetId));
                     }
                 }
             }

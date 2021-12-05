@@ -27,6 +27,12 @@ public class UserDatabaseEntity {
     @Column(name = "current_city")
     private String currentCity;
 
+    @Column(name = "lat")
+    private String lat;
+
+    @Column(name = "lng")
+    private String lng;
+
     @Column(name = "matching_distance_cap")
     private Double matchingDistanceCap;
 
@@ -41,7 +47,7 @@ public class UserDatabaseEntity {
 
     public UserDatabaseEntity(String firstName, String lastName, String password, String currentAddress,
                               String currentCity, Double matchingDistanceCap, String biography,
-                              ContactInfoDatabaseEntity contactInfo) {
+                              ContactInfoDatabaseEntity contactInfo, String lat, String lng) {
         super();
         this.firstName = firstName;
         this.lastName = lastName;
@@ -51,6 +57,8 @@ public class UserDatabaseEntity {
         this.matchingDistanceCap = matchingDistanceCap;
         this.biography = biography;
         this.contactInfo = contactInfo;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     public UserDatabaseEntity() { }
@@ -75,6 +83,22 @@ public class UserDatabaseEntity {
 
     public String getCurrentCity() {
         return currentCity;
+    }
+
+    public String getLat() {
+        return this.lat;
+    }
+
+    public String getLng() {
+        return this.lng;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
     public List<PetDatabaseEntity> getPets() {

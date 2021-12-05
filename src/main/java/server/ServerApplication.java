@@ -110,7 +110,7 @@ class BeanHolder {
     @Autowired
     @Bean()
     UserCreatorInputBoundary userCreatorBean(UserRepository userRepository) {
-        return new UserCreator(userRepository, passwordEncryptorBean(), userCredentialsValidatorBean());
+        return new UserCreator(userRepository, passwordEncryptorBean(), userCredentialsValidatorBean(), geocoderServiceBean());
     }
 
     @Autowired
@@ -122,7 +122,7 @@ class BeanHolder {
     @Autowired
     @Bean
     UserAccountEditorInputBoundary userAccountEditorBean(UserRepository userRepository) {
-        return new UserAccountEditor(userRepository, passwordEncryptorBean(), userCredentialsValidatorBean(), userActionValidatorBean(userRepository));
+        return new UserAccountEditor(userRepository, passwordEncryptorBean(), userCredentialsValidatorBean(), userActionValidatorBean(userRepository), geocoderServiceBean());
     }
 
     @Autowired
@@ -187,7 +187,7 @@ class BeanHolder {
     @Autowired
     @Bean
     PetMatchesGeneratorInputBoundary petMatchesGeneratorBean(UserRepository userRepository, PetRepository petRepository) {
-        return new PetMatchesGenerator(userRepository, petRepository, petActionValidatorBean(petRepository), geocoderServiceBean());
+        return new PetMatchesGenerator(userRepository, petRepository, petActionValidatorBean(petRepository));
     }
 
     @Autowired

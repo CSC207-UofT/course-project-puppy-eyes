@@ -20,7 +20,7 @@ public class TestUserCreator {
     @BeforeEach
     public void setUp() {
         BCryptService bcryptService = new BCryptService();
-        userCreator = new UserCreator(new DummyUserRepository(), bcryptService, new UserAccountValidator());
+        userCreator = new UserCreator(new DummyUserRepository(), bcryptService, new UserAccountValidator(), new DummyGeocoderService());
     }
 
     @Test()

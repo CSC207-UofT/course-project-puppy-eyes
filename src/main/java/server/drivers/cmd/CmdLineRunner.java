@@ -389,11 +389,6 @@ public class CmdLineRunner implements CommandLineRunner {
             case "generatePotentialMatches":
                 inputs = getFetchPetProfileInputs();
                 return responsePresenter.formatResponse(petController.generatePotentialMatches(true, null, inputs.get("petId")));
-//
-//            case "geocoder":
-//                inputs = getGeocoderInputs();
-//                JSONPresenter jsonPresenter = new JSONPresenter();
-//                return responsePresenter.formatResponse(geocoderService.getLatLng(inputs.get("query")));
 
             default:
                 return "Command not found.";

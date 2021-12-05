@@ -31,7 +31,7 @@ public class TestPetEditor {
         DummyUserRepository userRepository = new DummyUserRepository();
         dummyPetRepository = new DummyPetRepository(userRepository);
 
-        userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator());
+        userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator(), new DummyGeocoderService());
         petEditor = new PetEditor(dummyPetRepository, new PetProfileValidator(), new PetActionValidator(dummyPetRepository));
 
         // Create some users

@@ -9,14 +9,14 @@ import java.util.List;
  */
 public class PetMatchesGeneratorResponseModel extends ResponseData {
 
-    private final List<String> potentialMatches;
+    private final List<String> petIds;
 
     public PetMatchesGeneratorResponseModel(List<String> potentialMatches) {
-        this.potentialMatches = potentialMatches;
+        this.petIds = potentialMatches;
     }
 
-    public List<String> getPotentialMatches() {
-        return this.potentialMatches;
+    public List<String> getPetIds() {
+        return this.petIds;
     }
 
 }
