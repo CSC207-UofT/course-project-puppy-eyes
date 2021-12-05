@@ -3,8 +3,8 @@ package server.entities;
 public class UserBuilder implements IUserBuilder {
 
     private final String firstName, lastName, password, currentCity, email;
-    private String currentAddress, phoneNumber, instagram, facebook, biography;
-    private int id;
+    private String currentAddress = "", phoneNumber = "", instagram = "", facebook = "", biography = "";
+    private int id = -1;
 
     public UserBuilder(String firstName, String lastName, String password, String currentCity, String email) {
         this.firstName = firstName;
