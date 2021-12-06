@@ -58,7 +58,6 @@ public class PetInteractor implements PetInteractorInputBoundary {
             this.petRepository.unswipePets(pet1Id, pet2Id);
             this.petRepository.unswipePets(pet2Id, pet1Id);
             this.petRepository.matchPets(pet1Id, pet2Id);
-            this.petRepository.matchPets(pet2Id, pet1Id);
             return new ResponseModel(true, "Successfully swiped and matched both pets.");
         }
 
