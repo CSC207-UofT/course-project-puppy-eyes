@@ -96,7 +96,6 @@ public class UserWebGateway extends WebGateway {
     @GetMapping("/fetchpets")
     public ResponseEntity fetchUserPets(HttpServletRequest req, @RequestParam String userId) {
         ResponseModel response = userController.fetchUserPets(false, req.getHeader("userId"), userId);
-
         return getResponseEntity(response);
     }
 

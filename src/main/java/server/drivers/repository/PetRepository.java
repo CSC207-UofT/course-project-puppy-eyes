@@ -115,8 +115,10 @@ public class PetRepository implements IPetRepository {
             return false;
         }
 
-        RelationDatabaseEntity matchRelation = new RelationDatabaseEntity(pet1Id, pet2Id, "MATCH");
-        relationRepository.getRepository().save(matchRelation);
+        RelationDatabaseEntity matchRelation1 = new RelationDatabaseEntity(pet1Id, pet2Id, "MATCH");
+        RelationDatabaseEntity matchRelation2 = new RelationDatabaseEntity(pet2Id, pet1Id, "MATCH");
+        relationRepository.getRepository().save(matchRelation1);
+        relationRepository.getRepository().save(matchRelation2);
         return true;
     }
 

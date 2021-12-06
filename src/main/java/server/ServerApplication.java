@@ -277,6 +277,7 @@ class BeanHolder {
         authBean.addUrlPatterns("/pets/generatepotentialmatches");
         authBean.addUrlPatterns("/pets/setprofileimage");
         authBean.addUrlPatterns("/users/profile");
+        authBean.addUrlPatterns("/users/fetchpets");
         authBean.addUrlPatterns("/users/account");
         authBean.addUrlPatterns("/users/editaccount");
         authBean.addUrlPatterns("/users/editprofile");
