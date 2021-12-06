@@ -1,7 +1,6 @@
 package server.drivers;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * An implementation of IJwtService that uses an external library to provide a JWT service.
+ */
 @Component
 public class JwtService implements IJwtService {
 

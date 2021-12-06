@@ -6,5 +6,11 @@ import server.use_cases.ResponseModel;
  * An input boundary for the "create pet" use case.
  */
 public interface PetCreatorInputBoundary {
+
+    /**
+     * Given a request object, perform the use case and return a ResponseModel
+     * @param request
+     * @return a ResponseModel object
+     */
     ResponseModel createPet(PetCreatorRequestModel request);
 }

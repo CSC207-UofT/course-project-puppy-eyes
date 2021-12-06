@@ -5,6 +5,10 @@ import server.adapters.UseCaseOutputBoundary;
 
 import java.util.HashMap;
 
+/**
+ * An implementation of UseCaseOutputBoundary whose goal is to format a ResponseModel into
+ * a String
+ */
 public class ResponsePresenter implements UseCaseOutputBoundary {
 
     IJSONPresenter jsonPresenter;

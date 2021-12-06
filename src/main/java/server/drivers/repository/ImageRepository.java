@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * An access point from the program to the "Image" table in our database.
+ */
 @Repository
 public class ImageRepository implements IImageRepository {
 

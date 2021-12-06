@@ -2,8 +2,16 @@ package server.use_cases.pet_use_cases.pet_matches_generator;
 
 import server.use_cases.ResponseModel;
 
+/**
+ * An input boundary for the "pet matches generator" use case
+ */
 public interface PetMatchesGeneratorInputBoundary {
 
-    public ResponseModel generatePotentialMatches(PetMatchesGeneratorRequestModel request);
+    /**
+     * Given a request object, perform the use case and return a ResponseModel
+     * @param request
+     * @return a ResponseModel object
+     */
+    ResponseModel generatePotentialMatches(PetMatchesGeneratorRequestModel request);
 
 }
