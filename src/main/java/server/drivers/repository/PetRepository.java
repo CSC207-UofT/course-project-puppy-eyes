@@ -28,6 +28,7 @@ public class PetRepository implements IPetRepository {
     /**
      * Create and save a new pet to the database.
      *
+     * @param userId    the pet's user's id
      * @param name      the pet's name
      * @param age       the pet's age
      * @param breed     the pet's breed

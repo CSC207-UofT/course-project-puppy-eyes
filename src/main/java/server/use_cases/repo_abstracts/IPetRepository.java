@@ -11,15 +11,15 @@ import java.util.List;
 public interface IPetRepository {
 
     /**
-     * Create a new pet and save it in the repository.
+     * Create and save a new pet to the database.
      *
-     * @param userId    the user id of the pet's owner
+     * @param userId    the pet's user's id
      * @param name      the pet's name
      * @param age       the pet's age
      * @param breed     the pet's breed
-     * @param biography the Pet's biography
+     * @param biography the pet's biography
      *
-     * @return new pet's id
+     * @return the id of the new pet;
      */
     int createPet(int userId, String name, int age, String breed, String biography);
 
