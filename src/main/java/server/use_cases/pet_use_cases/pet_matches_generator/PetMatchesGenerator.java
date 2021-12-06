@@ -49,6 +49,8 @@ public class PetMatchesGenerator implements PetMatchesGeneratorInputBoundary {
         User currentUser = users.stream().filter(u -> u.getId() == userId).findFirst().orElse(null);
 
         List<Integer> rejectedPets = this.petRepository.fetchRejected(petId);
+        List<Integer> matchedPets = this.petRepository.fetchMatches(petId);
+        List<Integer> swipedPets = this.petRepository.fetchSwipedOn(petId);
 
         LatLng currUserLatLng = new LatLng(Double.valueOf(currentUser.getLat()), Double.valueOf(currentUser.getLng()));
 
@@ -64,8 +66,8 @@ public class PetMatchesGenerator implements PetMatchesGeneratorInputBoundary {
                 List<Integer> otherUserPets = userRepository.fetchUserPets(otherUser.getId());
 
                 for (int otherPetId : otherUserPets) {
-                    // Only add the other user's pet if it's not on this pet's rejected list
-                    if (!rejectedPets.contains(otherPetId)) {
+                    // Ignore pet if on the rejected list or has already matched or swiped
+                    if (!rejectedPets.contains(otherPetId) || matchedPets.contains(otherPetId) || swipedPets.contains(otherPetId)) {
                         potentialMatches.add(String.valueOf(otherPetId));
                     }
                 }
