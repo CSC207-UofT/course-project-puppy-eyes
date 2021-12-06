@@ -67,7 +67,7 @@ public class PetMatchesGenerator implements PetMatchesGeneratorInputBoundary {
 
                 for (int otherPetId : otherUserPets) {
                     // Ignore pet if on the rejected list or has already matched or swiped
-                    if (!rejectedPets.contains(otherPetId) || !matchedPets.contains(otherPetId) || !swipedPets.contains(otherPetId)) {
+                    if (!rejectedPets.contains(otherPetId) && !matchedPets.contains(otherPetId) && !swipedPets.contains(otherPetId)) {
                         potentialMatches.add(String.valueOf(otherPetId));
                     }
                 }
