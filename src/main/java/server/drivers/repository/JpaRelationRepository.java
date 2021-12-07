@@ -5,14 +5,13 @@ import org.springframework.stereotype.Repository;
 import server.drivers.dbEntities.RelationDatabaseEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface JpaRelationRepository extends JpaRepository<RelationDatabaseEntity, Integer> {
 
-    public RelationDatabaseEntity findRelationDatabaseEntityByFromIdAndToId(int fromId, int toId);
+    Optional<RelationDatabaseEntity> findRelationDatabaseEntityByFromIdAndToIdAndRelationType(int fromId, int toId, String relationType);
 
-    public boolean existsByFromIdAndToIdAndRelationType(int fromId, int toId, String relationType);
-
-    public List<RelationDatabaseEntity> findAllByFromIdAndRelationType(int fromId, String relationType);
+    List<RelationDatabaseEntity> findAllByFromIdAndRelationType(int fromId, String relationType);
 
 }

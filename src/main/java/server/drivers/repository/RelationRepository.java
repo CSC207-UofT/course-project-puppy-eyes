@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import server.drivers.dbEntities.RelationDatabaseEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class RelationRepository {
@@ -18,8 +19,8 @@ public class RelationRepository {
         return this.repository;
     }
 
-    public List<RelationDatabaseEntity> getRelations(int fromId, String relationType) {
-        return repository.findAllByFromIdAndRelationType(fromId, relationType);
+    public Optional<RelationDatabaseEntity> getRelation(int fromId, int toId, String relationType) {
+        return repository.findRelationDatabaseEntityByFromIdAndToIdAndRelationType(fromId, toId, relationType);
     }
 
 }
