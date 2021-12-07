@@ -22,13 +22,17 @@ public class PetRejector implements PetInteraction {
      */
     @Override
     public ResponseModel interact(int pet1Id, int pet2Id) {
-        // If the first pet already swiped on the second pet, remove the second pet from the first pet's swiped list
-        if (this.petRepository.fetchSwipedOn(pet1Id).contains(pet2Id)) {
-            this.petRepository.unswipePets(pet1Id, pet2Id);
-            return new ResponseModel(true, "Successfully removed pet2 from pet1's swiped list.");
+        if (this.petRepository.fetchMatches(pet1Id).contains(pet2Id) || this.petRepository.fetchMatches(pet2Id).contains(pet1Id)) {
+            return new ResponseModel(false, "Both pets are already matched with each other.");
         }
 
-        return new ResponseModel(false, "Pet2 is not in pet1's swiped list.");
+        // Remove both pets from each other's swiped list
+        this.petRepository.unswipePets(pet1Id, pet2Id);
+        this.petRepository.unswipePets(pet2Id, pet1Id);
+
+        // Add the second pet to the first pet's rejected list
+        this.petRepository.rejectPets(pet1Id, pet2Id);
+        return new ResponseModel(true, "Successfully rejected pet2 from pet1.");
     }
 
 }
