@@ -10,6 +10,9 @@ import server.drivers.mocks.MockUserController;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Test the UserWebGateway. This class is non-functional, so we test that no runtime exceptions are thrown.
+ */
 public class TestUserWebGateway {
     public UserWebGateway userWebGateway;
     public HttpServletRequest req;

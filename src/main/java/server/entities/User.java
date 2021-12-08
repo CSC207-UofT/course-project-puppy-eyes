@@ -20,7 +20,7 @@ public class User {
      * @param password          the user's password
      * @param email             the user's email
      */
-    protected User(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
+    public User(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.currentAddress = currentAddress;
