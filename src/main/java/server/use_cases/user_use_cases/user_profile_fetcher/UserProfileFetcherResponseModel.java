@@ -17,9 +17,10 @@ public class UserProfileFetcherResponseModel extends ResponseData {
     private final String email;
     private final String instagram;
     private final String facebook;
+    private final String profileImgUrl;
 
     public UserProfileFetcherResponseModel(String firstName, String lastName, String biography, String phoneNumber,
-                                           String email, String instagram, String facebook) {
+                                           String email, String instagram, String facebook, String profileImgUrl) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.biography = biography;
@@ -27,6 +28,7 @@ public class UserProfileFetcherResponseModel extends ResponseData {
         this.email = email;
         this.instagram = instagram;
         this.facebook = facebook;
+        this.profileImgUrl = profileImgUrl;
     }
 
     public String getFirstName() {
@@ -55,6 +57,10 @@ public class UserProfileFetcherResponseModel extends ResponseData {
 
     public String getFacebook() {
         return facebook;
+    }
+
+    public String getProfileImgUrl() {
+        return profileImgUrl;
     }
 
     @Override

@@ -13,13 +13,15 @@ public class PetProfileFetcherResponseModel extends ResponseData {
     private final int age;
     private final String breed;
     private final String biography;
+    private final String profileImgUrl;
 
-    public PetProfileFetcherResponseModel(int userId, String name, int age, String breed, String biography) {
+    public PetProfileFetcherResponseModel(int userId, String name, int age, String breed, String biography, String profileImgUrl) {
         this.userId = userId;
         this.name = name;
         this.age = age;
         this.breed = breed;
         this.biography = biography;
+        this.profileImgUrl = profileImgUrl;
     }
 
     public int getUserId() {
@@ -42,12 +44,16 @@ public class PetProfileFetcherResponseModel extends ResponseData {
         return biography;
     }
 
+    public String getProfileImgUrl() {
+        return profileImgUrl;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PetProfileFetcherResponseModel other = (PetProfileFetcherResponseModel) o;
         return userId == other.userId && name.equals(other.name) && age == other.age && breed.equals(other.breed)
-                && biography.equals(other.biography);
+                && biography.equals(other.biography) && profileImgUrl.equals(other.profileImgUrl);
     }
 }

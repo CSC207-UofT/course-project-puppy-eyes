@@ -11,24 +11,24 @@ import java.util.List;
 public interface IPetRepository {
 
     /**
-     * Create a new pet and save it in the repository.
+     * Create and save a new pet to the database.
      *
-     * @param userId    the user id of the pet's owner
+     * @param userId    the pet's user's id
      * @param name      the pet's name
      * @param age       the pet's age
      * @param breed     the pet's breed
-     * @param biography the Pet's biography
+     * @param biography the pet's biography
      *
-     * @return new pet's id
+     * @return the id of the new pet;
      */
-    public int createPet(int userId, String name, int age, String breed, String biography);
+    int createPet(int userId, String name, int age, String breed, String biography);
 
     /**
      * Fetch a Pet from the database.
      * @param petId
      * @return the Pet object
      */
-    public Pet fetchPet(int petId);
+    Pet fetchPet(int petId);
 
     /**
      * Edit a pet's information, given all new information.
@@ -41,7 +41,7 @@ public interface IPetRepository {
      *
      * @return if the editing is successfully done
      */
-    public boolean editPet(int petId, String newName, int newAge, String newBreed, String newBiography);
+    boolean editPet(int petId, String newName, int newAge, String newBreed, String newBiography);
 
     /**
      * Add pet2 to pet1's swiped list
@@ -49,7 +49,7 @@ public interface IPetRepository {
      * @param pet2Id
      * @return whether the swipe was successful
      */
-    public boolean swipePets(int pet1Id, int pet2Id);
+    boolean swipePets(int pet1Id, int pet2Id);
 
     /**
      * Add pet1 and pet2 to each other's matched list.
@@ -57,7 +57,7 @@ public interface IPetRepository {
      * @param pet2Id
      * @return whether the swipe was successful
      */
-    public boolean matchPets(int pet1Id, int pet2Id);
+    boolean matchPets(int pet1Id, int pet2Id);
 
     /**
      * Remove pet2 from pet1's swiped list
@@ -65,7 +65,7 @@ public interface IPetRepository {
      * @param pet2Id
      * @return whether the swipe was successful
      */
-    public boolean unswipePets(int pet1Id, int pet2Id);
+    boolean unswipePets(int pet1Id, int pet2Id);
 
     /**
      * Add pet2 to pet1's rejected list
@@ -73,7 +73,7 @@ public interface IPetRepository {
      * @param pet2Id
      * @return whether the rejection was successful
      */
-    public boolean rejectPets(int pet1Id, int pet2Id);
+    boolean rejectPets(int pet1Id, int pet2Id);
 
     /**
      * Remove pet1 and pet2 from each other's matched list.
@@ -81,27 +81,27 @@ public interface IPetRepository {
      * @param pet2Id
      * @return whether the rejection was successful
      */
-    public boolean unmatchPets(int pet1Id, int pet2Id);
+    boolean unmatchPets(int pet1Id, int pet2Id);
 
     /**
      * Return a list of pet ids that the given pet has swiped on
      * @param petId
      * @return a list of pet ids that the given pet has swiped on
      */
-    public List<Integer> fetchSwipedOn(int petId);
+    List<Integer> fetchSwipedOn(int petId);
 
     /**
      * Return a list of pet ids that the given pet has rejected
      * @param petId
      * @return a list of pet ids that the given pet has rejected
      */
-    public List<Integer> fetchRejected(int petId);
+    List<Integer> fetchRejected(int petId);
 
     /**
      * Return a list of pet ids that the given pet has matched with
      * @param petId
      * @return a list of pet ids that the given pet has matched with
      */
-    public List<Integer> fetchMatches(int petId);
+    List<Integer> fetchMatches(int petId);
 
 }

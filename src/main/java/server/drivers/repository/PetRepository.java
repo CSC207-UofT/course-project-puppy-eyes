@@ -28,6 +28,7 @@ public class PetRepository implements IPetRepository {
     /**
      * Create and save a new pet to the database.
      *
+     * @param userId    the pet's user's id
      * @param name      the pet's name
      * @param age       the pet's age
      * @param breed     the pet's breed
@@ -115,8 +116,10 @@ public class PetRepository implements IPetRepository {
             return false;
         }
 
-        RelationDatabaseEntity matchRelation = new RelationDatabaseEntity(pet1Id, pet2Id, "MATCH");
-        relationRepository.getRepository().save(matchRelation);
+        RelationDatabaseEntity matchRelation1 = new RelationDatabaseEntity(pet1Id, pet2Id, "MATCH");
+        RelationDatabaseEntity matchRelation2 = new RelationDatabaseEntity(pet2Id, pet1Id, "MATCH");
+        relationRepository.getRepository().save(matchRelation1);
+        relationRepository.getRepository().save(matchRelation2);
         return true;
     }
 
@@ -132,7 +135,13 @@ public class PetRepository implements IPetRepository {
             return false;
         }
 
-        relationRepository.getRepository().delete(new RelationDatabaseEntity(pet1Id, pet2Id, "SWIPE"));
+        Optional<RelationDatabaseEntity> searchResult = relationRepository.getRelation(pet1Id, pet2Id, "SWIPE");
+
+        if (searchResult.isEmpty()) {
+            return false;
+        }
+
+        relationRepository.getRepository().delete(searchResult.get());
         return true;
     }
 
@@ -148,8 +157,13 @@ public class PetRepository implements IPetRepository {
             return false;
         }
 
-        RelationDatabaseEntity matchRelation = new RelationDatabaseEntity(pet1Id, pet2Id, "REJECT");
-        relationRepository.getRepository().save(matchRelation);
+        Optional<RelationDatabaseEntity> searchResult = relationRepository.getRelation(pet1Id, pet2Id, "REJECT");
+
+        if (searchResult.isEmpty()) {
+            return false;
+        }
+
+        relationRepository.getRepository().delete(searchResult.get());
         return true;
     }
 
@@ -165,8 +179,15 @@ public class PetRepository implements IPetRepository {
             return false;
         }
 
-        relationRepository.getRepository().delete(new RelationDatabaseEntity(pet1Id, pet2Id, "MATCH"));
-        relationRepository.getRepository().delete(new RelationDatabaseEntity(pet2Id, pet1Id, "MATCH"));
+        Optional<RelationDatabaseEntity> searchResult1 = relationRepository.getRelation(pet1Id, pet2Id, "MATCH");
+        Optional<RelationDatabaseEntity> searchResult2 = relationRepository.getRelation(pet2Id, pet1Id, "MATCH");
+
+        if (searchResult1.isEmpty() || searchResult2.isEmpty()) {
+            return false;
+        }
+
+        relationRepository.getRepository().delete(searchResult1.get());
+        relationRepository.getRepository().delete(searchResult2.get());
         return true;
     }
 

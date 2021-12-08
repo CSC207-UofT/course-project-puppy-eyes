@@ -161,6 +161,12 @@ public class DummyPetRepository implements IPetRepository {
         } else return false;
     }
 
+    /**
+     * Add pet2 to pet1's swiped list
+     * @param pet1Id
+     * @param pet2Id
+     * @return whether the swipe was successful
+     */
     @Override
     public boolean swipePets(int pet1Id, int pet2Id) {
         DummyPetRepositoryEntity dbPet1 = pets.stream().filter(pet -> pet.getId() == pet1Id).findFirst().orElse(null);
@@ -174,6 +180,12 @@ public class DummyPetRepository implements IPetRepository {
         return true;
     }
 
+    /**
+     * Add pet1 and pet2 to each other's matched list.
+     * @param pet1Id
+     * @param pet2Id
+     * @return whether the swipe was successful
+     */
     @Override
     public boolean matchPets(int pet1Id, int pet2Id) {
         DummyPetRepositoryEntity dbPet1 = pets.stream().filter(pet -> pet.getId() == pet1Id).findFirst().orElse(null);
@@ -188,6 +200,12 @@ public class DummyPetRepository implements IPetRepository {
         return true;
     }
 
+    /**
+     * Remove pet2 from pet1's swiped list
+     * @param pet1Id
+     * @param pet2Id
+     * @return whether the swipe was successful
+     */
     @Override
     public boolean unswipePets(int pet1Id, int pet2Id) {
         DummyPetRepositoryEntity dbPet1 = pets.stream().filter(pet -> pet.getId() == pet1Id).findFirst().orElse(null);
@@ -201,6 +219,12 @@ public class DummyPetRepository implements IPetRepository {
         return true;
     }
 
+    /**
+     * Add pet2 to pet1's rejected list
+     * @param pet1Id
+     * @param pet2Id
+     * @return whether the rejection was successful
+     */
     @Override
     public boolean rejectPets(int pet1Id, int pet2Id) {
         DummyPetRepositoryEntity dbPet1 = pets.stream().filter(pet -> pet.getId() == pet1Id).findFirst().orElse(null);
@@ -214,6 +238,12 @@ public class DummyPetRepository implements IPetRepository {
         return true;
     }
 
+    /**
+     * Remove pet1 and pet2 from each other's matched list.
+     * @param pet1Id
+     * @param pet2Id
+     * @return whether the rejection was successful
+     */
     @Override
     public boolean unmatchPets(int pet1Id, int pet2Id) {
         DummyPetRepositoryEntity dbPet1 = pets.stream().filter(pet -> pet.getId() == pet1Id).findFirst().orElse(null);
@@ -228,6 +258,11 @@ public class DummyPetRepository implements IPetRepository {
         return true;
     }
 
+    /**
+     * Return a list of pet ids that the given pet has swiped on
+     * @param petId
+     * @return a list of pet ids that the given pet has swiped on
+     */
     @Override
     public List<Integer> fetchSwipedOn(int petId) {
         DummyPetRepositoryEntity dbPet = pets.stream().filter(pet -> pet.getId() == petId).findFirst().orElse(null);
@@ -239,6 +274,11 @@ public class DummyPetRepository implements IPetRepository {
         return dbPet.getSwipedOn();
     }
 
+    /**
+     * Return a list of pet ids that the given pet has rejected
+     * @param petId
+     * @return a list of pet ids that the given pet has rejected
+     */
     @Override
     public List<Integer> fetchRejected(int petId) {
         DummyPetRepositoryEntity dbPet = pets.stream().filter(pet -> pet.getId() == petId).findFirst().orElse(null);
@@ -250,6 +290,11 @@ public class DummyPetRepository implements IPetRepository {
         return dbPet.getRejected();
     }
 
+    /**
+     * Return a list of pet ids that the given pet has matched with
+     * @param petId
+     * @return a list of pet ids that the given pet has matched with
+     */
     @Override
     public List<Integer> fetchMatches(int petId) {
         DummyPetRepositoryEntity dbPet = pets.stream().filter(pet -> pet.getId() == petId).findFirst().orElse(null);

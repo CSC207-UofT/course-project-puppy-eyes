@@ -1,5 +1,8 @@
 package server.entities;
 
+/**
+ * Represents a Pet Entity.
+ */
 public class Pet {
 
     private int userId;

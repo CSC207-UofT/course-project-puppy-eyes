@@ -1,9 +1,12 @@
 package server.entities;
 
+/**
+ * Represents a User Entity.
+ */
 public class User {
-    private String firstName, lastName, currentAddress, currentCity, biography = "", lat = "", lng = "";
+
+    private String firstName, lastName, currentAddress, currentCity, password, biography = "", lat = "", lng = "";
     private double matchingDistanceCap;
-    private String password;
     private final ContactInfo contactInfo;
     private int id;
 

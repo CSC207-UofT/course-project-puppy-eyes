@@ -23,7 +23,7 @@ public class UserProfileImageChanger implements UserProfileImageChangerInputBoun
     @Override
     public ResponseModel changeProfileImage(UserProfileImageChangerRequestModel request) {
         ResponseModel validateActionResponse = userActionValidator.validateAction(new UserActionValidatorRequestModel(
-                request.isFromTerminal(), request.getHeaderUserId(), request.getUserId()
+                request.isFromTerminal(), request.getHeaderUserId(), request.getHeaderUserId() // userId == headerUserId
         ));
 
         // Check if the action is validated
@@ -43,10 +43,10 @@ public class UserProfileImageChanger implements UserProfileImageChangerInputBoun
         String url = uploadResponse.getUrl();
         String assetId = uploadResponse.getAssetId();
 
-        imageRepository.setUserProfileImage(userId, assetId, url);
+        boolean isSuccess = imageRepository.setUserProfileImage(userId, assetId, url);
 
         return new ResponseModel(
-                true,
+                isSuccess,
                 "Successfully changed the user's profile image.",
                 new UserProfileImageChangerResponseModel(assetId, url)
         );

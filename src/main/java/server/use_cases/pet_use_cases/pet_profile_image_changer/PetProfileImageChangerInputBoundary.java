@@ -2,8 +2,16 @@ package server.use_cases.pet_use_cases.pet_profile_image_changer;
 
 import server.use_cases.ResponseModel;
 
+/**
+ * An input boundary for the "pet profile image changer" use case.
+ */
 public interface PetProfileImageChangerInputBoundary {
 
-    public ResponseModel changeProfileImage(PetProfileImageChangerRequestModel request);
+    /**
+     * Given a request object, perform the use case and return a ResponseModel
+     * @param request
+     * @return a ResponseModel object
+     */
+    ResponseModel changeProfileImage(PetProfileImageChangerRequestModel request);
 
 }

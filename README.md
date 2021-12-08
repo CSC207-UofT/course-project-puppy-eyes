@@ -218,7 +218,8 @@ N/A
     phoneNumber: <String>,
     email: <String>,
     instagram: <String>,
-	facebook: <String>
+	facebook: <String>,
+	profileImgUrl: <String> (empty string if non-existant)
   }
 }`
 
@@ -269,7 +270,7 @@ POST
 
 - **Requires Authenication**
 
-Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
+No
 
 - **Method**
 
@@ -288,7 +289,8 @@ N/A
     name: <String>,
     age: <String>,
     breed: <String>,
-    biography: <String>
+    biography: <String>,
+	profileImgUrl: <String> (empty string if non-existant)
   }
 }`
 
@@ -502,7 +504,7 @@ N/A
 ## Fetch User's Pets
 - **URL**:
 
-/users/fetchpets?petId=[petId]
+/users/fetchpets?userId=[userId]
 
 - **Requires Authenication**
 
@@ -618,94 +620,6 @@ POST
 	data: {
 		url: <String>,
 		assetId: <String>
-	}
-}
-`
-
-
-## Fetch Pet Profile Image
-- **URL**:
-
-/pets/fetchprofileimage?petId=[petId]
-
-- **Requires Authentiction**
-
-Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
-
-- **Method**
-
-POST
-
-- **Request Body Format**
-
-N/A
-
-- **Response**
-
-`
-{
-	isSuccess: <boolean>,
-	message: <String>,
-	data: {
-		url: <String>
-	}
-}
-`
-
-## Fetch User Profile Image
-- **URL**:
-
-/users/fetchprofileimage?petId=[petId]
-
-- **Requires Authentiction**
-
-Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
-
-- **Method**
-
-POST
-
-- **Request Body Format**
-
-N/A
-
-- **Response**
-
-`
-{
-	isSuccess: <boolean>,
-	message: <String>,
-	data: {
-		url: <String>
-	}
-}
-`
-
-## Fetch Pet Gallery Images
-- **URL**:
-
-/pets/fetchgalleryimages?petId=[petId]
-
-- **Requires Authentiction**
-
-Yes, requires header key-value pair: `Authorization: Bearer <JWT Token>`
-
-- **Method**
-
-POST
-
-- **Request Body Format**
-
-N/A
-
-- **Response**
-
-`
-{
-	isSuccess: <boolean>,
-	message: <String>,
-	data: {
-		urls: <List<String>>
 	}
 }
 `

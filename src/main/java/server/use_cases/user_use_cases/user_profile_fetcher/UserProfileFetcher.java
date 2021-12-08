@@ -2,6 +2,7 @@ package server.use_cases.user_use_cases.user_profile_fetcher;
 
 import server.entities.User;
 import server.use_cases.Util;
+import server.use_cases.repo_abstracts.IImageRepository;
 import server.use_cases.repo_abstracts.IPetRepository;
 import server.use_cases.repo_abstracts.IUserRepository;
 import server.use_cases.ResponseModel;
@@ -17,12 +18,15 @@ public class UserProfileFetcher implements UserProfileFetcherInputBoundary {
 
     private final IUserRepository userRepository;
     private final IPetRepository petRepository;
+    private final IImageRepository imageRepository;
     private final UserActionValidatorInputBoundary userActionValidator;
 
     public UserProfileFetcher(IUserRepository userRepository, IPetRepository petRepository,
+                              IImageRepository imageRepository,
                               UserActionValidatorInputBoundary userActionValidator) {
         this.userRepository = userRepository;
         this.petRepository = petRepository;
+        this.imageRepository = imageRepository;
         this.userActionValidator = userActionValidator;
     }
 
@@ -48,17 +52,20 @@ public class UserProfileFetcher implements UserProfileFetcherInputBoundary {
 
             User user = userRepository.fetchUser(userId);
 
+            String profileImgUrl = imageRepository.fetchUserProfileImageLink(userId);
+
             return new ResponseModel(
                     true,
                     "Successfully fetched user profile.",
                     new UserProfileFetcherResponseModel(
-                            user.getFirstName(),
-                            user.getLastName(),
-                            user.getBiography(),
-                            user.getContactInfo().getPhoneNumber(),
-                            user.getContactInfo().getEmail(),
-                            user.getContactInfo().getInstagram(),
-                            user.getContactInfo().getFacebook()
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getBiography(),
+                        user.getContactInfo().getPhoneNumber(),
+                        user.getContactInfo().getEmail(),
+                        user.getContactInfo().getInstagram(),
+                        user.getContactInfo().getFacebook(),
+                        profileImgUrl == null ? "" : profileImgUrl
                     )
             );
         }

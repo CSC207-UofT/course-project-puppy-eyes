@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import server.drivers.BCryptService;
-import server.use_cases.pet_use_cases.pet_action_validator.PetActionValidator;
 import server.use_cases.pet_use_cases.pet_profile_fetcher.PetProfileFetcher;
 import server.use_cases.pet_use_cases.pet_profile_fetcher.PetProfileFetcherRequestModel;
 import server.use_cases.pet_use_cases.pet_profile_fetcher.PetProfileFetcherResponseModel;
@@ -29,7 +28,7 @@ public class TestPetProfileFetcher {
         DummyUserRepository userRepository = new DummyUserRepository();
         UserCreator userCreator = new UserCreator(userRepository, bcryptService, new UserAccountValidator(), new DummyGeocoderService());
         dummyPetRepository = new DummyPetRepository(userRepository);
-        petProfileFetcher = new PetProfileFetcher(dummyPetRepository, new PetActionValidator(dummyPetRepository));
+        petProfileFetcher = new PetProfileFetcher(dummyPetRepository, new DummyImageRepository());
 
         // Create some users
         UserCreatorResponseModel userCreatorResponse = (UserCreatorResponseModel) userCreator.createUser(
@@ -50,9 +49,9 @@ public class TestPetProfileFetcher {
     @Test
     public void TestFetchPetWithValidId() {
         PetProfileFetcherResponseModel expected = new PetProfileFetcherResponseModel(userId, "Cindy",
-                7, "Cat", "Meow");
+                7, "Cat", "Meow", "");
         ResponseModel responseModel = petProfileFetcher.fetchPetProfile(
-                new PetProfileFetcherRequestModel(String.valueOf(userId), "2")
+                new PetProfileFetcherRequestModel("2")
         );
 
         assertEquals(expected, responseModel.getResponseData());
@@ -63,7 +62,7 @@ public class TestPetProfileFetcher {
         int nonExistentId = 3;
 
         ResponseModel expected = new ResponseModel(false, "Pet with ID: " + nonExistentId + " does not exist.");
-        ResponseModel actual = petProfileFetcher.fetchPetProfile(new PetProfileFetcherRequestModel(String.valueOf(userId), nonExistentId + ""));
+        ResponseModel actual = petProfileFetcher.fetchPetProfile(new PetProfileFetcherRequestModel(nonExistentId + ""));
 
         assertEquals(expected, actual);
     }

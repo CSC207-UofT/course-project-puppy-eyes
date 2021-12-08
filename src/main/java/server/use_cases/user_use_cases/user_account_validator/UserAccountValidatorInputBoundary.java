@@ -7,6 +7,11 @@ import server.use_cases.ResponseModel;
  */
 public interface UserAccountValidatorInputBoundary {
 
-    public ResponseModel validateAccount(UserAccountValidatorRequestModel request);
+    /**
+     * Given a request object, perform the use case and return a ResponseModel
+     * @param request
+     * @return a ResponseModel object
+     */
+    ResponseModel validateAccount(UserAccountValidatorRequestModel request);
 
 }

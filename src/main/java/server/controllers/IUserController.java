@@ -99,14 +99,4 @@ public interface IUserController {
      */
     ResponseModel setUserProfile(String headerUserId, String base64Encoded);
 
-    /**
-     * Return a URL containing this user's profile image
-     * @param fromTerminal  whether this action is being run from command line prompt
-     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
-     *                      is true, this field does nothing.
-     * @param userId        the user's id
-     * @return a ResponseModel containing the response data
-     */
-    ResponseModel fetchUserProfileImage(boolean fromTerminal, String headerUserId, String userId);
-
 }
