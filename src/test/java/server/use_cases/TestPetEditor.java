@@ -68,4 +68,13 @@ public class TestPetEditor {
         assertEquals(expected, actual);
         assertTrue(!actual.isSuccess());
     }
+
+    @Test void TestEditPetWithoutValidAge() {
+        ResponseModel expected = new ResponseModel(false, "Age must be an integer.");
+        ResponseModel actual = petEditor.editPet(new PetEditorRequestModel(String.valueOf(userId),
+                "0", "Koko", "wrong age", "Bird", "Hello"));
+
+        assertEquals(expected, actual);
+        assertTrue(!actual.isSuccess());
+    }
 }
