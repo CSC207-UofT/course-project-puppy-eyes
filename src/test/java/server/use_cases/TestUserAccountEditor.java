@@ -90,7 +90,7 @@ public class TestUserAccountEditor {
         ResponseModel expected = new ResponseModel(false, "User with ID: 3 does not exist.");
 
         ResponseModel actual = accountEditor.editUserAccount(
-                new UserAccountEditorRequestModel(user1Id, user1Id, "Bob", "Boy",
+                new UserAccountEditorRequestModel("3", "3", "Bob", "Boy",
                         "111 Main St", "New York", "NewPassword123", "b.b@gmail,com"));
 
         assertTrue(!actual.isSuccess());
