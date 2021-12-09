@@ -23,6 +23,7 @@ public class LatLng {
     /**
      * Return the distance in kilometers between this LatLng tuple and another, using the Haversine formula:
      * https://en.wikipedia.org/wiki/Haversine_formula/
+     *
      * @param other
      * @return distance in kilometers
      */
@@ -36,9 +37,9 @@ public class LatLng {
         double a = Math.sin(dLat / 2) *
                 Math.sin(dLat / 2) +
                 Math.sin(dLon / 2) *
-                Math.sin(dLon / 2) *
-                Math.cos(lat1) *
-                Math.cos(lat2);
+                        Math.sin(dLon / 2) *
+                        Math.cos(lat1) *
+                        Math.cos(lat2);
         double c = 2 * Math.asin(Math.sqrt(a));
         return earthRadius * c;
     }

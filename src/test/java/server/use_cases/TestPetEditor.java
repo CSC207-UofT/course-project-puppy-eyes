@@ -45,22 +45,23 @@ public class TestPetEditor {
         userId = Integer.parseInt(userCreatorResponse.getUserId());
 
         // Create some pets
-        dummyPetRepository.createPet(userId,"Amy", 100, "Turtle", "Ahhhh");
-        dummyPetRepository.createPet(userId,"Bob", 2, "Dog", "Bobobobobo");
-        dummyPetRepository.createPet(userId,"Cindy", 7, "Cat", "Meow");
+        dummyPetRepository.createPet(userId, "Amy", 100, "Turtle", "Ahhhh");
+        dummyPetRepository.createPet(userId, "Bob", 2, "Dog", "Bobobobobo");
+        dummyPetRepository.createPet(userId, "Cindy", 7, "Cat", "Meow");
     }
 
     @Test
     public void TestEditPetWithValidId() {
         PetEditorResponseModel expected = new PetEditorResponseModel("Koko", 5,
                 "Bird", "Hello", "2");
-        PetEditorResponseModel actual = (PetEditorResponseModel) petEditor.editPet(new PetEditorRequestModel(String.valueOf(userId),"2", "Koko",
+        PetEditorResponseModel actual = (PetEditorResponseModel) petEditor.editPet(new PetEditorRequestModel(String.valueOf(userId), "2", "Koko",
                 "5", "Bird", "Hello")).getResponseData();
 
         assertEquals(expected, actual);
     }
 
-    @Test void TestEditPetWithoutValidId() {
+    @Test
+    void TestEditPetWithoutValidId() {
         ResponseModel expected = new ResponseModel(false, "Pet with ID: 3 does not exist.");
         ResponseModel actual = petEditor.editPet(new PetEditorRequestModel(String.valueOf(userId),
                 "3", "Koko", "5", "Bird", "Hello"));
@@ -69,7 +70,8 @@ public class TestPetEditor {
         assertTrue(!actual.isSuccess());
     }
 
-    @Test void TestEditPetWithoutValidAge() {
+    @Test
+    void TestEditPetWithoutValidAge() {
         ResponseModel expected = new ResponseModel(false, "Age must be an integer.");
         ResponseModel actual = petEditor.editPet(new PetEditorRequestModel(String.valueOf(userId),
                 "0", "Koko", "wrong age", "Bird", "Hello"));

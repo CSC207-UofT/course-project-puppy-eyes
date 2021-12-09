@@ -33,7 +33,6 @@ public class PetRepository implements IPetRepository {
      * @param age       the pet's age
      * @param breed     the pet's breed
      * @param biography the pet's biography
-     *
      * @return the id of the new pet;
      */
     @Override
@@ -63,11 +62,11 @@ public class PetRepository implements IPetRepository {
     /**
      * Edit a pet's information in the database.
      *
-     * @param petId         the pet's id
-     * @param newName       the pet's new name
-     * @param newAge        the pet's new age
-     * @param newBreed      the pet's new breed
-     * @param newBiography  the pet's new biography
+     * @param petId        the pet's id
+     * @param newName      the pet's new name
+     * @param newAge       the pet's new age
+     * @param newBreed     the pet's new breed
+     * @param newBiography the pet's new biography
      * @return if editing is successfully done
      */
     @Override
@@ -89,6 +88,7 @@ public class PetRepository implements IPetRepository {
 
     /**
      * Add pet2 to pet1's swiped list
+     *
      * @param pet1Id
      * @param pet2Id
      * @return whether the swipe was successful
@@ -106,6 +106,7 @@ public class PetRepository implements IPetRepository {
 
     /**
      * Add pet1 and pet2 to each other's matched list.
+     *
      * @param pet1Id
      * @param pet2Id
      * @return whether the swipe was successful
@@ -125,6 +126,7 @@ public class PetRepository implements IPetRepository {
 
     /**
      * Remove pet2 from pet1's swiped list
+     *
      * @param pet1Id
      * @param pet2Id
      * @return whether the swipe was successful
@@ -147,6 +149,7 @@ public class PetRepository implements IPetRepository {
 
     /**
      * Add pet2 to pet1's rejected list
+     *
      * @param pet1Id
      * @param pet2Id
      * @return whether the rejection was successful
@@ -169,6 +172,7 @@ public class PetRepository implements IPetRepository {
 
     /**
      * Remove pet1 and pet2 from each other's matched list
+     *
      * @param pet1Id
      * @param pet2Id
      * @return whether the unmatch was successful
@@ -193,6 +197,7 @@ public class PetRepository implements IPetRepository {
 
     /**
      * Return a list of pet ids that the given pet has swiped on
+     *
      * @param petId
      * @return a list of pet ids that the given pet has swiped on
      */
@@ -226,6 +231,7 @@ public class PetRepository implements IPetRepository {
 
     /**
      * Return a list of pet ids that the given pet has matched with
+     *
      * @param petId
      * @return a list of pet ids that the given pet has matched with
      */

@@ -16,15 +16,15 @@ class ResponsePresenterTest {
     ResponsePresenter responsePresenter;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         responsePresenter = new ResponsePresenter(new JSONPresenter());
     }
 
     @Test
-    public void testFormatResponse(){
+    public void testFormatResponse() {
         ResponseModel response = new ResponseModel(true, "test message");
 
-        JSONObject expected = new JSONObject(new HashMap<String, String>(){{
+        JSONObject expected = new JSONObject(new HashMap<String, String>() {{
             put("isSuccess", "true");
             put("message", "test message");
             put("data", "null");

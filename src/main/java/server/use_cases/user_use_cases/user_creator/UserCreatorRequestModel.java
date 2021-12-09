@@ -12,7 +12,7 @@ public class UserCreatorRequestModel {
     private final String currentCity;
     private final String password;
 
-    public UserCreatorRequestModel(String firstName, String lastName, String currentAddress, String currentCity, String pass, String email){
+    public UserCreatorRequestModel(String firstName, String lastName, String currentAddress, String currentCity, String pass, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -29,19 +29,19 @@ public class UserCreatorRequestModel {
         return lastName;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return this.email;
     }
 
-    public String getCurrentAddress(){
+    public String getCurrentAddress() {
         return this.currentAddress;
     }
 
-    public String getCurrentCity(){
+    public String getCurrentCity() {
         return this.currentCity;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return this.password;
     }
 

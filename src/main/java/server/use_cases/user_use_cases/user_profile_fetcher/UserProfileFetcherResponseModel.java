@@ -68,7 +68,7 @@ public class UserProfileFetcherResponseModel extends ResponseData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserProfileFetcherResponseModel that = (UserProfileFetcherResponseModel) o;
-        return  Objects.equals(firstName, that.firstName)
+        return Objects.equals(firstName, that.firstName)
                 && Objects.equals(lastName, that.lastName)
                 && Objects.equals(biography, that.biography)
                 && Objects.equals(phoneNumber, that.phoneNumber)

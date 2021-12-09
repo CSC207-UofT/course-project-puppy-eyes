@@ -8,6 +8,7 @@ public interface IImageRepository {
 
     /**
      * Return the URL storing the given user's profile picture
+     *
      * @param userId
      * @return a URL
      */
@@ -15,6 +16,7 @@ public interface IImageRepository {
 
     /**
      * Return the URL storing the given pet's profile picture
+     *
      * @param petId
      * @return a URL
      */
@@ -22,6 +24,7 @@ public interface IImageRepository {
 
     /**
      * Sets this user's profile image to the following URL
+     *
      * @param userId
      * @param assetId
      * @param url
@@ -31,6 +34,7 @@ public interface IImageRepository {
 
     /**
      * Sets this pet's profile image to the following URL
+     *
      * @param petId
      * @param assetId
      * @param url

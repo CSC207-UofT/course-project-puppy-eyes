@@ -9,6 +9,7 @@ public interface UserProfileImageChangerInputBoundary {
 
     /**
      * Given a request object, perform the use case and return a ResponseModel
+     *
      * @param request
      * @return a ResponseModel object
      */

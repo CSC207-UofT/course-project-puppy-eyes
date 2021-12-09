@@ -9,6 +9,7 @@ public interface IJwtService {
 
     /**
      * Extract the subject from the JWT token
+     *
      * @param token
      * @return the subject as a String
      */
@@ -16,6 +17,7 @@ public interface IJwtService {
 
     /**
      * Return the expiration of the JWT token
+     *
      * @param token
      * @return the expiration as a Date object
      */
@@ -23,6 +25,7 @@ public interface IJwtService {
 
     /**
      * Create a new JWT token with the given subject
+     *
      * @param subject
      * @return a JWT token as a String
      */
@@ -30,6 +33,7 @@ public interface IJwtService {
 
     /**
      * Return whether the given token and its subject is valid
+     *
      * @param token
      * @param subject
      * @return true if valid, els efalse

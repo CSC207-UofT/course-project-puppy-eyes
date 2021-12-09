@@ -10,12 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class TestPetMatchesFetcherResponseModel {
 
 
-
-    public void setUp(List<String> petIDS){
+    public void setUp(List<String> petIDS) {
         petIDS.add("1");
         petIDS.add("2");
         petIDS.add("3");
@@ -24,7 +22,7 @@ public class TestPetMatchesFetcherResponseModel {
     }
 
     @Test
-    public void TestSuccessPetMatchesFetcherResponseModel(){
+    public void TestSuccessPetMatchesFetcherResponseModel() {
         List<String> petIDs = new ArrayList<String>();
         List<String> testing = new ArrayList<String>();
 
@@ -36,7 +34,7 @@ public class TestPetMatchesFetcherResponseModel {
     }
 
     @Test
-    public void TestFailurePetMatchesFetcherResponseModel(){
+    public void TestFailurePetMatchesFetcherResponseModel() {
         List<String> petIDs = new ArrayList<String>();
         List<String> testing = new ArrayList<String>();
 

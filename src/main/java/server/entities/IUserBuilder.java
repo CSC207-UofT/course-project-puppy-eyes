@@ -7,18 +7,21 @@ public interface IUserBuilder {
 
     /**
      * Create a User object using the builder's fields
+     *
      * @return a new User object
      */
     public User create();
 
     /**
      * Clear all of the builder's fields
+     *
      * @return the current instance to allow chaining
      */
     public IUserBuilder reset();
 
     /**
      * Set the id field
+     *
      * @param id
      * @return the current instance to allow chaining
      */
@@ -26,6 +29,7 @@ public interface IUserBuilder {
 
     /**
      * Set the biography field
+     *
      * @param biography
      * @return the current instance to allow chaining
      */
@@ -33,6 +37,7 @@ public interface IUserBuilder {
 
     /**
      * Set the currentAddress field
+     *
      * @param currentAddress
      * @return the current instance to allow chaining
      */
@@ -40,6 +45,7 @@ public interface IUserBuilder {
 
     /**
      * Set the phoneNumber field
+     *
      * @param phoneNumber
      * @return the current instance to allow chaining
      */
@@ -47,6 +53,7 @@ public interface IUserBuilder {
 
     /**
      * Set the instagram field
+     *
      * @param instagram
      * @return the current instance to allow chaining
      */
@@ -54,6 +61,7 @@ public interface IUserBuilder {
 
     /**
      * Set the facebook field
+     *
      * @param facebook
      * @return the current instance to allow chaining
      */
@@ -61,6 +69,7 @@ public interface IUserBuilder {
 
     /**
      * Set the lat field
+     *
      * @param lat
      * @return the current instance to allow chaining
      */
@@ -68,6 +77,7 @@ public interface IUserBuilder {
 
     /**
      * Set the lng field
+     *
      * @param lng
      * @return the current instance to allow chaining
      */

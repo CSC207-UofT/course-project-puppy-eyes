@@ -35,9 +35,9 @@ public class PetCreatorResponseModel extends ResponseData {
             PetCreatorResponseModel that = (PetCreatorResponseModel) o;
             return
                     Objects.equals(name, that.name)
-                    && Objects.equals(age, that.age)
-                    && Objects.equals(userId, that.userId)
-                    && Objects.equals(petId, that.petId);
+                            && Objects.equals(age, that.age)
+                            && Objects.equals(userId, that.userId)
+                            && Objects.equals(petId, that.petId);
         }
     }
 

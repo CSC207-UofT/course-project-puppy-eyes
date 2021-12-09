@@ -28,11 +28,11 @@ public class UserAccountValidatorRequestModel {
         return lastName;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return this.email;
     }
 
-    public String getCurrentCity(){
+    public String getCurrentCity() {
         return this.currentCity;
     }
 

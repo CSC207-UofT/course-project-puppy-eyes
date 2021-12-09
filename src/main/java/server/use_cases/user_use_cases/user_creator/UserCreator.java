@@ -43,13 +43,13 @@ public class UserCreator implements UserCreatorInputBoundary {
 
         // Check inputs
         ResponseModel verifyInputsResponse = userAccountValidator.validateAccount(
-            new UserAccountValidatorRequestModel(
-                request.getFirstName(),
-                request.getLastName(),
-                request.getCurrentCity(),
-                request.getPassword(),
-                request.getEmail()
-            )
+                new UserAccountValidatorRequestModel(
+                        request.getFirstName(),
+                        request.getLastName(),
+                        request.getCurrentCity(),
+                        request.getPassword(),
+                        request.getEmail()
+                )
         );
 
         if (!verifyInputsResponse.isSuccess()) {
@@ -68,26 +68,26 @@ public class UserCreator implements UserCreatorInputBoundary {
                 request.getCurrentCity(),
                 request.getEmail()
         )
-        .currentAddress(request.getCurrentAddress())
-        .lat(String.valueOf(latLng.getLat()))
-        .lng(String.valueOf(latLng.getLng()))
-        .create();
+                .currentAddress(request.getCurrentAddress())
+                .lat(String.valueOf(latLng.getLat()))
+                .lng(String.valueOf(latLng.getLng()))
+                .create();
 
         int id = userRepository.createUser(newUser);
 
         newUser.setId(id);
 
         return new ResponseModel(
-            true,
-            "Successfully created new user.",
-            new UserCreatorResponseModel(
-                String.valueOf(id),
-                newUser.getFirstName(),
-                newUser.getLastName(),
-                newUser.getCurrentAddress(),
-                newUser.getCurrentCity(),
-                newUser.getContactInfo().getEmail()
-            )
+                true,
+                "Successfully created new user.",
+                new UserCreatorResponseModel(
+                        String.valueOf(id),
+                        newUser.getFirstName(),
+                        newUser.getLastName(),
+                        newUser.getCurrentAddress(),
+                        newUser.getCurrentCity(),
+                        newUser.getContactInfo().getEmail()
+                )
         );
     }
 }

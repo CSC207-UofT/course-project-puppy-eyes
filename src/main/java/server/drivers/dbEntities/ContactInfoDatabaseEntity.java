@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class ContactInfoDatabaseEntity {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "phone_number")
@@ -33,7 +33,9 @@ public class ContactInfoDatabaseEntity {
 
     }
 
-    public int getId() { return id; }
+    public int getId() {
+        return id;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;

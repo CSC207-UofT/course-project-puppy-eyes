@@ -15,6 +15,7 @@ public abstract class WebGateway {
 
     /**
      * Return the ResponseModel into a ResponseEntity with the proper status code after calling the presenter.
+     *
      * @param response
      * @return a ResponseEntity
      */

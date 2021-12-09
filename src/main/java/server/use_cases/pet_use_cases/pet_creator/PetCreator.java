@@ -32,7 +32,7 @@ public class PetCreator implements PetCreatorInputBoundary {
      */
     public ResponseModel createPet(PetCreatorRequestModel request) {
         // Null checks
-        if (request.getUserId() == null || request.getName() == null || request.getBreed() == null || request.getAge() == null ) {
+        if (request.getUserId() == null || request.getName() == null || request.getBreed() == null || request.getAge() == null) {
             return new ResponseModel(false, "Missing required fields.");
         }
 
@@ -47,7 +47,7 @@ public class PetCreator implements PetCreatorInputBoundary {
 
         // Check if the request fields pass logic checks
         ResponseModel verifyInputsResponse = petProfileValidator.validateProfile(new PetProfileValidatorRequestModel(
-            request.getName(), request.getAge(), request.getBreed(), request.getBiography()
+                request.getName(), request.getAge(), request.getBreed(), request.getBiography()
         ));
 
         if (!verifyInputsResponse.isSuccess()) {

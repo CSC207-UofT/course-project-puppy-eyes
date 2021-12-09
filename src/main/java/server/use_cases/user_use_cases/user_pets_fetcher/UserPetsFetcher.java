@@ -25,7 +25,7 @@ public class UserPetsFetcher implements UserPetsFetcherInputBoundary {
      * @return a ResponseModel listing all the pets.
      */
     @Override
-    public ResponseModel fetchUserPets(UserPetsFetcherRequestModel request)  {
+    public ResponseModel fetchUserPets(UserPetsFetcherRequestModel request) {
         ResponseModel validateActionResponse = userActionValidator.validateAction(new UserActionValidatorRequestModel(
                 request.isFromTerminal(), request.getHeaderUserId(), request.getUserId()
         ));
@@ -43,9 +43,9 @@ public class UserPetsFetcher implements UserPetsFetcherInputBoundary {
                 collect(Collectors.toList());
 
         return new ResponseModel(
-            true,
-            "Successfully fetched user pets.",
-            new UserPetsFetcherResponseModel(stringPetIds)
+                true,
+                "Successfully fetched user pets.",
+                new UserPetsFetcherResponseModel(stringPetIds)
         );
     }
 

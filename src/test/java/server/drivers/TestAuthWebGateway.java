@@ -20,7 +20,7 @@ public class TestAuthWebGateway {
     public SessionController sessionController;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         UseCaseOutputBoundary outputBoundary = Mockito.mock(UseCaseOutputBoundary.class);
         authWebGateway = new AuthWebGateway(new MockSessionController(), outputBoundary);
     }

@@ -8,6 +8,7 @@ public class ResponseModel {
 
     /**
      * Return a ResponseModel responding to a request with the given data
+     *
      * @param message
      * @param data
      */
@@ -20,6 +21,7 @@ public class ResponseModel {
 
     /**
      * Return a ResponseModel responding to a with the given message with no data
+     *
      * @param isSuccess
      * @param message
      */

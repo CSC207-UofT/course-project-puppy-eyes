@@ -131,19 +131,19 @@ class DummyContactInfoRepositoryEntity {
         this.facebook = "";
     }
 
-    public void setPhoneNumber(String phoneNumber){
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setEmail(String address){
+    public void setEmail(String address) {
         this.email = address;
     }
 
-    public void setInstagram(String instagram){
+    public void setInstagram(String instagram) {
         this.instagram = instagram;
     }
 
-    public void setFacebook(String facebook){
+    public void setFacebook(String facebook) {
         this.facebook = facebook;
     }
 
@@ -193,21 +193,21 @@ public class DummyUserRepository implements IUserRepository {
 
         if (dbUser != null) {
             User user = new UserBuilder(
-                dbUser.getFirstName(),
-                dbUser.getLastName(),
-                dbUser.getPasswordHash(),
-                dbUser.getCurrentCity(),
-                dbUser.getContactInfo().getEmail()
+                    dbUser.getFirstName(),
+                    dbUser.getLastName(),
+                    dbUser.getPasswordHash(),
+                    dbUser.getCurrentCity(),
+                    dbUser.getContactInfo().getEmail()
             )
-            .currentAddress(dbUser.getCurrentAddress())
-            .biography(dbUser.getBiography())
-            .phoneNumber(dbUser.getContactInfo().getPhoneNumber())
-            .instagram(dbUser.getContactInfo().getInstagram())
-            .facebook(dbUser.getContactInfo().getFacebook())
-            .id(dbUser.getId())
-            .lat(dbUser.getLat())
-            .lng(dbUser.getLng())
-            .create();
+                    .currentAddress(dbUser.getCurrentAddress())
+                    .biography(dbUser.getBiography())
+                    .phoneNumber(dbUser.getContactInfo().getPhoneNumber())
+                    .instagram(dbUser.getContactInfo().getInstagram())
+                    .facebook(dbUser.getContactInfo().getFacebook())
+                    .id(dbUser.getId())
+                    .lat(dbUser.getLat())
+                    .lng(dbUser.getLng())
+                    .create();
 
             return user;
         } else {
@@ -222,21 +222,21 @@ public class DummyUserRepository implements IUserRepository {
 
         for (DummyUserRepositoryEntity dbUser : dbUsers) {
             User user = new UserBuilder(
-                dbUser.getFirstName(),
-                dbUser.getLastName(),
-                dbUser.getPasswordHash(),
-                dbUser.getCurrentCity(),
-                dbUser.getContactInfo().getEmail()
+                    dbUser.getFirstName(),
+                    dbUser.getLastName(),
+                    dbUser.getPasswordHash(),
+                    dbUser.getCurrentCity(),
+                    dbUser.getContactInfo().getEmail()
             )
-            .currentAddress(dbUser.getCurrentAddress())
-            .biography(dbUser.getBiography())
-            .phoneNumber(dbUser.getContactInfo().getPhoneNumber())
-            .instagram(dbUser.getContactInfo().getInstagram())
-            .facebook(dbUser.getContactInfo().getFacebook())
-            .id(dbUser.getId())
-            .lat(dbUser.getLat())
-            .lng(dbUser.getLng())
-            .create();
+                    .currentAddress(dbUser.getCurrentAddress())
+                    .biography(dbUser.getBiography())
+                    .phoneNumber(dbUser.getContactInfo().getPhoneNumber())
+                    .instagram(dbUser.getContactInfo().getInstagram())
+                    .facebook(dbUser.getContactInfo().getFacebook())
+                    .id(dbUser.getId())
+                    .lat(dbUser.getLat())
+                    .lng(dbUser.getLng())
+                    .create();
             users.add(user);
         }
 
@@ -291,7 +291,8 @@ public class DummyUserRepository implements IUserRepository {
 
         if (dbUser == null) {
             return null;
-        };
+        }
+        ;
 
         return dbUser.getPets();
     }
@@ -303,5 +304,5 @@ public class DummyUserRepository implements IUserRepository {
             dbUser.getPets().add(petId);
         }
     }
-  
+
 }

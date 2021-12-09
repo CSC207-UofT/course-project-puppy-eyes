@@ -13,12 +13,12 @@ public class User {
     /**
      * Creates a new User given their first name, last name, current address, current city, password, and email.
      *
-     * @param firstName         the first name of the user
-     * @param lastName          the last name of the user
-     * @param currentAddress    the current address of the user
-     * @param currentCity       the current city of the user
-     * @param password          the user's password
-     * @param email             the user's email
+     * @param firstName      the first name of the user
+     * @param lastName       the last name of the user
+     * @param currentAddress the current address of the user
+     * @param currentCity    the current city of the user
+     * @param password       the user's password
+     * @param email          the user's email
      */
     public User(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
         this.firstName = firstName;
@@ -31,11 +31,15 @@ public class User {
         this.contactInfo.setEmail(email);
     }
 
-    public String getFirstName() {return this.firstName;}
+    public String getFirstName() {
+        return this.firstName;
+    }
 
-    public String getLastName() {return this.lastName;}
+    public String getLastName() {
+        return this.lastName;
+    }
 
-    public String getCurrentAddress(){
+    public String getCurrentAddress() {
         return this.currentAddress;
     }
 
@@ -47,11 +51,11 @@ public class User {
         return this.matchingDistanceCap;
     }
 
-    public String getPasswordHash(){
+    public String getPasswordHash() {
         return this.password;
     }
 
-    public String getLat(){
+    public String getLat() {
         return this.lat;
     }
 
@@ -67,7 +71,7 @@ public class User {
         this.lng = lng;
     }
 
-    public String getBiography(){
+    public String getBiography() {
         return this.biography;
     }
 
@@ -83,7 +87,7 @@ public class User {
         return id;
     }
 
-    public void setBiography(String biography){
+    public void setBiography(String biography) {
         this.biography = biography;
     }
 

@@ -6,7 +6,7 @@ public class TestPetMatchesFetcherRequestModel {
     PetMatchesFetcherRequestModel request = new PetMatchesFetcherRequestModel("User1", "12");
 
     @Test
-    public void TestSuccessPetMatchesFetcherRequestModel(){
+    public void TestSuccessPetMatchesFetcherRequestModel() {
         assert request.getPetId().equals("12");
 
 
@@ -14,7 +14,7 @@ public class TestPetMatchesFetcherRequestModel {
 
 
     @Test
-    public void TestFailurePetMatchesFetcherRequestModel(){
+    public void TestFailurePetMatchesFetcherRequestModel() {
         assert !request.getPetId().equals("1");
 
     }

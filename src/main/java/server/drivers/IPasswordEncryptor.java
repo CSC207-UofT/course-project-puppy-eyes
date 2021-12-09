@@ -7,6 +7,7 @@ public interface IPasswordEncryptor {
 
     /**
      * Return an encrypted version of a raw password.
+     *
      * @param rawPassword
      * @return an encrypted password as a String
      */
@@ -14,6 +15,7 @@ public interface IPasswordEncryptor {
 
     /**
      * Return whether the raw password matches the hashed password.
+     *
      * @param rawPassword
      * @param hashedPassword
      * @return true if matched, else false

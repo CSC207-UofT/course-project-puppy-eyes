@@ -38,7 +38,9 @@ public class Pet {
 
     public String getBreed() {
         return this.breed;
-    };
+    }
+
+    ;
 
     public int getId() {
         return id;

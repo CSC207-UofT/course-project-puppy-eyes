@@ -25,7 +25,8 @@ public class ImageDatabaseEntity {
     @Column(name = "asset_id")
     private String assetId;
 
-    public ImageDatabaseEntity() { }
+    public ImageDatabaseEntity() {
+    }
 
     public ImageDatabaseEntity(String assetId, int ownerId, String url, String type) {
         this.assetId = assetId;

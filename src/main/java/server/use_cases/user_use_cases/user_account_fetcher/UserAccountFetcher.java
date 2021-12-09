@@ -21,6 +21,7 @@ public class UserAccountFetcher implements UserAccountFetcherInputBoundary {
 
     /**
      * Fetch a user's account.
+     *
      * @param request Object containing the user's id.
      * @return An object containing the user's account information.
      */
@@ -43,15 +44,15 @@ public class UserAccountFetcher implements UserAccountFetcherInputBoundary {
         }
 
         return new ResponseModel(
-            true,
-            "Successfully fetched user account.",
-            new UserAccountFetcherResponseModel(
-                user.getFirstName(),
-                user.getLastName(),
-                user.getCurrentAddress(),
-                user.getCurrentCity(),
-                user.getContactInfo().getEmail()
-            )
+                true,
+                "Successfully fetched user account.",
+                new UserAccountFetcherResponseModel(
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getCurrentAddress(),
+                        user.getCurrentCity(),
+                        user.getContactInfo().getEmail()
+                )
         );
     }
 }

@@ -30,19 +30,19 @@ public class CreateUserRequestBody {
         return this.lastName;
     }
 
-    public String getEmailAddress(){
+    public String getEmailAddress() {
         return this.emailAddress;
     }
 
-    public String getCurrentAddress(){
+    public String getCurrentAddress() {
         return this.currentAddress;
     }
 
-    public String getCurrentCity(){
+    public String getCurrentCity() {
         return this.currentCity;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return this.password;
     }
 
