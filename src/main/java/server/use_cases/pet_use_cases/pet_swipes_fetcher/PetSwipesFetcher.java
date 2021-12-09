@@ -2,7 +2,6 @@ package server.use_cases.pet_use_cases.pet_swipes_fetcher;
 
 import server.use_cases.pet_use_cases.pet_action_validator.PetActionValidatorInputBoundary;
 import server.use_cases.pet_use_cases.pet_action_validator.PetActionValidatorRequestModel;
-import server.use_cases.pet_use_cases.pet_matches_fetcher.PetMatchesFetcherResponseModel;
 import server.use_cases.repo_abstracts.IPetRepository;
 import server.use_cases.ResponseModel;
 
@@ -26,7 +25,7 @@ public class PetSwipesFetcher implements PetSwipesFetcherInputBoundary {
      * @return a PetSwipesFetcherResponseModel that a list of pet ids that the pet has swiped on.
      */
     @Override
-    public ResponseModel fetchPetSwipes(PetSwipesFetcherRequestModel request)  {
+    public ResponseModel fetchPetSwipes(PetSwipesFetcherRequestModel request) {
         ResponseModel validateActionResponse = petActionValidator.validateAction(new PetActionValidatorRequestModel(
                 request.isFromTerminal(), request.getHeaderUserId(), request.getPetId()
         ));

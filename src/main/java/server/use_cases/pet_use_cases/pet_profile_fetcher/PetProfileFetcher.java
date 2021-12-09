@@ -32,16 +32,16 @@ public class PetProfileFetcher implements PetProfileFetcherInputBoundary {
         String profileImgUrl = imageRepository.fetchPetProfileImageLink(petId);
 
         return new ResponseModel(
-            true,
-            "Successfully fetched pet profile.",
-            new PetProfileFetcherResponseModel(
-                pet.getUserId(),
-                pet.getName(),
-                pet.getAge(),
-                pet.getBreed(),
-                pet.getBiography(),
-                profileImgUrl == null ? "" : profileImgUrl
-            )
+                true,
+                "Successfully fetched pet profile.",
+                new PetProfileFetcherResponseModel(
+                        pet.getUserId(),
+                        pet.getName(),
+                        pet.getAge(),
+                        pet.getBreed(),
+                        pet.getBiography(),
+                        profileImgUrl == null ? "" : profileImgUrl
+                )
         );
     }
 

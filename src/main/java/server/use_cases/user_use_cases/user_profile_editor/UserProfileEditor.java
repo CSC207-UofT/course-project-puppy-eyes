@@ -46,24 +46,24 @@ public class UserProfileEditor implements UserProfileEditorInputBoundary {
         String newFacebook = request.getNewFacebook() == null ? user.getContactInfo().getFacebook() : request.getNewFacebook();
 
         boolean isSuccess = userRepository.editUserProfile(
-            userId,
-            newBio,
-            newPhoneNum,
-            newInstagram,
-            newFacebook
+                userId,
+                newBio,
+                newPhoneNum,
+                newInstagram,
+                newFacebook
         );
 
         if (isSuccess) {
             return new ResponseModel(
-                true,
-                "Successfully edited user profile.",
-                new UserProfileEditorResponseModel(
-                    request.getUserId(),
-                    newBio,
-                    newPhoneNum,
-                    newInstagram,
-                    newFacebook
-                )
+                    true,
+                    "Successfully edited user profile.",
+                    new UserProfileEditorResponseModel(
+                            request.getUserId(),
+                            newBio,
+                            newPhoneNum,
+                            newInstagram,
+                            newFacebook
+                    )
             );
         }
 

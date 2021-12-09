@@ -10,7 +10,7 @@ public interface UserAccountValidatorInputBoundary {
     /**
      * Given a request object, perform the use case and return a ResponseModel
      *
-     * @param request
+     * @param request the request object
      * @return a ResponseModel object
      */
     ResponseModel validateAccount(UserAccountValidatorRequestModel request);

@@ -40,7 +40,6 @@ public class Pet {
         return this.breed;
     }
 
-    ;
 
     public int getId() {
         return id;

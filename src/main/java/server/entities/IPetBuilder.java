@@ -10,30 +10,30 @@ public interface IPetBuilder {
      *
      * @return a new User object
      */
-    public Pet create();
+    Pet create();
 
     /**
-     * Clear all of the builder's fields
+     * Clear all the builder's fields
      *
      * @return the current instance to allow chaining
      */
-    public IPetBuilder reset();
+    IPetBuilder reset();
 
     /**
      * Set the id field
      *
-     * @param id
+     * @param id the id of the new pet
      * @return the current instance to allow chaining
      */
-    public IPetBuilder id(int id);
+    IPetBuilder id(int id);
 
     /**
      * Set the biography field
      *
-     * @param biography
+     * @param biography the biography of the new pet
      * @return the current instance to allow chaining
      */
-    public IPetBuilder biography(String biography);
+    IPetBuilder biography(String biography);
 
 
 }

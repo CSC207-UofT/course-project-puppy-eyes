@@ -1,4 +1,5 @@
 package server.use_cases.pet_use_cases.pet_matches_generator;
+
 import server.drivers.LatLng;
 import server.entities.User;
 import server.use_cases.ResponseModel;

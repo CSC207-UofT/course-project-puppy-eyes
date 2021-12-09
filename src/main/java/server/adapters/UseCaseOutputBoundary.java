@@ -4,6 +4,6 @@ import server.use_cases.ResponseModel;
 
 public interface UseCaseOutputBoundary {
 
-    public String formatResponse(ResponseModel response);
+    String formatResponse(ResponseModel response);
 
 }

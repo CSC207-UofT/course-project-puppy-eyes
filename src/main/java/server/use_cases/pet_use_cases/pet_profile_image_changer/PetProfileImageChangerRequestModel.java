@@ -8,9 +8,10 @@ public class PetProfileImageChangerRequestModel extends AuthRequestModel {
 
     /**
      * Create a request to upload an image to set as the pet's new profile picture.
-     * @param headerUserId      the id of the user passed from the request header
-     * @param petId             the id of the pet
-     * @param base64Encoded     the Base64 encoded image as a String
+     *
+     * @param headerUserId  the id of the user passed from the request header
+     * @param petId         the id of the pet
+     * @param base64Encoded the Base64 encoded image as a String
      */
     public PetProfileImageChangerRequestModel(String headerUserId, String petId, String base64Encoded) {
         super(headerUserId);
