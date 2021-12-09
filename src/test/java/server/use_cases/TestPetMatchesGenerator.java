@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This Test Unit will fail without the GeocodeApiKey class
@@ -31,7 +32,7 @@ public class TestPetMatchesGenerator {
 
     private PetMatchesGenerator petMatchesGenerator;
 
-    String user1Id, user2Id, pet1Id, pet2Id;
+    String user1Id, user2Id, user3Id, pet1Id, pet2Id, pet3Id;
 
     @BeforeEach
     public void setUp() {
@@ -55,11 +56,16 @@ public class TestPetMatchesGenerator {
         user2Id = ((UserCreatorResponseModel) userCreator.createUser(new UserCreatorRequestModel("Mike",
                 "Hunter", "21 St George Street", "Toronto", "Password123",
                 "mike.the.hunter@email.com")).getResponseData()).getUserId();
+        user3Id = ((UserCreatorResponseModel) userCreator.createUser(new UserCreatorRequestModel("Hugh",
+                "Janus", "1st Avenue", "New York", "Password123",
+                "this.janus.is.hugh@email.com")).getResponseData()).getUserId();
         // Create pets
         pet1Id = ((PetCreatorResponseModel) petCreator.createPet(new PetCreatorRequestModel(user1Id, user1Id, "Pocky", "5",
                 "Golden Retriever", "The happiest dog in the world!")).getResponseData()).getPetId();
         pet2Id = ((PetCreatorResponseModel) petCreator.createPet(new PetCreatorRequestModel(user2Id, user2Id, "Jack", "3",
                 "German Shepherd", "Certified Good Boy TM.")).getResponseData()).getPetId();
+        pet3Id = ((PetCreatorResponseModel) petCreator.createPet(new PetCreatorRequestModel(user3Id, user3Id, "Shandra", "2",
+                "Chihuahua", "Loves to bite mom's and dad's butts.")).getResponseData()).getPetId();
     }
 
     /**
@@ -69,8 +75,11 @@ public class TestPetMatchesGenerator {
     public void TestSuccessPetMatchesGenerator() {
         ResponseModel responseModel = petMatchesGenerator.generatePotentialMatches(new
                 PetMatchesGeneratorRequestModel(user1Id, pet1Id));
-        List<String> expected = Arrays.asList("1");
+        List<String> expected = Arrays.asList(pet2Id);
         List<String> actual = ((PetMatchesGeneratorResponseModel) responseModel.getResponseData()).getPetIds();
+
+        // pet3Id should not be in this list since user3 is too far away
+        assertTrue(!actual.contains(pet3Id));
 
         assertEquals(expected, actual);
     }
