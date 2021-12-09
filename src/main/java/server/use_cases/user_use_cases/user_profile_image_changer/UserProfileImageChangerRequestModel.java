@@ -8,8 +8,9 @@ public class UserProfileImageChangerRequestModel extends AuthRequestModel {
 
     /**
      * Create a request to upload an image to set as the user's new profile picture.
-     * @param headerUserId      the userId passed from the request header
-     * @param base64Encoded     the Base64 encoded image as a String
+     *
+     * @param headerUserId  the userId passed from the request header
+     * @param base64Encoded the Base64 encoded image as a String
      */
     public UserProfileImageChangerRequestModel(String headerUserId, String base64Encoded) {
         super(headerUserId);

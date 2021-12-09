@@ -16,8 +16,9 @@ public class PetUnswiper implements PetInteraction {
 
     /**
      * Remove pet with pet2Id from pet with pet1Id's list of swiped pets.
-     * @param pet1Id
-     * @param pet2Id
+     *
+     * @param pet1Id the id of pet1
+     * @param pet2Id the id of pet2
      * @return a ResponseModel
      */
     @Override

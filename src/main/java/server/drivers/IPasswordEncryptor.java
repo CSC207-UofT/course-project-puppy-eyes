@@ -7,17 +7,19 @@ public interface IPasswordEncryptor {
 
     /**
      * Return an encrypted version of a raw password.
-     * @param rawPassword
+     *
+     * @param rawPassword the raw password
      * @return an encrypted password as a String
      */
-    public String encryptPassword(String rawPassword);
+    String encryptPassword(String rawPassword);
 
     /**
      * Return whether the raw password matches the hashed password.
-     * @param rawPassword
-     * @param hashedPassword
+     *
+     * @param rawPassword    the raw password
+     * @param hashedPassword the hashed password
      * @return true if matched, else false
      */
-    public boolean verifyPassword(String rawPassword, String hashedPassword);
+    boolean verifyPassword(String rawPassword, String hashedPassword);
 
 }

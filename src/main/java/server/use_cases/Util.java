@@ -7,7 +7,8 @@ import java.util.regex.Pattern;
  */
 public final class Util {
 
-    private Util() { }
+    private Util() {
+    }
 
     private final static Pattern intPattern = Pattern.compile("-?[0-9]+");
 

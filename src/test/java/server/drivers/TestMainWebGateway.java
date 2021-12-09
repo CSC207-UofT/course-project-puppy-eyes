@@ -17,7 +17,7 @@ public class TestMainWebGateway {
     public HttpServletRequest req;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         UseCaseOutputBoundary outputBoundary = Mockito.mock(UseCaseOutputBoundary.class);
 
         req = Mockito.mock(HttpServletRequest.class);

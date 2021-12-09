@@ -11,6 +11,7 @@ public class DummyGeocoderService implements IGeocoderService {
 
     /**
      * A dummy geocoder service that returns the lat-lng of some select cities.
+     *
      * @param query
      * @return a List<LatLng>
      */

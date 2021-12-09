@@ -49,7 +49,7 @@ public class UserAccountFetcherResponseModel extends ResponseData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserAccountFetcherResponseModel that = (UserAccountFetcherResponseModel) o;
-        return  Objects.equals(firstName, that.firstName) &&
+        return Objects.equals(firstName, that.firstName) &&
                 Objects.equals(lastName, that.lastName) && Objects.equals(currentAddress, that.currentAddress) &&
                 Objects.equals(currentCity, that.currentCity) && Objects.equals(email, that.email);
     }

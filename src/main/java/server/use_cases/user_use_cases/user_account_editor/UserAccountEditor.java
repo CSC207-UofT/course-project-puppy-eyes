@@ -68,7 +68,7 @@ public class UserAccountEditor implements UserAccountEditorInputBoundary {
 
         // Check inputs
         ResponseModel verifyInputsResponse = userAccountValidator.validateAccount(new UserAccountValidatorRequestModel(
-           newFirstName, newLastName, newCity, newPassword, newEmail
+                newFirstName, newLastName, newCity, newPassword, newEmail
         ));
 
         if (!verifyInputsResponse.isSuccess()) {
@@ -91,29 +91,29 @@ public class UserAccountEditor implements UserAccountEditorInputBoundary {
 
 
         boolean isSuccess = userRepository.editUserAccount(
-            id,
-            newFirstName,
-            newLastName,
-            newAddress,
-            newCity,
-            passwordEncryptor.encryptPassword(newPassword),
-            newEmail,
-            newLat,
-            newLng
+                id,
+                newFirstName,
+                newLastName,
+                newAddress,
+                newCity,
+                passwordEncryptor.encryptPassword(newPassword),
+                newEmail,
+                newLat,
+                newLng
         );
 
         if (isSuccess) {
             return new ResponseModel(
-                true,
-                "Successfully edited user account.",
-                new UserAccountEditorResponseModel(
-                    request.getUserId(),
-                    newFirstName,
-                    newLastName,
-                    newAddress,
-                    newCity,
-                    newEmail
-                )
+                    true,
+                    "Successfully edited user account.",
+                    new UserAccountEditorResponseModel(
+                            request.getUserId(),
+                            newFirstName,
+                            newLastName,
+                            newAddress,
+                            newCity,
+                            newEmail
+                    )
             );
         }
 

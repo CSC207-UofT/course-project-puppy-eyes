@@ -14,7 +14,7 @@ public class UserProfileImageChanger implements UserProfileImageChangerInputBoun
     private final UserActionValidatorInputBoundary userActionValidator;
 
     public UserProfileImageChanger(IImageRepository imageRepository, IImageService imageService,
-                              UserActionValidatorInputBoundary userActionValidator) {
+                                   UserActionValidatorInputBoundary userActionValidator) {
         this.imageRepository = imageRepository;
         this.imageService = imageService;
         this.userActionValidator = userActionValidator;

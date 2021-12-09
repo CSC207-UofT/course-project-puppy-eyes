@@ -20,6 +20,7 @@ public class AuthRequestModel {
      * This value should never be null since any requests missing a userId in its header will
      * be denied by AuthFilter. This value is compared to userId to determine whether
      * the request should be authorized.
+     *
      * @return the userId attached to the request *header*
      */
     public String getHeaderUserId() {
@@ -29,6 +30,7 @@ public class AuthRequestModel {
     /**
      * Return the userId that this action is trying to perform on.
      * This value differs from headerUserId in that this value is specified in the request body.
+     *
      * @return the userId attached to the request *body*
      */
     public String getUserId() {
@@ -37,7 +39,8 @@ public class AuthRequestModel {
 
     /**
      * When true, the headerUserId field is ignored and the request will always be authorized.
-     * @param fromTerminal
+     *
+     * @param fromTerminal whether from terminal
      */
     public void setFromTerminal(boolean fromTerminal) {
         this.fromTerminal = fromTerminal;
@@ -51,6 +54,7 @@ public class AuthRequestModel {
      * Return whether the request is authorized.
      * True if this request is coming from the terminal, or if the user id obtained from decoding the JWT token in
      * the request header matches the user id that the user is trying to access
+     *
      * @return whether the request is authorized
      */
     public boolean isRequestAuthorized() {
@@ -59,7 +63,8 @@ public class AuthRequestModel {
 
     /**
      * Return whether this request came from the command line or not.
-     * @return
+     *
+     * @return whether the request came from the command line
      */
     public boolean isFromTerminal() {
         return this.fromTerminal;

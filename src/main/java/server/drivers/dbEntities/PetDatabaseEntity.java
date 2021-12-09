@@ -10,7 +10,7 @@ import java.util.List;
 public class PetDatabaseEntity {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -29,20 +29,20 @@ public class PetDatabaseEntity {
     @Column(name = "biography")
     private String biography;
 
-    @OneToMany(mappedBy="fromId", fetch = FetchType.EAGER)
-    @Where(clause="relation_type = 'SWIPE'")
+    @OneToMany(mappedBy = "fromId", fetch = FetchType.EAGER)
+    @Where(clause = "relation_type = 'SWIPE'")
     private List<RelationDatabaseEntity> swipedOn;
 
-    @OneToMany(mappedBy="fromId", fetch = FetchType.EAGER)
-    @Where(clause="relation_type = 'MATCH'")
+    @OneToMany(mappedBy = "fromId", fetch = FetchType.EAGER)
+    @Where(clause = "relation_type = 'MATCH'")
     private List<RelationDatabaseEntity> matches;
 
-    @OneToMany(mappedBy="fromId", fetch = FetchType.EAGER)
-    @Where(clause="relation_type = 'REJECT'")
+    @OneToMany(mappedBy = "fromId", fetch = FetchType.EAGER)
+    @Where(clause = "relation_type = 'REJECT'")
     private List<RelationDatabaseEntity> rejected;
 
     @ManyToOne
-    @JoinColumn(name="user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private UserDatabaseEntity user;
 
     public PetDatabaseEntity(int userId, String name, int age, String breed, String biography) {
@@ -55,7 +55,8 @@ public class PetDatabaseEntity {
 
     }
 
-    public PetDatabaseEntity() { }
+    public PetDatabaseEntity() {
+    }
 
     public UserDatabaseEntity getUser() {
         return this.user;

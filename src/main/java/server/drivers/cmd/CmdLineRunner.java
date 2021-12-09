@@ -62,7 +62,7 @@ public class CmdLineRunner implements CommandLineRunner {
      * @return A mapping from input names to the input entered
      * by a user.
      */
-    private Map<String, String> getCommandInputs(PromptAndInputNameTuple[] tuples){
+    private Map<String, String> getCommandInputs(PromptAndInputNameTuple[] tuples) {
         Map<String, String> inputs = new HashMap<>();
 
         for (PromptAndInputNameTuple tuple : tuples) {
@@ -75,13 +75,13 @@ public class CmdLineRunner implements CommandLineRunner {
     /**
      * Return a mapping containing the necessary inputs for the
      * createUser command. The mapping is of the form:
-     *
-     *  firstName -> user's entered first name
-     *  lastName -> user's entered last name
-     *  current address -> user's entered current address
-     *  current city -> user's entered current city
-     *  password -> users' entered password.
-     *  email -> user's entered email
+     * <p>
+     * firstName -> user's entered first name
+     * lastName -> user's entered last name
+     * current address -> user's entered current address
+     * current city -> user's entered current city
+     * password -> users' entered password.
+     * email -> user's entered email
      */
     public Map<String, String> getCreateUserAccountInputs() {
         PromptAndInputNameTuple[] inputPrompts = {
@@ -99,8 +99,8 @@ public class CmdLineRunner implements CommandLineRunner {
     /**
      * Return a mapping containing the necessary inputs for the
      * fetchUserAccount command. The mapping is of the form:
-     *
-     *  userId -> user's entered user id
+     * <p>
+     * userId -> user's entered user id
      */
     public Map<String, String> getFetchUserAccountInputs() {
         PromptAndInputNameTuple[] inputPrompts = {
@@ -113,14 +113,14 @@ public class CmdLineRunner implements CommandLineRunner {
     /**
      * Return a mapping containing the necessary inputs for the
      * editUserAccount command. The mapping is of the form:
-     *
-     *  userId -> user's entered user id
-     *  newFirstName -> user's entered new first name
-     *  newLastName -> user's entered new last name
-     *  newAddress -> user's entered new current address
-     *  newCity -> user's entered new current city
-     *  newPassword -> user's entered new password
-     *  newEmail -> user's entered new email
+     * <p>
+     * userId -> user's entered user id
+     * newFirstName -> user's entered new first name
+     * newLastName -> user's entered new last name
+     * newAddress -> user's entered new current address
+     * newCity -> user's entered new current city
+     * newPassword -> user's entered new password
+     * newEmail -> user's entered new email
      */
     public Map<String, String> getEditUserAccountInputs() {
         PromptAndInputNameTuple[] inputPrompts = {
@@ -139,8 +139,8 @@ public class CmdLineRunner implements CommandLineRunner {
     /**
      * Return a mapping containing the necessary inputs for the
      * fetchUserProfile command. The mapping is of the form:
-     *
-     *  userId -> user's entered user id
+     * <p>
+     * userId -> user's entered user id
      */
     public Map<String, String> getFetchUserProfileInputs() {
         PromptAndInputNameTuple[] inputPrompts = {
@@ -153,12 +153,12 @@ public class CmdLineRunner implements CommandLineRunner {
     /**
      * Return a mapping containing the necessary inputs for the
      * editUserProfile command. The mapping is of the form:
-     *
-     *  userId -> user's entered user id
-     *  newBiography -> user's entered new biography
-     *  newPhoneNumber -> user's entered new phone number
-     *  newInstagram -> user's entered new Instagram
-     *  newFacebook -> user's entered new Facebook
+     * <p>
+     * userId -> user's entered user id
+     * newBiography -> user's entered new biography
+     * newPhoneNumber -> user's entered new phone number
+     * newInstagram -> user's entered new Instagram
+     * newFacebook -> user's entered new Facebook
      */
     public Map<String, String> getEditUserProfileInputs() {
         PromptAndInputNameTuple[] inputPrompts = {
@@ -175,12 +175,12 @@ public class CmdLineRunner implements CommandLineRunner {
     /**
      * Return a mapping containing the necessary inputs for the
      * createPet command. The mapping is of the form:
-     *
-     *  userId -> id of user this pet belongs to
-     *  name -> user's entered pet's name
-     *  age -> user's entered pet's age
-     *  breed -> user's entered pet's breed
-     *  biography -> user's entered pet's biography
+     * <p>
+     * userId -> id of user this pet belongs to
+     * name -> user's entered pet's name
+     * age -> user's entered pet's age
+     * breed -> user's entered pet's breed
+     * biography -> user's entered pet's biography
      */
     public Map<String, String> getCreatePetInputs() {
         PromptAndInputNameTuple[] inputPrompts = {
@@ -197,8 +197,8 @@ public class CmdLineRunner implements CommandLineRunner {
     /**
      * Return a mapping containing the necessary inputs for the
      * fetchPetProfile command. The mapping is of the form:
-     *
-     *  petId -> user's entered pet id
+     * <p>
+     * petId -> user's entered pet id
      */
     public Map<String, String> getFetchPetProfileInputs() {
         PromptAndInputNameTuple[] inputPrompts = {
@@ -211,12 +211,12 @@ public class CmdLineRunner implements CommandLineRunner {
     /**
      * Return a mapping containing the necessary inputs for the
      * editPet command. The mapping is of the form:
-     *
-     *  petId -> user's entered pet id
-     *  newName -> user's entered pet's new name
-     *  newAge -> user's entered pet's new age
-     *  newBreed -> user's entered pet's new breed
-     *  newBiography -> user's entered pet's new biography
+     * <p>
+     * petId -> user's entered pet id
+     * newName -> user's entered pet's new name
+     * newAge -> user's entered pet's new age
+     * newBreed -> user's entered pet's new breed
+     * newBiography -> user's entered pet's new biography
      */
     public Map<String, String> getEditPetInputs() {
         PromptAndInputNameTuple[] inputPrompts = {
@@ -234,9 +234,9 @@ public class CmdLineRunner implements CommandLineRunner {
     /**
      * Return a mapping containing the necessary inputs for the
      * swipePets, unswipePets, rejectPets, and unmatchPets command. The mapping is of the form:
-     *
-     *  pet1id -> pet1's id
-     *  pet2id -> pet2's id
+     * <p>
+     * pet1id -> pet1's id
+     * pet2id -> pet2's id
      */
     public Map<String, String> getPetInteractorInputs() {
         PromptAndInputNameTuple[] inputPrompts = {
@@ -260,12 +260,12 @@ public class CmdLineRunner implements CommandLineRunner {
                 inputs = getCreateUserAccountInputs();
                 return responsePresenter.formatResponse(
                         userController.createUser(
-                            inputs.get("firstName"),
-                            inputs.get("lastName"),
-                            inputs.get("currentAddress"),
-                            inputs.get("currentCity"),
-                            inputs.get("password"),
-                            inputs.get("email")
+                                inputs.get("firstName"),
+                                inputs.get("lastName"),
+                                inputs.get("currentAddress"),
+                                inputs.get("currentCity"),
+                                inputs.get("password"),
+                                inputs.get("email")
                         )
                 );
 
@@ -278,17 +278,17 @@ public class CmdLineRunner implements CommandLineRunner {
             case "editUserAccount":
                 inputs = getEditUserAccountInputs();
                 return responsePresenter.formatResponse(
-                    userController.editUserAccount(
-                        true,
-                        null,
-                        inputs.get("userId"),
-                        inputs.get("newFirstName"),
-                        inputs.get("newLastName"),
-                        inputs.get("newAddress"),
-                        inputs.get("newCity"),
-                        inputs.get("newPassword"),
-                        inputs.get("newEmail")
-                    )
+                        userController.editUserAccount(
+                                true,
+                                null,
+                                inputs.get("userId"),
+                                inputs.get("newFirstName"),
+                                inputs.get("newLastName"),
+                                inputs.get("newAddress"),
+                                inputs.get("newCity"),
+                                inputs.get("newPassword"),
+                                inputs.get("newEmail")
+                        )
                 );
 
             case "fetchUserProfile":
@@ -300,29 +300,29 @@ public class CmdLineRunner implements CommandLineRunner {
             case "editUserProfile":
                 inputs = getEditUserProfileInputs();
                 return responsePresenter.formatResponse(
-                    userController.editUserProfile(
-                        true,
-                        null,
-                        inputs.get("userId"),
-                        inputs.get("newBiography"),
-                        inputs.get("newPhoneNumber"),
-                        inputs.get("newInstagram"),
-                        inputs.get("newFacebook")
-                    )
+                        userController.editUserProfile(
+                                true,
+                                null,
+                                inputs.get("userId"),
+                                inputs.get("newBiography"),
+                                inputs.get("newPhoneNumber"),
+                                inputs.get("newInstagram"),
+                                inputs.get("newFacebook")
+                        )
                 );
 
             case "createPet":
                 inputs = getCreatePetInputs();
                 return responsePresenter.formatResponse(
-                    petController.createPet(
-                        true,
-                        null,
-                        inputs.get("userId"),
-                        inputs.get("name"),
-                        inputs.get("age"),
-                        inputs.get("breed"),
-                        inputs.get("biography")
-                    )
+                        petController.createPet(
+                                true,
+                                null,
+                                inputs.get("userId"),
+                                inputs.get("name"),
+                                inputs.get("age"),
+                                inputs.get("breed"),
+                                inputs.get("biography")
+                        )
                 );
 
             case "swipePets":
@@ -348,15 +348,15 @@ public class CmdLineRunner implements CommandLineRunner {
             case "editPet":
                 inputs = getEditPetInputs();
                 return responsePresenter.formatResponse(
-                    petController.editPet(
-                        true,
-                        null,
-                        inputs.get("petId"),
-                        inputs.get("newName"),
-                        inputs.get("newAge"),
-                        inputs.get("newBreed"),
-                        inputs.get("newBiography")
-                    )
+                        petController.editPet(
+                                true,
+                                null,
+                                inputs.get("petId"),
+                                inputs.get("newName"),
+                                inputs.get("newAge"),
+                                inputs.get("newBreed"),
+                                inputs.get("newBiography")
+                        )
                 );
 
             case "fetchPetSwipes":

@@ -7,6 +7,6 @@ import server.drivers.dbEntities.UserDatabaseEntity;
 @Repository
 public interface JpaUserRepository extends JpaRepository<UserDatabaseEntity, Integer> {
 
-    public UserDatabaseEntity findByContactInfo_email(String email);
+    UserDatabaseEntity findByContactInfo_email(String email);
 
 }

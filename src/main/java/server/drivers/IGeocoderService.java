@@ -7,11 +7,12 @@ public interface IGeocoderService {
 
     /**
      * Given a query, make a GET request to the HERE Geocoding API to fetch latitude and longitude.
-     * @param query
+     *
+     * @param query the given query
      * @return Return a List of lat-lng tuples that match the query.
-     * @throws IOException
-     * @throws InterruptedException
+     * @throws IOException          IO Exception
+     * @throws InterruptedException Interrupted Exception
      */
-    public List<LatLng> getLatLng(String query);
+    List<LatLng> getLatLng(String query);
 
 }

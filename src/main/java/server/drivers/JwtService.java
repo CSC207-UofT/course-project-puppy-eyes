@@ -22,7 +22,8 @@ public class JwtService implements IJwtService {
 
     private boolean useTestKey;
 
-    public JwtService() { }
+    public JwtService() {
+    }
 
     public JwtService(boolean useTestKey) {
         this.useTestKey = useTestKey;

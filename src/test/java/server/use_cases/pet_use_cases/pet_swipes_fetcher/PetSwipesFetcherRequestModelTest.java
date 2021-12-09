@@ -11,7 +11,7 @@ public class PetSwipesFetcherRequestModelTest {
     PetSwipesFetcherRequestModel request = new PetSwipesFetcherRequestModel(headerUserId1, petId1);
 
     @Test
-    void getPetId(){
+    void getPetId() {
         assertEquals(petId1, request.getPetId());
     }
 

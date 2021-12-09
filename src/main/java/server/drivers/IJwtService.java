@@ -9,31 +9,35 @@ public interface IJwtService {
 
     /**
      * Extract the subject from the JWT token
-     * @param token
+     *
+     * @param token the JWT token
      * @return the subject as a String
      */
-    public String extractSubject(String token);
+    String extractSubject(String token);
 
     /**
      * Return the expiration of the JWT token
-     * @param token
+     *
+     * @param token the JWT token
      * @return the expiration as a Date object
      */
-    public Date extractExpiration(String token);
+    Date extractExpiration(String token);
 
     /**
      * Create a new JWT token with the given subject
-     * @param subject
+     *
+     * @param subject the given subject
      * @return a JWT token as a String
      */
-    public String createToken(String subject);
+    String createToken(String subject);
 
     /**
      * Return whether the given token and its subject is valid
-     * @param token
-     * @param subject
-     * @return true if valid, els efalse
+     *
+     * @param token   the given token
+     * @param subject the given subject
+     * @return true if valid, else false
      */
-    public boolean validateToken(String token, String subject);
+    boolean validateToken(String token, String subject);
 
 }

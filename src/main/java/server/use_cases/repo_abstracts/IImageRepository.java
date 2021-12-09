@@ -8,34 +8,38 @@ public interface IImageRepository {
 
     /**
      * Return the URL storing the given user's profile picture
-     * @param userId
+     *
+     * @param userId the id of the given user
      * @return a URL
      */
-    public String fetchUserProfileImageLink(int userId);
+    String fetchUserProfileImageLink(int userId);
 
     /**
      * Return the URL storing the given pet's profile picture
-     * @param petId
+     *
+     * @param petId the id of the given pet
      * @return a URL
      */
-    public String fetchPetProfileImageLink(int petId);
+    String fetchPetProfileImageLink(int petId);
 
     /**
      * Sets this user's profile image to the following URL
-     * @param userId
-     * @param assetId
-     * @param url
+     *
+     * @param userId  the id of the user
+     * @param assetId the id of the asset
+     * @param url     the URL of the image to be set as the user's profile image
      * @return true if success, else false
      */
-    public boolean setUserProfileImage(int userId, String assetId, String url);
+    boolean setUserProfileImage(int userId, String assetId, String url);
 
     /**
      * Sets this pet's profile image to the following URL
-     * @param petId
-     * @param assetId
-     * @param url
+     *
+     * @param petId   the id of the pet
+     * @param assetId the id of the asset
+     * @param url     the URL of the image to be set as the pet's profile image
      * @return true if success, else false
      */
-    public boolean setPetProfileImage(int petId, String assetId, String url);
+    boolean setPetProfileImage(int petId, String assetId, String url);
 
 }

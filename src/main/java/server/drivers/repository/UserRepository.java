@@ -24,12 +24,11 @@ public class UserRepository implements IUserRepository {
     public UserRepository(JpaUserRepository repository) {
         this.repository = repository;
     }
-    
+
     /**
      * Create and save a new user to the database.
      *
-     * @param user  the user
-     *
+     * @param user the user
      * @return The id of the new user.
      */
     @Override
@@ -65,19 +64,19 @@ public class UserRepository implements IUserRepository {
             UserDatabaseEntity dbUser = searchResult.get();
 
             User user = new UserBuilder(
-                dbUser.getFirstName(),
-                dbUser.getLastName(),
-                dbUser.getPassword(),
-                dbUser.getCurrentCity(),
-                dbUser.getContactInfo().getEmail()
+                    dbUser.getFirstName(),
+                    dbUser.getLastName(),
+                    dbUser.getPassword(),
+                    dbUser.getCurrentCity(),
+                    dbUser.getContactInfo().getEmail()
             )
-            .currentAddress(dbUser.getCurrentAddress())
-            .biography(dbUser.getBiography())
-            .phoneNumber(dbUser.getContactInfo().getPhoneNumber())
-            .instagram(dbUser.getContactInfo().getInstagram())
-            .facebook(dbUser.getContactInfo().getFacebook())
-            .id(dbUser.getId())
-            .create();
+                    .currentAddress(dbUser.getCurrentAddress())
+                    .biography(dbUser.getBiography())
+                    .phoneNumber(dbUser.getContactInfo().getPhoneNumber())
+                    .instagram(dbUser.getContactInfo().getInstagram())
+                    .facebook(dbUser.getContactInfo().getFacebook())
+                    .id(dbUser.getId())
+                    .create();
             return user;
         } else {
             return null;
@@ -87,16 +86,15 @@ public class UserRepository implements IUserRepository {
     /**
      * Edit a user's Account given user id and new information.
      *
-     * @param userId        the user's id
-     * @param newFirstName  the user's new first name
-     * @param newLastName   the user's new last name
-     * @param newAddress    the user's new current address
-     * @param newCity       the user's new current city
-     * @param newPassword   the user's new password
-     * @param newEmail      the user's new email
-     * @param newLat        the user's new latitude
-     * @param newLng        the user's new longitude
-     *
+     * @param userId       the user's id
+     * @param newFirstName the user's new first name
+     * @param newLastName  the user's new last name
+     * @param newAddress   the user's new current address
+     * @param newCity      the user's new current city
+     * @param newPassword  the user's new password
+     * @param newEmail     the user's new email
+     * @param newLat       the user's new latitude
+     * @param newLng       the user's new longitude
      * @return if the editing is successfully done or not
      */
     @Override
@@ -133,7 +131,6 @@ public class UserRepository implements IUserRepository {
      * @param newPhoneNumber the user's new entered phone number
      * @param newInstagram   the user's new entered Instagram
      * @param newFacebook    the user's new entered Facebook
-     *
      * @return if the editing is successfully done or not
      */
     @Override
@@ -161,6 +158,7 @@ public class UserRepository implements IUserRepository {
 
     /**
      * Return a list of all users from the database
+     *
      * @return a list of all users from the database
      */
     @Override
@@ -171,21 +169,21 @@ public class UserRepository implements IUserRepository {
 
         for (UserDatabaseEntity dbUser : dbUsers) {
             User user = new UserBuilder(
-                dbUser.getFirstName(),
-                dbUser.getLastName(),
-                dbUser.getPassword(),
-                dbUser.getCurrentCity(),
-                dbUser.getContactInfo().getEmail()
+                    dbUser.getFirstName(),
+                    dbUser.getLastName(),
+                    dbUser.getPassword(),
+                    dbUser.getCurrentCity(),
+                    dbUser.getContactInfo().getEmail()
             )
-            .currentAddress(dbUser.getCurrentAddress())
-            .biography(dbUser.getBiography())
-            .phoneNumber(dbUser.getContactInfo().getPhoneNumber())
-            .instagram(dbUser.getContactInfo().getInstagram())
-            .facebook(dbUser.getContactInfo().getFacebook())
-            .id(dbUser.getId())
-            .lat(dbUser.getLat())
-            .lng(dbUser.getLng())
-            .create();
+                    .currentAddress(dbUser.getCurrentAddress())
+                    .biography(dbUser.getBiography())
+                    .phoneNumber(dbUser.getContactInfo().getPhoneNumber())
+                    .instagram(dbUser.getContactInfo().getInstagram())
+                    .facebook(dbUser.getContactInfo().getFacebook())
+                    .id(dbUser.getId())
+                    .lat(dbUser.getLat())
+                    .lng(dbUser.getLng())
+                    .create();
             users.add(user);
         }
 
@@ -194,6 +192,7 @@ public class UserRepository implements IUserRepository {
 
     /**
      * Return the user id corresponding to the given email
+     *
      * @param email
      * @return user id, -1 if non-existent
      */

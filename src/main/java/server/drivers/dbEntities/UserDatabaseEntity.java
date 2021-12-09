@@ -61,7 +61,8 @@ public class UserDatabaseEntity {
         this.lng = lng;
     }
 
-    public UserDatabaseEntity() { }
+    public UserDatabaseEntity() {
+    }
 
     public int getId() {
         return id;
@@ -75,7 +76,9 @@ public class UserDatabaseEntity {
         return lastName;
     }
 
-    public String getPassword() { return password; }
+    public String getPassword() {
+        return password;
+    }
 
     public String getCurrentAddress() {
         return currentAddress;

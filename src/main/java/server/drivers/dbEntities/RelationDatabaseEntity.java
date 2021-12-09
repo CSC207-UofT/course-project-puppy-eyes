@@ -22,7 +22,10 @@ public class RelationDatabaseEntity {
     @Column(name = "relation_type")
     private String relationType;
 
-    public RelationDatabaseEntity() {};
+    public RelationDatabaseEntity() {
+    }
+
+    ;
 
     public RelationDatabaseEntity(int fromId, int toId, String relationType) {
         this.fromId = fromId;

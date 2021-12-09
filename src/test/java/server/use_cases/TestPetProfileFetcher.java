@@ -41,9 +41,9 @@ public class TestPetProfileFetcher {
         userId = Integer.parseInt(userCreatorResponse.getUserId());
 
         // Create some pets
-        dummyPetRepository.createPet(userId,"Amy", 100, "Turtle", "Ahhhh");
-        dummyPetRepository.createPet(userId,"Bob", 2, "Dog", "Bobobobobo");
-        dummyPetRepository.createPet(userId,"Cindy", 7, "Cat", "Meow");
+        dummyPetRepository.createPet(userId, "Amy", 100, "Turtle", "Ahhhh");
+        dummyPetRepository.createPet(userId, "Bob", 2, "Dog", "Bobobobobo");
+        dummyPetRepository.createPet(userId, "Cindy", 7, "Cat", "Meow");
     }
 
     @Test

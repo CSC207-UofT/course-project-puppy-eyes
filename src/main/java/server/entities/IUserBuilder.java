@@ -7,70 +7,80 @@ public interface IUserBuilder {
 
     /**
      * Create a User object using the builder's fields
+     *
      * @return a new User object
      */
-    public User create();
+    User create();
 
     /**
      * Clear all of the builder's fields
+     *
      * @return the current instance to allow chaining
      */
-    public IUserBuilder reset();
+    IUserBuilder reset();
 
     /**
      * Set the id field
-     * @param id
+     *
+     * @param id the id of the new user
      * @return the current instance to allow chaining
      */
-    public IUserBuilder id(int id);
+    IUserBuilder id(int id);
 
     /**
      * Set the biography field
-     * @param biography
+     *
+     * @param biography the biography of the new user
      * @return the current instance to allow chaining
      */
-    public IUserBuilder biography(String biography);
+    IUserBuilder biography(String biography);
 
     /**
      * Set the currentAddress field
-     * @param currentAddress
+     *
+     * @param currentAddress the current address of the new user
      * @return the current instance to allow chaining
      */
-    public IUserBuilder currentAddress(String currentAddress);
+    IUserBuilder currentAddress(String currentAddress);
 
     /**
      * Set the phoneNumber field
-     * @param phoneNumber
+     *
+     * @param phoneNumber the phone number of the new user
      * @return the current instance to allow chaining
      */
-    public IUserBuilder phoneNumber(String phoneNumber);
+    IUserBuilder phoneNumber(String phoneNumber);
 
     /**
      * Set the instagram field
-     * @param instagram
+     *
+     * @param instagram the instagram handle of the new user
      * @return the current instance to allow chaining
      */
-    public IUserBuilder instagram(String instagram);
+    IUserBuilder instagram(String instagram);
 
     /**
      * Set the facebook field
-     * @param facebook
+     *
+     * @param facebook the facebook name of the new user
      * @return the current instance to allow chaining
      */
-    public IUserBuilder facebook(String facebook);
+    IUserBuilder facebook(String facebook);
 
     /**
      * Set the lat field
-     * @param lat
+     *
+     * @param lat the latitude of the new user's location
      * @return the current instance to allow chaining
      */
-    public IUserBuilder lat(String lat);
+    IUserBuilder lat(String lat);
 
     /**
      * Set the lng field
-     * @param lng
+     *
+     * @param lng the longitude of the new user's location
      * @return the current instance to allow chaining
      */
-    public IUserBuilder lng(String lng);
+    IUserBuilder lng(String lng);
 
 }

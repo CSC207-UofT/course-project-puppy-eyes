@@ -48,7 +48,7 @@ public class UserProfileEditorResponseModel extends ResponseData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserProfileEditorResponseModel that = (UserProfileEditorResponseModel) o;
-        return  Objects.equals(userId, that.userId)
+        return Objects.equals(userId, that.userId)
                 && Objects.equals(newBiography, that.newBiography)
                 && Objects.equals(newPhoneNumber, that.newPhoneNumber)
                 && Objects.equals(newInstagram, that.newInstagram)

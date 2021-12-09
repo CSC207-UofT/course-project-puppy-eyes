@@ -63,7 +63,7 @@ public class TestPetMatchesFetcher {
     }
 
     @Test()
-    public void TestSuccessfulPetMatchesFetcher(){
+    public void TestSuccessfulPetMatchesFetcher() {
         ResponseModel responseModel = petMatchesFetcher.fetchPetMatches(
                 new PetMatchesFetcherRequestModel(user1Id, pet1Id)
         );
@@ -75,7 +75,7 @@ public class TestPetMatchesFetcher {
     }
 
     @Test()
-    public void TestFailurePetMatchesFetcher(){
+    public void TestFailurePetMatchesFetcher() {
         ResponseModel responseModel = petMatchesFetcher.fetchPetMatches(
                 new PetMatchesFetcherRequestModel(user1Id, pet1Id)
         );

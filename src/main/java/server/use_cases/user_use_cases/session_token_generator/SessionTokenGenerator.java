@@ -37,9 +37,9 @@ public class SessionTokenGenerator implements SessionTokenGeneratorInputBoundary
 
         String token = jwtService.createToken(String.valueOf(userRepository.fetchIdFromEmail(request.getEmail())));
         return new ResponseModel(
-            true,
-            "Successfully generated session token.",
-            new SessionTokenGeneratorResponseModel(token)
+                true,
+                "Successfully generated session token.",
+                new SessionTokenGeneratorResponseModel(token)
         );
     }
 }

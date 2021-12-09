@@ -55,7 +55,7 @@ public class UserAccountEditorResponseModel extends ResponseData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserAccountEditorResponseModel that = (UserAccountEditorResponseModel) o;
-        return  Objects.equals(userId, that.userId)
+        return Objects.equals(userId, that.userId)
                 && Objects.equals(newFirstName, that.newFirstName)
                 && Objects.equals(newLastName, that.newLastName)
                 && Objects.equals(newCurrentAddress, that.newCurrentAddress)

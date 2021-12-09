@@ -16,8 +16,9 @@ public class PetUnmatcher implements PetInteraction {
 
     /**
      * Remove both pets from each other's list of matched pets.
-     * @param pet1Id
-     * @param pet2Id
+     *
+     * @param pet1Id the id of pet1
+     * @param pet2Id the id of pet2
      * @return a ResponseModel
      */
     @Override

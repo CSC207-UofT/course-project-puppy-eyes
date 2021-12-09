@@ -39,14 +39,14 @@ public class UserProfileFetcher implements UserProfileFetcherInputBoundary {
     @Override
     public ResponseModel fetchUserProfile(UserProfileFetcherRequestModel request) {
         ResponseModel validateActionResponse = userActionValidator.validateAction(new UserActionValidatorRequestModel(
-            request.isFromTerminal(), request.getHeaderUserId(), request.getUserId()
+                request.isFromTerminal(), request.getHeaderUserId(), request.getUserId()
         ));
 
         // Check if the action is validated
         if (validateActionResponse.isSuccess() ||
                 // Check if user1 is allowed to view user2's profile
                 (request.getHeaderUserId() != null && request.getUserId() != null
-                        && Util.isInteger(request.getHeaderUserId())  && Util.isInteger(request.getUserId())
+                        && Util.isInteger(request.getHeaderUserId()) && Util.isInteger(request.getUserId())
                         && canUserView(Integer.parseInt(request.getHeaderUserId()), Integer.parseInt(request.getUserId())))) {
             int userId = Integer.parseInt(request.getUserId());
 
@@ -58,14 +58,14 @@ public class UserProfileFetcher implements UserProfileFetcherInputBoundary {
                     true,
                     "Successfully fetched user profile.",
                     new UserProfileFetcherResponseModel(
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getBiography(),
-                        user.getContactInfo().getPhoneNumber(),
-                        user.getContactInfo().getEmail(),
-                        user.getContactInfo().getInstagram(),
-                        user.getContactInfo().getFacebook(),
-                        profileImgUrl == null ? "" : profileImgUrl
+                            user.getFirstName(),
+                            user.getLastName(),
+                            user.getBiography(),
+                            user.getContactInfo().getPhoneNumber(),
+                            user.getContactInfo().getEmail(),
+                            user.getContactInfo().getInstagram(),
+                            user.getContactInfo().getFacebook(),
+                            profileImgUrl == null ? "" : profileImgUrl
                     )
             );
         }
@@ -76,6 +76,7 @@ public class UserProfileFetcher implements UserProfileFetcherInputBoundary {
     /**
      * Return whether user1 is allowed to view user2's profile.
      * True if user1 has *at least one* pet matched with *at least one* of user2's pets.
+     *
      * @return whether user1 is allowed to view user2's profile
      */
     public boolean canUserView(int user1Id, int user2Id) {

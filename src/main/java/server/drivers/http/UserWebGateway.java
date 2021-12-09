@@ -27,12 +27,12 @@ public class UserWebGateway extends WebGateway {
     @PostMapping("/create")
     public ResponseEntity createUser(@RequestBody CreateUserRequestBody requestBody) {
         ResponseModel response = userController.createUser(
-            requestBody.getFirstName(),
-            requestBody.getLastName(),
-            requestBody.getCurrentAddress(),
-            requestBody.getCurrentCity(),
-            requestBody.getPassword(),
-            requestBody.getEmailAddress()
+                requestBody.getFirstName(),
+                requestBody.getLastName(),
+                requestBody.getCurrentAddress(),
+                requestBody.getCurrentCity(),
+                requestBody.getPassword(),
+                requestBody.getEmailAddress()
         );
 
         return getResponseEntity(response);
@@ -41,9 +41,9 @@ public class UserWebGateway extends WebGateway {
     @GetMapping("/account")
     public ResponseEntity getUserAccount(HttpServletRequest req, @RequestParam String userId) {
         ResponseModel response = userController.fetchUserAccount(
-            false,
-            req.getHeader("userId"),
-            userId
+                false,
+                req.getHeader("userId"),
+                userId
         );
 
         return getResponseEntity(response);
@@ -52,15 +52,15 @@ public class UserWebGateway extends WebGateway {
     @PostMapping("/editaccount")
     public ResponseEntity editUserAccount(HttpServletRequest req, @RequestBody EditUserAccountRequestBody requestBody) {
         ResponseModel response = userController.editUserAccount(
-            false,
-            req.getHeader("userId"),
-            requestBody.getUserId(),
-            requestBody.getNewFirstName(),
-            requestBody.getNewLastName(),
-            requestBody.getNewAddress(),
-            requestBody.getNewCity(),
-            requestBody.getNewPassword(),
-            requestBody.getNewEmail()
+                false,
+                req.getHeader("userId"),
+                requestBody.getUserId(),
+                requestBody.getNewFirstName(),
+                requestBody.getNewLastName(),
+                requestBody.getNewAddress(),
+                requestBody.getNewCity(),
+                requestBody.getNewPassword(),
+                requestBody.getNewEmail()
         );
 
         return getResponseEntity(response);
@@ -81,13 +81,13 @@ public class UserWebGateway extends WebGateway {
     @PostMapping("/editprofile")
     public ResponseEntity editUserProfile(HttpServletRequest req, @RequestBody EditUserProfileRequestBody requestBody) {
         ResponseModel response = userController.editUserProfile(
-            false,
-            req.getHeader("userId"),
-            requestBody.getUserId(),
-            requestBody.getNewBiography(),
-            requestBody.getNewPhoneNumber(),
-            requestBody.getNewInstagram(),
-            requestBody.getNewFacebook()
+                false,
+                req.getHeader("userId"),
+                requestBody.getUserId(),
+                requestBody.getNewBiography(),
+                requestBody.getNewPhoneNumber(),
+                requestBody.getNewInstagram(),
+                requestBody.getNewFacebook()
         );
 
         return getResponseEntity(response);

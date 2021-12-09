@@ -3,7 +3,7 @@ package server.drivers.mocks;
 import server.controllers.IUserController;
 import server.use_cases.ResponseModel;
 
-public class MockUserController extends MockController  implements IUserController {
+public class MockUserController extends MockController implements IUserController {
     @Override
     public ResponseModel createUser(String firstName, String lastName, String currentAddress, String currentCity, String password, String email) {
         return makeMockResponseData();

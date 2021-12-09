@@ -24,7 +24,7 @@ public class PetMatchesFetcher implements PetMatchesFetcherInputBoundary {
      * @return a PetMatchesFetcherResponseModel that a list of pet ids that the pet has matched with.
      */
     @Override
-    public ResponseModel fetchPetMatches(PetMatchesFetcherRequestModel request)  {
+    public ResponseModel fetchPetMatches(PetMatchesFetcherRequestModel request) {
         ResponseModel validateActionResponse = petActionValidator.validateAction(new PetActionValidatorRequestModel(
                 request.isFromTerminal(), request.getHeaderUserId(), request.getPetId()
         ));
@@ -42,9 +42,9 @@ public class PetMatchesFetcher implements PetMatchesFetcherInputBoundary {
                 collect(Collectors.toList());
 
         return new ResponseModel(
-            true,
-            "Successfully retrieved pet matches,",
-            new PetMatchesFetcherResponseModel(stringPetIds)
+                true,
+                "Successfully retrieved pet matches,",
+                new PetMatchesFetcherResponseModel(stringPetIds)
         );
     }
 

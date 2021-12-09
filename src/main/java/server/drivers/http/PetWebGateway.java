@@ -23,13 +23,13 @@ public class PetWebGateway extends WebGateway {
     @PostMapping("/create")
     public ResponseEntity createPet(HttpServletRequest req, @RequestBody CreatePetRequestBody requestBody) {
         ResponseModel response = petController.createPet(
-            false,
-            req.getHeader("userId"),
-            requestBody.getUserId(),
-            requestBody.getName(),
-            requestBody.getAge(),
-            requestBody.getBreed(),
-            requestBody.getBiography()
+                false,
+                req.getHeader("userId"),
+                requestBody.getUserId(),
+                requestBody.getName(),
+                requestBody.getAge(),
+                requestBody.getBreed(),
+                requestBody.getBiography()
         );
 
         return getResponseEntity(response);
@@ -44,13 +44,13 @@ public class PetWebGateway extends WebGateway {
     @PostMapping("/editprofile")
     public ResponseEntity editPet(HttpServletRequest req, @RequestBody EditPetRequestBody requestBody) {
         ResponseModel response = petController.editPet(
-            false,
-            req.getHeader("userId"),
-            requestBody.getPetId(),
-            requestBody.getNewName(),
-            requestBody.getNewAge(),
-            requestBody.getNewBreed(),
-            requestBody.getNewBiography()
+                false,
+                req.getHeader("userId"),
+                requestBody.getPetId(),
+                requestBody.getNewName(),
+                requestBody.getNewAge(),
+                requestBody.getNewBreed(),
+                requestBody.getNewBiography()
         );
 
         return getResponseEntity(response);
@@ -59,10 +59,10 @@ public class PetWebGateway extends WebGateway {
     @PostMapping("/swipe")
     public ResponseEntity swipePets(HttpServletRequest req, @RequestBody SwipePetsRequestBody requestBody) {
         ResponseModel response = petController.swipePets(
-            false,
-            req.getHeader("userId"),
-            requestBody.getFirstPetId(),
-            requestBody.getSecondPetId()
+                false,
+                req.getHeader("userId"),
+                requestBody.getFirstPetId(),
+                requestBody.getSecondPetId()
         );
 
         return getResponseEntity(response);
@@ -71,10 +71,10 @@ public class PetWebGateway extends WebGateway {
     @PostMapping("/unswipe")
     public ResponseEntity unswipePets(HttpServletRequest req, @RequestBody UnswipePetsRequestBody requestBody) {
         ResponseModel response = petController.unswipePets(
-            false,
-            req.getHeader("userId"),
-            requestBody.getFirstPetId(),
-            requestBody.getSecondPetId()
+                false,
+                req.getHeader("userId"),
+                requestBody.getFirstPetId(),
+                requestBody.getSecondPetId()
         );
 
         return getResponseEntity(response);
@@ -83,10 +83,10 @@ public class PetWebGateway extends WebGateway {
     @PostMapping("/reject")
     public ResponseEntity rejectPets(HttpServletRequest req, @RequestBody RejectPetsRequestBody requestBody) {
         ResponseModel response = petController.rejectPets(
-            false,
-            req.getHeader("userId"),
-            requestBody.getFirstPetId(),
-            requestBody.getSecondPetId()
+                false,
+                req.getHeader("userId"),
+                requestBody.getFirstPetId(),
+                requestBody.getSecondPetId()
         );
 
         return getResponseEntity(response);

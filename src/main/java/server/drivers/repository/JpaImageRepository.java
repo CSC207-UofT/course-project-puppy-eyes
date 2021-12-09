@@ -10,10 +10,10 @@ import java.util.Optional;
 @Repository
 public interface JpaImageRepository extends JpaRepository<ImageDatabaseEntity, String> {
 
-    public Optional<ImageDatabaseEntity> findByOwnerId(int ownerId);
+    Optional<ImageDatabaseEntity> findByOwnerId(int ownerId);
 
-    public List<ImageDatabaseEntity> findAllByOwnerId(int ownerId);
+    List<ImageDatabaseEntity> findAllByOwnerId(int ownerId);
 
-    public Optional<ImageDatabaseEntity> findByOwnerIdAndType(int ownerId, String type);
+    Optional<ImageDatabaseEntity> findByOwnerIdAndType(int ownerId, String type);
 
 }

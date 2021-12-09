@@ -8,8 +8,9 @@ public class ResponseModel {
 
     /**
      * Return a ResponseModel responding to a request with the given data
-     * @param message
-     * @param data
+     *
+     * @param message the given message
+     * @param data    the given data
      */
     public ResponseModel(boolean isSuccess, String message, ResponseData data) {
         this.isSuccess = isSuccess;
@@ -20,8 +21,9 @@ public class ResponseModel {
 
     /**
      * Return a ResponseModel responding to a with the given message with no data
-     * @param isSuccess
-     * @param message
+     *
+     * @param isSuccess the result of the response - true or false
+     * @param message   the given message
      */
     public ResponseModel(boolean isSuccess, String message) {
         this.isSuccess = isSuccess;

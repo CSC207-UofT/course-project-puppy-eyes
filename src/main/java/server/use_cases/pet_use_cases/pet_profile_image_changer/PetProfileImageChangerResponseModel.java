@@ -17,6 +17,7 @@ public class PetProfileImageChangerResponseModel extends ResponseData {
 
     /**
      * The URL of the profile image
+     *
      * @return a String URL
      */
     public String getUrl() {
@@ -25,6 +26,7 @@ public class PetProfileImageChangerResponseModel extends ResponseData {
 
     /**
      * The Asset ID of the profile image
+     *
      * @return a String ID
      */
     public String getAssetId() {

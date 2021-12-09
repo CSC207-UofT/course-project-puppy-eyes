@@ -17,19 +17,19 @@ public class ContactInfo {
         this.facebook = "";
     }
 
-    public void setPhoneNumber(String phoneNumber){
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setEmail(String address){
+    public void setEmail(String address) {
         this.email = address;
     }
 
-    public void setInstagram(String instagram){
+    public void setInstagram(String instagram) {
         this.instagram = instagram;
     }
 
-    public void setFacebook(String facebook){
+    public void setFacebook(String facebook) {
         this.facebook = facebook;
     }
 

@@ -60,7 +60,7 @@ public class TestUserProfileEditor {
         ResponseModel expected = new ResponseModel(false, "User with ID: 3 does not exist.");
 
         ResponseModel actual = profileEditor.editUserProfile(
-                new UserProfileEditorRequestModel("3", "3","Hello",
+                new UserProfileEditorRequestModel("3", "3", "Hello",
                         "1231231234", "asd@gmail.com", "asdfacebook"));
 
         assertTrue(!actual.isSuccess());
