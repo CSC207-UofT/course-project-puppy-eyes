@@ -55,7 +55,7 @@ public class UserAccountEditor implements UserAccountEditorInputBoundary {
         User user = userRepository.fetchUser(id);
 
         // Do not modify null fields
-        String newFirstName = request.getNewFirstName() == null ? user.getBiography() : request.getNewFirstName();
+        String newFirstName = request.getNewFirstName() == null ? user.getFirstName() : request.getNewFirstName();
         String newLastName = request.getNewLastName() == null ? user.getLastName() : request.getNewLastName();
         String newPassword = request.getNewPassword() == null ? user.getPasswordHash() : request.getNewPassword();
         String newAddress = request.getNewAddress() == null ? user.getCurrentAddress() : request.getNewAddress();

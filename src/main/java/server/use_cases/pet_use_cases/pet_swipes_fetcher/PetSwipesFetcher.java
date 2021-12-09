@@ -45,7 +45,7 @@ public class PetSwipesFetcher implements PetSwipesFetcherInputBoundary {
         return new ResponseModel(
                 true,
                 "Successfully retrieved pet swipes.",
-                new PetMatchesFetcherResponseModel(stringPetIds)
+                new PetSwipesFetcherResponseModel(stringPetIds)
         );
     }
 
