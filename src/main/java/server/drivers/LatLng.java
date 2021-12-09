@@ -43,4 +43,19 @@ public class LatLng {
         return earthRadius * c;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof LatLng))
+            return false;
+
+        LatLng other = (LatLng) o;
+
+        return other.lat == this.lat && other.lng == this.lng;
+    }
+
+    @Override
+    public String toString() {
+        return "Lat: " + this.lat + ", Lng: " + this.lng;
+    }
+
 }

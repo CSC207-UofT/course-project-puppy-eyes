@@ -51,4 +51,84 @@ public class TestPetCreator {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void TestMissFieldsCreatePet() {
+        // Create some users
+        UserCreatorResponseModel userCreatorResponse = (UserCreatorResponseModel) userCreator.createUser(
+                new UserCreatorRequestModel(
+                        "John", "Appleseed", "20 St George Street",
+                        "Toronto", "Password123", "john.appleseed@gmail.com"
+                )
+        ).getResponseData();
+
+        String userId = userCreatorResponse.getUserId();
+
+        ResponseModel expected = new ResponseModel(false, "Missing required fields.");;
+
+        ResponseModel actual = petCreator.createPet(new PetCreatorRequestModel(null, null, null, null,
+                null, "Nice"));
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void TestValidIDCreatePet() {
+        // Create some users
+        UserCreatorResponseModel userCreatorResponse = (UserCreatorResponseModel) userCreator.createUser(
+                new UserCreatorRequestModel(
+                        "John", "Appleseed", "20 St George Street",
+                        "Toronto", "Password123", "john.appleseed@gmail.com"
+                )
+        ).getResponseData();
+
+        String userId = userCreatorResponse.getUserId();
+
+        ResponseModel expected = new ResponseModel(false, "ID must be an integer.");
+
+        ResponseModel actual = petCreator.createPet(new PetCreatorRequestModel("null", "null","Koko", "3",
+                "Dog", "Nice"));
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void TestValidAgeCreatePet() {
+        // Create some users
+        UserCreatorResponseModel userCreatorResponse = (UserCreatorResponseModel) userCreator.createUser(
+                new UserCreatorRequestModel(
+                        "John", "Appleseed", "20 St George Street",
+                        "Toronto", "Password123", "john.appleseed@gmail.com"
+                )
+        ).getResponseData();
+
+        String userId = userCreatorResponse.getUserId();
+
+        ResponseModel expected = new ResponseModel(false, "Age must be an integer.");
+
+        ResponseModel actual = petCreator.createPet(new PetCreatorRequestModel(userId, userId,"Koko", "wrong age",
+                "Dog", "Nice"));
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void TestValidUserCreatePet() {
+        // Create some users
+        UserCreatorResponseModel userCreatorResponse = (UserCreatorResponseModel) userCreator.createUser(
+                new UserCreatorRequestModel(
+                        "John", "Appleseed", "20 St George Street",
+                        "Toronto", "Password123", "john.appleseed@gmail.com"
+                )
+        ).getResponseData();
+
+        String userId = userCreatorResponse.getUserId();
+
+        ResponseModel expected = new ResponseModel(false, "User with ID: " + "10000000" + " does not exist.");
+
+        ResponseModel actual = petCreator.createPet(new PetCreatorRequestModel("10000000", "10000000","Koko", "3",
+                "Dog", "Nice"));
+
+        assertEquals(expected, actual);
+    }
 }

@@ -12,8 +12,9 @@ import server.use_cases.user_use_cases.user_action_validator.UserActionValidator
 import server.use_cases.user_use_cases.user_creator.UserCreator;
 import server.use_cases.user_use_cases.user_creator.UserCreatorRequestModel;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class TestUserAccountFetcher {
@@ -50,6 +51,12 @@ public class TestUserAccountFetcher {
 
         assertTrue(responseModel.isSuccess());
         assertEquals(expected, responseData);
+
+        List<String> expectedList = List.of(expected.getFirstName(), expected.getLastName(),
+                expected.getCurrentAddress(), expected.getCurrentCity(), expected.getEmail());
+        List<String> actualList = List.of(responseData.getFirstName(), responseData.getLastName(),
+                responseData.getCurrentAddress(), responseData.getCurrentCity(), responseData.getEmail());
+        assertEquals(expectedList, actualList);
     }
 
     /**
@@ -60,6 +67,6 @@ public class TestUserAccountFetcher {
         ResponseModel responseModel = userAccountFetcher.fetchUserAccount(
                 new UserAccountFetcherRequestModel("3", "3"));
 
-        assertTrue(!responseModel.isSuccess());
+        assertFalse(responseModel.isSuccess());
     }
 }

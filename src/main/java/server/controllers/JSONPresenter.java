@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * A presenter that converts application data (in the form of Java objects)
  * to JSON strings.
  */
-public class JSONPresenter implements IJSONPresenter{
+public class JSONPresenter implements IJSONPresenter {
     private final ObjectMapper mapper;
 
     public JSONPresenter() {
@@ -17,9 +17,9 @@ public class JSONPresenter implements IJSONPresenter{
     /**
      * Return a JSON representation of obj. If this conversion fails,
      * return a generic JSON string in the format:
-     *
+     * <p>
      * {
-     *     "isSuccess": "false";
+     * "isSuccess": "false";
      * }
      */
     @Override
