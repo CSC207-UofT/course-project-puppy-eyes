@@ -77,9 +77,6 @@ public class TestUserAccountEditor {
         LatLng userLatLng = new LatLng(Double.parseDouble(user.getLat()), Double.parseDouble(user.getLng()));
         LatLng newYorkLatLng = new LatLng(40.7128, 74.0060);
 
-        System.out.println(userLatLng);
-        System.out.println(newYorkLatLng);
-
         assertTrue(userLatLng.equals(newYorkLatLng));
         assertTrue(responseModel.isSuccess());
         assertEquals(expected, responseModel.getResponseData());
