@@ -52,11 +52,23 @@ public class PetMatchesGenerator implements PetMatchesGeneratorInputBoundary {
         List<Integer> matchedPets = this.petRepository.fetchMatches(petId);
         List<Integer> swipedPets = this.petRepository.fetchSwipedOn(petId);
 
+        if (currentUser.getLat() == null || currentUser.getLat().isEmpty() || currentUser.getLng() == null || currentUser.getLng().isEmpty()) {
+            return new ResponseModel(
+                    false,
+                    "Could not generate matches for this user: missing either lat or lng field.",
+                    new PetMatchesGeneratorResponseModel(potentialMatches)
+            );
+        }
+
         LatLng currUserLatLng = new LatLng(Double.valueOf(currentUser.getLat()), Double.valueOf(currentUser.getLng()));
 
         for (User otherUser : users) {
             // Do not fetch pets for the same user
             if (otherUser.getId() == currentUser.getId())
+                continue;
+
+            // Skip this other user if they don't have valid lat/lng fields
+            if (otherUser.getLat() == null || otherUser.getLat().isEmpty() || otherUser.getLng() == null || otherUser.getLng().isEmpty())
                 continue;
 
             LatLng otherLatLng = new LatLng(Double.valueOf(otherUser.getLat()), Double.valueOf(otherUser.getLng()));
@@ -80,4 +92,5 @@ public class PetMatchesGenerator implements PetMatchesGeneratorInputBoundary {
                 new PetMatchesGeneratorResponseModel(potentialMatches)
         );
     }
+
 }
