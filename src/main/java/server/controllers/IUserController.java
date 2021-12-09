@@ -28,7 +28,7 @@ public interface IUserController {
      * @param fromTerminal whether this action is being run from command line prompt
      * @param headerUserId the id of the user performing this action, if not from terminal. If `fromTerminal`
      *                     is true, this field does nothing.
-     * @param userId       the id of the user for whose user account details are to be fetched.
+     * @param userId       the id of the user whose user account details are to be fetched.
      * @return A ResponseModel containing the response data
      */
     ResponseModel fetchUserAccount(boolean fromTerminal, String headerUserId, String userId);

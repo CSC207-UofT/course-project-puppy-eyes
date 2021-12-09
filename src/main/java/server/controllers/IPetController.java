@@ -119,8 +119,7 @@ public interface IPetController {
     /**
      * Set's a pet's profile picture to the image represented by the Base64 encoding.
      *
-     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
-     *                      is true, this field does nothing.
+     * @param headerUserId  the id of the user performing this action
      * @param petId         the id of the pet whose profile picture is to be set.
      * @param base64Encoded the image to be set as the pet's profile picture, represented by its Base64 encoding.
      * @return a ResponseModel containing the response data

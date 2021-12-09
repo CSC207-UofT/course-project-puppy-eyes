@@ -52,27 +52,26 @@ public class UserController implements IUserController {
     /**
      * Create a new user. Return a JSON structure containing:
      * {
-     *      isSuccess: "true"/"false"
-     *      // If successful, then include the following
-     *      data: {
-     *          userId: the new user's id
-     *          firstName: the first name of new user
-     *          lastName: the last name of the new user
-     *          currentAddress: the current address of the new user
-     *          currentCity: the current city of the new user
-     *          email: the email of the new user
-     *      }
-     *      // else,
-     *      data: null
+     * isSuccess: "true"/"false"
+     * // If successful, then include the following
+     * data: {
+     * userId: the new user's id
+     * firstName: the first name of new user
+     * lastName: the last name of the new user
+     * currentAddress: the current address of the new user
+     * currentCity: the current city of the new user
+     * email: the email of the new user
+     * }
+     * // else,
+     * data: null
      * }
      *
-     * @param firstName         user's first name
-     * @param lastName          user's last name
-     * @param currentAddress    user's current address
-     * @param currentCity       user's current city
-     * @param password          user's password
-     * @param email             user's email
-     *
+     * @param firstName      user's first name
+     * @param lastName       user's last name
+     * @param currentAddress user's current address
+     * @param currentCity    user's current city
+     * @param password       user's password
+     * @param email          user's email
      * @return The JSON response
      */
     @Override
@@ -85,24 +84,24 @@ public class UserController implements IUserController {
     /**
      * Given a user id, fetch a user's account information.
      *
-     * @param fromTerminal  whether this action is being run from command line prompt
-     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
-     *                      is true, this field does nothing.
-     * @param userId
+     * @param fromTerminal whether this action is being run from command line prompt
+     * @param headerUserId the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                     is true, this field does nothing.
+     * @param userId       the id of the user whose account information is to be fetched.
      * @return a JSON structure containing:
-     *    {
-     *       isSuccess: "true"/"false"
-     *       // If successful, then include the following
-     *       data: {
-     *          firstName: the first name of user
-     *          lastName: the last name of the user
-     *          currentAddress: the current address of the user
-     *          currentCity: the current city of the user
-     *          email: the email of the user
-     *       }
-     *       // else,
-     *       data: null
-     *    }
+     * {
+     * isSuccess: "true"/"false"
+     * // If successful, then include the following
+     * data: {
+     * firstName: the first name of user
+     * lastName: the last name of the user
+     * currentAddress: the current address of the user
+     * currentCity: the current city of the user
+     * email: the email of the user
+     * }
+     * // else,
+     * data: null
+     * }
      */
     @Override
     public ResponseModel fetchUserAccount(boolean fromTerminal, String headerUserId, String userId) {
@@ -115,20 +114,20 @@ public class UserController implements IUserController {
     /**
      * Return a list of pet ids of pets that belong to the user with this user id
      *
-     * @param fromTerminal  whether this action is being run from command line prompt
-     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
-     *                      is true, this field does nothing.
-     * @param userId
+     * @param fromTerminal whether this action is being run from command line prompt
+     * @param headerUserId the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                     is true, this field does nothing.
+     * @param userId       the id of the user to whom the pets corresponding to the list pet ids belong.
      * @return a JSON structure containing:
-     *      {
-     *          isSuccess: "true"/"false",
-     *          // if successful:
-     *          data: {
-     *              petIds: [pet_id_1, pet_id_2, ..., pet_id_n]
-     *          }
-     *          // else,
-     *          data: null
-     *      }
+     * {
+     * isSuccess: "true"/"false",
+     * // if successful:
+     * data: {
+     * petIds: [pet_id_1, pet_id_2, ..., pet_id_n]
+     * }
+     * // else,
+     * data: null
+     * }
      */
     @Override
     public ResponseModel fetchUserPets(boolean fromTerminal, String headerUserId, String userId) {
@@ -141,35 +140,35 @@ public class UserController implements IUserController {
     /**
      * Edit a user's account details given their user id and new information.
      *
-     * @param fromTerminal  whether this action is being run from command line prompt
-     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
-     *                      is true, this field does nothing.
-     * @param userId        the user's id
-     * @param newFirstName  the user's new first name
-     * @param newLastName   the user's new last name
-     * @param newAddress    the user's new current address
-     * @param newCity       the user's new current city
-     * @param newPassword   the user's new password
-     * @param newEmail      the user's new email
+     * @param fromTerminal whether this action is being run from command line prompt
+     * @param headerUserId the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                     is true, this field does nothing.
+     * @param userId       the user's id
+     * @param newFirstName the user's new first name
+     * @param newLastName  the user's new last name
+     * @param newAddress   the user's new current address
+     * @param newCity      the user's new current city
+     * @param newPassword  the user's new password
+     * @param newEmail     the user's new email
      * @return a JSON structure containing:
-     *    {
-     *       isSuccess: "true"/"false"
-     *       // If successful, then include the following
-     *       data: {
-     *          userId: the user's id
-     *          newFirstName: the new first name of user
-     *          newLastName: the new last name of the user
-     *          newCurrentAddress: the new current address of the user
-     *          newCurrentCity: the new current city of the user
-     *          newEmail: the new email of the user
-     *       }
-     *       // else,
-     *       data: null
-     *    }
+     * {
+     * isSuccess: "true"/"false"
+     * // If successful, then include the following
+     * data: {
+     * userId: the user's id
+     * newFirstName: the new first name of user
+     * newLastName: the new last name of the user
+     * newCurrentAddress: the new current address of the user
+     * newCurrentCity: the new current city of the user
+     * newEmail: the new email of the user
+     * }
+     * // else,
+     * data: null
+     * }
      */
     @Override
     public ResponseModel editUserAccount(boolean fromTerminal, String headerUserId, String userId, String newFirstName, String newLastName,
-                                  String newAddress, String newCity, String newPassword, String newEmail) {
+                                         String newAddress, String newCity, String newPassword, String newEmail) {
         UserAccountEditorRequestModel request = new UserAccountEditorRequestModel(headerUserId, userId, newFirstName,
                 newLastName, newAddress, newCity, newPassword, newEmail);
         request.setFromTerminal(fromTerminal);
@@ -181,24 +180,24 @@ public class UserController implements IUserController {
      * Fetch a user's profile details (first name, last name, biography, phone number, email, Instagram, Facebook)
      * given their user id. The returned response is in the form of a JSON object.
      *
-     * @param headerUserId
-     * @param userId    the user's id
+     * @param headerUserId the id of the user performing this action
+     * @param userId       the user's id
      * @return a JSON structure containing:
-     *    {
-     *       isSuccess: "true"/"false"
-     *       // If successful, then include the following
-     *       data: {
-     *          firstName: the first name of user
-     *          lastName: the last name of the user
-     *          biography: the biography of the user
-     *          phoneNumber: the phone number of the user
-     *          email: the email of the user
-     *          instagram: the instagram of the user
-     *          facebook: the facebook of the user
-     *       }
-     *       // else,
-     *       data: null
-     *    }
+     * {
+     * isSuccess: "true"/"false"
+     * // If successful, then include the following
+     * data: {
+     * firstName: the first name of user
+     * lastName: the last name of the user
+     * biography: the biography of the user
+     * phoneNumber: the phone number of the user
+     * email: the email of the user
+     * instagram: the instagram of the user
+     * facebook: the facebook of the user
+     * }
+     * // else,
+     * data: null
+     * }
      */
     @Override
     public ResponseModel fetchUserProfile(boolean fromTerminal, String headerUserId, String userId) {
@@ -211,29 +210,28 @@ public class UserController implements IUserController {
     /**
      * Edit a user's profile details given their user id and new information.
      *
-     *
-     * @param fromTerminal  whether this action is being run from command line prompt
-     * @param headerUserId  the id of the user performing this action, if not from terminal. If `fromTerminal`
-     *                      is true, this field does nothing.
+     * @param fromTerminal   whether this action is being run from command line prompt
+     * @param headerUserId   the id of the user performing this action, if not from terminal. If `fromTerminal`
+     *                       is true, this field does nothing.
      * @param userId         the user's id
      * @param newBiography   the user's new biography
      * @param newPhoneNumber the user's new phone number
      * @param newInstagram   the user's new Instagram
      * @param newFacebook    the user's new Facebook
      * @return a JSON structure containing:
-     *    {
-     *       isSuccess: "true"/"false"
-     *       // If successful, then include the following
-     *       data: {
-     *          userId: the user's id
-     *          newBiography: the new biography of the user
-     *          newPhoneNumber: the new phone number of the user
-     *          newInstagram: the new instagram of the user
-     *          newFacebook: the new facebook of the user
-     *       }
-     *       // else,
-     *       data: null
-     *    }
+     * {
+     * isSuccess: "true"/"false"
+     * // If successful, then include the following
+     * data: {
+     * userId: the user's id
+     * newBiography: the new biography of the user
+     * newPhoneNumber: the new phone number of the user
+     * newInstagram: the new instagram of the user
+     * newFacebook: the new facebook of the user
+     * }
+     * // else,
+     * data: null
+     * }
      */
     @Override
     public ResponseModel editUserProfile(boolean fromTerminal, String headerUserId, String userId, String newBiography, String newPhoneNumber, String newInstagram, String newFacebook) {
@@ -246,20 +244,21 @@ public class UserController implements IUserController {
 
     /**
      * Set's the user profile to the image represented by the Base64 encoding.
-     * @param headerUserId
-     * @param base64Encoded
+     *
+     * @param headerUserId  the id of the user performing this action
+     * @param base64Encoded the image to be set as the user's profile picture, represented by its Base64 encoding.
      * @return a ResponseModel containing:
-     *      {
-     *          isSuccess: "true"/"false"
-     *          message: "The response message,
-     *          // if successful:
-     *         data: {
-     *              url: the url to the image
-     *              assetId: the id of the asset
-     *         }
-     *          // else,
-     *          data: null
-     *      }
+     * {
+     * isSuccess: "true"/"false"
+     * message: "The response message,
+     * // if successful:
+     * data: {
+     * url: the url to the image
+     * assetId: the id of the asset
+     * }
+     * // else,
+     * data: null
+     * }
      */
     @Override
     public ResponseModel setUserProfile(String headerUserId, String base64Encoded) {
