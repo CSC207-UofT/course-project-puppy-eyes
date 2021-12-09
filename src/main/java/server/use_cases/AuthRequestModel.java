@@ -40,7 +40,7 @@ public class AuthRequestModel {
     /**
      * When true, the headerUserId field is ignored and the request will always be authorized.
      *
-     * @param fromTerminal
+     * @param fromTerminal whether from terminal
      */
     public void setFromTerminal(boolean fromTerminal) {
         this.fromTerminal = fromTerminal;
@@ -64,7 +64,7 @@ public class AuthRequestModel {
     /**
      * Return whether this request came from the command line or not.
      *
-     * @return
+     * @return whether the request came from the command line
      */
     public boolean isFromTerminal() {
         return this.fromTerminal;
