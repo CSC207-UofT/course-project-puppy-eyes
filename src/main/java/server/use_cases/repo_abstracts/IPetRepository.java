@@ -45,8 +45,8 @@ public interface IPetRepository {
     /**
      * Add pet2 to pet1's swiped list
      *
-     * @param pet1Id
-     * @param pet2Id
+     * @param pet1Id the id of the pet whose swiped list is to be modified.
+     * @param pet2Id the id of the pet who is to be removed from the swiped list of the pet with id pet1Id.
      * @return whether the swipe was successful
      */
     boolean swipePets(int pet1Id, int pet2Id);
@@ -54,8 +54,8 @@ public interface IPetRepository {
     /**
      * Add pet1 and pet2 to each other's matched list.
      *
-     * @param pet1Id
-     * @param pet2Id
+     * @param pet1Id the id of the pet to be added to the pet with pet2Id's matched list.
+     * @param pet2Id the id of the pet to be added to the pet with pet1Id's matched list.
      * @return whether the swipe was successful
      */
     boolean matchPets(int pet1Id, int pet2Id);
@@ -63,8 +63,8 @@ public interface IPetRepository {
     /**
      * Remove pet2 from pet1's swiped list
      *
-     * @param pet1Id
-     * @param pet2Id
+     * @param pet1Id the id of the pet whose swiped list is to be modified.
+     * @param pet2Id the id of the pet who is to be removed from the swiped list of the pet with id pet1Id.
      * @return whether the swipe was successful
      */
     boolean unswipePets(int pet1Id, int pet2Id);
@@ -72,8 +72,8 @@ public interface IPetRepository {
     /**
      * Add pet2 to pet1's rejected list
      *
-     * @param pet1Id
-     * @param pet2Id
+     * @param pet1Id the id of the pet whose rejection list is to be modified.
+     * @param pet2Id the id of the pet who is to be added to the rejection list of the pet with pet1Id
      * @return whether the rejection was successful
      */
     boolean rejectPets(int pet1Id, int pet2Id);
@@ -81,8 +81,8 @@ public interface IPetRepository {
     /**
      * Remove pet1 and pet2 from each other's matched list.
      *
-     * @param pet1Id
-     * @param pet2Id
+     * @param pet1Id the petId of the pet from which the pet with pet2Id is to be removed from its list of matches
+     * @param pet2Id the petId of the pet that is to be removed from the pet with pet1Id's list of matches
      * @return whether the rejection was successful
      */
     boolean unmatchPets(int pet1Id, int pet2Id);
@@ -90,7 +90,7 @@ public interface IPetRepository {
     /**
      * Return a list of pet ids that the given pet has swiped on
      *
-     * @param petId
+     * @param petId the id of the given pet
      * @return a list of pet ids that the given pet has swiped on
      */
     List<Integer> fetchSwipedOn(int petId);
@@ -98,7 +98,7 @@ public interface IPetRepository {
     /**
      * Return a list of pet ids that the given pet has rejected
      *
-     * @param petId
+     * @param petId the id of the given pet
      * @return a list of pet ids that the given pet has rejected
      */
     List<Integer> fetchRejected(int petId);
@@ -106,7 +106,7 @@ public interface IPetRepository {
     /**
      * Return a list of pet ids that the given pet has matched with
      *
-     * @param petId
+     * @param petId the id of the given pet
      * @return a list of pet ids that the given pet has matched with
      */
     List<Integer> fetchMatches(int petId);
